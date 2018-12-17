@@ -4,17 +4,24 @@ sitemap:
 exclude: 'yes'
 ---
 
-/* TEAM */
-Developer & Designer: Josh Gerdes
-Twitter: @joshgerdes
-Site: http://joshgerdes.com
-Location: Minneapolis, MN, USA
-						
-/* THANKS */
-Name: Dale Anthony
+/* TIME */
+  Desenvolvedor&Designer: Felip Barbosa
+  Twitter: @L1P
+  Site: https://lip.sh/
+  Localização: Brasília, DF, BR
+
+/* OBRIGADO/THANKS */
+  Jekyll-Uno Theme Creator: Josh Gerdes
+  Twitter: @joshgerdes
+  From: Minneapolis, MN, US
+
+  Bootstrap/386 Creator: Chris Mckenzie
+  Medium: @kristopolous
+  From: Los Angeles, CA, US
 
 /* SITE */
-Last update: {{ site.time | date: "%Y/%m/%d" }}
-Standards: HTML5, CSS3
-Components: Jekyll
-Software: Sublime Text, Photoshop
+  Última atualização: {{ site.time | date: "%d/%m/%Y" }}
+  Idioma: Português
+  Padrões: HTML5, CSS3
+  Componentes: Jekyll, Bootstrap
+  Softwares: Atom, FileZilla, Photopea

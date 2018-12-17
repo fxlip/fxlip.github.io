@@ -1,45 +1,41 @@
-# jekyll-uno
+# Jekyll-386
 
-Jekyll-Uno - a minimal, responsive theme for Jekyll based on the [Uno](https://github.com/daleanthony/Uno) theme for Ghost.
+Jekyll-386 é um tema minimalista e responsivo para Jekyll, inspirado no [Jekyll-Uno](https://github.com/joshgerdes/jekyll-uno) mas com o Design do [Bootstrap/386](https://github.com/kristopolous/BOOTSTRA.386)
 
 > :warning:
-  This theme requires ruby and rubygems installed
+  Esse tema requer ruby e algumas gemas instaladas.
 
-### Features
+### Funcionalidades
 
-* Clean layout
-* Resposive layout
-* Pagination
-* Syntax highlighting
-* Social links
-* Tags listing page
-* Categories listing page
-* Google Analytics integration
-* Disqus integration
+* Layout limpo
+* Layout responsivo
+* Paginação
+* Realce de sintaxe
+* Links sociais
+* Listagem de tags
+* Listagem de categorias
 
 ---
 
-### Install and Test
+### Instalação e Teste
 
-1. Download or clone repo `git clone git@github.com:joshgerdes/jekyll-uno.git`
-2. Enter the folder: `cd jekyll-uno/`
-3. If you don't have bundler installed: `gem install bundler`
-3. Install Ruby gems: `bundle install`
-4. Start Jekyll server: `bundle exec jekyll serve --watch`
+1. Faça o download ou clone o repo `git clone git@github.com:fel1p/www.git`
+2. Entre na pasta: `cd www/`
+3. Se você não tiver o bundler instalado: `gem install bundler`
+3. Instale as gemas do ruby: `bundle install`
+4. Inicie o servidor jekyll: `bundle exec jekyll serve --watch`
 
-Access via: [http://localhost:4000/jekyll-uno/](http://localhost:4000/jekyll-uno/)
-
----
-
-### Demo and Download
-
-[Demo](http://joshgerdes.com/jekyll-uno/)
-[Download](https://github.com/joshgerdes/jekyll-uno/archive/master.zip)
-
-![jekyll-uno - free Jekyll theme](/screenshot.png)
+Acesse em: [http://localhost:4000/www/](http://localhost:4000/www/)
 
 ---
 
-### Copyright and license
+### Demo e Download
 
-It is under [the MIT license](/LICENSE).
+[Demo](https://lip.sh/) ||
+[Download](https://github.com/fel1p/www/archive/master.zip)
+
+---
+
+### Direitos autorais e licença
+
+Está sob [a licença GNU](/LICENSE).
