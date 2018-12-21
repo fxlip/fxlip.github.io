@@ -24,6 +24,7 @@ defaults:
 # Build settings
 destination: _site
 paginate: 3
+excerpt_separator: <!--mais-->
 permalink: /:year/:title/
 markdown: kramdown
 highlighter: rouge

@@ -28,6 +28,9 @@
               <!-- Blog -->
               <nav class="cover-navigation cover-navigation--primary">
                 <ul class="navigation">
+                  <!-- RSS -->
+                  <li class="navigation__item"><a href="{{ site.baseurl }}/feed.xml" title="Assinar!" target="_blank" style="padding-top: 8px;padding-left: 10px;padding-bottom: 10px;padding-right: 10px;"><i class="fas fa-rss" style="transform: rotate(270deg);"></i></a></li>
+                  <!-- Conteudo -->
                   <li class="navigation__item"><a href="{{ site.baseurl }}/#blog" title="Ler as publicações" class="blog-button">Blog</a></li>
                 </ul>
               </nav>
@@ -46,9 +49,17 @@
                 {% endif %}{% if site.author.github_username %}
                   <!-- GitHub -->
                   <li class="navigation__item">
-                    <a href="https://github.com/{{ site.author.github_username }}" title="{{ site.author.github_username }} no GitHub" target="_blank">
+                    <a href="http://github.com/{{ site.author.github_username }}" title="{{ site.author.github_username }} no GitHub" target="_blank">
                       <i class="fab fa-github"></i>
                       <span class="label">GitHub</span>
+                    </a>
+                  </li>
+                {% endif %}{% if site.author.email %}
+                  <!-- Email -->
+                  <li class="navigation__item">
+                    <a href="mailto:{{ site.author.email }}" title="Fale comigo" target="_blank">
+                      <i class="fas fa-envelope"></i>
+                      <span class="label">Email</span>
                     </a>
                   </li>
                 {% endif %}{% if site.author.telegram_username %}
@@ -62,27 +73,12 @@
                 {% endif %}{% if site.author.psn_username %}
                   <!-- PSN -->
                   <li class="navigation__item">
-                    <a href="https://psnprofiles.com/{{ site.author.psn_username }}" title="{{ site.author.psn_username }} na PSN" target="_blank">
+                    <a href="http://psnprofiles.com/{{ site.author.psn_username }}" title="{{ site.author.psn_username }} na PSN" target="_blank">
                       <i class="fab fa-playstation"></i>
                       <span class="label">Playstation Network</span>
                     </a>
                   </li>
-                {% endif %}{% if site.author.email %}
-                  <!-- Email -->
-                  <li class="navigation__item">
-                    <a href="mailto:{{ site.author.email }}" title="Fale comigo" target="_blank">
-                      <i class="fas fa-envelope"></i>
-                      <span class="label">Email</span>
-                    </a>
-                  </li>
                 {% endif %}
-                  <!-- RSS -->
-                  <li class="navigation__item">
-                    <a href="{{ site.baseurl }}/feed.xml" title="Se inscreva!" target="_blank">
-                      <i class="fas fa-rss"></i>
-                      <span class="label">RSS</span>
-                    </a>
-                  </li>
 
                 </ul>
               </nav>

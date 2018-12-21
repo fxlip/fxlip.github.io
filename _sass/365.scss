@@ -58,7 +58,8 @@ html {
 body {
 	font-family: "Raleway", sans-serif;
 	font-size: 1em;
-	color: #666666; }
+	color: #666666;
+ 	background-color: #2f3237; }
 
 ::selection {
 	background: #fae3df; }
@@ -68,9 +69,9 @@ body {
 
 a {
 	text-decoration: none;
-	color: #e25440; }
+	color: #8a6d3b; }
 	a:hover {
-		color: #b9301c;
+		color: rgba(247,175,62,.68);
 		-o-transition: .5s;
 		-ms-transition: .5s;
 		-moz-transition: .5s;
@@ -93,6 +94,7 @@ h1 {
 	margin-top: 0;
 	font-size: 3.2em;
 	line-height: 1.2em;
+	color: #d5d5d5;
 	letter-spacing: .05em; }
 
 h2 {
@@ -112,6 +114,7 @@ h5 {
 
 p {
 	margin-bottom: 1.3em;
+	color: #bcbcbc;
 	line-height: 1.7em; }
 
 strong {
@@ -325,7 +328,10 @@ hr {
 	margin: 0 0 5px 0;
 	font-size: 2.5em;
 	letter-spacing: 4px;
-	color: #FFF; }
+	color: rgba(151,155,160,.82) !important; }
+	.panel-title:hover {
+		color: rgba(247,175,62,.68) !important;
+	}
 
 .panel-subtitle {
 	font-family: "Roboto Slab", serif;
@@ -370,6 +376,8 @@ hr {
 .panel-cover__divider {
 	width: 50%;
 	margin: 20px auto;
+	opacity: 1;
+  animation: fade 2s linear;
 	border-top: 1px solid rgba(255, 255, 255, 0.14); }
 
 .panel-cover__divider--secondary {
@@ -404,7 +412,7 @@ hr {
 .panel-inverted {
 	font-weight: 100;
 	text-align: center;
-	color: #FFF;
+	color: rgba(151,155,160,0.82) !important;
 	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4); }
 	.panel-inverted a {
 		color: #FFF; }
@@ -511,12 +519,13 @@ nav {
 	.navigation__item a {
 		display: block;
 		position: relative;
-		border-color: #FFF;
-		color: #FFF;
+		border-color: #8a6d3b;
+		color: #bfc9d3;
+		background-color: rgba(247,175,62,.07) !important;
 		opacity: .8; }
 		.navigation__item a:hover {
 			color: #FFF;
-			border-color: #FFF;
+			border-color: rgba(247,175,62,.68) !important;
 			opacity: 1; }
 
 .navigation--social {
@@ -572,9 +581,9 @@ i {
 	font-size: 1.5em;
 	line-height: 1.3em; }
 	.post-list__post-title a {
-		color: #333333; }
+		color: #bfc9d3; }
 		.post-list__post-title a:hover {
-			color: #b9301c; }
+			color: rgba(247,175,62,.68) !important; }
 
 .post-list__meta {
 	display: block;

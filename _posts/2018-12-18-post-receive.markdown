@@ -4,7 +4,11 @@ date:   2018-12-18 02:04:20
 categories: [script]
 tags: [ocultar]
 ---
-Ok, como eu não sei mais quanto tempo meu servidor ainda pode durar sofrendo os ataques que vem sofrendo, vou começar a salvar alguns scripts mais elaborados que fiz por aqui, como backup. Depois eu impeço que eles apareçam no feed e crio um menu específico pra eles.
+Ok, como eu não sei mais quanto tempo meu servidor ainda pode durar sofrendo os ataques que vem sofrendo, vou começar a salvar alguns scripts mais elaborados que fiz por aqui, como backup.
+
+<!--mais-->
+
+Depois eu impeço que eles apareçam no feed e crio um menu específico pra eles.
 
 ``` bash
 #!/bin/sh
