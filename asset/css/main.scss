@@ -1,6 +1,6 @@
 ---
 ---
-@import "uno";
+@import "365";
 @import "tables";
 @import "monokai";
 
@@ -30,7 +30,6 @@ pre.highlight code,
 .categories a,
 .tags a {
   border: 1px solid #e25440;
-  border-radius: 20px;
   color: #e25440;
   display: inline-block;
   font-size: 12px;
@@ -45,8 +44,15 @@ pre.highlight code,
   padding: 0 5px;
 }
 
-.footer__copyright {
+.footer__copyleft {
     margin: 0 20px 10px;
+}
+
+.copyleft__symbol {
+  display:inline-block;
+  transform: rotate(180deg);
+  font-size: 1.3em;
+  padding-bottom: 3px;
 }
 
 .user-image {
