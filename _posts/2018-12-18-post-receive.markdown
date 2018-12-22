@@ -25,7 +25,7 @@ cp -r $TMP_GIT_CLONE/* $PUBLIC_WWW
 
 echo "Rebuild no Jekyll..."
 kill -9 $(pgrep -f jekyll)
-cd $GIT_REPO && nohup git reset --hard >/dev/null 2>&1 &
+cd $GIT_REPO && nohup git reset --hard &
 cd $PUBLIC_WWW && bundle install
 cd $PUBLIC_WWW && nohup bundle exec jekyll serve >/dev/null 2>&1 &
 
