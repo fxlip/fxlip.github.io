@@ -28,6 +28,7 @@ kill -9 $(pgrep -f jekyll)
 cd $GIT_REPO && nohup git reset --hard &
 cd $PUBLIC_WWW && bundle install
 cd $PUBLIC_WWW && nohup bundle exec jekyll serve >/dev/null 2>&1 &
+sleep 5
 
 echo "Limpando a zorra..."
 rm -Rf $TMP_GIT_CLONE
