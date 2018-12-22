@@ -30,7 +30,7 @@ cd $PUBLIC_WWW && nohup bundle exec jekyll serve >/dev/null 2>&1 &
 
 echo "Limpando a zorra..."
 rm -Rf $TMP_GIT_CLONE
-cd $GIT_REPO && nohup git clean -d -x -f >/dev/null 2>&1 &
+cd $GIT_REPO && nohup git reset --hard >/dev/null 2>&1 &
 echo "Tudo OK."
 
 exit
