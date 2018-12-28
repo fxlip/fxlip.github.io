@@ -8,7 +8,7 @@ Ok, como eu não sei mais quanto tempo meu servidor ainda pode durar sofrendo os
 
 <!--mais-->
 
-Depois eu impeço que eles apareçam no feed e crio um menu específico pra eles.
+Esse hook é responsável pela atualização do site através de um sistema de gerenciamento de código fonte que possui um controle de versão distribuído replicado no [github](https://github.com/fel1p/www).
 
 ``` bash
 #!/bin/sh
@@ -33,8 +33,7 @@ echo "Instalando novas dependências..."
 cd $PUBLIC_WWW && bundle install
 
 echo "Iniciando Jekyll com delay..."
-cd $PUBLIC_WWW && nohup bundle exec jekyll serve >/dev/null 2>&1 &
-sleep 5
+cd $PUBLIC_WWW && nohup bundle exec jekyll serve >/dev/null 2>&1 && sleep 5
 
 echo "Limpando a zorra..."
 rm -Rf $TMP_GIT_CLONE
