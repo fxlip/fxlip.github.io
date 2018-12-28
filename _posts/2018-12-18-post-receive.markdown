@@ -17,22 +17,28 @@ TMP_GIT_CLONE=/tmp/lipsh
 PUBLIC_WWW=$HOME/public_html
 GEMFILE=$PUBLIC_WWW/Gemfile
 
-echo "Init do deploy..."
+echo "Init deploy..."
 git clone $GIT_REPO $TMP_GIT_CLONE
 
 echo "Montando public_html..."
 cp -r $TMP_GIT_CLONE/* $PUBLIC_WWW
 
-echo "Rebuild no Jekyll..."
+echo "Rebuild Jekyll..."
 kill -9 $(pgrep -f jekyll)
+
+echo "Removendo arquivos deletados..."
 cd $GIT_REPO && nohup git reset --hard &
+
+echo "Instalando novas dependências..."
 cd $PUBLIC_WWW && bundle install
+
+echo "Iniciando Jekyll com delay..."
 cd $PUBLIC_WWW && nohup bundle exec jekyll serve >/dev/null 2>&1 &
 sleep 5
 
 echo "Limpando a zorra..."
 rm -Rf $TMP_GIT_CLONE
-echo "Tudo OK."
 
+echo "OK. Está feito."
 exit
 ```
