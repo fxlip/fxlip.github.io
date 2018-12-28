@@ -21,9 +21,9 @@ layout: default
                   {% when '12' %}Dezembro de
                 {% endcase %}{{ page.date | date: "%Y" }}
               </time>
-              {% if page.tags.size > 0 %}
+              <!--{% if page.tags.size > 0 %}
               &#8226;<span class="post-meta__tags">em {% for tag in page.tags %}<a href="{{ site.baseurl }}/tags/#{{ tag }}">{{ tag }}</a>{% if forloop.last == false %}, {% endif %}{% endfor %}</span>
-              {% endif %}
+              {% endif %}-->
             </div>
             <h1 class="post-title">{{ page.title }}</h1>
           </header>

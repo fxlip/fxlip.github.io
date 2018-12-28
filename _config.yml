@@ -25,7 +25,7 @@ defaults:
 destination: _site
 paginate: 3
 excerpt_separator: <!--mais-->
-permalink: /:year/:title/
+permalink: /:categories/:title/
 markdown: kramdown
 highlighter: rouge
 
