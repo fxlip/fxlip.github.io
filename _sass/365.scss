@@ -125,9 +125,9 @@ em {
 
 blockquote {
 	margin: 1em 0;
-	padding: 2em 0;
-	background: #f8f8f8;
-	border: 1px solid #eeeeee;
+	padding: 15px 15px;
+	background: #202020;
+	border: 1px dotted #777;
 	border-radius: 3px;
 	font-family: "Roboto Slab", serif;
 	font-weight: lighter;
@@ -599,9 +599,9 @@ i {
 	margin-left: .5em; }
 
 .post-list__divider {
-	width: 30%;
+	width: 15%;
 	margin: 2.2em 0 2.1em 0;
-	border-top: 1px solid #dddddd; }
+	border-top: 1px dotted #dddddd; }
 
 *:focus {
 	outline: none; }
