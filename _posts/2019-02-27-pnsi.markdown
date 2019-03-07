@@ -14,15 +14,13 @@ Entre os princípios dessa política está a visão abrangente e sistêmica da s
 
 O texto também trata das competências do Ministério da Defesa, do Ministério da Transparência, da CGU e dos órgãos e entidades que possam estar relacionadas à PNSI.
 
-
-
-##### Leis, decretos e normas
+###### Leis, decretos e normas
   - [Lei Nº10.973](http://www.planalto.gov.br/ccivil_03/_Ato2004-2006/2004/Lei/L10.973.htm)
   - [Lei Nº13.709](http://www.planalto.gov.br/ccivil_03/_Ato2015-2018/2018/Lei/L13709.htm)
   - [Decreto Nº7.845](http://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2012/Decreto/D7845.htm)
   - [Normas Complementares](http://dsic.planalto.gov.br/assuntos/editoria-c/normas-complementares/in-no-01-gsi-pr-2008-seguranca-da-informacao-e-comunicacoes)
 
-##### Link relacionados
+###### Link relacionados
   - [http://ibict.br](http://ibict.br)
   - [https://kryptus.com](https://kryptus.com)
   - [http://ancib.org.br](https://ancib.org.br)

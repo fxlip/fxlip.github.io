@@ -29,7 +29,7 @@ Check-list de customizações, features e publicações.
 ###### Publicações
 * [~~Hook de atualização~~](https://github.com/fel1p/www/blob/master/_posts/2018-12-18-post-receive.markdown)
 * [~~Notas & Núvens GPL~~](https://github.com/fel1p/www/commit/a90afda97dc74e8883edf6c48cf5bc5a01ebbe36)
-* [~~Política Nacional de Segurança da Informação~~]
+* [~~Política Nacional de Segurança da Informação~~](https://github.com/fel1p/www/commit/bae4299430e1720402da5709461e7a9891dbf825)
 * Métodos para uma exclusão permanente do facebook
 * Review do UHK
 * Review do T400s RYF
