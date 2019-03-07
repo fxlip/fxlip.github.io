@@ -63,12 +63,12 @@
                       <span class="label">Email</span>
                     </a>
                   </li>
-                {% endif %}{% if site.author.twitter_username %}
-                  <!-- Twitter -->
+                {% endif %}{% if site.author.discord_link %}
+                  <!-- Discord -->
                   <li class="navigation__item">
-                    <a href="http://twitter.com/{{ site.author.twitter_username }}" title="@{{ site.author.twitter_username }} no Twitter" target="_blank">
-                      <i class="fab fa-twitter"></i>
-                      <span class="label">Twitter</span>
+                    <a href="https://discordapp.com/invite/{{ site.author.discord_link }}" title="Maanaim Crew no Discord" target="_blank">
+                      <i class="fab fa-discord"></i>
+                      <span class="label">Discord</span>
                     </a>
                   </li>
                 {% endif %}{% if site.author.psn_username %}
@@ -79,8 +79,15 @@
                       <span class="label">Playstation Network</span>
                     </a>
                   </li>
+                {% endif %}{% if site.author.twitter_username %}
+                  <!-- O @ do twitter é um easter egg
+                  <li class="navigation__item">
+                    <a href="http://twitter.com/{{ site.author.twitter_username }}" title="@{{ site.author.twitter_username }} no Twitter" target="_blank">
+                      <i class="fab fa-twitter"></i>
+                      <span class="label">Twitter</span>
+                    </a>
+                  </li> -->
                 {% endif %}
-
                 </ul>
               </nav>
             </div>
