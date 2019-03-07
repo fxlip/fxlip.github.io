@@ -13,9 +13,9 @@ Check-list de customizações, features e publicações.
 * [~~Icons update~~](https://github.com/fel1p/www/commit/c3ae9d06c9b38cea25dc446cb33068acd23b7218)
 * [~~Mobile menu fix~~](https://github.com/fel1p/www/commit/cb6b7824cbdabf2485e8cd587d6b92d360dd2f93)
 * Estilo do <h6> e do <ul>
-* Estilo do <blockquote>
+* [~~Estilo do <blockquote>~~](https://github.com/fel1p/www/commit/4dbab3bb863223ae92bb16a2f44d73d0b66d8c7f)
 * Ajustar padding do <h1>
-* Remover reticências da tag <!- - mais - ->
+* [~~Remover reticências da tag <!- - mais - ->~~](https://github.com/fel1p/www/commit/4dbab3bb863223ae92bb16a2f44d73d0b66d8c7f)
 * Estilo da paginação
 * Identidade visual
   - Logo
@@ -28,10 +28,10 @@ Check-list de customizações, features e publicações.
 
 ###### Publicações
 * [~~Hook de atualização~~](https://github.com/fel1p/www/blob/master/_posts/2018-12-18-post-receive.markdown)
-* Notas & Núvens GPL
+* [~~Notas & Núvens GPL~~](https://github.com/fel1p/www/commit/a90afda97dc74e8883edf6c48cf5bc5a01ebbe36)
 * Métodos para uma exclusão permanente do facebook
 * Review do UHK
 * Review do T400s RYF
-  - Updates de hardware
-  - Updates de software
-  - Updates com customs
+  - Update de hardware
+  - Update de software
+  - Update de custom

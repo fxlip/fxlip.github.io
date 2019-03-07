@@ -34,7 +34,7 @@ Lista de alternativas que podem substituir os serviços proprietários Evernote,
 
 [Turtl](https://github.com/turtl/server) - Usando uma biblioteca de criptografia para proteger seus dados de forma que somente você e os usuários escolhidos possam visualizar seus dados, o Turtl usa libsodium para todas as criptografias de baixo nível. A criptografia simétrica usa o algoritmo chacha20poly1305 (IETF) e a criptografia assimétrica usa a caixa selada mais abstrata de libsodium, sendo essa biblioteca um fork do [NaCl](http://nacl.cr.yp.to/).
 
-###### Preferência do editor
+##### Preferência do editor
 
 [ownCloud](https://github.com/owncloud/core) - Liberdade e controle sobre seus próprios dados: uma nuvem pessoal executada no seu próprio servidor.
 
