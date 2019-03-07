@@ -1,0 +1,35 @@
+---
+title:  "Política Nacional de SI"
+date:   2019-02-27 23:04:20
+categories: [legislacao]
+tags: [gov]
+---
+De acordo com o [decreto 9.637/18](http://www.in.gov.br/materia/-/asset_publisher/Kujrw0TZC2Mb/content/id/56970098), que altera o antigo [decreto 2.295/97](http://www.planalto.gov.br/ccivil_03/decreto/D2295.htm), apartir desse ano já se torna dispensável o processo licitatório para os casos que possam comprometer a segurança nacional.
+
+<!--mais-->
+
+Então de acordo com a norma, a PNSI no âmbito federal estabelece que a segurança da informação abrange a segurança cibernética, a defesa cibernética, a segurança física e a proteção de dados organizacionais, além das ações destinadas a assegurar a disponibilidade, a integridade, a confidencialidade e a autenticidade de informações.
+
+Entre os princípios dessa política está a visão abrangente e sistêmica da segurança da informação e da responsabilidade do país na coordenação de esforços, estratégias e diretrizes que sejam relacionadas ao tema.
+
+O texto também trata das competências do Ministério da Defesa, do Ministério da Transparência, da CGU e dos órgãos e entidades que possam estar relacionadas à PNSI.
+
+
+
+##### Leis, decretos e normas
+  - [Lei Nº10.973](http://www.planalto.gov.br/ccivil_03/_Ato2004-2006/2004/Lei/L10.973.htm)
+  - [Lei Nº13.709](http://www.planalto.gov.br/ccivil_03/_Ato2015-2018/2018/Lei/L13709.htm)
+  - [Decreto Nº7.845](http://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2012/Decreto/D7845.htm)
+  - [Normas Complementares](http://dsic.planalto.gov.br/assuntos/editoria-c/normas-complementares/in-no-01-gsi-pr-2008-seguranca-da-informacao-e-comunicacoes)
+
+##### Link relacionados
+  - [http://ibict.br](http://ibict.br)
+  - [https://kryptus.com](https://kryptus.com)
+  - [http://ancib.org.br](https://ancib.org.br)
+  - [https://clavis.com.br](https://clavis.com.br)
+  - [http://vocab.e.gov.br](http://vocab.e.gov.br)
+  - [https://seginfo.com.br](https://seginfo.com.br)
+  - [http://gsi.gov.br/agendas](http://www.gsi.gov.br/agendas)
+  - [http://dsic.planalto.gov.br](http://dsic.planalto.gov.br)
+  - [https://marinha.mil.br/prosub](https://www.marinha.mil.br/prosub)
+  - [http://gsi.gov.br/dados-abertos](http://gsi.gov.br/dados-abertos)
