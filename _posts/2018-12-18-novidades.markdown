@@ -14,7 +14,7 @@ Check-list de customizações, features e publicações.
 * [~~Mobile menu fix~~](https://github.com/fel1p/www/commit/cb6b7824cbdabf2485e8cd587d6b92d360dd2f93)
 * Estilo do <h6> e do <ul>
 * [~~Estilo do <blockquote>~~](https://github.com/fel1p/www/commit/4dbab3bb863223ae92bb16a2f44d73d0b66d8c7f)
-* Ajustar padding do <h1>
+* [~~Ajustar padding do <h1>~~](https://github.com/fel1p/www/commit/033b7845eebddff57eed21470a6dd5199e52ac47)
 * [~~Remover reticências da tag <!- - mais - ->~~](https://github.com/fel1p/www/commit/4dbab3bb863223ae92bb16a2f44d73d0b66d8c7f)
 * Estilo da paginação
 * Identidade visual
