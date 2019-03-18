@@ -1,16 +1,16 @@
 ---
-title:  "Política Nacional de SI"
+title:  "Política Nacional de Segurança da Informação"
 date:   2019-02-27 23:04:20
 categories: [legislacao]
 tags: [gov]
 ---
-De acordo com o [decreto 9.637/18](http://www.in.gov.br/materia/-/asset_publisher/Kujrw0TZC2Mb/content/id/56970098) (que vem alterando o antigo [decreto 2.295/97](http://www.planalto.gov.br/ccivil_03/decreto/D2295.htm)) apartir desse ano existe dispensa do processo licitatório para empresas que querem trabalhar para o governo brasileiro em casos que possam comprometer a segurança nacional.
+De acordo com o [decreto 9.637/18](http://www.in.gov.br/materia/-/asset_publisher/Kujrw0TZC2Mb/content/id/56970098) (que vem alterando o antigo [decreto 2.295/97](http://www.planalto.gov.br/ccivil_03/decreto/D2295.htm)) apartir desse ano existe dispensa do processo licitatório para empresas que desejam trabalhar para o governo brasileiro em casos que possam comprometer a segurança nacional.
 
 <!--mais-->
 
-De acordo com a norma, a PNSI visa estabelecer que a segurança da informação abrange {segurança cibernética, defesa cibernética, segurança física e proteção de dados organizacionais} além das ações destinadas a assegurar {disponibilidade, integridade, confidencialidade e autenticidade de informações}, praticamente todo o universo da tecnologia da informação.
+De acordo com a norma, a PNSI visa estabelecer que a segurança da informação abrangerá toda {segurança cibernética, defesa cibernética, segurança física e proteção de dados organizacionais} além das ações destinadas a assegurar {disponibilidade, integridade, confidencialidade e autenticidade de informações}, praticamente todo o universo de TI.
 
-Entre os princípios dessa política está a visão abrangente e sistêmica da segurança da informação e da responsabilidade do país na coordenação de esforços, estratégias e diretrizes que sejam relacionadas ao tema, na teoria.
+Entre os princípios dessa política está uma visão abrangente e sistêmica da segurança da informação e da responsabilidade do país na coordenação de esforços, estratégias e diretrizes que sejam relacionadas ao tema, pelo menos na teoria.
 
 O texto também trata das competências do Ministério da Defesa, do Ministério da Transparência, da CGU e dos órgãos e entidades que possam estar relacionadas à PNSI.
 
@@ -23,7 +23,6 @@ O texto também trata das competências do Ministério da Defesa, do Ministério
 ###### Link relacionados
   - [http://ibict.br](http://ibict.br)
   - [https://kryptus.com](https://kryptus.com)
-  - [http://ancib.org.br](https://ancib.org.br)
   - [https://clavis.com.br](https://clavis.com.br)
   - [http://vocab.e.gov.br](http://vocab.e.gov.br)
   - [https://seginfo.com.br](https://seginfo.com.br)
