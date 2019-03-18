@@ -4,13 +4,13 @@ date:   2019-02-27 23:04:20
 categories: [legislacao]
 tags: [gov]
 ---
-De acordo com o [decreto 9.637/18](http://www.in.gov.br/materia/-/asset_publisher/Kujrw0TZC2Mb/content/id/56970098), que altera o antigo [decreto 2.295/97](http://www.planalto.gov.br/ccivil_03/decreto/D2295.htm), apartir desse ano já se torna dispensável o processo licitatório para os casos que possam comprometer a segurança nacional.
+De acordo com o [decreto 9.637/18](http://www.in.gov.br/materia/-/asset_publisher/Kujrw0TZC2Mb/content/id/56970098) (que vem alterando o antigo [decreto 2.295/97](http://www.planalto.gov.br/ccivil_03/decreto/D2295.htm)) apartir desse ano existe dispensa do processo licitatório para empresas que querem trabalhar para o governo brasileiro em casos que possam comprometer a segurança nacional.
 
 <!--mais-->
 
-Então de acordo com a norma, a PNSI no âmbito federal estabelece que a segurança da informação abrange a segurança cibernética, a defesa cibernética, a segurança física e a proteção de dados organizacionais, além das ações destinadas a assegurar a disponibilidade, a integridade, a confidencialidade e a autenticidade de informações.
+De acordo com a norma, a PNSI visa estabelecer que a segurança da informação abrange {segurança cibernética, defesa cibernética, segurança física e proteção de dados organizacionais} além das ações destinadas a assegurar {disponibilidade, integridade, confidencialidade e autenticidade de informações}, praticamente todo o universo da tecnologia da informação.
 
-Entre os princípios dessa política está a visão abrangente e sistêmica da segurança da informação e da responsabilidade do país na coordenação de esforços, estratégias e diretrizes que sejam relacionadas ao tema.
+Entre os princípios dessa política está a visão abrangente e sistêmica da segurança da informação e da responsabilidade do país na coordenação de esforços, estratégias e diretrizes que sejam relacionadas ao tema, na teoria.
 
 O texto também trata das competências do Ministério da Defesa, do Ministério da Transparência, da CGU e dos órgãos e entidades que possam estar relacionadas à PNSI.
 
