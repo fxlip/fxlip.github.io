@@ -448,16 +448,16 @@ hr {
 
 .btn, .navigation__item a {
 	padding: 10px 20px;
-	border: 1px solid #e25440;
+	border: 1px solid #8a6d3b;
 	font-size: .9em;
 	font-weight: bold;
 	letter-spacing: 1px;
 	text-shadow: none;
-	color: #e25440;
+	color: #bfc9d3;
 	-webkit-font-smoothing: antialiased; }
 	.btn:hover, .navigation__item a:hover {
-		color: #b9301c;
-		border-color: #b9301c; }
+		color: #FFF;
+		border-color: rgba(247,175,62,0.68) !important; }
 
 .btn-secondary {
 	border-color: #5ba4e5;
@@ -540,7 +540,8 @@ nav {
 
 .pagination {
 	display: block;
-	margin: 0 0 4em 0; }
+	margin-left: 50%;
+	margin-top: 50px; }
 
 .pagination__page-number {
 	margin: 0;
