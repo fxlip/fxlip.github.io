@@ -16,7 +16,7 @@ Check-list de customizações, features e publicações.
 * [~~Estilo do <blockquote>~~](https://github.com/fel1p/www/commit/4dbab3bb863223ae92bb16a2f44d73d0b66d8c7f)
 * [~~Ajustar padding do <h1>~~](https://github.com/fel1p/www/commit/033b7845eebddff57eed21470a6dd5199e52ac47)
 * [~~Remover reticências da tag <!- - mais - ->~~](https://github.com/fel1p/www/commit/4dbab3bb863223ae92bb16a2f44d73d0b66d8c7f)
-* Estilo da paginação
+* [~~Estilo da paginação~~](https://github.com/fel1p/www/commit/9c2a2ec3c9ddd769b9570aec58c2ad3a00842262)
 * Identidade visual
   - Logo
   - Favicon
