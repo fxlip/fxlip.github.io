@@ -1,7 +1,7 @@
 ---
-title:  "Notas & Núvens GPL"
+title:  "Notas & Núvens"
 date:   2019-01-14 10:04:20
-categories: [2018]
+categories: [gpl]
 tags: [review]
 ---
 Lista de alternativas que podem substituir os serviços proprietários Evernote, OneNote ou Google Keep, bem como Dropbox, OneDrive e Google Cloud.
