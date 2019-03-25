@@ -25,14 +25,19 @@ Check-list de customizações, features e publicações.
 * [~~Hook para atualização e backup em paralelo~~](https://github.com/fel1p/www/blob/master/_posts/2018-12-18-post-receive.markdown)
 * [~~Organização de arquivos com assets~~](https://github.com/fel1p/www/tree/master/asset)
 * Reconhecimento de região através de IP para uma tradução automática
+*
 
 ###### Publicações
 * [~~Hook de atualização~~](https://github.com/fel1p/www/blob/master/_posts/2018-12-18-post-receive.markdown)
 * [~~Notas & Núvens GPL~~](https://github.com/fel1p/www/commit/a90afda97dc74e8883edf6c48cf5bc5a01ebbe36)
 * [~~Política Nacional de Segurança da Informação~~](https://github.com/fel1p/www/commit/bae4299430e1720402da5709461e7a9891dbf825)
 * Métodos para uma exclusão permanente do facebook
-* Review do UHK
-* Review do T400s RYF
+* Review T400s RYF
   - Update de hardware
   - Update de software
   - Update de custom
+* Review UHK
+* Review Tomu
+* Review μArt
+* Review ANAVI
+* Review Omega2 Pro
