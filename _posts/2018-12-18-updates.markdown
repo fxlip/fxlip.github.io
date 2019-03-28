@@ -1,5 +1,5 @@
 ---
-title:  "Novidades"
+title:  "Histórico de Atualizações"
 date:   2018-12-18 00:04:20
 categories: []
 tags: [hello_world]
@@ -24,13 +24,14 @@ Check-list de customizações, features e publicações.
 ###### Features
 * [~~Hook para atualização e backup em paralelo~~](https://github.com/fel1p/www/blob/master/_posts/2018-12-18-post-receive.markdown)
 * [~~Organização de arquivos com assets~~](https://github.com/fel1p/www/tree/master/asset)
+* [~~Autoembed de áudio e vídeo~~](https://github.com/fel1p/www/commit/94decae585407c3103e793999560b9aeee371b58)
 * Reconhecimento de região através de IP para uma tradução automática
-*
 
 ###### Publicações
 * [~~Hook de atualização~~](https://github.com/fel1p/www/blob/master/_posts/2018-12-18-post-receive.markdown)
 * [~~Notas & Núvens GPL~~](https://github.com/fel1p/www/commit/a90afda97dc74e8883edf6c48cf5bc5a01ebbe36)
 * [~~Política Nacional de Segurança da Informação~~](https://github.com/fel1p/www/commit/bae4299430e1720402da5709461e7a9891dbf825)
+* [~~Security Leaders~~](https://github.com/fel1p/www/commit/94decae585407c3103e793999560b9aeee371b58)
 * Métodos para uma exclusão permanente do facebook
 * Review T400s RYF
   - Update de hardware

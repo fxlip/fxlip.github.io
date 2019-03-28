@@ -1,7 +1,7 @@
 ---
 title:  "Secutiry Leaders"
 date:   2019-03-19 09:30:00
-categories: [security]
+categories: [event]
 tags: [infosec]
 ---
 De olho na [CSTM](http://cstmexpo.com) que acontece de 25 à 27 de junho, o fórum desse ano foi propício para a discussão de temas que poderiam interessar tanto o setor privado como o setor público e acadêmico, no que tange a questão da segurança da informação, permitindo interações e possibilitando uma atualização de conhecimentos que podem ter bastante relevância, como a concepção e a situação atual da proposta da Política Nacional de Segurança.
@@ -13,6 +13,12 @@ Tanto o [Diretor do SCS](mailto:antonio.capistrano@presidencia.gov.br) como o [D
 ![Antonio Capistrano](/asset/images/events/sec-leaders-2019/diretor_scs.jpg) ![Marcelo Fontenele](/asset/images/events/sec-leaders-2019/diretor_dsi.jpg)
 
 ##### Apresentação: [iniciativas_GSIPR_infosec.pptx](/asset/files/events/sec-leaders-2019/iniciativas_GSIPR_infosec.pptx)
+
+##### Links Complementares:
+http://www.planalto.gov.br/ccivil_03/_ato2007-2010/2008/Decreto/D6703.htm
+http://www.planalto.gov.br/ccivil_03/_ato2019-2022/2019/decreto/D9668.htm
+http://www.planejamento.gov.br/assuntos/empresas-estatais/publicacoes/kits-governanca-ti
+https://www.marinha.mil.br/noticias/marinha-do-brasil-participa-do-i-exercicio-guardiao-cibernetico
 
 <hr style="width: 100%;">
 
