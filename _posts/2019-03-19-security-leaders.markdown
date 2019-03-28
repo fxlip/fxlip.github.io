@@ -14,11 +14,8 @@ Tanto o [Diretor do SCS](mailto:antonio.capistrano@presidencia.gov.br) como o [D
 
 ##### Apresentação: [iniciativas_GSIPR_infosec.pptx](/asset/files/events/sec-leaders-2019/iniciativas_GSIPR_infosec.pptx)
 
-##### Links Complementares:
-[Decreto Nº6.703/2018](http://www.planalto.gov.br/ccivil_03/_ato2007-2010/2008/Decreto/D6703.htm)
-[Decreto Nº9.668/2019](http://www.planalto.gov.br/ccivil_03/_ato2019-2022/2019/decreto/D9668.htm)
-[iGovTI](http://www.planejamento.gov.br/assuntos/empresas-estatais/publicacoes/kits-governanca-ti)
-[Exercício Guardião Cibernético](https://www.marinha.mil.br/noticias/marinha-do-brasil-participa-do-i-exercicio-guardiao-cibernetico)
+##### Links Complementares: [Decreto Nº6.703/2018](http://www.planalto.gov.br/ccivil_03/_ato2007-2010/2008/Decreto/D6703.htm), [Decreto Nº9.668/2019](http://www.planalto.gov.br/ccivil_03/_ato2019-2022/2019/decreto/D9668.htm)
+[iGovTI](http://www.planejamento.gov.br/assuntos/empresas-estatais/publicacoes/kits-governanca-ti) e [Exercício Guardião Cibernético](https://www.marinha.mil.br/noticias/marinha-do-brasil-participa-do-i-exercicio-guardiao-cibernetico)
 
 <hr style="width: 100%;">
 
