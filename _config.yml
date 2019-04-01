@@ -2,7 +2,7 @@
 title: Felip Barbosa
 description: 'InfoSec. Data Scientist. Privacy.'
 url: 'https://lip.sh/'
-baseurl: 'https://lip.sh/'
+baseurl: 'https://lip.sh'
 locale: pt_BR
 
 author:
