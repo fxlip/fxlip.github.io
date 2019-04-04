@@ -4,7 +4,7 @@ date:   2019-02-27 23:04:20
 categories: [legislacao]
 tags: [gov]
 ---
-De acordo com o [decreto 9.637/18](http://www.in.gov.br/materia/-/asset_publisher/Kujrw0TZC2Mb/content/id/56970098) (que vem alterando o antigo [decreto 2.295/97](http://www.planalto.gov.br/ccivil_03/decreto/D2295.htm)) apartir desse ano existe dispensa do processo licitatório para empresas que desejam trabalhar para o governo brasileiro em casos que possam comprometer a segurança nacional.
+De acordo com o [decreto 9.637/18](http://www.planalto.gov.br/ccivil_03/_Ato2015-2018/2018/Decreto/D9637.htm) (que vem alterando o antigo [decreto 2.295/97](http://www.planalto.gov.br/ccivil_03/decreto/D2295.htm)) apartir desse ano existe dispensa do processo licitatório para empresas que desejam trabalhar para o governo brasileiro em casos que possam comprometer a segurança nacional.
 
 <!--mais-->
 
@@ -17,7 +17,9 @@ O texto também trata das competências do Ministério da Defesa, do Ministério
 ###### Leis, decretos e normas
   - [Lei Nº10.973](http://www.planalto.gov.br/ccivil_03/_Ato2004-2006/2004/Lei/L10.973.htm)
   - [Lei Nº13.709](http://www.planalto.gov.br/ccivil_03/_Ato2015-2018/2018/Lei/L13709.htm)
+  - [Decreto Nº6.703](http://www.planalto.gov.br/ccivil_03/_ato2007-2010/2008/Decreto/D6703.htm)
   - [Decreto Nº7.845](http://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2012/Decreto/D7845.htm)
+  - [Decreto Nº9.668](http://www.planalto.gov.br/ccivil_03/_ato2019-2022/2019/decreto/D9668.htm)
   - [Normas Complementares](http://dsic.planalto.gov.br/assuntos/editoria-c/normas-complementares/in-no-01-gsi-pr-2008-seguranca-da-informacao-e-comunicacoes)
 
 ###### Link relacionados
