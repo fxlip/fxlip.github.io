@@ -15,6 +15,7 @@ Jekyll-386 é um tema minimalista e responsivo para [Jekyll](https://github.com/
 * Links sociais
 * Listagem de tags
 * Listagem de categorias
+* Autoembed de áudio e vídeo
 
 ---
 
