@@ -718,10 +718,12 @@ input[type="tel"] {
 
 	.navigation--social {
 		margin-top: 5px;
-		margin-left: 0; } }
+		margin-left: 20%;
+		margin-right: 20%; } }
 @media all and (max-width: 960px) {
 	.btn-mobile-menu {
-		display: block; }
+		display: block;
+		margin-left: 0; }
 
 	.panel-main {
 		display: table;
