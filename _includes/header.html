@@ -64,11 +64,19 @@
                     </a>
                   </li>
                 {% endif %}{% if site.author.discord_link %}
-                  <!-- Discord -->
+                  <!-- O link do Discord fica oculto por enquanto
                   <li class="navigation__item">
                     <a href="http://discordapp.com/invite/{{ site.author.discord_link }}" title="The Chain Gang no Discord" target="_blank">
                       <i class="fab fa-discord"></i>
                       <span class="label">Discord</span>
+                    </a>
+                  </li> -->
+                {% endif %}{% if site.author.steam_username %}
+                  <!-- Steam -->
+                  <li class="navigation__item">
+                    <a href="http://steamcommunity.com/id/{{ site.author.steam_username }}" title="{{ site.author.steam_username }} na Steam" target="_blank">
+                      <i class="fab fa-steam-square"></i>
+                      <span class="label">Steam</span>
                     </a>
                   </li>
                 {% endif %}{% if site.author.psn_username %}
@@ -87,6 +95,14 @@
                       <span class="label">Twitter</span>
                     </a>
                   </li> -->
+                {% endif %}{% if site.author.strava_link %}
+                  <!-- Strava -->
+                  <li class="navigation__item">
+                    <a href="http://strava.com/athletes/{{ site.author.strava_link }}" title="Minhas atividades no Strava" target="_blank">
+                      <i class="fab fa-strava"></i>
+                      <span class="label">Strava</span>
+                    </a>
+                  </li>
                 {% endif %}
                 </ul>
               </nav>
