@@ -1,14 +1,14 @@
 # Site settings
 title: Felip Barbosa
 description: 'InfoSec. Data Scientist. Privacy.'
-url: 'https://lip.sh/'
+url: 'https://felip.com.br/'
 baseurl: ''
-link: 'https://lip.sh'
+link: 'https://felip.com.br'
 locale: pt_BR
 
 author:
   name: 'Felip Barbosa'
-  email: felip@bsb.dev
+  email: contato@felip.com.br
   twitter_username: L1P
   github_username:  fel1p
   telegram_username: fel1p
