@@ -1,15 +1,15 @@
 # Site settings
-title: Felip Barbosa
-description: 'InfoSec. Data Scientist. Privacy.'
-url: 'https://lip.sh/'
+title: Felip B Medeiros
+description: 'InfoSec. Nature. Global Politics.'
+url: 'https://felip.com.br/'
 baseurl: ''
-link: 'https://lip.sh'
+link: 'https://felip.com.br/'
 locale: pt_BR
 
 author:
   name: 'Felip Barbosa'
-  email: felip@bsb.dev
-  twitter_username: L1P
+  email: www@felip.com.br
+  twitter_username: mked0n
   github_username:  fel1p
   telegram_username: fel1p
   steam_username: m-ked0n
