@@ -1,15 +1,15 @@
 # Site settings
-title: Felip B Medeiros
-description: 'InfoSec. Nature. Global Politics.'
+title: Felip Barbosa
+description: 'InfoSec. Data Scientist. Privacy.'
 url: 'https://felip.com.br/'
 baseurl: ''
-link: 'https://felip.com.br/'
+link: 'https://felip.com.br'
 locale: pt_BR
 
 author:
   name: 'Felip Barbosa'
   email: www@felip.com.br
-  twitter_username: mked0n
+  twitter_username: L1P
   github_username:  fel1p
   telegram_username: fel1p
   steam_username: m-ked0n
