@@ -5,6 +5,10 @@ url: 'https://felip.com.br/'
 baseurl: ''
 link: 'https://felip.com.br'
 locale: pt_BR
+languages: ['pt', 'en', 'es', 'ch', 'in', 'jp']
+default_lang: 'pt'
+exclude_from_localization: ['css', 'files', 'fonts', 'images', 'js', 'logs', 'README.md']
+parallel_localization: true
 
 author:
   name: 'Felip Barbosa'
@@ -43,5 +47,5 @@ kramdown:
   # do not replace newlines by <br>s
   hard_wrap: false
 
-plugins: ['jekyll-paginate']
+plugins: ['jekyll-paginate', 'jekyll-polyglot']
 exclude: ['README.md', 'LICENSE', 'Gemfile', 'Gemfile.lock', 'screenshot.png']
