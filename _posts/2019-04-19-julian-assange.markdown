@@ -3,6 +3,7 @@ title:  "Assange Arrested"
 date:   2019-04-19 09:30:00
 categories: [news]
 tags: [end-game]
+lang: pt
 ---
 
 Enquanto o fundador do Wikileaks definha em um [presídio de segurança máxima no sul de Londres](https://www.justice.gov.uk/contacts/prison-finder/belmarsh), uma corte britânica está decidindo sua sorte. O australiano de 48 anos está preso em termos formais pelo crime de fuga, após ter buscado asilo na embaixada equatoriana no Reino Unido em 2012, evitando, assim, sua extradição para a Suécia.
