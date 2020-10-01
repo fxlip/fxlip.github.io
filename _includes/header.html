@@ -47,6 +47,14 @@
                       <span class="label">GitHub</span>
                     </a>
                   </li>
+                {% endif %}{% if site.author.twitter_username %}
+                  <!-- Twitter -->
+                  <li class="navigation__item">
+                    <a href="http://twitter.com/{{ site.author.twitter_username }}" title="@{{ site.author.twitter_username }} no Twitter" target="_blank">
+                      <i class="fab fa-twitter"></i>
+                      <span class="label">Twitter</span>
+                    </a>
+                  </li>
                 {% endif %}{% if site.author.telegram_username %}
                   <!-- Telegram -->
                   <li class="navigation__item">
@@ -87,22 +95,14 @@
                       <span class="label">Playstation Network</span>
                     </a>
                   </li>
-                {% endif %}{% if site.author.twitter_username %}
-                  <!-- O @ do twitter é um easter egg
-                  <li class="navigation__item">
-                    <a href="http://twitter.com/{{ site.author.twitter_username }}" title="@{{ site.author.twitter_username }} no Twitter" target="_blank">
-                      <i class="fab fa-twitter"></i>
-                      <span class="label">Twitter</span>
-                    </a>
-                  </li> -->
                 {% endif %}{% if site.author.strava_link %}
-                  <!-- Strava -->
+                  <!-- O Strava vai ficar oculto também
                   <li class="navigation__item">
                     <a href="http://strava.com/athletes/{{ site.author.strava_link }}" title="Minhas atividades no Strava" target="_blank">
                       <i class="fab fa-strava"></i>
                       <span class="label">Strava</span>
                     </a>
-                  </li>
+                  </li> -->
                 {% endif %}
                 </ul>
               </nav>
