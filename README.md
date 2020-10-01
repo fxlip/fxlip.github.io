@@ -33,7 +33,7 @@ Acesse em: [http://localhost:4000/www/](http://localhost:4000/www/)
 
 ### Demo e Download
 
-[Demo](https://lip.sh/) ||
+[Demo](https://felip.com.br/) ||
 [Download](https://github.com/fel1p/www/archive/master.zip)
 
 ---
