@@ -11,9 +11,6 @@ Um review verticalizado com todas as informações e links que você precisa pra
 
 A Netflix frequentemente investe no desenvolvimento de documentários e séries que vão na contra mão do mercado de mídia tradicional e o dilema das redes sociais faz um compilado de um tema sensível da área de tecnologia. Temos um problema: **metas de engajamento e crescimento sustentadas por propaganda**. Pra consegui-las? Um reforço positivo intermitente com o funcionamento igual a de uma máquinas caça-níveis, em termos técnicos: [growth hacking](https://en.wikipedia.org/wiki/Growth_hacking)! Estão apontando sistemas de inteligência artificial para nós mesmos pra induzir por engenharia reversa o que causa determinadas respostas.
 
------
-
-
 Antes da TV, fomos treinados para os [dias de glória do rádio](https://www.abert.org.br/web/index.php/notmenu/item/23526-historia-do-radio-no-brasil). Foram notícias e entretenimentos bons e saudáveis que ofereciam valor para a comunidade. Todo mundo começou a vender tão rápido que as tintas dos contratos secaram, era tanto dinheiro de publicidade começando a entrar que as coisas nunca mais seriam as mesmas.
 
 Esse modelo de publicidade no rádio foi extendido pra mídia impressa e pra internet com poucos ajustes. Na verdade, eles ficaram muito melhores. Lembro-me de uma época em que dava para assistir 4 canais de TV aberta “regular”, só com a antena, sem conta mensal de qualquer espécie. Livre. Foi assim que eles nos levaram a comprar TVs.
