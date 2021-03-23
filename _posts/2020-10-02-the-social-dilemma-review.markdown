@@ -108,7 +108,7 @@ A sociedade nos Estados Unidos deixou essas empresas muito orgulhosas. Eles esta
 
 Se a tecnologia cria caos em massa, indignação, incivilidade, falta de confiança um no outro, solidão, alienação, mais polarização, mais manipulação eleitoral, mais populismo, mais distração e incapacidade de nos focar em problemas reais não deveria ser um dilema a escolha de usá-las.
 
-###### - Citações
+##### Citações:
   - "Quando algo é uma ferramenta, ela fica apenas lá, parada, te esperando. 
   Quando algo não é uma ferramenta, ela exige coisas de você, fica te seduzindo, te manipulando, pedindo que você faça algo. E a tecnologia deixou de ter o papel de ferramenta para se tornar um vício e um meio de manipulação. As redes sociais não são uma ferramenta esperando para ser usada, elas tem [os pŕoprios objetivos e formas específicas de alcançá-los usando seu psicológico contra você](https://www.theguardian.com/us-news/2019/jan/08/instagram-influencers-psychology-social-media-anxiety). Os seres humanos evoluíram para nos importarmos com o que outras pessoas da tribo pensam de nós, porque isso é importante. Mas será que evoluímos para saber o que 10 mil pessoas pensam de nós? Não evoluímos para receber uma dose de aprovação social a cada cinco minutos. Não fomos feitos para esse tipo de experiência."
 
@@ -120,7 +120,7 @@ Se a tecnologia cria caos em massa, indignação, incivilidade, falta de confian
   
   - "[Modelo de negócio que lucra com desinformação](https://www.stophateforprofit.org/)."
 
-###### - Elenco
+##### Elenco:
   - [Tristan Harris](https://twitter.com/tristanharris)
   - [Tim Kendall](https://twitter.com/tkendall)
   - [Jaron Lanier](https://www.jaronlanier.com/)
@@ -144,13 +144,13 @@ Se a tecnologia cria caos em massa, indignação, incivilidade, falta de confian
   - [Cynthia Wong](https://twitter.com/cynthiamw)
   - [Joe Toscano](https://twitter.com/realjoet)
 
-###### - Frases
+##### Frases:
   - "Nada grandioso entra nas vidas dos mortais sem uma maldição." (Sófocles)
   - "Se você não está pagando pelo produto então você é o produto." (?)
   - "É a mudança gradual, leve e imperceptível em seu próprio comportamento e percepção que é o produto." (Jaron Lenier)
   - "Qualquer tecnologia avançada é indistinguível da mágica." (Arthur C. Clarke)
   - "Existem apenas duas indústrias que chamam seus clientes de usuários: a de drogas e a de software." (Edward Tufte)
 
-###### - Pesquisas
+##### Pesquisas:
   - [Dismorfia do Snapchat](https://www.researchgate.net/publication/326796822_Selfies-Living_in_the_Era_of_Filtered_Photographs)
   - [No Twitter, fake news se espalha seis vezes mais rápido do que notícia verdadeira](https://news.mit.edu/2018/study-twitter-false-news-travels-faster-true-stories-0308)
