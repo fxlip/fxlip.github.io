@@ -1,6 +1,6 @@
 ---
 title:  "O dilema das redes sociais"
-date:   2020-10-02 23:26:00
+date:   2021-03-23 11:13:00
 categories: [social-media]
 tags: [review]
 ---
@@ -11,16 +11,14 @@ Um review verticalizado com todas as informações e links que você precisa pra
 
 A Netflix frequentemente investe no desenvolvimento de documentários e séries que vão na contra mão do mercado de mídia tradicional e o dilema das redes sociais faz um compilado de um tema sensível da área de tecnologia. Temos um problema: metas de engajamento e crescimento sustentadas por propaganda. Pra consegui-las, um reforço intermitente positivo com o funcionamento igual a de máquinas caça-níveis, em termos técnicos: [growth hacking](https://en.wikipedia.org/wiki/Growth_hacking). Estão apontando sistemas de inteligência artificial para nós mesmos pra induzir (por engenharia reversa) o que causa determinadas respostas!
 
-"Quando algo é uma ferramenta, ela fica apenas lá, parada, te esperando.
-Quando algo não é uma ferramenta, ela exige coisas de você, fica te seduzindo, te manipulando, pedindo que você faça algo. E a tecnologia deixou de ter o papel de ferramenta para se tornar um vício e um meio de manipulação. As redes sociais não são uma ferramenta esperando para ser usada, elas tem os pŕoprios objetivos e formas específicas de alcançá-los usando seu psicológico contra você.
-Os seres humanos evoluíram para nos importarmos com o que outras pessoas da tribo pensam de nós, porque isso é importante. Mas será que evoluímos para saber o que 10 mil pessoas pensam de nós? Não evoluímos para receber uma dose de aprovação social a cada cinco minutos. Não fomos feitos para esse tipo de experiência" Tristan
+"[Quando algo é uma ferramenta, ela fica apenas lá, parada, te esperando.
+Quando algo não é uma ferramenta, ela exige coisas de você, fica te seduzindo, te manipulando, pedindo que você faça algo. E a tecnologia deixou de ter o papel de ferramenta para se tornar um vício e um meio de manipulação. As redes sociais não são uma ferramenta esperando para ser usada, elas tem os pŕoprios objetivos e formas específicas de alcançá-los usando seu psicológico contra você. Os seres humanos evoluíram para nos importarmos com o que outras pessoas da tribo pensam de nós, porque isso é importante. Mas será que evoluímos para saber o que 10 mil pessoas pensam de nós? Não evoluímos para receber uma dose de aprovação social a cada cinco minutos. Não fomos feitos para esse tipo de experiência.](https://www.rsph.org.uk/about-us/news/instagram-ranked-worst-for-young-people-s-mental-health.html)"
 
-"Nós construímos nossas vidas em volta de um senso de perfeição porque somos recompensados com sinais breves, corações e curtidas. Confundimos isso com valor pessoal e com a realidade quando, na verdade, isso não passa de uma frágil popularidade, que é passageira e te deixa ainda mais vazio do que se sentia antes. Porque você entra em um círculo vicioso pensando: "O que preciso fazer agora? Preciso daquilo de novo." 
+"[Nós construímos nossas vidas em volta de um senso de perfeição porque somos recompensados com sinais breves, corações e curtidas. Confundimos isso com valor pessoal e com a realidade quando, na verdade, isso não passa de uma frágil popularidade, que é passageira e te deixa ainda mais vazio do que se sentia antes. Porque você entra em um círculo vicioso pensando: 'O que preciso fazer agora? Preciso daquilo de novo.'](https://www.rsph.org.uk/about-us/news/instagram-ranked-worst-for-young-people-s-mental-health.html)"
 
-Estamos treinando e condicionando uma geração inteira de pessoas que, quando se sentem desconfortáveis, solitárias ou com medo, usam chupetas digitais para se acalmar. E isso vai atrofiando nossa habilidade de lidar com as coisas. 
+"[Estamos treinando e condicionando uma geração inteira de pessoas que quando se sentem desconfortáveis, solitárias ou com medo, usam chupetas digitais para se acalmar. E isso vai atrofiando nossa habilidade de lidar com as coisas](https://www.essemundodigital.com.br/news/a-chupeta-digital-uma-reflexao-sobre-a-internet/)."
 
-As pessoas acham que o algoritmo é projeto para das a elas o que elas querem, mas na verdade o algoritmo quer achar uma toca de coelho mais próxima do seu interesse.
-
+"[As pessoas acham que o algoritmo é projetado pra das a elas o que elas querem, mas na verdade o algoritmo quer achar uma toca de coelho mais próxima do seu interesse](https://durmonski.com/well-being/internet-rabbit-holes/)."
 
 Modelo de negócio que lucra com desinformação.
 
