@@ -11,64 +11,8 @@ Um review verticalizado com todas as informações e links que você precisa pra
 
 A Netflix frequentemente investe no desenvolvimento de documentários e séries que vão na contra mão do mercado de mídia tradicional e o dilema das redes sociais faz um compilado de um tema sensível da área de tecnologia. Temos um problema: metas de engajamento e crescimento sustentadas por propaganda. Pra consegui-las, um reforço intermitente positivo com o funcionamento igual a de máquinas caça-níveis, em termos técnicos: [growth hacking](https://en.wikipedia.org/wiki/Growth_hacking). Estão apontando sistemas de inteligência artificial para nós mesmos pra induzir (por engenharia reversa) o que causa determinadas respostas!
 
-"[Quando algo é uma ferramenta, ela fica apenas lá, parada, te esperando.
-Quando algo não é uma ferramenta, ela exige coisas de você, fica te seduzindo, te manipulando, pedindo que você faça algo. E a tecnologia deixou de ter o papel de ferramenta para se tornar um vício e um meio de manipulação. As redes sociais não são uma ferramenta esperando para ser usada, elas tem os pŕoprios objetivos e formas específicas de alcançá-los usando seu psicológico contra você. Os seres humanos evoluíram para nos importarmos com o que outras pessoas da tribo pensam de nós, porque isso é importante. Mas será que evoluímos para saber o que 10 mil pessoas pensam de nós? Não evoluímos para receber uma dose de aprovação social a cada cinco minutos. Não fomos feitos para esse tipo de experiência.](https://www.rsph.org.uk/about-us/news/instagram-ranked-worst-for-young-people-s-mental-health.html)"
+-----
 
-"[Nós construímos nossas vidas em volta de um senso de perfeição porque somos recompensados com sinais breves, corações e curtidas. Confundimos isso com valor pessoal e com a realidade quando, na verdade, isso não passa de uma frágil popularidade, que é passageira e te deixa ainda mais vazio do que se sentia antes. Porque você entra em um círculo vicioso pensando: 'O que preciso fazer agora? Preciso daquilo de novo.'](https://www.rsph.org.uk/about-us/news/instagram-ranked-worst-for-young-people-s-mental-health.html)"
-
-"[Estamos treinando e condicionando uma geração inteira de pessoas que quando se sentem desconfortáveis, solitárias ou com medo, usam chupetas digitais para se acalmar. E isso vai atrofiando nossa habilidade de lidar com as coisas](https://www.essemundodigital.com.br/news/a-chupeta-digital-uma-reflexao-sobre-a-internet/)."
-
-"[As pessoas acham que o algoritmo é projetado pra das a elas o que elas querem, mas na verdade o algoritmo quer achar uma toca de coelho mais próxima do seu interesse](https://durmonski.com/well-being/internet-rabbit-holes/)."
-
-Modelo de negócio que lucra com desinformação.
-
-Se a tecnologia cria caos em massa, indignação, incivilidade, falta de confiança um no outro, solidão, alienação, mais polarização, mais manipulação eleitoral, mais populismo, mais distração e incapacidade de focar nos problemas reais ...
-
-
-...
-
-###### Elenco
-  - [Tristan Harris](https://twitter.com/tristanharris)
-  - [Tim Kendall](https://twitter.com/tkendall)
-  - [Jaron Lanier](https://www.jaronlanier.com/)
-  - [Roger McNamee](https://twitter.com/moonalice)
-  - [Aza Raskin](https://twitter.com/aza)
-  - [Justin Rosenstein](https://twitter.com/rosenstein)
-  - [Shoshana Zuboff](https://twitter.com/shoshanazuboff)
-  - [Jeff Seibert](https://twitter.com/jeffseibert)
-  - [Sandy Parakilas](https://twitter.com/sandyparakilas)
-  - [Chamath Palihapitiya](https://twitter.com/chamath)
-  - [Sean Parker](https://twitter.com/sparker)
-  - [Kevin Systrom](https://twitter.com/kevin)
-  - [Anna Lembke](https://twitter.com/drugdealermd)
-  - [Jonathan Haidt](https://twitter.com/jonhaidt)
-  - [Randima Fernando](https://www.randima.com)
-  - [Cathy O'Neil](https://twitter.com/mathbabedotorg)
-  - [Bailey Richardson](https://twitter.com/baileyelaine)
-  - [Rashida Richardson](https://twitter.com/AINowInstitute)
-  - [Guillaume Chaslot](https://twitter.com/gchaslot)
-  - [Renee DiResta](https://twitter.com/noupside)
-  - [Cynthia Wong](https://twitter.com/cynthiamw)
-  - [Joe Toscano](https://twitter.com/realjoet)
-
-
-
-###### Frases
-  - "Nada grandioso entra nas vidas dos mortais sem uma maldição." (Sófocles)
-  - "Se você não está pagando pelo produto então você é o produto." (?)
-  - "É a mudança gradual, leve e imperceptível em seu próprio comportamento e percepção que é o produto." (Jaron Lenier)
-  - "Qualquer tecnologia avançada é indistinguível da mágica." (Arthur C. Clarke)
-  - "Existem apenas duas indústrias que chamam seus clientes de usuários: a de drogas e a de software." (Edward Tufte)
-
-###### Pesquisas
-  - [Dismorfia do Snapchat](https://www.researchgate.net/publication/326796822_Selfies-Living_in_the_Era_of_Filtered_Photographs)
-  - [No Twitter, fake news se espalha seis vezes mais rápido do que notícia verdadeira](https://news.mit.edu/2018/study-twitter-false-news-travels-faster-true-stories-0308)
-
-
-
-
-ler:
-Mais história:
 
 Antes da TV, e antes do meu tempo, fomos treinados para os dias de glória do rádio. The Lone Ranger, spaghetti westerns e o podcast original: FDR's Fireside Chats. Foram notícias e entretenimento bons e saudáveis. Ofereceu valor para a comunidade. A NPR manteve a abordagem de “valor comunitário” para apoiar. Todo mundo começou a vender tão rápido quanto a tinta dos contratos secou, ​​o dinheiro da publicidade começou a entrar e as coisas nunca mais foram as mesmas.
 
@@ -155,3 +99,57 @@ As pessoas precisam começar a tomar decisões sobre dinheiro se quiserem que as
 Mas somos voluntários para tudo isso!
 
 A sociedade nos Estados Unidos deixou essas empresas muito orgulhosas. Eles estavam certos ... 40 anos depois de 1970, os Estados Unidos se tornaram uma lixeira para qualquer coisa que alguém queira vender. Sucata de plástico barato, carros que foram propositalmente projetados para burlar nossas leis antipoluição, comida de cachorro envenenada e muitas telas para nos manter conectados a essa Mente Colmeia Borg do consumismo.
+
+
+
+
+------
+
+Se a tecnologia cria caos em massa, indignação, incivilidade, falta de confiança um no outro, solidão, alienação, mais polarização, mais manipulação eleitoral, mais populismo, mais distração e incapacidade de nos focar em problemas reais não deveria ser um dilema a escolha de usá-las.
+
+###### Citações
+  - "Quando algo é uma ferramenta, ela fica apenas lá, parada, te esperando. 
+  Quando algo não é uma ferramenta, ela exige coisas de você, fica te seduzindo, te manipulando, pedindo que você faça algo. E a tecnologia deixou de ter o papel de ferramenta para se tornar um vício e um meio de manipulação. As redes sociais não são uma ferramenta esperando para ser usada, elas tem [os pŕoprios objetivos e formas específicas de alcançá-los usando seu psicológico contra você](https://www.theguardian.com/us-news/2019/jan/08/instagram-influencers-psychology-social-media-anxiety). Os seres humanos evoluíram para nos importarmos com o que outras pessoas da tribo pensam de nós, porque isso é importante. Mas será que evoluímos para saber o que 10 mil pessoas pensam de nós? Não evoluímos para receber uma dose de aprovação social a cada cinco minutos. Não fomos feitos para esse tipo de experiência."
+
+  - "[Nós construímos nossas vidas em volta de um senso de perfeição porque somos recompensados com sinais breves, corações e curtidas](https://www.rsph.org.uk/about-us/news/instagram-ranked-worst-for-young-people-s-mental-health.html). Confundimos isso com valor pessoal e com a realidade quando, na verdade, isso não passa de uma frágil popularidade, que é passageira e te deixa ainda mais vazio do que se sentia antes. Porque você entra em um círculo vicioso pensando: 'O que preciso fazer agora? Preciso daquilo de novo.'"
+  
+  - "Estamos treinando e condicionando uma geração inteira de pessoas que quando se sentem desconfortáveis, solitárias ou com medo, usam [chupetas digitais](https://www.essemundodigital.com.br/news/a-chupeta-digital-uma-reflexao-sobre-a-internet/) para se acalmar. E isso vai atrofiando nossa habilidade de lidar com as coisas."
+  
+  - "[As pessoas acham que o algoritmo é projetado pra das a elas o que elas querem, mas na verdade o algoritmo quer achar uma [toca de coelho](https://durmonski.com/well-being/internet-rabbit-holes/) mais próxima do seu interesse."
+  
+  - "[Modelo de negócio que lucra com desinformação](https://www.stophateforprofit.org/)."
+
+###### Elenco
+  - [Tristan Harris](https://twitter.com/tristanharris)
+  - [Tim Kendall](https://twitter.com/tkendall)
+  - [Jaron Lanier](https://www.jaronlanier.com/)
+  - [Roger McNamee](https://twitter.com/moonalice)
+  - [Aza Raskin](https://twitter.com/aza)
+  - [Justin Rosenstein](https://twitter.com/rosenstein)
+  - [Shoshana Zuboff](https://twitter.com/shoshanazuboff)
+  - [Jeff Seibert](https://twitter.com/jeffseibert)
+  - [Sandy Parakilas](https://twitter.com/sandyparakilas)
+  - [Chamath Palihapitiya](https://twitter.com/chamath)
+  - [Sean Parker](https://twitter.com/sparker)
+  - [Kevin Systrom](https://twitter.com/kevin)
+  - [Anna Lembke](https://twitter.com/drugdealermd)
+  - [Jonathan Haidt](https://twitter.com/jonhaidt)
+  - [Randima Fernando](https://www.randima.com)
+  - [Cathy O'Neil](https://twitter.com/mathbabedotorg)
+  - [Bailey Richardson](https://twitter.com/baileyelaine)
+  - [Rashida Richardson](https://twitter.com/AINowInstitute)
+  - [Guillaume Chaslot](https://twitter.com/gchaslot)
+  - [Renee DiResta](https://twitter.com/noupside)
+  - [Cynthia Wong](https://twitter.com/cynthiamw)
+  - [Joe Toscano](https://twitter.com/realjoet)
+
+###### Frases
+  - "Nada grandioso entra nas vidas dos mortais sem uma maldição." (Sófocles)
+  - "Se você não está pagando pelo produto então você é o produto." (?)
+  - "É a mudança gradual, leve e imperceptível em seu próprio comportamento e percepção que é o produto." (Jaron Lenier)
+  - "Qualquer tecnologia avançada é indistinguível da mágica." (Arthur C. Clarke)
+  - "Existem apenas duas indústrias que chamam seus clientes de usuários: a de drogas e a de software." (Edward Tufte)
+
+###### Pesquisas
+  - [Dismorfia do Snapchat](https://www.researchgate.net/publication/326796822_Selfies-Living_in_the_Era_of_Filtered_Photographs)
+  - [No Twitter, fake news se espalha seis vezes mais rápido do que notícia verdadeira](https://news.mit.edu/2018/study-twitter-false-news-travels-faster-true-stories-0308)
