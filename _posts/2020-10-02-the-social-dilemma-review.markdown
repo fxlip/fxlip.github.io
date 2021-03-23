@@ -92,19 +92,7 @@ As pessoas precisam começar a tomar decisões sobre dinheiro se quiserem que as
 
 Se a tecnologia cria caos em massa, indignação, incivilidade, falta de confiança um no outro, solidão, alienação, mais polarização, mais manipulação eleitoral, mais populismo, mais distração e incapacidade de nos focar em problemas reais não deveria ser um dilema a escolha de usá-las.
 
-##### Citações:
-  - "Quando algo é uma ferramenta, ela fica apenas lá, parada, te esperando. 
-  Quando algo não é uma ferramenta, ela exige coisas de você, fica te seduzindo, te manipulando, pedindo que você faça algo. E a tecnologia deixou de ter o papel de ferramenta para se tornar um vício e um meio de manipulação. As redes sociais não são uma ferramenta esperando para ser usada, elas tem [os pŕoprios objetivos e formas específicas de alcançá-los usando seu psicológico contra você](https://www.theguardian.com/us-news/2019/jan/08/instagram-influencers-psychology-social-media-anxiety). Os seres humanos evoluíram para nos importarmos com o que outras pessoas da tribo pensam de nós, porque isso é importante. Mas será que evoluímos para saber o que 10 mil pessoas pensam de nós? Não evoluímos para receber uma dose de aprovação social a cada cinco minutos. Não fomos feitos para esse tipo de experiência."
-
-  - "[Nós construímos nossas vidas em volta de um senso de perfeição porque somos recompensados com sinais breves, corações e curtidas](https://www.rsph.org.uk/about-us/news/instagram-ranked-worst-for-young-people-s-mental-health.html). Confundimos isso com valor pessoal e com a realidade quando, na verdade, isso não passa de uma frágil popularidade, que é passageira e te deixa ainda mais vazio do que se sentia antes. Porque você entra em um círculo vicioso pensando: 'O que preciso fazer agora? Preciso daquilo de novo.'"
-  
-  - "Estamos treinando e condicionando uma geração inteira de pessoas que quando se sentem desconfortáveis, solitárias ou com medo, usam [chupetas digitais](https://www.essemundodigital.com.br/news/a-chupeta-digital-uma-reflexao-sobre-a-internet/) para se acalmar. E isso vai atrofiando nossa habilidade de lidar com as coisas."
-  
-  - "As pessoas acham que o algoritmo é projetado pra das a elas o que elas querem, mas na verdade o algoritmo quer achar uma [toca de coelho](https://durmonski.com/well-being/internet-rabbit-holes/) mais próxima do seu interesse."
-  
-  - "[Modelo de negócio que lucra com desinformação](https://www.stophateforprofit.org/)."
-
-##### Pesquisas:
+##### Fontes:
   - [Dismorfia do Snapchat](https://www.researchgate.net/publication/326796822_Selfies-Living_in_the_Era_of_Filtered_Photographs)
   - [No Twitter, fake news se espalha seis vezes mais rápido do que notícia verdadeira](https://news.mit.edu/2018/study-twitter-false-news-travels-faster-true-stories-0308)
 
@@ -114,6 +102,18 @@ Se a tecnologia cria caos em massa, indignação, incivilidade, falta de confian
   - "É a mudança gradual, leve e imperceptível em seu próprio comportamento e percepção que é o produto." (Jaron Lenier)
   - "Qualquer tecnologia avançada é indistinguível da mágica." (Arthur C. Clarke)
   - "Existem apenas duas indústrias que chamam seus clientes de usuários: a de drogas e a de software." (Edward Tufte)
+
+##### Citações:
+  - "Quando algo é uma ferramenta, ela fica apenas lá, parada, te esperando. 
+  Quando algo não é uma ferramenta, ela exige coisas de você, fica te seduzindo, te manipulando, pedindo que você faça algo. E a tecnologia deixou de ter o papel de ferramenta para se tornar um vício e um meio de manipulação. As redes sociais não são uma ferramenta esperando para ser usada, elas tem [os pŕoprios objetivos e formas específicas de alcançá-los usando seu psicológico contra você](https://www.theguardian.com/us-news/2019/jan/08/instagram-influencers-psychology-social-media-anxiety). Os seres humanos evoluíram para nos importarmos com o que outras pessoas da tribo pensam de nós, porque isso é importante. Mas será que evoluímos para saber o que 10 mil pessoas pensam de nós? Não evoluímos para receber uma dose de aprovação social a cada cinco minutos. Não fomos feitos para esse tipo de experiência."
+
+  - "[Modelo de negócio que lucra com desinformação](https://www.stophateforprofit.org/)."
+
+  - "[Nós construímos nossas vidas em volta de um senso de perfeição porque somos recompensados com sinais breves, corações e curtidas](https://www.rsph.org.uk/about-us/news/instagram-ranked-worst-for-young-people-s-mental-health.html). Confundimos isso com valor pessoal e com a realidade quando, na verdade, isso não passa de uma frágil popularidade, que é passageira e te deixa ainda mais vazio do que se sentia antes. Porque você entra em um círculo vicioso pensando: 'O que preciso fazer agora? Preciso daquilo de novo.'"
+  
+  - "Estamos treinando e condicionando uma geração inteira de pessoas que quando se sentem desconfortáveis, solitárias ou com medo, usam [chupetas digitais](https://www.essemundodigital.com.br/news/a-chupeta-digital-uma-reflexao-sobre-a-internet/) para se acalmar. E isso vai atrofiando nossa habilidade de lidar com as coisas."
+  
+  - "As pessoas acham que o algoritmo é projetado pra das a elas o que elas querem, mas na verdade o algoritmo quer achar uma [toca de coelho](https://durmonski.com/well-being/internet-rabbit-holes/) mais próxima do seu interesse."
 
 ##### Elenco:
   - [Tristan Harris](https://twitter.com/tristanharris)
