@@ -9,7 +9,7 @@ Um review verticalizado com todas as informações e links que você precisa pra
 
 <!--mais-->
 
-A Netflix frequentemente investe no desenvolvimento de documentários e séries que vão na contra mão do mercado de mídia tradicional e o dilema das redes sociais faz um compilado de um tema sensível da área de tecnologia. Temos um problema: **metas de engajamento e crescimento sustentadas por propaganda**. Pra consegui-las? Um reforço positivo intermitente com o funcionamento igual a de uma máquinas caça-níveis, em termos técnicos: [growth hacking](https://en.wikipedia.org/wiki/Growth_hacking)! Estão apontando sistemas de inteligência artificial para nós mesmos pra induzir (por engenharia reversa) o que causa determinadas respostas.
+A Netflix frequentemente investe no desenvolvimento de documentários e séries que vão na contra mão do mercado de mídia tradicional e o dilema das redes sociais faz um compilado de um tema sensível da área de tecnologia. Temos um problema: **metas de engajamento e crescimento sustentadas por propaganda**. Pra consegui-las? Um reforço positivo intermitente com o funcionamento igual a de uma máquinas caça-níveis, em termos técnicos: [growth hacking](https://en.wikipedia.org/wiki/Growth_hacking)! Estão apontando sistemas de inteligência artificial para nós mesmos pra induzir por engenharia reversa o que causa determinadas respostas.
 
 -----
 
