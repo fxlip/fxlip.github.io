@@ -9,11 +9,7 @@ Um review verticalizado com todas as informações e links que você precisa pra
 
 <!--mais-->
 
-A Netflix frequentemente investe no desenvolvimento de documentários e séries que vão na contra mão do mercado de mídia tradicional e o dilema das redes sociais faz um compilado de um tema sensível da área de tecnologia. Temos um problema, qual é? Basicamente metas de engajamento e crescimento sustentadas por propaganda. Através de reforço intermitente 
-
-Engajamento, Crescimento e Propaganda
-Reforço intermitente positivo com funcionamento igual a máquinas caça-níveis: growth hacking
-Estamos apontando os sistemas de inteligência artificial para nós mesmos para induzir por engenharia reversa o que causa determinadas respostas.
+A Netflix frequentemente investe no desenvolvimento de documentários e séries que vão na contra mão do mercado de mídia tradicional e o dilema das redes sociais faz um compilado de um tema sensível da área de tecnologia. Temos um problema: metas de engajamento e crescimento sustentadas por propaganda. Através de reforço intermitente positivo com funcionamento igual a máquinas caça-níveis, resumindo: [growth hacking](https://en.wikipedia.org/wiki/Growth_hacking)! Estão apontando sistemas de inteligência artificial para nós mesmos pra induzir (por engenharia reversa) o que causa determinadas respostas!
 
 "Quando algo é uma ferramenta, ela fica apenas lá, parada, te esperando.
 Quando algo não é uma ferramenta, ela exige coisas de você, fica te seduzindo, te manipulando, pedindo que você faça algo. E a tecnologia deixou de ter o papel de ferramenta para se tornar um vício e um meio de manipulação. As redes sociais não são uma ferramenta esperando para ser usada, elas tem os pŕoprios objetivos e formas específicas de alcançá-los usando seu psicológico contra você.
