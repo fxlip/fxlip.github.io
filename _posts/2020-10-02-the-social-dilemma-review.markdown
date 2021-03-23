@@ -5,7 +5,7 @@ categories: [social-media]
 tags: [review]
 ---
 
-Um review verticalizado do documentário com todas as informações e links que você precisa para continuar se informando sobre roubo de dados, vício em tecnologia, fake news, polarização e influências em eleições, enfim, sobre o capitalismo de vigilância.
+Um review verticalizado do documentário com todas as informações e links que você precisa pra continuar se informando sobre o capitalismo de vigilância: roubo de dados, vício em tecnologia, fake news, polarização e influências em eleições.
 
 <!--mais-->
 
