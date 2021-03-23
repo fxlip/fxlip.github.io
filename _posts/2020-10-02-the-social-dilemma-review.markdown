@@ -38,73 +38,57 @@ Em seguida, é claro, começaram a nos vender seriamente tudo o que quisessem. A
 
 Quem paga por tudo isso? Quem são os cliente deles? Aqueles com quem eles se relacionam, aqueles cujas opiniões eles valorizam, aqueles que recebem pessoalmente uma ligação? Os anunciantes. Não é um time de futebol. Quem são os anunciantes... bem, é engraçado, mas são as mesmas pessoas. As pessoas que são donas da maior parte do PIB, o 1% de que todos reclamam se revezam para recolher nosso dinheiro e distribuí-lo entre si.
 
-------- 
+Mas eles não seguram o dinheiro, até porque podem ter que pagar impostos se fizerem. Então, passam adiante, pagam salários, pagam despesas, pagam contas, compram propriedades (esta é uma parte importante), compram ativos para o negócio, pagam algumas obrigações... enfim, eles movimentam todo o dinheiro sob a tutela de um mestre em evitar impostos, um contador.
 
+**Projetaram um sistema que só eles podem usar, é um lobby**.
 
-Mas eles não o seguram por muito tempo, em m porque podem ter que pagar impostos sobre ele se o fizerem. Então, eles passam adiante, pagam salários, pagam despesas, pagam contas, compram propriedades (e esta é uma parte importante), compram ativos para o negócio, pagam algumas obrigações ... basicamente, eles movimentam todo o dinheiro sob a tutela de um mestre em evitar impostos, um contador.
+Contratam essa pessoa, cujos serviços a maioria das pessoas não pode pagar para lhes mostrar o caminho através do labirinto. Eles elaboram um plano para repassá-lo da maneira certa, de modo que tenham o menor passivo tributário possível, geralmente zero. Isso pode até envolver instituições de caridade. Você pode pensar que, bem, pelo menos eles são generosos e o dinheiro que vai para a caridade é melhor do que ir para o governo federal.
 
-Eles projetaram um sistema que só eles podem usar - lobby.
+Essa é outra miragem que eles nos vendem. O governo federal é bastante ineficiente com a  administração financeira realmente, mas pelo menos o dinheiro está voltando para as comunidades, escolas, estradas... algo útil. Não tudo disso, claro! Uma tonelada disso é desperdiçada em uma enorme burocracia que ninguém mais entende. O restante é dividido entre as causas pelas quais os ricos decidiram fazer o lobby. Muitas vezes para o benefício de seus negócios, mas também para o público, quase que por acidente.
 
-Eles contratam essa pessoa, cujos serviços a maioria das pessoas não pode pagar, para lhes mostrar o caminho através do labirinto. Eles elaboram um plano para repassá-lo da maneira certa, de modo que tenham o menor passivo tributário possível, geralmente zero. Isso pode até envolver instituições de caridade. Você pode pensar que, bem, pelo menos eles são generosos e o dinheiro que vai para a caridade é melhor do que o governo federal o recebe.
-
-Essa é outra miragem que eles nos venderam. O governo federal é bastante ineficiente em administrar dinheiro em comparação, mas pelo menos o dinheiro está voltando para as comunidades, escolas, estradas, algo útil. Não tudo disso. Deus não. Uma tonelada disso é desperdiçada em uma enorme burocracia que ninguém mais entende. O restante é dividido entre as causas pelas quais os ricos decidiram fazer lobby. Muitas vezes para o benefício de seus negócios, mas também para o público, quase por acidente.
-
-São as mesmas pessoas ... ainda.
-
-Por que a caridade não é melhor? As instituições de caridade para as quais os ricos doam são administradas por seus familiares e amigos. Portanto, eles estão ganhando favores ao doar grandes somas para instituições de caridade, faculdades, igrejas ou tecnologia. clubes para geeks. Eles então terão amigos para visitar quando seus filhos precisarem de um favor ou algo mais útil.
+E por que a caridade não é melhor? As instituições de caridade para as quais os ricos doam são administradas por seus familiares e amigos. Portanto, eles estão ganhando favores ao doar grandes somas para instituições de caridade, faculdades, igrejas ou tecnologia. Eles então terão amigos para visitar quando seus filhos precisarem de um favor ou algo mais útil.
 
 Realmente, você não pode vencer o sistema deles. Para onde quer que você vire, você descobrirá que eles têm um ângulo determinado. E você descobrirá que tudo é legal. Qualquer pessoa rica que seja presa por qualquer crime deve ser doente mental ou simplesmente estúpida. Existem tantas maneiras completamente legais de desnudar o sistema que simplesmente não é racional fazer nada ilegal.
 
-O 'público' é a safra que eles estão cuidando ... e sempre foi.
+**O público é a safra que eles estão cuidando, e sempre foi assim**.
 
-Então, agora, em 2019, a maioria das pessoas aceitou a ideia tão profundamente que é difícil para elas perceberem. Não somos clientes, somos o produto. Nós somos entregues, usando nosso próprio dinheiro de gás ou cartão de crédito, direto na porta dos negócios. Compramos toneladas de coisas de que não precisamos e muitas delas nem mesmo queremos. Comemos o que eles nos dizem, dirigimos o que eles nos dizem, compramos para nossos filhos o que eles nos contam ... vivemos nossas vidas como eles nos contam.
+Então agora, recentemente, a maioria das pessoas já aceitou a ideia tão profundamente que é difícil para elas perceberem. Não somos clientes, somos o produto. Nós estamos entregues, usando nosso próprio dinheiro ou cartão de crédito, direto na porta dos negócios. Compramos toneladas de coisas de que não precisamos e muitas delas nem mesmo queremos. Comemos e dirigimos o que eles sugerem, compramos para nossos filhos o que eles nos dizem e vivemos nossas vidas como eles desejam.
 
-Estamos conectados a eles 24 horas por dia agora. Se as telas em casa não estiverem disponíveis, temos um rádio no carro. Se não for isso, temos um telefone com uma bela tela que carregamos conosco. Nunca nos esquecemos disso. Certificamo-nos de estar sempre ligados à receita publicitária. Eles não precisam mais se preocupar com isso. Somos treinados há gerações.
+Estamos conectados 24 horas por dia. Se as telas em casa não estiverem disponíveis, temos um rádio no carro. Em último caso, um telefone com uma grande tela que carregamos conosco. Nunca nos esquecemos disso. Certificamo-nos de estar sempre ligados à *receita publicitária*. Eles não precisam mais se preocupar com isso porque somos treinados há gerações.
 
-Se pudéssemos obter um implante em nossas cabeças que nos daria um link mental direto para a internet em troca de WiFi grátis em qualquer lugar, não tenho absolutamente nenhuma dúvida de que haveria uma fila na rua mais longa do que a loja da Apple em setembro . OMG é GRÁTIS !! WiFi grátis - em qualquer lugar dos EUA… o tempo todo! Então, é claro, o padrão se repetiria. Assim que uma base de usuários instalada estiver presente, começaríamos a receber anúncios mentais para nós, personalizados pelo Facebook, é claro. Não muito depois disso, haveria uma cobrança mensal pelo "serviço".
+Se pudéssemos obter um implante em nossas cabeças que nos daria um link mental direto para a internet em troca de WiFi grátis em qualquer lugar, não tenho absolutamente nenhuma dúvida de que haveria uma fila na rua mais longa do que a loja da Apple em setembro. Então, é claro, o padrão se repetiria. Assim que uma base de usuários instalada estiver presente, começaríamos a receber anúncios mentais para nós, personalizados pelo Facebook, é claro. Não muito depois disso, haveria uma cobrança mensal pelo "serviço".
 
-Depois de tudo isso ... depois de gerações de voluntariado para ser "fertilizante" para o crescimento de grandes empresas ... depois de se voluntariar para assistir os comerciais, ir até o Walmart e comprar as coisas e pagar uma taxa mensal para assistir a mais anúncios, e compre 5 dispositivos para fazer isso em qualquer lugar, a qualquer hora ...
+Depois de tudo isso, depois de gerações de voluntariado para sermos "fertilizante" para o crescimento de grandes empresas, depois de se voluntariar para assistir os comerciais, pagar uma taxa mensal para assistir a mais anúncios e comprar 5 dispositivos para fazer isso em qualquer lugar, a qualquer hora...
 
-Nós nos oferecemos para financiá-los com cada centavo que temos.
+**Nós nos oferecemos para financiá-los com cada centavo que temos**.
 
-Depois de tudo isso, a parte mais irônica, hilária e morosamente assustadora, temos a coragem de reclamar do 1% e das "grandes empresas" que estão ganhando todo o dinheiro enquanto os trabalhadores pobres da classe média mal conseguem sobreviver com seus contracheque. Este é o maior monte de ignorância que já foi vendido. Oferecemos-nos para comprar qualquer coisa que eles nos mandem comprar, gastar todo o nosso dinheiro extra, fazer empréstimos para comprar mais, continuar comprando mesmo quando as coisas não são saudáveis ​​e comprar a garantia estendida porque a porcaria pode quebrar em duas semanas! Nós nos oferecemos para seguir as instruções, pagar a eles por tudo isso e depois ter a coragem de reclamar quando eles tiverem todo o dinheiro!
+Depois de tudo isso, a parte mais irônica, hilária e morosamente assustadora: temos a coragem de reclamar do 1% e das "grandes empresas" que estão ganhando todo o dinheiro enquanto os trabalhadores pobres da classe média mal conseguem sobreviver com seus contracheques. Este é o maior monte de ignorância que já foi vendido. Oferecemos-nos para comprar qualquer coisa que eles nos mandem comprar, gastar todo o nosso dinheiro extra, fazer empréstimos para comprar mais, continuar comprando mesmo quando as coisas não são saudáveis ​​e comprar a garantia estendida porque a porcaria pode quebrar em duas semanas! Nós nos oferecemos para seguir as instruções, pagar a eles por tudo isso e depois ter a coragem de reclamar quando eles estiverem com todo o dinheiro!
 
-Encontre qualquer pessoa de classe média que esteja reclamando e veja se ela tem uma TV, um telefone celular, um monte de roupas de que não precisa, brinquedos de que não precisa, dois carros - faça novos, já que eles quebram tão facilmente agora , TV a cabo, internet, junk food cara e todos os tipos de coisas adicionais que fomos “programados” para precisar.
+Encontre qualquer pessoa de classe média que esteja reclamando e veja se ela tem uma TV, um telefone celular, um monte de roupas de que não precisa, brinquedos de que não precisa, dois carros (já que eles quebram tão facilmente agora), TV a cabo, internet, junk food e todos os tipos de coisas adicionais que fomos “programados” para precisar.
 
-Somos voluntários para isso!
+Calcule quanto dinheiro você teria se só pagasse aluguel, comprasse comida para cozinhar e tivesse uma conta de luz ¼ do que é agora (a conta só é alta por causa de todos os aparelhos eletrônicos). A conta telefônica seria cerca de R$30 por mês se você tivesse um telefone comum para ligações reais, o tipo sem tela. Temos contas de telefone altas para que possamos carregar a tela conosco (nós nos *voluntariamos* para carregá-la conosco, para que eles possam nos *rastrear* e aprender sobre nossos *hábitos*, para que possamos ficar em contato com as pessoas que estão tirando o nosso dinheiro).
 
-Calcule quanto dinheiro você teria se só pagasse aluguel, comprasse comida para cozinhar e tivesse uma conta de luz 1/4 do que é agora, a conta de luz que é muito alta por causa de todos os aparelhos que usamos. A conta telefônica seria de cerca de US $ 9 / mês se você tivesse um telefone comum para ligações reais, o tipo sem tela. Temos contas de telefone altas para que possamos carregar a tela conosco (nós nos voluntariamos para carregá-la conosco !! Para que eles possam nos rastrear e nossos hábitos! Para que possamos ficar em contato com as pessoas que estão tirando todo o nosso dinheiro !! !) Sem eletrônicos, sem carro com seguro, sem hábitos que eles o convenceram.
+Sem eletrônicos, sem carro com seguro, sem hábitos que eles o convenceram você teria o que as pessoas tinham na década de 1950 e um pouco mais. Você teria aquele sonho americano que todo mundo reclama que acabou. Não acabou, apenas distribuímos pouco a pouco todos os meses. Não acabou, está apenas nas mãos de pessoas que aprenderam a fazer negócios com eficiência e, ao mesmo tempo, tomar decisões racionais. Damos todo o nosso dinheiro, tempo e capacidade de raciocínio todos os dias para as “grandes empresas” das quais reclamamos. E fazemos isso de forma totalmente voluntária.
 
-Você teria o que as pessoas tinham na década de 1950 ... e um pouco mais. Você teria aquele sonho americano que todo mundo reclama que acabou. Não acabou, apenas distribuímos pouco a pouco todos os meses. Não acabou ... está apenas nas mãos de pessoas que aprenderam a fazer negócios com eficiência e, ao mesmo tempo, tomar decisões racionais. Damos todo o nosso dinheiro, tempo e capacidade de raciocínio todos os dias para as “grandes empresas” das quais reclamamos. E fazemos isso de forma totalmente voluntária !!!
+**Já reparou que se tiver algum dinheiro 'extra', surge algo para comprar?**
 
-Já reparou que se tiver algum dinheiro 'extra', surge algo?
-
-Aqui está um pouco de verdade: as empresas sabem exatamente quanto as pessoas ganham. Eles se revezam aumentando os preços e vendendo coisas para nós, para garantir que recebam todo o dinheiro extra que possamos ganhar. Se você tem dinheiro sobrando, eles não fizeram seu trabalho e sempre o fazem bem. Na verdade, se você pegar pessoas que não são muito boas em administrar dinheiro, elas estão até mesmo endividadas por milhares de dólares em coisas de que nunca precisaram.
+Aqui está um pouco de verdade: as empresas sabem exatamente quanto as pessoas ganham. Eles se revezam aumentando os preços e vendendo coisas para nós, para garantir que recebam todo o dinheiro extra que possamos ganhar. Se você tem dinheiro sobrando, eles ainda não fizeram seu trabalho e sempre o fazem muito bem. Na verdade, se você pegar pessoas que não são muito boas em administrar dinheiro elas estão até mesmo endividadas por comprarem coisas de que nunca precisaram.
 
 Então, os bancos inventaram cartões de crédito que nos permitem comprar coisas que ainda nem podemos pagar. Não se esqueçam dos bancos, eles certamente são propriedade de pessoas ricas e fizeram sua parte em receber todo o dinheiro que oferecemos. A razão pela qual muitas vezes parecem diferentes é porque têm toneladas de contadores, então eles são mestres nessas coisas. Eles simplesmente pegam todo o dinheiro de uma vez. Por que esperar até os 60 anos para se aposentar se você pode fazer isso aos 30?
 
-Houve ocasiões em que você ouviu falar de uma crise bancária. Não é uma crise, são apenas os ricos distribuindo dinheiro, mas grandes quantias de cada vez. A última vez que fizeram isso, eles certificaram-se de que o valor de sua casa caiu de 50 a 75% enquanto eles estavam nela. Esse é um truque muito legal. Agora você terá que pagar a hipoteca por mais de 15 anos antes mesmo de ter QUALQUER patrimônio nela. Você nem mesmo é dono da casa que comprou ... e vai pagar por ela por 15 a 30 anos!
+Houve ocasiões em que você ouviu falar de uma crise bancária. Não é uma crise, são apenas os ricos distribuindo dinheiro, mas em grandes quantias de cada vez. A última vez que fizeram isso, eles certificaram-se de que o valor de sua casa caiu de 50 a 75% enquanto eles estavam nela. Esse é um truque muito legal. Agora você terá que pagar uma mensalidade por mais de 15 anos antes mesmo de ter QUALQUER patrimônio nela. Você nem mesmo é dono da casa que comprou e vai pagar por ela por 15 a 30 anos!
 
-Então temos mais uma mensalidade, agora (nova e melhorada!) Com altas taxas de juros! Isso garante que ele nunca irá embora.
+Então temos mais uma mensalidade, agora (nova e melhorada! com altas taxas de juros! Isso garante que ela nunca irá embora.
 
-Então, eles continuam levando isso ao limite, levando mais e mais. O que eles encontram? Para sua alegria, eles encontram pessoas que trabalham duro, até mesmo pessoas com filhos com quem poderiam estar passando o tempo, que estão dispostas a abrir mão de seu tempo livre e, em vez disso, trabalhar em um segundo ou terceiro empregos para pagar por mais coisas!
+Então, eles continuam levando isso ao limite, levando mais e mais. O que eles encontram? Para sua alegria, eles encontram pessoas que trabalham duro, até mesmo pessoas com filhos com quem poderiam estar passando o tempo, que estão dispostas a abrir mão de seu tempo livre e, em vez disso, trabalhar em um segundo ou terceiro emprego para pagar por mais coisas!
 
-Quando todos nós tínhamos coisas demais, eles nos venderam o sonho de ter mais coisas.
+**Quando todos nós tínhamos coisas demais, eles nos venderam o sonho de ter mais coisas**/ 
 
-“E se vendermos a eles uma chance de ganhar mais dinheiro? Isso não pode perder !! Nós vendemos a eles a oportunidade, então quando eles ganham mais dinheiro, nós os vendemos ainda mais coisas! ” Assim nasceram os empréstimos estudantis. Ele cresceu e cresceu até se tornar um fardo nacional inacreditável.
+“E se vendermos a eles uma chance de ganhar mais dinheiro? Nós vendemos a eles a oportunidade, então quando eles ganharem mais dinheiro, nós venderemos ainda mais coisas!” Assim nasceram os empréstimos estudantis.
 
 Se o consumidor médio obtém um aumento, seu aluguel sobe, sua hipoteca explode ou o IRS aparece. Se houver dinheiro extra por perto, alguém está de olho nele! E eles vão conseguir se você permitir. Eles vão conseguir, mesmo se você não permitir.
 
 As pessoas precisam começar a tomar decisões sobre dinheiro se quiserem que as coisas mudem. Você não pode reclamar que as empresas estão fazendo isso. Somos voluntários para tudo isso. É uma espécie de nervosismo delirante que as pessoas reclamam que essas empresas ganham dinheiro. É isso que as empresas fazem. Seu trabalho é ganhar dinheiro. Na verdade, seria ilegal perder dinheiro propositalmente. Eles têm a responsabilidade de ganhar dinheiro, pagar os salários das pessoas, pagar o aluguel, pagar os fornecedores, etc.
-
-Mas somos voluntários para tudo isso!
-
-A sociedade nos Estados Unidos deixou essas empresas muito orgulhosas. Eles estavam certos ... 40 anos depois de 1970, os Estados Unidos se tornaram uma lixeira para qualquer coisa que alguém queira vender. Sucata de plástico barato, carros que foram propositalmente projetados para burlar nossas leis antipoluição, comida de cachorro envenenada e muitas telas para nos manter conectados a essa Mente Colmeia Borg do consumismo.
-
-
-
-
-------
 
 Se a tecnologia cria caos em massa, indignação, incivilidade, falta de confiança um no outro, solidão, alienação, mais polarização, mais manipulação eleitoral, mais populismo, mais distração e incapacidade de nos focar em problemas reais não deveria ser um dilema a escolha de usá-las.
 
