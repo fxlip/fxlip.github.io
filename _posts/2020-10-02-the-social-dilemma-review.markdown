@@ -36,7 +36,7 @@ Em seguida, é claro, começaram a nos vender seriamente tudo o que quisessem. A
 
 **São sempre as mesmas pessoas que se revezam na coleta de nosso dinheiro**.
 
-Quem paga por tudo isso? Quem são os cliente deles? Aqueles com quem eles se relacionam, aqueles cujas opiniões eles valorizam, aqueles que recebem pessoalmente uma ligação? Os anunciantes. Não é um time de futebol. Quem são os anunciantes... é engraçado, são as mesmas pessoas. As pessoas que são donas da maior parte do PIB, o 1% de que todos reclamam se revezam para recolher nosso dinheiro e distribuí-lo entre si.
+Quem paga por tudo isso? Quem são os cliente deles? Aqueles com quem eles se relacionam, aqueles cujas opiniões eles valorizam, aqueles que recebem pessoalmente uma ligação? Os anunciantes. Não é um time de futebol. Quem são os anunciantes... bem, é engraçado, mas são as mesmas pessoas. As pessoas que são donas da maior parte do PIB, o 1% de que todos reclamam se revezam para recolher nosso dinheiro e distribuí-lo entre si.
 
 ------- 
 
