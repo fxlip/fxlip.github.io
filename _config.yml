@@ -1,5 +1,5 @@
 # Site settings
-title: Felip B Medeiros
+title: Felip de Medeiros
 description: 'Pai, empresário e analista de sistemas.'
 url: 'https://felip.com.br/'
 baseurl: ''
@@ -7,7 +7,7 @@ link: 'https://felip.com.br'
 locale: pt_BR
 
 author:
-  name: 'Felip Barbosa'
+  name: 'Felip Barbosa de Medeiros'
   email: www@felip.com.br
   twitter_username: fxlip
   github_username:  fel1p
