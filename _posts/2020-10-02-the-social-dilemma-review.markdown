@@ -120,17 +120,16 @@ Se a tecnologia cria caos em massa, indignação, incivilidade, falta de confian
   
   - "[Modelo de negócio que lucra com desinformação](https://www.stophateforprofit.org/)."
 
+##### Pesquisas:
+  - [Dismorfia do Snapchat](https://www.researchgate.net/publication/326796822_Selfies-Living_in_the_Era_of_Filtered_Photographs)
+  - [No Twitter, fake news se espalha seis vezes mais rápido do que notícia verdadeira](https://news.mit.edu/2018/study-twitter-false-news-travels-faster-true-stories-0308)
+
 ##### Frases:
   - "Nada grandioso entra nas vidas dos mortais sem uma maldição." (Sófocles)
   - "Se você não está pagando pelo produto então você é o produto." (?)
   - "É a mudança gradual, leve e imperceptível em seu próprio comportamento e percepção que é o produto." (Jaron Lenier)
   - "Qualquer tecnologia avançada é indistinguível da mágica." (Arthur C. Clarke)
   - "Existem apenas duas indústrias que chamam seus clientes de usuários: a de drogas e a de software." (Edward Tufte)
-
-##### Pesquisas:
-  - [Dismorfia do Snapchat](https://www.researchgate.net/publication/326796822_Selfies-Living_in_the_Era_of_Filtered_Photographs)
-  - [No Twitter, fake news se espalha seis vezes mais rápido do que notícia verdadeira](https://news.mit.edu/2018/study-twitter-false-news-travels-faster-true-stories-0308)
-
 
 ##### Elenco:
   - [Tristan Harris](https://twitter.com/tristanharris)
