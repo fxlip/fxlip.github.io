@@ -1,11 +1,9 @@
-<!--
 ---
 title:  "O dilema das redes sociais"
 date:   2020-12-15 11:13:00
 categories: [social-media]
 tags: [review]
 ---
--->
 
 Um review verticalizado com todas as informações e links que você precisa pra continuar se informando sobre o capitalismo de vigilância: roubo de dados, vício em tecnologia, fake news, polarização e influência em eleições.
 
@@ -84,7 +82,7 @@ Então temos mais uma mensalidade, agora (nova e melhorada! com altas taxas de j
 
 Então, eles continuam levando isso ao limite, levando mais e mais. O que eles encontram? Para sua alegria, eles encontram pessoas que trabalham duro, até mesmo pessoas com filhos com quem poderiam estar passando o tempo, que estão dispostas a abrir mão de seu tempo livre e, em vez disso, trabalhar em um segundo ou terceiro emprego para pagar por mais coisas!
 
-**Quando todos nós tínhamos coisas demais, eles nos venderam o sonho de ter mais coisas**/ 
+**Quando todos nós tínhamos coisas demais, eles nos venderam o sonho de ter mais coisas**. 
 
 “E se vendermos a eles uma chance de ganhar mais dinheiro? Nós vendemos a eles a oportunidade, então quando eles ganharem mais dinheiro, nós venderemos ainda mais coisas!” Assim nasceram os empréstimos estudantis.
 
