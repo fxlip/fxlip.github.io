@@ -47,6 +47,14 @@
                       <span class="label">GitHub</span>
                     </a>
                   </li>
+                {% endif %}{% if site.author.whatsapp_number %}
+                  <!-- Twitter -->
+                  <li class="navigation__item">
+                    <a href="https://api.whatsapp.com/send?phone={{ site.author.whatsapp_number }}" title="@{{ site.author.whatsapp_number }} no Whatsapp" target="_blank">
+                      <i class="fab fa-whatsapp"></i>
+                      <span class="label">Twitter</span>
+                    </a> 
+                  </li>
                 {% endif %}{% if site.author.twitter_username %}
                   <!-- Twitter 
                   <li class="navigation__item">
