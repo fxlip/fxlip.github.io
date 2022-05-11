@@ -38,17 +38,8 @@
 
               <!-- Redes sociais -->
               <nav class="cover-navigation navigation--social">
-                <ul class="navigation">
-                {% if site.author.github_username %}
-                  <!-- GitHub -->
-                  <li class="navigation__item">
-                    <a href="http://github.com/{{ site.author.github_username }}" title="{{ site.author.github_username }} no GitHub" target="_blank">
-                      <i class="fab fa-github"></i>
-                      <span class="label">GitHub</span>
-                    </a>
-                  </li>
-                {% endif %}{% if site.author.whatsapp_number %}
-                  <!-- Twitter -->
+                <ul class="navigation">{% if site.author.whatsapp_number %}
+                  <!-- Whatsapp -->
                   <li class="navigation__item">
                     <a href="https://api.whatsapp.com/send?phone={{ site.author.whatsapp_number }}" title="@{{ site.author.whatsapp_number }} no Whatsapp" target="_blank">
                       <i class="fab fa-whatsapp"></i>
@@ -87,6 +78,14 @@
                       <span class="label">Discord</span>
                     </a>
                   </li> -->
+                  {% endif %}{% if site.author.github_username %}
+                  <!-- GitHub -->
+                  <li class="navigation__item">
+                    <a href="http://github.com/{{ site.author.github_username }}" title="{{ site.author.github_username }} no GitHub" target="_blank">
+                      <i class="fab fa-github"></i>
+                      <span class="label">GitHub</span>
+                    </a>
+                  </li>
                 {% endif %}{% if site.author.steam_username %}
                   <!-- Steam -->
                   <li class="navigation__item">
