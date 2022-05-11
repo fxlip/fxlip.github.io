@@ -46,14 +46,6 @@
                       <span class="label">Twitter</span>
                     </a> 
                   </li>
-                {% endif %}{% if site.author.twitter_username %}
-                  <!-- Twitter 
-                  <li class="navigation__item">
-                    <a href="http://twitter.com/{{ site.author.twitter_username }}" title="@{{ site.author.twitter_username }} no Twitter" target="_blank">
-                      <i class="fab fa-twitter"></i>
-                      <span class="label">Twitter</span>
-                    </a> 
-                  </li> -->
                 {% endif %}{% if site.author.telegram_username %}
                   <!-- Telegram -->
                   <li class="navigation__item">
@@ -71,14 +63,30 @@
                     </a>
                   </li>
                 {% endif %}{% if site.author.discord_link %}
-                  <!-- O link do Discord fica oculto por enquanto
+                  <!-- Easter Egg 01
                   <li class="navigation__item">
                     <a href="http://discordapp.com/invite/{{ site.author.discord_link }}" title="The Chain Gang no Discord" target="_blank">
                       <i class="fab fa-discord"></i>
                       <span class="label">Discord</span>
                     </a>
                   </li> -->
-                  {% endif %}{% if site.author.github_username %}
+                  {% endif %}{% if site.author.twitter_username %}
+                  <!--  Easter Egg 02
+                  <li class="navigation__item">
+                    <a href="http://twitter.com/{{ site.author.twitter_username }}" title="@{{ site.author.twitter_username }} no Twitter" target="_blank">
+                      <i class="fab fa-twitter"></i>
+                      <span class="label">Twitter</span>
+                    </a> 
+                  </li> -->
+                {% endif %}{% if site.author.strava_link %}
+                <!--  Easter Egg 03
+                <li class="navigation__item">
+                  <a href="http://strava.com/athletes/{{ site.author.strava_link }}" title="Minhas atividades no Strava" target="_blank">
+                    <i class="fab fa-strava"></i>
+                    <span class="label">Strava</span>
+                  </a>
+                </li> -->
+              {% endif %}{% if site.author.github_username %}
                   <!-- GitHub -->
                   <li class="navigation__item">
                     <a href="http://github.com/{{ site.author.github_username }}" title="{{ site.author.github_username }} no GitHub" target="_blank">
@@ -102,14 +110,6 @@
                       <span class="label">Playstation Network</span>
                     </a>
                   </li>
-                {% endif %}{% if site.author.strava_link %}
-                  <!-- O Strava vai ficar oculto também
-                  <li class="navigation__item">
-                    <a href="http://strava.com/athletes/{{ site.author.strava_link }}" title="Minhas atividades no Strava" target="_blank">
-                      <i class="fab fa-strava"></i>
-                      <span class="label">Strava</span>
-                    </a>
-                  </li> -->
                 {% endif %}
                 </ul>
               </nav>
