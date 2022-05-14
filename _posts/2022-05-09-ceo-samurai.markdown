@@ -9,8 +9,9 @@ O resumo de uma primeira temporada que promete se desenrolar em uma longa série
 
 <!--mais-->
 
-##### Estágio 01 : Início de um sonho
+<hr style="width: 100%;">
 
+##### Estágio 01 : Início de um sonho
 
 Texto.
 
@@ -24,14 +25,22 @@ Texto.
 
 ##### Episódio 03 : Primeiro mês
 
+Texto.
+
 <hr style="width: 100%;">
 
 ##### Episódio 03 : Primeiro semestre
+
+Texto.
 
 <hr style="width: 100%;">
 
 ##### Episódio 03 : Estruturação da Base
 
+Texto.
+
 <hr style="width: 100%;">
 
 ##### Episódio 03 : Primeiro ano
+
+Texto.
