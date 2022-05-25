@@ -5,7 +5,7 @@ categories: [tips]
 tags: [focus]
 ---
 
-O resumo de uma primeira temporada que promete se desenrolar em uma longa série. Todo o makingoff de um processo árduo, sem nenhuma previsão de termino, onde persigo uma missão muito clara: ser o líder que uma indústria 4.0 precisa. Motivando um time de 20, 50, 100 ou quantos colaboradores forem neccessários para dar toda vazão na demanda que eu mesmo também estou criando. Então como um espadachim que tem total maestria com espadas, estou me aperfeiçoando, físicamente e mentalmente, para ter a velocidade e precisão necessária em conectar produtores e clientes da maneira mais eficiente possível, enquanto também dou todo o suporte que uma fábrica, que não pode parar, precisa.
+O resumo de uma primeira temporada que promete se desenrolar por uma longa série. Todo o makingoff de um processo árduo e sem nenhuma previsão de termino, onde persigo uma missão: ser o líder que uma indústria precisa.
 
 <!--mais-->
 
@@ -13,7 +13,7 @@ O resumo de uma primeira temporada que promete se desenrolar em uma longa série
 
 ##### Estágio 01 : Início de um sonho
 
-Texto.
+O ano é 2015. Eu vendo meu carro e abro uma fábrica de software ...
 
 <hr style="width: 100%;">
 
