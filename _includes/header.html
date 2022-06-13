@@ -41,23 +41,31 @@
                 <ul class="navigation">{% if site.author.whatsapp_number %}
                   <!-- Whatsapp -->
                   <li class="navigation__item">
-                    <a href="https://api.whatsapp.com/send?phone={{ site.author.whatsapp_number }}" title="@{{ site.author.whatsapp_number }} no Whatsapp" target="_blank">
+                    <a href="https://api.whatsapp.com/send?phone={{ site.author.whatsapp_number }}" title="Fale comigo por whatsapp" target="_blank">
                       <i class="fab fa-whatsapp"></i>
                       <span class="label">Twitter</span>
                     </a> 
                   </li>
+                <ul class="navigation">{% if site.author.instagram_username %}
+                  <!-- Instagram -->
+                  <li class="navigation__item">
+                    <a href="https://instagr.am/{{ site.author.instagram_username }}" title="@{{ site.author.insgram_username }} no Instagram" target="_blank">
+                      <i class="fab fa-instagram"></i>
+                      <span class="label">Instagram</span>
+                    </a> 
+                  </li>
                 {% endif %}{% if site.author.telegram_username %}
-                  <!-- Telegram -->
+                  <!-- Telegram 
                   <li class="navigation__item">
                     <a href="http://t.me/{{ site.author.telegram_username }}" title="{{ site.author.telegram_username }} no Telegram" target="_blank">
                       <i class="fab fa-telegram"></i>
                       <span class="label">Telegram</span>
                     </a>
-                  </li>
+                  </li> -->
                 {% endif %}{% if site.author.email %}
                   <!-- Email -->
                   <li class="navigation__item">
-                    <a href="mailto:{{ site.author.email }}" title="Fale comigo" target="_blank">
+                    <a href="mailto:{{ site.author.email }}" title="Fale comigo por e-mail" target="_blank">
                       <i class="fas fa-envelope"></i>
                       <span class="label">Email</span>
                     </a>
