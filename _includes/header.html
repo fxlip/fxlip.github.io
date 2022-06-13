@@ -47,13 +47,21 @@
                     </a> 
                   </li>
                 {% endif %}{% if site.author.email %}
-                  <!-- Email -->
+                  <!-- Email 
                   <li class="navigation__item">
                     <a href="mailto:{{ site.author.email }}" title="Fale comigo por e-mail" target="_blank">
                       <i class="fas fa-envelope"></i>
                       <span class="label">Email</span>
                     </a>
-                  </li>
+                  </li>-->
+                {% endif %}{% if site.author.twitter_username %}
+                <!--  Twitter -->
+                <li class="navigation__item">
+                  <a href="http://twitter.com/{{ site.author.twitter_username }}" title="@{{ site.author.twitter_username }} no Twitter" target="_blank">
+                    <i class="fab fa-twitter"></i>
+                    <span class="label">Twitter</span>
+                  </a> 
+                </li>
                 {% endif %}{% if site.author.telegram_username %}
                   <!-- Telegram 
                   <li class="navigation__item">
@@ -78,14 +86,6 @@
                       <span class="label">Discord</span>
                     </a>
                   </li> -->
-                {% endif %}{% if site.author.twitter_username %}
-                <!--  Easter Egg 02
-                <li class="navigation__item">
-                  <a href="http://twitter.com/{{ site.author.twitter_username }}" title="@{{ site.author.twitter_username }} no Twitter" target="_blank">
-                    <i class="fab fa-twitter"></i>
-                    <span class="label">Twitter</span>
-                  </a> 
-                </li> -->
                 {% endif %}{% if site.author.strava_link %}
                 <!--  Easter Egg 03
                 <li class="navigation__item">
