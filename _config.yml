@@ -1,7 +1,8 @@
 # Site settings
 title: Felip Barbosa de Medeiros
-description: 'Produzindo saúde com baixo impacto ambiental na <a href="http://veganalimentos.com.br">Vegan Alimentos</a>.<br> 
+description_site: 'Produzindo saúde com baixo impacto ambiental na <a href="http://veganalimentos.com.br">Vegan Alimentos</a>.<br> 
 Por aqui você encontra minhas redes sociais e alguns textos que fiz.'
+description_seo: 'Produzindo saúde com baixo impacto ambiental na Vegan Alimentos. Por aqui você encontra minhas redes sociais e alguns textos que fiz.'
 url: 'https://felip.com.br/'
 baseurl: ''
 link: 'https://felip.com.br'
