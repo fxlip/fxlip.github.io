@@ -24,7 +24,7 @@
     <link rel="manifest" href="{{ site.baseurl }}/asset/images/favicons/manifest.json">
     <link rel="shortcut icon" href="{{ site.baseurl }}/asset/images/favicons/favicon.ico">
     <link rel="stylesheet" href="{{ site.baseurl }}/asset/css/main.css?{{site.time | date: '%s%N'}}">
-    <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html }}{% else %}{{ site.description }}{% endif %}">
+    <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html }}{% else %}{{ site.description_seo }}{% endif %}">
     <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ site.baseurl }}/feed.xml">
 
     <!-- Configuração personalizada para navegadores -->
