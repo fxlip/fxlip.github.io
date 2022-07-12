@@ -29,18 +29,18 @@ O ano é 2015. Eu vendo meu carro e abro uma fábrica de software.
 
 <hr style="width: 100%;">
 
-##### Episódio 03 : Primeiro semestre
+##### Episódio 04 : Primeiro semestre
 
 .
 
 <hr style="width: 100%;">
 
-##### Episódio 03 : Estruturação da Base
+##### Episódio 05 : Estruturação da Base
 
 .
 
 <hr style="width: 100%;">
 
-##### Episódio 03 : Primeiro ano
+##### Episódio 06 : Primeiro ano
 
 .
