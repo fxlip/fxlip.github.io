@@ -13,7 +13,7 @@ O resumo de uma primeira temporada que promete se desenrolar por uma longa séri
 
 ##### Estágio 01 : Início de um sonho
 
-O ano é 2015. Eu vendo meu carro e abro uma fábrica de software ...
+O ano é 2015. Eu vendo meu carro e abro uma fábrica de software.
 
 <hr style="width: 100%;">
 
