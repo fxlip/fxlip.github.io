@@ -6,8 +6,8 @@ exclude: 'yes'
 
 /* TIME */
   Desenvolvedor&Designer: Felip Barbosa
-  Twitter: @L1P
-  Site: https://lip.sh/
+  Twitter: @fxlip
+  Site: https://felip.com.br/
   Localização: Brasília, DF, BR
 
 /* OBRIGADO/THANKS */
@@ -24,4 +24,4 @@ exclude: 'yes'
   Idioma: Português
   Padrões: HTML5, CSS3
   Componentes: Jekyll, Bootstrap
-  Softwares: Atom, FileZilla, Photopea
+  Softwares: VSCode, Github, Photopea
