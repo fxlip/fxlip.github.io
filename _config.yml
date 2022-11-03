@@ -1,7 +1,7 @@
 # Site settings
 title: Felip Barbosa de Medeiros
-description_site: 'Membro da <a href="https://fsf.org">FSF</a> desde 2018, sou um analista de sistemas com experiência em programação, mineração de dados, infraestrutura e segurança. 
-Co-fundador da <a href="https://veganalimentos.com.br">Vegan</a> e anteriormente na <a href="https://www.hortminasdf.com.br/">HortMinas</a> e na <a href="http://www.cebgas.com.br/">CEBGAS</a>.'
+description_site: 'Membro da <a href="https://fsf.org">FSF</a> desde 2018, sou analista de sistemas com experiência em programação, mineração de dados, infraestrutura e segurança.<br>
+Co-fundador ex-CEO da <a href="https://veganalimentos.com.br">Vegan</a>, anteriormente na <a href="https://www.hortminasdf.com.br/">HortMinas</a> e na <a href="http://www.cebgas.com.br/">CEBGAS</a>.'
 description_seo: 'Programador membro da FSF desde 2018 que já administrou várias empresas.'
 url: 'https://felip.com.br/'
 baseurl: ''
