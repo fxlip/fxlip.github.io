@@ -5,7 +5,7 @@ categories: [jobs]
 tags: [industry]
 ---
 
-Tudo que aprendi nesses três anos: a concepção da ideia, criação da marca, construção da infraestrutura, seleção dos colaboradores, parcerias estratégicas com fornecedores, vínculos emocionais com clientes, aprimoramento tecnológico, consultorias, certificações, padrões de qualidade e cultura organizacional.
+Tudo que aprendi nesses três anos: desde a concepção da ideia, criação da marca, construção da infraestrutura, seleção dos colaboradores, parcerias estratégicas com fornecedores, vínculos emocionais com clientes, aprimoramento tecnológico, consultorias, certificações, padrões de qualidade até a cultura organizacional.
 
 <!--mais-->
 
