@@ -1,5 +1,5 @@
 ---
-title:  "Narcisismo maligno"
+title:  "Narcisismo maligno ou perverso"
 date:   2022-05-28 11:13:00
 categories: [traumas]
 tags: [vivencia]
