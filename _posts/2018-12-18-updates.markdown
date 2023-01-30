@@ -1,7 +1,7 @@
 ---
 title:  "Histórico de Atualizações"
 date:   2018-12-18 00:04:20
-categories: [updates]
+categories: [history]
 tags: [hello_world]
 ---
 Check-list de customizações, features e publicações.
@@ -18,8 +18,8 @@ Check-list de customizações, features e publicações.
 * [~~Remover reticências da tag <!- - mais - ->~~](https://github.com/fel1p/www/commit/4dbab3bb863223ae92bb16a2f44d73d0b66d8c7f)
 * [~~Estilo da paginação~~](https://github.com/fel1p/www/commit/9c2a2ec3c9ddd769b9570aec58c2ad3a00842262)
 * Identidade visual
-  - Logo
-  - Favicon
+  - [~~Logo~~](https://github.com/fel1p/fel1p.github.io/commit/bc3692a1833a90a18e1371ad5caa375c5ea5b833)
+  - [~~Favicon~~](https://github.com/fel1p/fel1p.github.io/commit/af2e1955cfa1f3961b702f70a54bf5b627666884)
 
 ###### Features
 * [~~Hook para atualização e backup em paralelo~~](https://github.com/fel1p/www/blob/master/_posts/2018-12-18-post-receive.markdown)
@@ -35,9 +35,14 @@ Check-list de customizações, features e publicações.
 * [~~Analisando a Frequência~~](https://github.com/fel1p/fel1p.github.io/commit/758c073567aa8f229f1b0b7ea7a34c07ddb7c2e7)
 * [~~Analisando a Medida~~](https://github.com/fel1p/fel1p.github.io/commit/db977f13f3e6a1c65135ece7add1fd365ddea018)
 * [~~O dilema das redes sociais~~](https://github.com/fel1p/fel1p.github.io/commit/6818000c60316faf651bd7699fade7b4fb6c63a1)
+* [~~O que a indústria me ensinou~~](https://github.com/fel1p/fel1p.github.io/commit/5bc46b6240efe1c497ccc0a9a2ba18d2cea9a0d5)
 * Review T400s RYF
   - Update de hardware
   - Update de software
   - Update de custom
 * Review UHK
 * Review Librem 5
+* Review Blade 2019
+  - Update de hardware
+  - Update de softwares
+  - Update de custom

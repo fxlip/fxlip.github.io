@@ -1,11 +1,11 @@
 ---
-title:  "O que a indústria me ensinou"
+title:  "O que a indústria ensina"
 date:   2023-01-18 20:24:00
 categories: [jobs]
 tags: [industry]
 ---
 
-Tudo que aprendi nesses três anos: desde a concepção da ideia, criação da marca, construção da infraestrutura, seleção dos colaboradores, parcerias estratégicas com fornecedores, vínculos emocionais com clientes, aprimoramento tecnológico, consultorias, certificações, padrões de qualidade até a cultura organizacional.
+Tudo que aprendi nesses três anos: concepção da ideia, criação da marca, construção da infraestrutura, seleção dos colaboradores, parcerias estratégicas com fornecedores, vínculos emocionais com clientes, aprimoramento tecnológico, consultorias, certificações, padrões de qualidade e cultura organizacional.
 
 <!--mais-->
 
