@@ -1,7 +1,7 @@
 ---
 title:  "Política Nacional de Segurança"
 date:   2019-02-27 23:04:20
-categories: [legislacao]
+categories: [gov]
 tags: [gov]
 ---
 De acordo com o [decreto 9.637/18](http://www.planalto.gov.br/ccivil_03/_Ato2015-2018/2018/Decreto/D9637.htm) (que vem alterando o antigo [decreto 2.295/97](http://www.planalto.gov.br/ccivil_03/decreto/D2295.htm)) apartir desse ano existe dispensa do processo licitatório para empresas que desejam trabalhar para o governo brasileiro em casos que possam comprometer a segurança nacional.

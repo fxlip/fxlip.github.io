@@ -1,7 +1,7 @@
 ---
 title:  "O dilema das redes sociais"
 date:   2020-12-15 11:13:00
-categories: [social-media]
+categories: [review]
 tags: [review]
 ---
 
