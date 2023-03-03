@@ -5,12 +5,12 @@ categories: [building]
 tags: [tech]
 ---
 
-Seria utopia querer um notebook relativamente potente mas verdadeiramente portátil nos dias de hoje? 
-E será mesmo que em pleno 2023 ainda precisamos escolher apenas um dos sistemas operacionais disponíveis?
-
-O texto a seguir funcionará como um guia baseado na minha própria experiência que pretende ser um fator motivador para você que assim como eu, está cansado de se ver forçado a atualizar constântemente sua máquina sempre que as coisas começam a travar ou ficam lentas, em um ciclo infinito de obsolescência programada. Além de uma necessidade peculiar de rodar diversos softwares em multiplos sistemas operacionais que por via de regra exigiriam máquinas distintas.
+O texto a seguir é um guia baseado na minha própria experiência que pretende ser um fator motivador para você que assim como eu, está cansado de se ver forçado a atualizar constântemente sua máquina sempre que as coisas começam a travar ou ficam lentas, em um ciclo infinito de obsolescência programada. Além da necessidade peculiar de rodar diversos softwares em sistemas operacionais diferentes que por via de regra exigiriam máquinas distintas.
 
 <!--mais-->
+
+Seria utopia querer um notebook relativamente potente mas verdadeiramente portátil nos dias de hoje? 
+E será mesmo que em pleno 2023 ainda precisamos escolher apenas um dos sistemas operacionais disponíveis?
 
 Um macintosh com toda sua facilidade de cloud e devops, aplicativos de áudio, vídeo e design muito bem projetados que funcionam de maneira fluída além de um ambiente único e exclusivo para desenvolvimento iOS? 
 
@@ -38,7 +38,8 @@ Talvez antes de começar você queira dar uma olhada no conteúdo disponível na
 
 ##### Aquisição dos hardwares
 
-- Razer Blade Stealth 13" 2019 [PCMag](https://www.pcmag.com/reviews/razer-blade-stealth-13-late-2019) | [TheVerge]https://www.theverge.com/2019/2/15/18226158/razer-blade-stealth-2019-review-specs-price-gaming-laptop | [TechRadar]https://www.techradar.com/reviews/razer-blade-stealth-13
+- Razer Blade Stealth 13" 2019 
+[PCMag](https://www.pcmag.com/reviews/razer-blade-stealth-13-late-2019) | [TheVerge]https://www.theverge.com/2019/2/15/18226158/razer-blade-stealth-2019-review-specs-price-gaming-laptop | [TechRadar]https://www.techradar.com/reviews/razer-blade-stealth-13
 
 Sim eu sei: é um notebook caro e descontinuado que você precisará ser encontrado na internet em bom estado. Mas vai por mim, essa procura e o todo o preço pago valerão a pena. Esse é foi o último notebook de 13" produzido que você conseguirá rodar a versão mais recente do MacOS (10.15.7 Catalina 19A583). Apartir de 2020 quando foi lançado a versão Big Sur (10.16) a Apple começou a lançar seus próprios processadores focando assim todo o suporte para essa nova arquitetura, consequentemente prejudicando as máquinas que ainda possuiam processadores da intel, até que a migração seja totalmente finalizada e não exista mais suporte. Logo, o MacOS 10.15.7 foi a última versão que recebeu suporte completo dentro da arquitetura da intel até o fim do ciclo. Essa versão só pode ser instalada em processadores de décima geração, justamente a do blade stealth late 2019.
 
