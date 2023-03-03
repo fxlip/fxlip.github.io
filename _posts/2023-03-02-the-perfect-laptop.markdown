@@ -8,15 +8,19 @@ tags: [tech]
 Seria utopia querer um notebook relativamente potente mas verdadeiramente portátil nos dias de hoje? 
 E será mesmo que em pleno 2023 ainda precisamos escolher apenas um dos sistemas operacionais disponíveis?
 
-Um macintosh com toda sua facilidade de cloud e devops, aplicativos de áudio, vídeo e design muito bem projetados que funcionam de maneira fluída além de um ambiente único e exclusivo para desenvolvimento iOS? Um windows com toda sua versatilidade e desempenho dando suporte aos drivers de GPU que permitem rodar praticamente todos os jogos disponíveis? Ou um Linux? Com distribuições contruídas por uma comunidade apaixonada de desenvolvedores que conseguem extrair toda a potência do processador sem nenhum processo suspeito rodando em segundo plano?
-
-Pois bem, há um caminho. Ele é árduo mas existe. Definitivamente não é algo trivial e surgem centenas de erros durante essa jornada. Unir todos os sistemas operacionais em um único hardware é literalmente um pesadelo mesmo para quem é da área de tecnologia e está acostumado a resolver problemas de computação. Customizar um hardware então envolve uma maestria que pode ser perigosa para quem não está habituado.
-
-Após esse disclaimer se mesmo assim nada disso te assustou pois os fins justificam os meios, o texto a seguir funcionará como um guia baseado na minha própria experiência que pretende ser um fator motivador para você que assim como eu, está cansado de se ver forçado a atualizar constântemente sua máquina sempre que as coisas começam travar ou ficam lentas, em um ciclo interminável. Além de uma necessidade particular em usar diversos softwares em multiplos sistemas operacionais que por via de regra exigiriam máquinas distintas.
+O texto a seguir funcionará como um guia baseado na minha própria experiência que pretende ser um fator motivador para você que assim como eu, está cansado de se ver forçado a atualizar constântemente sua máquina sempre que as coisas começam a travar ou ficam lentas, em um ciclo infinito de obsolescência programada. Além de uma necessidade peculiar de rodar diversos softwares em multiplos sistemas operacionais que por via de regra exigiriam máquinas distintas.
 
 <!--mais-->
 
-Esse guia foi dividido em sete partes:
+Um macintosh com toda sua facilidade de cloud e devops, aplicativos de áudio, vídeo e design muito bem projetados que funcionam de maneira fluída além de um ambiente único e exclusivo para desenvolvimento iOS? 
+
+Um windows com toda sua versatilidade e desempenho dando suporte aos drivers de GPU que permitem rodar praticamente todos os jogos disponíveis? 
+
+Ou um Linux? Com distribuições contruídas por uma comunidade apaixonada de desenvolvedores que conseguem extrair toda a potência do processador sem nenhum processo suspeito rodando em segundo plano?
+
+Pois bem, há um caminho. Ele é árduo mas existe. Definitivamente não é algo trivial e surgem centenas de erros durante essa jornada. Unir todos os sistemas operacionais em um único hardware é literalmente um pesadelo mesmo para quem é da área de tecnologia e está acostumado a resolver problemas de computação. Customizar um hardware então envolve uma maestria que pode ser perigosa para quem não está habituado.
+
+Esse guia será dividido em sete partes:
 
 - Links úteis
 - Aquisição dos hardwares
