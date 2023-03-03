@@ -5,7 +5,7 @@ categories: [building]
 tags: [tech]
 ---
 
-Um guia baseado na minha própria experiência para você que não aguenta mais atualizar periódicamente seu notebook sempre que as coisas começam a travar ou ficam lentas, nesse ciclo sem fim da obsolescência programada. Além da necessidade peculiar de rodar softwares de sistemas operacionais diferentes que por via de regra exigem virtualização.
+Um guia baseado na minha própria experiência para quem não aguenta mais atualizar periódicamente seu notebook sempre que as coisas começam a travar ou ficam lentas em um ciclo sem fim de obsolescência programada além da necessidade de rodar softwares de sistemas operacionais diferentes.
 
 <!--mais-->
 
