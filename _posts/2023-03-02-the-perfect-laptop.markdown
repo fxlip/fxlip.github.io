@@ -38,24 +38,28 @@ Talvez antes de começar a ler aqui você queira dar uma olhada nos principais c
 
 ##### Aquisição dos hardwares
 
-- Razer Blade Stealth 13" 2019 [ [PCMag](https://www.pcmag.com/reviews/razer-blade-stealth-13-late-2019) | [TheVerge](https://www.theverge.com/2019/2/15/18226158/razer-blade-stealth-2019-review-specs-price-gaming-laptop) | [TechRadar](https://www.techradar.com/reviews/razer-blade-stealth-13) ]
+- Razer Blade Stealth 13" 2019 [ [PCMag](https://www.pcmag.com/reviews/razer-blade-stealth-13-late-2019) - [TheVerge](https://www.theverge.com/2019/2/15/18226158/razer-blade-stealth-2019-review-specs-price-gaming-laptop) - [TechRadar](https://www.techradar.com/reviews/razer-blade-stealth-13) ]
 
 Sim eu sei: é um notebook caro e descontinuado que precisará ser encontrado na internet em um bom estado. Mas vai por mim, essa procura e todo o preço pago valerão a pena. Esse foi o último notebook de 13" produzido que você conseguirá rodar a versão mais recente do MacOS (10.15). Apartir de 2020 quando foi lançado a versão Big Sur (10.16) a Apple começou a lançar seus próprios processadores, dando o enfoque de suporte para essa nova arquitetura e consequentemente descontinuando e prejudicando as máquinas que ainda possuem processadores intel, até que a atualização dos usuários para a plataforma M esteja majoritária e não exista inteção de manter algum suporte. Logo, o MacOS 10.15.7 foi a última versão que recebeu atualizações dentro da arquitetura intel até o fim do seu ciclo em 2019. Esse hackintosh só poderá ser feito em processadores de décima geração, justamente a do blade stealth.
 
-- BCM94352Z DW1560 [ [AliExpress](#) [Shopee](#) [MercadoLivre](#) ]
+- BCM94352Z DW1560 [ [AliExpress](#) - [Shopee](#) - [MercadoLivre](#) ]
 
 Como nada no hackintosh pode ser fácil, se você quiser que sua internet funcione nativamente você precisará adquirir essa placa wifi (ou usar uma das duas portas USB com uma antena externa). Essa placa na verdade é um downgrade pois originalmente o bluetooth original () de fábrica é 5.0 enquanto nessa será o 4.0. Em relação a frequência do wifi nada muda, ambas se conectam a redes 5G.
 
-- SSD NVme Samsung 1TB+ 970
+- SSD NVme Samsung 1TB+ 970 [ [AliExpress](#) - [Shopee](#) - [MercadoLivre](#) ]
+
 O NVme que vem de fábrica já é bom com uma velocidade de xxx e tem um espaço razoável de xxx, mas como quero cinco sistemas operacionais independetes com todos seus softwares/drivers/jogos instalados precisamos de mais espaço e uma velocidade extra. 
 
-- Pendrive 16gb+
+- Pendrive 16GB+ [ [AliExpress](#) - [Shopee](#) - [MercadoLivre](#) ]
+
 Teóricamente um pendrive de 8GB já seria o suficiente mas em alguns casos pode haver um bug por questão de espaço, então para evitar problema 16GB resolve esse problema. Por alguma questão os pendrives da xxx podem apresentar erros também, então sugiro outras marcas.
 
-- Pasta térmica (Opcional)
+- Pasta térmica (Opcional) [ [AliExpress](#) - [Shopee](#) - [MercadoLivre](#) ]
+
 Como você terá adquirido seu notebook de segunda mão e já irá estar com a mão na massa atualizando o SSD e a placa WiFi, porque não já dar um upgrade na pasta térmica? Recomendo fazer isso apenas se tiver experiência pois remover o processador de um notebook exige perícia.
 
-- HD Externo (Opcional)
+- HD Externo (Opcional) [ [AliExpress](#) - [Shopee](#) - [MercadoLivre](#) ]
+
 Se você deseja fazer tudo em um só momento (durante um final de semana por exemplo), sugiro ter um HD Externo para armazenar todos os download que precisarão ser feitos. 
 
 ##### Upgrade e Downgrade:
