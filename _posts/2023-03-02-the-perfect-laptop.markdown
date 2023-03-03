@@ -5,7 +5,7 @@ categories: [building]
 tags: [tech]
 ---
 
-Um guia baseado na minha própria experiência para você que não aguenta mais atualizar periódicamente sua máquina de trabalho sempre que as coisas começam a travar ou ficam lentas, nesse ciclo sem fim da obsolescência programada. Além da necessidade peculiar de rodar softwares de sistemas operacionais diferentes que por via de regra exigiriam uma virtualização.
+Um guia baseado na minha própria experiência para você que não aguenta mais atualizar periódicamente seu notebook sempre que as coisas começam a travar ou ficam lentas, nesse ciclo sem fim da obsolescência programada. Além da necessidade peculiar de rodar softwares de sistemas operacionais diferentes que por via de regra exigem virtualização.
 
 <!--mais-->
 
@@ -41,7 +41,7 @@ Talvez antes de começar você queira dar uma olhada no conteúdo disponível na
 - Razer Blade Stealth 13" 2019
 [PCMag](https://www.pcmag.com/reviews/razer-blade-stealth-13-late-2019) | [TheVerge](https://www.theverge.com/2019/2/15/18226158/razer-blade-stealth-2019-review-specs-price-gaming-laptop) | [TechRadar](https://www.techradar.com/reviews/razer-blade-stealth-13)
 
-Sim eu sei: é um notebook caro e descontinuado que você precisará ser encontrado na internet em bom estado. Mas vai por mim, essa procura e o todo o preço pago valerão a pena. Esse é foi o último notebook de 13" produzido que você conseguirá rodar a versão mais recente do MacOS (10.15.7 Catalina 19A583). Apartir de 2020 quando foi lançado a versão Big Sur (10.16) a Apple começou a lançar seus próprios processadores focando assim todo o suporte para essa nova arquitetura, consequentemente prejudicando as máquinas que ainda possuiam processadores da intel, até que a migração seja totalmente finalizada e não exista mais suporte. Logo, o MacOS 10.15.7 foi a última versão que recebeu suporte completo dentro da arquitetura da intel até o fim do ciclo. Essa versão só pode ser instalada em processadores de décima geração, justamente a do blade stealth late 2019.
+Sim eu sei: é um notebook caro e descontinuado que precisará ser encontrado na internet em um bom estado. Mas vai por mim, essa procura e o todo o preço pago valerão a pena. Esse foi o último notebook de 13" produzido que você conseguirá rodar a versão mais recente do MacOS (10.15.7 Catalina 19A583). Apartir de 2020 quando foi lançado a versão Big Sur (10.16) a Apple começou a lançar seus próprios processadores focando assim todo o suporte para essa nova arquitetura, consequentemente prejudicando as máquinas que ainda possuiam processadores da intel, até que a migração seja totalmente finalizada e não exista mais suporte. Logo, o MacOS 10.15.7 foi a última versão que recebeu suporte completo dentro da arquitetura da intel até o fim do ciclo. Essa versão só pode ser instalada em processadores de décima geração, justamente a do blade stealth late 2019.
 
 - DW1560 (bcm94352z)
 Como nada no hackintosh pode ser fácil, se você quiser que sua internet funcione nativamente você precisará adquirir essa placa wifi (ou usar uma das duas portas USB com uma antena externa). Essa placa na verdade é um downgrade pois originalmente o bluetooth original () de fábrica é 5.0 enquanto nessa será o 4.0. Em relação a frequência do wifi nada muda, ambas se conectam a redes 5G.
