@@ -5,7 +5,7 @@ categories: [building]
 tags: [tech]
 ---
 
-O texto a seguir pretende ser um guia baseado na minha experiência para você que assim como eu, já está cansado de ser forçado a atualizar periódicamente sua máquina sempre que as coisas começam a travar ou ficam lentas, nesse ciclo infinito da obsolescência programada. Além da necessidade peculiar de rodar vários softwares de sistemas operacionais diferentes que por via de regra exigiriam máquinas distintas.
+Um guia baseado na minha própria experiência para você que não aguenta mais atualizar periódicamente sua máquina de trabalho sempre que as coisas começam a travar ou ficam lentas, nesse ciclo sem fim da obsolescência programada. Além da necessidade peculiar de rodar softwares de sistemas operacionais diferentes que por via de regra exigiriam uma virtualização.
 
 <!--mais-->
 
@@ -18,7 +18,7 @@ Um windows com toda sua versatilidade e desempenho dando suporte aos drivers de 
 
 Ou um Linux? Com distribuições contruídas por uma comunidade apaixonada de desenvolvedores que conseguem extrair toda a potência do processador sem nenhum processo suspeito rodando em segundo plano?
 
-Pois bem, há um caminho. Ele é árduo mas existe. Definitivamente não é algo trivial e surgem centenas de erros durante essa jornada. Unir todos os sistemas operacionais em um único hardware é literalmente um pesadelo mesmo para quem é da área de tecnologia e está acostumado a resolver problemas de computação. Customizar um hardware então envolve uma maestria que pode ser perigosa para quem não está habituado.
+Pois bem, há um caminho. Ele é árduo mas existe. Definitivamente não é algo trivial e surgem centenas de erros durante essa jornada. Unir todos os sistemas operacionais em um único hardware é literalmente um pesadelo mesmo para quem é da área de tecnologia e está acostumado a resolver problemas de computação. E customizar um hardware então envolve uma maestria que pode ser perigosa para quem não está familiarizado.
 
 Esse guia será dividido em sete partes:
 
