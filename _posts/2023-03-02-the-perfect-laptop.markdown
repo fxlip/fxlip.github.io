@@ -89,31 +89,37 @@ Drivers:
 ##### Instalação dos sistemas
 
 - Começando pelo Windows
+
 Essa é a parte mais fácil, se você já estiver familiarizado com uma formatação isso não será problema nenhum. A parte mais importante desse passo está na divisão do seu 1TB de armazenamento.
 
 ...
 
 - Agora é a vez dele, o hackintosh
+
 Obviamente essa é a parte mais difícil onde será necessário burlar a autenticação de hardware autorizado que a apple faz e configurar o bootloader para tudo funcionar bem.
 
 ...
 
 - Por fim minhas distribuições linux
+
 Agora é sombra e agua fresca meu parceiro, distribuições linux são instaláveis em qualquer coisa que tenha energia e um microprocessador. Então vamos lá escolhi logo minhas três distribuições favoritas para não ter que me preocupar com sistema operacional nunca mais!
 
 ...
 
 - Debian
+
 Aquela distribuição estável e confiável digna de um linux puro, construído do zero. Um sistema praticamente blindado a falhas e erros embora tenha uma complexidade de configuração e personalização maior.
 
 ...
 
 - Ubuntu
+
 Baseado no debian, o ubuntu também é um querido por dar uma flexibilidade na instalação de softwares e drivers que o debian já complica, embora isso possa causar alguma instabilidades e erros ocasionalmente.
 
 ...
 
 - Kali
+
 Também baseado no debian, o kali é minha distribuição favorita! já é aquele linux funcional que vem com tudo que você pode precisar relacionado a segurança, seja para testar sistemas, s
 oftwares ou hardwares, essa distribuição definitivamente entrega tudo.
 
