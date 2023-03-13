@@ -38,8 +38,8 @@ Talvez antes de começar a ler aqui você queira dar uma olhada nos principais c
 
 ##### Aquisição dos hardwares
 
-- Razer Blade Stealth 13" 2019 
-- [[PCMag](https://www.pcmag.com/reviews/razer-blade-stealth-13-late-2019) | [TheVerge](https://www.theverge.com/2019/2/15/18226158/razer-blade-stealth-2019-review-specs-price-gaming-laptop) | [TechRadar](https://www.techradar.com/reviews/razer-blade-stealth-13)]
+- [Razer Blade Stealth 13" 2019](https://mysupport.razer.com/app/answers/detail/a_id/3703/~/razer-blade-stealth-13%E2%80%9D-gtx1650-%282019%29-%7C-rz09-03101-support)
+# [[PCMag](https://www.pcmag.com/reviews/razer-blade-stealth-13-late-2019) // [TheVerge](https://www.theverge.com/2019/2/15/18226158/razer-blade-stealth-2019-review-specs-price-gaming-laptop) // [TechRadar](https://www.techradar.com/reviews/razer-blade-stealth-13)]
 
 Sim eu sei: é um notebook caro e descontinuado que precisará ser encontrado na internet em um bom estado. Mas vai por mim, essa procura e todo o preço pago valerão a pena. Esse foi o último notebook de 13" produzido que você conseguirá rodar a versão mais recente do MacOS (10.15). Apartir de 2020 quando foi lançado a versão Big Sur (10.16) a Apple começou a lançar seus próprios processadores, dando o enfoque de suporte para essa nova arquitetura e consequentemente descontinuando e prejudicando as máquinas que ainda possuem processadores intel, até que a atualização dos usuários para a plataforma M esteja majoritária e não exista inteção de manter algum suporte. Logo, o MacOS 10.15.7 foi a última versão que recebeu atualizações dentro da arquitetura intel até o fim do seu ciclo em 2019. Esse hackintosh só poderá ser feito em processadores de décima geração, justamente a do blade stealth.
 
