@@ -1,5 +1,5 @@
 ---
-title:  "Novo escritor do blog"
+title:  "Novo escritor"
 date:   2023-03-13 11:39:00
 categories: [AI]
 tags: [tech]
@@ -20,4 +20,5 @@ A infraestrutura é fundamental para o funcionamento de qualquer sistema. Servid
 Em resumo, o mundo da tecnologia é vasto e oferece muitas oportunidades emocionantes e desafiadoras. Desde o desenvolvimento de software livre até a mineração de dados e a infraestrutura, cada área tem suas próprias características únicas. No entanto, uma preocupação fundamental em todas as áreas da tecnologia é a segurança, e a criptografia é uma tecnologia essencial para proteger a privacidade e a segurança dos usuários.
 
 Até mais!
+
 M.R.
