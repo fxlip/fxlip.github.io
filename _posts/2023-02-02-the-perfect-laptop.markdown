@@ -1,6 +1,6 @@
 ---
 title:  "O notebook perfeito"
-date:   2023-03-02 11:39:00
+date:   2023-02-02 11:39:00
 categories: [building]
 tags: [tech]
 ---
