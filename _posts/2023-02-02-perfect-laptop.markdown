@@ -1,11 +1,11 @@
 ---
-title:  "O notebook perfeito"
+title:  "Notebook perfeito"
 date:   2023-02-02 11:39:00
 categories: [building]
 tags: [tech]
 ---
 
-Um guia baseado na minha própria experiência para quem não aguenta mais atualizar o computador periódicamente sempre que as coisas começam a travar ou ficam lentas nesse ciclo sem fim de obsolescência programada, além da necessidade em rodar softwares de sistemas operacionais diferentes..
+Neste artigo iremos mergulhar mais fundo nesse notebook que pretende ter o hardware definitivo para os próximos anos. Explorando suas especificações, recursos e desempenho vamos descobrir por que ele é a escolha perfeita para a construção de não apenas um Hackintosh mas um robusto triple boot.
 
 <!--mais-->
 
