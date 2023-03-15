@@ -9,16 +9,13 @@ Neste artigo iremos mergulhar mais fundo nesse notebook que pretende ter o hardw
 
 <!--mais-->
 
-Seria utopia querer um notebook relativamente potente mas verdadeiramente portátil nos dias de hoje? 
-E será mesmo que em pleno 2023 ainda precisamos escolher apenas um dos sistemas operacionais disponíveis?
+Você já se perguntou se é possível ter um notebook portátil que seja verdadeiramente potente nos dias de hoje? E será que ainda precisamos escolher apenas um dos sistemas operacionais disponíveis em pleno 2023?
 
-Um macintosh com toda sua facilidade de cloud e devops, aplicativos de áudio, vídeo e design muito bem projetados que funcionam de maneira fluída além de um ambiente único e exclusivo para desenvolvimento iOS? 
+Imagine poder ter em um único dispositivo o melhor dos três mundos: a facilidade e fluidez do macOS, a versatilidade e desempenho do Windows e a potência das distribuições Linux construídas por uma comunidade apaixonada de desenvolvedores. Parece apenas um sonho mas há um caminho. Um caminho árduo é verdade, mas que existe.
 
-Um windows com toda sua versatilidade e desempenho dando suporte aos drivers de GPU que permitem rodar praticamente todos os jogos disponíveis? 
+Mas não se engane, unir todos os sistemas operacionais em um único hardware não é algo trivial. Durante essa jornada, surgem centenas de erros e problemas que precisam ser resolvidos. Até mesmo para aqueles que são da área de tecnologia e estão acostumados a resolver problemas de computação, customizar um hardware para suportar três sistemas operacionais pode ser um verdadeiro pesadelo. Requer habilidade e maestria para garantir que tudo funcione perfeitamente, sem nenhum processo suspeito rodando em segundo plano.
 
-Ou um Linux? Com distribuições contruídas por uma comunidade apaixonada de desenvolvedores que conseguem extrair toda a potência do processador sem nenhum processo suspeito rodando em segundo plano?
-
-Pois bem, há um caminho. Ele é árduo mas existe. Definitivamente não é algo trivial e surgem centenas de erros durante essa jornada. Unir todos os sistemas operacionais em um único hardware é literalmente um pesadelo mesmo para quem é da área de tecnologia e está acostumado a resolver problemas de computação. E customizar um hardware então envolve uma maestria que pode ser perigosa para quem não está familiarizado.
+Mas se você está disposto a encarar o desafio, esse notebook pode ser a resposta para todos os seus problemas. Então, prepare-se para descobrir como construir um triple boot em um hardware único e desfrutar do melhor dos três mundos. Vamos lá!
 
 Esse guia será dividido em sete partes:
 
@@ -41,27 +38,27 @@ Talvez antes de começar a ler aqui você queira dar uma olhada nos principais c
 - [Razer Blade Stealth 13" 2019](https://mysupport.razer.com/app/answers/detail/a_id/3703/~/razer-blade-stealth-13%E2%80%9D-gtx1650-%282019%29-%7C-rz09-03101-support)
 ###### [[PCMag](https://www.pcmag.com/reviews/razer-blade-stealth-13-late-2019) // [TheVerge](https://www.theverge.com/2019/2/15/18226158/razer-blade-stealth-2019-review-specs-price-gaming-laptop) // [TechRadar](https://www.techradar.com/reviews/razer-blade-stealth-13)]
 
-Sim eu sei: é um notebook caro e descontinuado que precisará ser encontrado na internet em um bom estado. Mas vai por mim, essa procura e todo o preço pago valerão a pena. Esse foi o último notebook de 13" produzido que você conseguirá rodar a versão mais recente do MacOS (10.15). Apartir de 2020 quando foi lançado a versão Big Sur (10.16) a Apple começou a lançar seus próprios processadores, dando o enfoque de suporte para essa nova arquitetura e consequentemente descontinuando e prejudicando as máquinas que ainda possuem processadores intel, até que a atualização dos usuários para a plataforma M esteja majoritária e não exista inteção de manter algum suporte. Logo, o MacOS 10.15.7 foi a última versão que recebeu atualizações dentro da arquitetura intel até o fim do seu ciclo em 2019. Esse hackintosh só poderá ser feito em processadores de décima geração, justamente a do blade stealth.
+Esse notebook compacto e potente foi projetado para gamers e usuários que exigem alto desempenho em um pacote portátil. Seu processador i7-1065G7 é especialmente importante para criarmos um hackintosh com a última versão do macOS (10.15.7) que recebeu suporte completo para a arquiteura x86. Apartir de 2020 a empresa começaria a produzir seus próprios processadores com arquitetura ARM e o hackintosh como conhecemos já não seria possível ou pelo menos, ainda mais dificultado. Com esse hardware também será possível rodar a maioria dos jogos de forma satisfatória com a placa de vídeo nvidea dedicada (diferente dos macbooks) bem como também existir a possibilidade de usar a Thunderbolt 3 combinada com uma GPU externa e escalar os processamentos gráficos para o nível que desejar.
 
-- BCM94352Z DW1560 
+- [BCM94352Z DW1560](https://www.dell.com/support/home/en-us/drivers/driversdetails?driverid=99g87)
 ###### [[AliExpress](#) - [Shopee](#) - [MercadoLivre](#)]
 
-Como nada no hackintosh pode ser fácil, se você quiser que sua internet funcione nativamente você precisará adquirir essa placa wifi (ou usar uma das duas portas USB com uma antena externa). Essa placa na verdade é um downgrade pois originalmente o bluetooth original () de fábrica é 5.0 enquanto nessa será o 4.0. Em relação a frequência do wifi nada muda, ambas se conectam a redes 5G.
+Nada em uma criação de hackintosh é fácil, por isso se você quiser que sua internet funcione de forma nativa será necessário adquirir essa placa wifi ou matar uma das duas portas USB e depender de uma antena externa. A instalação desse hardware será um downgrade pois originalmente a placa de wi-fi original é o modelo AX201 da Intel (https://www.intel.com.br/content/www/br/pt/products/sku/130293/intel-wifi-6-ax201-gig/specifications.html) que chega em frequências de 6Ghz enquanto essa nova da Dell só alcança 5Ghz.
 
-- SSD NVme Samsung 1TB+ 970
+- [SSD NVme Samsung 1TB+ 970](https://semiconductor.samsung.com/consumer-storage/internal-ssd/970evo/)
 ###### [[AliExpress](#) - [Shopee](#) - [MercadoLivre](#)]
 
-O NVme que vem de fábrica já é bom com uma velocidade de xxx e tem um espaço razoável de xxx, mas como quero cinco sistemas operacionais independetes com todos seus softwares/drivers/jogos instalados precisamos de mais espaço e uma velocidade extra. 
+O NVme de fábrica nesse modelo é um PM981 com velocidade de leitura de 3000MB/s e de gravação de 1800MB/s com um espaço razoável de 512GB, porém como queremos no mínimo três sistemas operacionais independetes com todos seus respectivos softwares, drivers e jogos instalados iremos precisar de um pouco mais de espaço e porque não aumentar a velocidade de leitura (3500MB/s) e de gravação (3300MB/s). O que faz dessa placa a escolha ideal para o upgrade.
 
 - Pendrive 16GB+
 ###### [[AliExpress](#) - [Shopee](#) - [MercadoLivre](#)]
 
 Teóricamente um pendrive de 8GB já seria o suficiente mas em alguns casos pode haver um bug por questão de espaço, então para evitar problema 16GB resolve esse problema. Por alguma questão os pendrives da xxx podem apresentar erros também, então sugiro outras marcas.
 
-- Pasta térmica (Opcional)
+- [Pasta térmica (Opcional)](https://www.thermal-grizzly.com/produkte/2-kryonaut)
 ###### [[AliExpress](#) - [Shopee](#) - [MercadoLivre](#)]
 
-Como você terá adquirido seu notebook de segunda mão e já irá estar com a mão na massa atualizando o SSD e a placa WiFi, porque não já dar um upgrade na pasta térmica? Recomendo fazer isso apenas se tiver experiência pois remover o processador de um notebook exige perícia.
+Como esse notebook será adquirido de segunda mão e já irá estar sendo aberto para o downgrade e upgrade, porque não já atualizar a pasta térmica? Recomendo fazer isso apenas se tiver experiência pois remover um processador de notebook exige perícia.
 
 - HD Externo (Opcional)
 ###### [[AliExpress](#) - [Shopee](#) - [MercadoLivre](#)]
