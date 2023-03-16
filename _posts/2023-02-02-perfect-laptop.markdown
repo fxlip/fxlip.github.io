@@ -86,9 +86,9 @@ Imagens:
 - [Kali 2023.1](https://cdimage.kali.org/kali-2023.1/kali-linux-2023.1-installer-amd64.iso)
 
 Softwares:
-- [UniBeast 10.3.0](https://felip.com.br/asset/files/hackintosh/install/UniBeast-10.3.0.zip))
-- MultiBeast (MacOS)
-- Clover (MacOS)
+- [UniBeast 10.3.0](https://felip.com.br/asset/files/hackintosh/install/UniBeast-10.3.0.zip)
+- [MultiBeast 12.3.0](https://felip.com.br/asset/files/hackintosh/after-install/MultiBeast-12.3.0.zip)
+- [Clover](https://felip.com.br/asset/files/hackintosh/after-install/CCG.zip)
 
 Drivers:
 - GTX 1650 (Windows)
