@@ -32,6 +32,7 @@ Esse guia será dividido em sete partes:
 Talvez antes de começar a ler aqui você queira dar uma olhada nos principais conteúdos disponíveis na internet sobre o assunto, então já separei aqui os melhores links que me ajudaram nessa jornada:
 
   - [O melhor laptop hackintosh é o Razer Blade Stealth](https://www.inverse.com/input/guides/the-best-13-inch-hackintosh-laptop-is-the-razer-blade-stealth)
+  - [RBS late 2019 GTX1650 Hackintosh WIP](https://github.com/k-sym/Razer_Blade_Stealth_Late_2019_GTX_Hackintosh)
 
 ##### Aquisição dos hardwares
 
@@ -78,14 +79,14 @@ Se você deseja fazer tudo em um só momento (durante um final de semana por exe
 Para facilitar o trabalho e focar apenas nas instalações e posteriormente nas resoluções dos problemas, fiz o download de todas as imagens, softwares e drivers que iria usar nesse primeiro momento e armazenei tudo em um HD externo.
 
 Imagens:
-- Windows 10
-- MacOS 10.15.7 19A583
-- Ubuntu 22.04
-- Debian 11.6
-- Kali 2022.4
+- [Windows 10 22H2](https://software.download.prss.microsoft.com/dbazure/Win10_22H2_BrazilianPortuguese_x64.iso?t=bff43ad5-9fc6-4fb0-93ed-58d377777654&e=1679066746&h=85105911f72714d844c6bdee751ea55d2fe60ded59880cb094954fcf6dec423d)
+- [MacOS 10.15.7 19A583](https://soft.uclv.edu.cu/isos/MacOS/macOS_Catalina_10.15_19A583.dmg)
+- [Ubuntu 22.04.2 LTS](https://releases.ubuntu.com/jammy/ubuntu-22.04.2-desktop-amd64.iso)
+- [Debian 11.6](https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.6.0-amd64-netinst.iso)
+- [Kali 2023.1](https://cdimage.kali.org/kali-2023.1/kali-linux-2023.1-installer-amd64.iso)
 
 Softwares:
-- UniBeast (MacOS)
+- [UniBeast 10.3.0](https://felip.com.br/asset/files/hackintosh/install/UniBeast-10.3.0.zip))
 - MultiBeast (MacOS)
 - Clover (MacOS)
 
