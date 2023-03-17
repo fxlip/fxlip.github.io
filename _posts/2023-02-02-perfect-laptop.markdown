@@ -82,13 +82,13 @@ Imagens:
 - [Windows 10 22H2](https://software.download.prss.microsoft.com/dbazure/Win10_22H2_BrazilianPortuguese_x64.iso?t=bff43ad5-9fc6-4fb0-93ed-58d377777654&e=1679066746&h=85105911f72714d844c6bdee751ea55d2fe60ded59880cb094954fcf6dec423d)
 - [MacOS 10.15.7 19A583](https://soft.uclv.edu.cu/isos/MacOS/macOS_Catalina_10.15_19A583.dmg)
 - [Ubuntu 22.04.2 LTS](https://releases.ubuntu.com/jammy/ubuntu-22.04.2-desktop-amd64.iso)
-- [Debian 11.6](https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.6.0-amd64-netinst.iso)
-- [Kali 2023.1](https://cdimage.kali.org/kali-2023.1/kali-linux-2023.1-installer-amd64.iso)
+- [Debian 11.6 netinstgi](https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.6.0-amd64-netinst.iso)
+- [Kali 2023.1 Purple](https://cdimage.kali.org/kali-2023.1/kali-linux-2023.1-installer-amd64.iso)
 
 Softwares:
 - [UniBeast 10.3.0](https://felip.com.br/asset/files/hackintosh/install/UniBeast-10.3.0.zip)
 - [MultiBeast 12.3.0](https://felip.com.br/asset/files/hackintosh/after-install/MultiBeast-12.3.0.zip)
-- [Clover](https://felip.com.br/asset/files/hackintosh/after-install/CCG.zip)
+- [Clover 5.24.0](https://felip.com.br/asset/files/hackintosh/after-install/CCG-5.24.0.zip)
 
 Drivers:
 - GTX 1650 (Windows)
@@ -96,19 +96,23 @@ Drivers:
 
 ##### Instalação dos sistemas
 
-- Começando pelo Windows
+- Windows
 
 Essa é a parte mais fácil, se você já estiver familiarizado com uma formatação isso não será problema nenhum. A parte mais importante desse passo está na divisão do seu 1TB de armazenamento.
 
 ...
 
-- Agora é a vez dele, o hackintosh
+- macOS
 
-Obviamente essa é a parte mais difícil onde será necessário burlar a autenticação de hardware autorizado que a apple faz e configurar o bootloader para tudo funcionar bem.
+- Em um macOS utilize o disk utility para formatar o pendrive bootável:
+- - *Não formate a partição do pendrive e sim a Flash Disk Media como um todo*
+- - Em apagar defina um nome qualquer 
+- - Utilize o formato: "Mac OS Extended (Journaled)"
+- - E o esquema: "GUID Partition Map"
 
 ...
 
-- Por fim minhas distribuições linux
+- Linux
 
 Agora é sombra e agua fresca meu parceiro, distribuições linux são instaláveis em qualquer coisa que tenha energia e um microprocessador. Então vamos lá escolhi logo minhas três distribuições favoritas para não ter que me preocupar com sistema operacional nunca mais!
 
