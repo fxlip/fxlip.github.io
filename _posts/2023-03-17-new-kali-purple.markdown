@@ -9,6 +9,8 @@ Integrando melhoria de performance, UX e atualização de ferramentas fundamenta
 
 <!--mais-->
 
+![desktop](/asset/images/prints/kali-purple-temp.jpg)
+
 Uma das novidades mais notáveis é a introdução de uma interface de usuário otimizada e baseada no GNOME 41, a versão mais recente do popular ambiente de desktop, que traz melhorias significativas. Com tempos de inicialização mais rápidos, maior eficiência na utilização dos recursos e maior responsividade, essa versão proporciona uma experiência mais ágil.
 
 Entre as inovações, o aplicativo "Conexões" foi criado para substituir o Vinagre e oferecer um cliente de área de trabalho remota moderno e versátil. Além disso, o aplicativo de configurações passou por uma reestruturação para facilitar a navegação e o acesso às opções de personalização. 
