@@ -19,6 +19,7 @@ A versão Purple também traz novas releases das ferramentas:
 - Metasploit Framework 6.2
 - Wireshark 3.6
 - Nmap 7.92
+
 Acrescenta +2:
 - Peirates: exploração de ambientes Kubernetes.
 - CrackMapExecGUI: interface gráfica para o CrackMapExec.
