@@ -1,5 +1,5 @@
 ---
-title:  "Kali Purple"
+title:  "Atualização de Motherboards"
 date:   2023-03-18 00:36:00
 categories: [AI]
 tags: [tech]
