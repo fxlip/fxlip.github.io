@@ -69,7 +69,7 @@ body {
 
 a {
 	text-decoration: none;
-	color: #35012C; }
+	color: #8a6d3b; }
 	a:hover {
 		color: rgba(247,175,62,.68);
 		-o-transition: .5s;
@@ -448,7 +448,7 @@ hr {
 
 .btn, .navigation__item a {
 	padding: 10px 20px;
-	border: 1px solid #35012C;
+	border: 1px solid #8a6d3b;
 	font-size: .9em;
 	font-weight: bold;
 	letter-spacing: 1px;
@@ -519,7 +519,7 @@ nav {
 	.navigation__item a {
 		display: block;
 		position: relative;
-		border-color: #35012C;
+		border-color: #8a6d3b;
 		color: #bfc9d3;
 		background-color: rgba(247,175,62,.07) !important;
 		opacity: .8; }
@@ -585,7 +585,7 @@ i {
 	.post-list__post-title a {
 		color: #bfc9d3; }
 		.post-list__post-title a:hover {
-			color: #3A015C!important; }
+			color: rgba(247,175,62,.68) !important; }
 
 .post-list__meta {
 	display: block;
