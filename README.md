@@ -1,6 +1,6 @@
 # Jekyll-386
 
-Jekyll-386 é um tema minimalista e responsivo para [Jekyll](https://github.com/jekyll/jekyll), baseado no [Jekyll-Uno](https://github.com/joshgerdes/jekyll-uno), inspirado no [Bootstrap/386](https://github.com/kristopolous/BOOTSTRA.386) e em modo noturno.
+Jekyll-386 é um tema minimalista e responsivo para [Jekyll](https://github.com/jekyll/jekyll), baseado no [Jekyll-Uno](https://github.com/joshgerdes/jekyll-uno), inspirado no [Bootstrap/386](https://github.com/kristopolous/BOOTSTRA.386).
 
 > :warning:
   Esse tema requer ruby e algumas gemas instaladas.
