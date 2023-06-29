@@ -1,9 +1,6 @@
 # Jekyll-386
 
-Jekyll-386 é um tema minimalista e responsivo para [Jekyll](https://github.com/jekyll/jekyll), baseado no [Jekyll-Uno](https://github.com/joshgerdes/jekyll-uno), inspirado no [Bootstrap/386](https://github.com/kristopolous/BOOTSTRA.386).
-
-> :warning:
-  Esse tema requer ruby e algumas gemas instaladas.
+Jekyll-386 é um tema minimalista e responsivo de [Jekyll](https://github.com/jekyll/jekyll), baseado no [Jekyll-Uno](https://github.com/joshgerdes/jekyll-uno) e inspirado no [Bootstrap/386](https://github.com/kristopolous/BOOTSTRA.386).
 
 ### Funcionalidades
 
@@ -15,19 +12,17 @@ Jekyll-386 é um tema minimalista e responsivo para [Jekyll](https://github.com/
 * Links sociais
 * Listagem de tags
 * Listagem de categorias
-* Autoembed de áudio e vídeo
 
 ---
 
 ### Instalação e Teste
 
-1. Faça o download ou clone o repo `git clone git@github.com:fel1p/www.git`
-2. Entre na pasta: `cd www/`
-3. Se você não tiver o bundler instalado: `gem install bundler`
-3. Instale as gemas do ruby: `bundle install`
-4. Inicie o servidor jekyll: `bundle exec jekyll serve --watch`
+1. Download do repositório: `git clone git@github.com:fxlip/fxlip.github.io.git`
+2. Renomear e entrar na pasta: `mv fxlip.github.io/ www/ && cd www/`
+3. Instalar o bundler e as gemas do ruby: `gem install bundler && bundle install`
+4. Iniciar o servidor jekyll: `bundle exec jekyll serve --watch`
 
-Acesse em: [http://localhost:4000/www/](http://localhost:4000/www/)
+Disponível em [http://localhost:4000/www/](http://localhost:4000/www/)
 
 ---
 
