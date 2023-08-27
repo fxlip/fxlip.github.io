@@ -1,7 +1,7 @@
 # Site settings
 title: Felip Barbosa de Medeiros
 description_site: 'Membro da <a href="https://fsf.org" target="_blank" rel="noopener noreferrer">FSF</a> desde 2018, sou um analista de sistemas com experiência em software livre, programação, mineração de dados, infraestrutura e segurança.<br>
-Hoje no <a href="https://bsbcapital.com.br" target="_blank" rel="noopener noreferrer" >Jornal Brasília Capital</a> e anteriormente na <a href="https://veganalimentos.com.br" target="_blank" rel="noopener noreferrer">Vegan</a>, <a href="https://www.hortminasdf.com.br/" target="_blank" rel="noopener noreferrer">HortMinas</a> e <a href="http://www.cebgas.com.br/" target="_blank" rel="noopener noreferrer">CEBGAS</a>.'
+Hoje no <a href="https://bsbcapital.com.br" target="_blank" rel="noopener noreferrer" >Jornal Brasília Capital</a>, anteriormente na <a href="https://veganalimentos.com.br" target="_blank" rel="noopener noreferrer">Vegan</a>, <a href="https://www.hortminasdf.com.br/" target="_blank" rel="noopener noreferrer">HortMinas</a> e <a href="http://www.cebgas.com.br/" target="_blank" rel="noopener noreferrer">CEBGAS</a>.'
 description_seo: 'Membro da FSF desde 2018, sou analista de sistemas com experiência em software livre, programação, mineração de dados, infraestrutura e segurança.'
 url: 'https://felip.com.br/'
 baseurl: ''
@@ -13,8 +13,8 @@ author:
   email: felip42@gmail.com
   twitter_username: bXJyb2JvdA
   instagram_username: bvrbosv
-  github_username: fel1p
-  telegram_username: fel1p
+  github_username: fxlip
+  telegram_username: fxlip
   steam_username: mked0n
   psn_username: mked0n
   strava_link: 39646001
