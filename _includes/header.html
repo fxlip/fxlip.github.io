@@ -70,14 +70,6 @@
                       <span class="label">Telegram</span>
                     </a>
                   </li>
-                {% endif %}{% if site.author.instagram_username %}
-                  <!-- Instagram -->
-                  <li class="navigation__item">
-                    <a href="http://instagr.am/{{ site.author.instagram_username }}" title="@{{ site.author.instagram_username }} no Instagram" target="_blank">
-                      <i class="fab fa-instagram"></i>
-                      <span class="label">Instagram</span>
-                    </a> 
-                  </li> 
                 {% endif %}{% if site.author.discord_link %}
                   <!-- Easter Egg 01
                   <li class="navigation__item">
@@ -102,6 +94,14 @@
                       <span class="label">GitHub</span>
                     </a>
                   </li>
+                {% endif %}{% if site.author.instagram_username %}
+                  <!-- Instagram -->
+                  <li class="navigation__item">
+                    <a href="http://instagr.am/{{ site.author.instagram_username }}" title="@{{ site.author.instagram_username }} no Instagram" target="_blank">
+                      <i class="fab fa-instagram"></i>
+                      <span class="label">Instagram</span>
+                    </a> 
+                  </li> 
                 {% endif %}{% if site.author.steam_username %}
                   <!-- Steam -->
                   <li class="navigation__item">
