@@ -41,13 +41,13 @@
                 <ul class="navigation">{% if site.author.whatsapp_number %}
                   <!-- Whatsapp -->
                   <li class="navigation__item">
-                    <a href="http://api.whatsapp.com/send?phone={{ site.author.whatsapp_number }}" title="Fale comigo no whatsapp" target="_blank">
+                    <a href="https://api.whatsapp.com/send?phone={{ site.author.whatsapp_number }}" title="Fale comigo pelo whatsapp" target="_blank">
                       <i class="fab fa-whatsapp"></i>
                       <span class="label">Whatsapp</span>
                     </a> 
                   </li>
                 {% endif %}{% if site.author.email %}
-                  <!-- Email 
+                  <!-- Easter Egg 01 
                   <li class="navigation__item">
                     <a href="mailto:{{ site.author.email }}" title="Fale comigo por e-mail" target="_blank">
                       <i class="fas fa-envelope"></i>
@@ -55,7 +55,7 @@
                     </a>
                   </li>-->
                 {% endif %}{% if site.author.twitter_username %}
-                <!--  Twitter 
+                <!--  Easter Egg 02
                 <li class="navigation__item">
                   <a href="http://twitter.com/{{ site.author.twitter_username }}" title="@{{ site.author.twitter_username }} no Twitter" target="_blank">
                     <i class="fab fa-twitter"></i>
@@ -65,13 +65,21 @@
                 {% endif %}{% if site.author.telegram_username %}
                   <!-- Telegram -->
                   <li class="navigation__item">
-                    <a href="http://t.me/{{ site.author.telegram_username }}" title="Fale comigo no telegram" target="_blank">
+                    <a href="https://t.me/{{ site.author.telegram_username }}" title="Fale comigo pelo telegram" target="_blank">
                       <i class="fab fa-telegram"></i>
                       <span class="label">Telegram</span>
                     </a>
                   </li>
+                {% endif %}{% if site.author.keybase_username %}
+                  <!-- Keybase -->
+                  <li class="navigation__item">
+                    <a href="https://keybase.io/{{ site.author.github_username }}" title="Fale comigo pelo keybase" target="_blank">
+                      <i class="fab fa-keybase"></i>
+                      <span class="label">Keybase</span>
+                    </a>
+                  </li>
                 {% endif %}{% if site.author.discord_link %}
-                  <!-- Easter Egg 01
+                  <!-- Easter Egg 03
                   <li class="navigation__item">
                     <a href="http://discordapp.com/invite/{{ site.author.discord_link }}" title="The Chain Gang no Discord" target="_blank">
                       <i class="fab fa-discord"></i>
@@ -79,7 +87,7 @@
                     </a>
                   </li> -->
                 {% endif %}{% if site.author.strava_link %}
-                <!--  Easter Egg 03
+                <!--  Easter Egg 04
                 <li class="navigation__item">
                   <a href="http://strava.com/athletes/{{ site.author.strava_link }}" title="Minhas atividades no Strava" target="_blank">
                     <i class="fab fa-strava"></i>
@@ -95,13 +103,13 @@
                     </a>
                   </li>
                 {% endif %}{% if site.author.instagram_username %}
-                  <!-- Instagram -->
+                  <!-- Easter Egg 05
                   <li class="navigation__item">
                     <a href="http://instagr.am/{{ site.author.instagram_username }}" title="Minhas fotos no instagram" target="_blank">
                       <i class="fab fa-instagram"></i>
                       <span class="label">Instagram</span>
                     </a> 
-                  </li>   
+                  </li> -->
                 {% endif %}{% if site.author.steam_username %}
                   <!-- Steam -->
                   <li class="navigation__item">
