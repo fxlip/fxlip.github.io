@@ -21,17 +21,17 @@ felip42@gmail.com
 
 |⠀ ⠀⠀HABILIDADES ⠀⠀⠀|⠀⠀ NÍVEL |⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ | ⠀⠀⠀COMPETÊNCIAS⠀⠀⠀|
 |:---:|:---:| --- |:---------:|
-|PostgreSQL|Avançado| |Espanhol Intermediário|
-|TypeScript|Intermediário| |Inglês Intermediário|
-|Angular|Intermediário| |Pensamento analítico| 
-|NodeJS|Básico| |Trabalho em equipe| 
-|MySQL|Avançado| |Pensamento crítico| 
-|Python|Médio| |Boa comunicação| 
-|Kotlin|Básico| |Criatividade| 
-|Ionic|Médio| |Curiosidade| 
-|Swift|Básico| |Resiliência| 
-|Java|Avançado| |Liderança| 
-|PHP|Avançado| |Inovação| 
+|Java|Avançado| |Inglês Intermediário|
+|PHP|Avançado| |Espanhol Intermediário|
+|MySQL|Avançado| |Pensamento analítico| 
+|PostgreSQL|Avançado| |Trabalho em equipe| 
+|TypeScript|Intermediário| |Pensamento crítico| 
+|Angular|Intermediário| |Boa comunicação| 
+|Python|Intermediário| |Criatividade| 
+|Ionic|Intermediário| |Curiosidade| 
+|NodeJS|Básico| |Resiliência| 
+|Kotlin|Básico| |Liderança| 
+|Swift|Básico| |Inovação| 
 |ASL|Básico| |Empatia| 
 
 </center>
@@ -89,7 +89,7 @@ Atuei em equipe com os funcionários administrativos e diretamente com o gestor,
 Ganhei uma concessão pública para gerir a balança de pesagens do CEASA-DF por quinze anos. Através de processo licitatório, obtive autorização para administrar a empresa, onde aperfeiçoei processos e fluxogramas. Após essa estruturação e já no processo de estudos em tecnologia, optei pela venda dos direitos de concessão para focar na carreira de TI.
 
 - xPlound Sound Car **(2008-2009)**
-     - **Instalador e Sócio**
+     - **Sócio**
      - *07.831.610/0001-86* -- **(Ativa)**
 
 Como instalador me aperfeiçoei em sonorização automotiva, aprendendo fundamentos de litragens baseadas em RMS e na harmonização sonora. Em seguida como sócio, melhorei a organização da empresa com fluxogramas, otimizando os resultados financeiros até a sua venda posteriormente.
