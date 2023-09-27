@@ -1,23 +1,21 @@
-﻿<h3 style="text-align: center; font-size: 40px;">FELIP BARBOSA DE MEDEIROS</h3>
+﻿<h3 style="text-align: center; font-size: 45px; margin-bottom: 38px;">FELIP BARBOSA DE MEDEIROS</h3>
 
 #
 
-<div style="text-align: right; font-size: 30px;">
+<h3 style="text-align: right; font-size: 15px;">SGCV Lote 21 – Guará – Brasília – DF</h3>
+<h3 style="text-align: right; font-size: 15px;">felip42@gmail.com</h3>
+<h3 style="text-align: right; font-size: 15px;">+55 61 9 9622 0406</h3>
+<h3 style="text-align: right; font-size: 15px;">felip.com.br</h3>
 
-SGCV Lote 21 – Brasília–DF
+# 
 
-felip42@gmail.com
+<h3 style="text-align: center; font-size: 25px;">RESUMO</h3>
 
-+55 61 99622-0406
-
-[felip.com.br](https://www.felip.com.br)
-
-</div>
-
-<center><h3>Analista e Desenvolvedor de Sistemas com mais de quinze anos de experiência em programação.</h3></center>
-<center><h4>Conhecimento em extração de dados, desenvolvimento web e mobile, diversos frameworks além de sistemas gerenciadores de banco de dados. Atuação no comércio e na indústria como empreendedor, aprimorando competências como liderança, gestão de riscos, controle financeiro e relacionamento com clientes e fornecedores.</h4></center>
+<h3 style="text-align: center; font-size: 20px;">Analista e Desenvolvedor de Sistemas com mais de quinze anos de experiência em programação.</h3>
+<p style="text-align: justify; font-size: 17px; margin-bottom: 30px;">Conhecimento em extração de dados, desenvolvimento web e mobile, diversos frameworks além de sistemas gerenciadores de banco de dados. Atuação no comércio e na indústria como empreendedor, aprimorando competências como liderança, gestão de riscos, controle financeiro e relacionamento com clientes e fornecedores.</p>
 
 <center>
+
 
 |⠀ ⠀⠀HABILIDADES ⠀⠀⠀|⠀⠀ NÍVEL |⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ | ⠀⠀⠀COMPETÊNCIAS⠀⠀⠀|
 |:---:|:---:| --- |:---------:|
@@ -36,60 +34,62 @@ felip42@gmail.com
 
 </center>
 
-<h3 style="text-align: center;">TÍTULOS</h3>
+<h3 style="text-align: center; font-size: 25px; margin-top: 40px; margin-bottom: 30px;">TÍTULOS</h3>
 
-- Coding Interview Questions, AlgoExpert **(2023)**
+<p style="text-align: justify; font-size: 17px; margin-bottom: 30px;">• Coding Interview Questions, AlgoExpert <b>(2023)</b></p>
 
-- Análise e Desenvolvimento de Sistemas, SENAC **(2019)**
+<p style="text-align: justify; font-size: 17px; margin-bottom: 30px;">• Frontend Interview Questions, AlgoExpert <b>(2023)</b></p>
+
+<p style="text-align: justify; font-size: 17px; margin-bottom: 50px;">• Análise e Desenvolvimento de Sistemas, SENAC <b>(2019)</b></p>
 
 #
 
-<h3 style="text-align: center;">EXPERIÊNCIA PROFISSIONAL</h3>
+<h3 style="text-align: center; font-size: 25px; margin-bottom: 0;">EXPERIÊNCIA PROFISSIONAL</h3>
 
-- Jornal Brasília Capital **(2023-Atualmente)** 
-     - **Analista**
-    - *16.598.599/0001-47* -- **(Ativa)**
+<p style="font-size: 15px;">• Jornal Brasília Capital <b>(2023-Atualmente)</b></p>
+<p style="font-size: 13px; margin-left: 55px;"><b>• Analista</b></p>
+<p style="font-size: 13px; margin-left: 55px; margin-top: -15px;"><i>• 16.598.599/0001-47</i> – <b>(Ativa)</b></p>
 
-Realizando melhorias em toda a infraestrutura de TI do jornal, trouxe mais métricas para um acompanhamento detalhado e adotei estratégias para maximizar a visibilidade da empresa na internet. Refinamento do backend com correção de bugs e instabilidades no servidor além de melhorias gerais no frontend do site, melhorando a qualidade e a retenção dos visitantes.
+<p style="text-align: justify; font-size: 13px; margin-bottom: 0;">Realizando melhorias em toda a infraestrutura de TI do jornal, trouxe mais métricas para um acompanhamento detalhado e adotei estratégias para maximizar a visibilidade da empresa na internet. Refinamento do backend com correção de bugs e instabilidades no servidor além de melhorias gerais no frontend do site, melhorando a qualidade e a retenção dos visitantes.</p>
 
-- Vegan Alimentos **(2020-2022)**
-     - **Administrador**
-     - *41.751.122/0001-05* -- **(Ativa)**
+<p style="font-size: 15px;">•  Vegan Alimentos <b>(2020-2022)</b></p>
+<p style="font-size: 13px; margin-left: 55px;"><b>• Administrador</b></p>
+<p style="font-size: 13px; margin-left: 55px;  margin-top: -15px;"><i>• 41.751.122/0001-05</i> – <b>(Ativa)</b></p>
 
-Administrei todo o desenvolvimento de uma indústria de minimamente processados, desde a sua fundação garantindo os ajustes necessários para regulamentação em todos os órgãos, agentes do governo, normas e recomendações (Ministério da Agricultura, Anvisa, Vigilância Sanitária, Bombeiros, Administração da RA, SLU, ISO 22000 e RDCs). Passando por todos os processos de implementação no chão de fábrica como a contratação de equipe, treinamento em BPF com consultoria de nutricionistas, engenheiros de alimentos e do SENAI, que foi responsável por incorporar as culturas do Kaban e do Lean para manter a padronização no fluxo de produção. Na contrução da cartela de clientes, participei de licitações e levei para os clientes privados diferenciais como qualidade e pontualidade nas entregas. Para garantir a disponibilidade e qualidade na fonte foram estabelecidas sólidas parcerias com diversos produtores de hortfruti pelo cinturão verde do DF. Após dois anos e meio da estruturação e da validação de todos os processos, foi acordado com o sócio investidor a venda da empresa com mais de 70% de lucro em relação ao investimento inicial.
+<p style="text-align: justify; font-size: 13px;">Administrei todo o desenvolvimento de uma indústria de minimamente processados, desde a sua fundação garantindo os ajustes necessários para regulamentação em todos os órgãos, agentes do governo, normas e recomendações (Ministério da Agricultura, Anvisa, Vigilância Sanitária, Bombeiros, Administração da RA, SLU, ISO 22000 e RDCs). Passando por todos os processos de implementação no chão de fábrica como a contratação de equipe, treinamento em BPF com consultoria de nutricionistas, engenheiros de alimentos e do SENAI, que foi responsável por incorporar as culturas do Kaban e do Lean para manter a padronização no fluxo de produção. Na contrução da cartela de clientes, participei de licitações e levei para os clientes privados diferenciais como qualidade e pontualidade nas entregas. Para garantir a disponibilidade e qualidade na fonte foram estabelecidas sólidas parcerias com diversos produtores de hortfruti pelo cinturão verde do DF. Após dois anos e meio da estruturação e da validação de todos os processos, foi acordado com o sócio investidor a venda da empresa com mais de 70% de lucro em relação ao investimento inicial.</p>
 
-- HortMinas **(2018-2020)**
-     - **Desenvolvedor**
-     - *05.326.844/0001-40* -- **(Ativa)**
+<p style="font-size: 15px;">•  HortMinas <b>(2018-2020)</b></p>
+<p style="font-size: 13px; margin-left: 55px;"><b>• Desenvolvedor</b></p>
+<p style="font-size: 13px; margin-left: 55px;  margin-top: -15px;"><i>• 05.326.844/0001-40</i> – <b>(Ativa)</b></p>
 
-Responsável por minerar todos os dados relacionados a distribuição de hortfruti para as escolas públicas de brasília, facilitei a troca de informações entre o governo e a empresa.
+<p style="text-align: justify; font-size: 13px;">Responsável por minerar todos os dados relacionados a distribuição de hortfruti para as escolas públicas de brasília, facilitei a troca de informações entre o governo e a empresa.</p>
 
-- BRB Conveniência **(2017-2018)**
-     - **Administrador**
-     - *11.453.998/0001-04* -- **(Baixada)**
+<p style="font-size: 15px;">•  BRB Conveniência <b>(2017-2018)</b></p>
+<p style="font-size: 13px; margin-left: 55px;"><b>• Administrador</b></p>
+<p style="font-size: 13px; margin-left: 55px;  margin-top: -15px;"><i>• 11.453.998/0001-04</i> – <b>(Baixada)</b></p>
 
-Administração de grandes valores baseado na arrecadação proveniênte de diversos tipos de contas e boletos do bairro, realizei assim a conexão da população com o banco de Brasília.
+<p style="text-align: justify; font-size: 13px;">Administração de grandes valores baseado na arrecadação proveniênte de diversos tipos de contas e boletos do bairro, realizei assim a conexão da população com o banco de Brasília.</p>
 
-- DeltaHC **(2014-2016)**
-     - **Administrador**
-    - *21.775.413/0001-18* -- **(Baixada)**
+<p style="font-size: 15px;">•  DeltaHC <b>(2014-2016)</b></p>
+<p style="font-size: 13px; margin-left: 55px;"><b>• Administrador</b></p>
+<p style="font-size: 13px; margin-left: 55px;  margin-top: -15px;"><i>• 21.775.413/0001-18</i> – <b>(Baixada)</b></p>
 
-Após o networking com alguns clientes, fundei minha própria fábrica de softwares responsável por desenvolver e administrar sites e sistemas, assim como elaborar novos projetos apartir da divulgação orgânica.
+<p style="text-align: justify; font-size: 13px;">Após o networking com alguns clientes, fundei minha própria fábrica de softwares responsável por desenvolver e administrar sites e sistemas, assim como elaborar novos projetos apartir da divulgação orgânica.</p>
 
-- CEBGAS **(2012-2013)**
-     - **Estagiário**
-     - *04.363.670/0001-23* -- **(Ativa)**
+<p style="font-size: 15px;">•  CEBGAS <b>(2012-2013)</b></p>
+<p style="font-size: 13px; margin-left: 55px;"><b>• Estagiário</b></p>
+<p style="font-size: 13px; margin-left: 55px;  margin-top: -15px;"><i>• 04.363.670/0001-23</i> – <b>(Ativa)</b></p>
 
-Atuei em equipe com os funcionários administrativos e diretamente com o gestor, desenvolvendo um dashboard web com diversas ferramentas, responsável por gerênciar documentos e a quantidade de gás GNV disponível nos tanques de alta pressão dos postos de gasolína, melhorando assim a logística de abastecimento em Brasília.
+<p style="text-align: justify; font-size: 13px;">Atuei em equipe com os funcionários administrativos e diretamente com o gestor, desenvolvendo um dashboard web com diversas ferramentas, responsável por gerênciar documentos e a quantidade de gás GNV disponível nos tanques de alta pressão dos postos de gasolína, melhorando assim a logística de abastecimento em Brasília.</p>
 
-- Balança de Cargas **(2010-2011)**
-     - **Administrador**
-     - *12.141.260/0001-66* -- **(Ativa)**
+<p style="font-size: 15px;">•  Balança de Cargas <b>(2010-2011)</b></p>
+<p style="font-size: 13px; margin-left: 55px;"><b>• Administrador</b></p>
+<p style="font-size: 13px; margin-left: 55px;  margin-top: -15px;"><i>• 12.141.260/0001-66</i> – <b>(Ativa)</b></p>
 
-Ganhei uma concessão pública para gerir a balança de pesagens do CEASA-DF por quinze anos. Através de processo licitatório, obtive autorização para administrar a empresa, onde aperfeiçoei processos e fluxogramas. Após essa estruturação e já no processo de estudos em tecnologia, optei pela venda dos direitos de concessão para focar na carreira de TI.
+<p style="text-align: justify; font-size: 13px;">Ganhei uma concessão pública para gerir a balança de pesagens do CEASA-DF por quinze anos. Através de processo licitatório, obtive autorização para administrar a empresa, onde aperfeiçoei processos e fluxogramas. Após essa estruturação e já no processo de estudos em tecnologia, optei pela venda dos direitos de concessão para focar na carreira de TI.</p>
 
-- xPlound Sound Car **(2008-2009)**
-     - **Sócio**
-     - *07.831.610/0001-86* -- **(Ativa)**
+<p style="font-size: 15px;">•  xPlound Sound Car <b>(2008-2009)</b></p>
+<p style="font-size: 13px; margin-left: 55px;"><b>• Sócio</b></p>
+<p style="font-size: 13px; margin-left: 55px;  margin-top: -15px;"><i>• 07.831.610/0001-86</i> – <b>(Ativa)</b></p>
 
-Como instalador me aperfeiçoei em sonorização automotiva, aprendendo fundamentos de litragens baseadas em RMS e na harmonização sonora. Em seguida como sócio, melhorei a organização da empresa com fluxogramas, otimizando os resultados financeiros até a sua venda posteriormente.
+<p style="text-align: justify; font-size: 13px;">Como instalador me aperfeiçoei em sonorização automotiva, aprendendo fundamentos de litragens baseadas em RMS e na harmonização sonora. Em seguida como sócio, melhorei a organização da empresa com fluxogramas, otimizando os resultados financeiros até a sua venda posteriormente.</p>
