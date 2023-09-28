@@ -12,25 +12,24 @@
 <h3 style="text-align: center; font-size: 25px;">RESUMO</h3>
 
 <h3 style="text-align: center; font-size: 20px;">Analista e Desenvolvedor de Sistemas com mais de quinze anos de experiência em programação.</h3>
-<p style="text-align: justify; font-size: 17px; margin-bottom: 30px;">Conhecimento em extração de dados, desenvolvimento web e mobile, diversos frameworks além de sistemas gerenciadores de banco de dados. Atuação no comércio e na indústria como empreendedor, aprimorando competências como liderança, gestão de riscos, controle financeiro e relacionamento com clientes e fornecedores.</p>
+<p style="text-align: justify; font-size: 19px; margin-bottom: 30px;">Profundo conhecimento em extração de dados, desenvolvimento web e mobile, e domínio de diversos frameworks e sistemas gerenciadores de banco de dados. Com atuação destacada tanto no comércio quanto na indústria, também exerci papel de empreendedor, onde aprimorei competências em liderança, gestão de riscos, controle financeiro e relacionamento estratégico com clientes e fornecedores.</p>
 
 <center>
 
-
-|⠀ ⠀⠀HABILIDADES ⠀⠀⠀|⠀⠀ NÍVEL |⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ | ⠀⠀⠀COMPETÊNCIAS⠀⠀⠀|
-|:---:|:---:| --- |:---------:|
-|Java|Avançado| |Inglês Intermediário|
-|PHP|Avançado| |Espanhol Intermediário|
-|MySQL|Avançado| |Pensamento analítico| 
-|PostgreSQL|Avançado| |Trabalho em equipe| 
-|TypeScript|Intermediário| |Pensamento crítico| 
-|Angular|Intermediário| |Boa comunicação| 
-|Python|Intermediário| |Criatividade| 
-|Ionic|Intermediário| |Curiosidade| 
-|NodeJS|Básico| |Resiliência| 
-|Kotlin|Básico| |Liderança| 
-|Swift|Básico| |Inovação| 
-|ASL|Básico| |Empatia| 
+|⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀HABILIDADES⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀|⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀NÍVEL⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀|
+|:---:|:---:|
+|Java|Avançado| 
+|PHP|Avançado| 
+|MySQL|Avançado|  
+|PostgreSQL|Avançado| 
+|TypeScript|Intermediário|  
+|Angular|Intermediário| 
+|Python|Intermediário|  
+|Ionic|Intermediário|  
+|NodeJS|Básico| 
+|Kotlin|Básico|  
+|Swift|Básico|  
+|ASL|Básico|  
 
 </center>
 
@@ -42,54 +41,44 @@
 
 <p style="text-align: justify; font-size: 17px; margin-bottom: 50px;">• Análise e Desenvolvimento de Sistemas, SENAC <b>(2019)</b></p>
 
-#
+<h3 style="text-align: center; font-size: 25px; margin-bottom: 38px;">EXPERIÊNCIA PROFISSIONAL</h3>
 
-<h3 style="text-align: center; font-size: 25px; margin-bottom: 0;">EXPERIÊNCIA PROFISSIONAL</h3>
+<p style="font-size: 16px;">• Jornal Brasília Capital <b>(2023-Atualmente)</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><b>• Analista</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><i>• 16.598.599/0001-47</i> – <b>(Ativa)</b></p>
+<p style="text-align: justify; font-size: 15px; margin-top: -10px; margin-bottom: 20px;">Na posição de Analista, promovi significativas melhorias na infraestrutura de TI do jornal. Implementei métricas detalhadas para acompanhamento e adotei estratégias voltadas para ampliar a visibilidade da empresa online. Além disso, trabalhei no refinamento do backend, corrigindo bugs e instabilidades no servidor, e otimizei o frontend do site, resultando em uma melhor experiência e retenção de visitantes.</p>
 
-<p style="font-size: 15px;">• Jornal Brasília Capital <b>(2023-Atualmente)</b></p>
-<p style="font-size: 13px; margin-left: 55px;"><b>• Analista</b></p>
-<p style="font-size: 13px; margin-left: 55px; margin-top: -15px;"><i>• 16.598.599/0001-47</i> – <b>(Ativa)</b></p>
+<p style="font-size: 16px;">•  Vegan Alimentos <b>(2020-2022)</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><b>• Administrador</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><i>• 41.751.122/0001-05</i> – <b>(Ativa)</b></p>
+<p style="text-align: justify; font-size: 15px; margin-top: -10px; margin-bottom: 20px;">Atuei como administrador, liderando o desenvolvimento integral de uma indústria de alimentos minimamente processados desde sua fundação. Garanti a conformidade com regulamentações de órgãos como Ministério da Agricultura, Anvisa, Vigilância Sanitária, Bombeiros, entre outros, bem como aderência às normas ISO 22000 e RDCs. Supervisionei o chão de fábrica, coordenando a contratação e treinamento de equipe, com ênfase em Boas Práticas de Fabricação, em colaboração com nutricionistas, engenheiros de alimentos e o SENAI. Esta parceria resultou na implementação das metodologias Kaban e Lean, otimizando a produção. Na gestão comercial, estabeleci uma base de clientes por meio de licitações e diferenciais como qualidade e pontualidade nas entregas para clientes privados. Consolidamos parcerias estratégicas com produtores de hortfruti no cinturão verde do DF. A trajetória culminou com a venda da empresa após dois anos e meio, registrando um lucro superior a 70% sobre o investimento inicial.</p>
 
-<p style="text-align: justify; font-size: 13px; margin-bottom: 0;">Realizando melhorias em toda a infraestrutura de TI do jornal, trouxe mais métricas para um acompanhamento detalhado e adotei estratégias para maximizar a visibilidade da empresa na internet. Refinamento do backend com correção de bugs e instabilidades no servidor além de melhorias gerais no frontend do site, melhorando a qualidade e a retenção dos visitantes.</p>
+<p style="font-size: 16px;">•  HortMinas <b>(2018-2020)</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><b>• Desenvolvedor</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><i>• 05.326.844/0001-40</i> – <b>(Ativa)</b></p>
+<p style="text-align: justify; font-size: 15px; margin-top: -10px; margin-bottom: 20px;">Atuei como desenvolvedor, dedicando-me à mineração de dados referentes à distribuição de hortfruti para as escolas públicas de Brasília. Minha atuação facilitou significativamente a troca de informações entre o governo e a empresa.</p>
 
-<p style="font-size: 15px;">•  Vegan Alimentos <b>(2020-2022)</b></p>
-<p style="font-size: 13px; margin-left: 55px;"><b>• Administrador</b></p>
-<p style="font-size: 13px; margin-left: 55px;  margin-top: -15px;"><i>• 41.751.122/0001-05</i> – <b>(Ativa)</b></p>
+<p style="font-size: 16px;">•  BRB Conveniência <b>(2017-2018)</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><b>• Administrador</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><i>• 11.453.998/0001-04</i> – <b>(Baixada)</b></p>
+<p style="text-align: justify; font-size: 15px; margin-top: -10px; margin-bottom: 20px;">Fui responsável pela administração de expressivos valores arrecadados de diversos tipos de contas e boletos locais, facilitando a conexão entre a população do bairro e o Banco de Brasília.</p>
 
-<p style="text-align: justify; font-size: 13px;">Administrei todo o desenvolvimento de uma indústria de minimamente processados, desde a sua fundação garantindo os ajustes necessários para regulamentação em todos os órgãos, agentes do governo, normas e recomendações (Ministério da Agricultura, Anvisa, Vigilância Sanitária, Bombeiros, Administração da RA, SLU, ISO 22000 e RDCs). Passando por todos os processos de implementação no chão de fábrica como a contratação de equipe, treinamento em BPF com consultoria de nutricionistas, engenheiros de alimentos e do SENAI, que foi responsável por incorporar as culturas do Kaban e do Lean para manter a padronização no fluxo de produção. Na contrução da cartela de clientes, participei de licitações e levei para os clientes privados diferenciais como qualidade e pontualidade nas entregas. Para garantir a disponibilidade e qualidade na fonte foram estabelecidas sólidas parcerias com diversos produtores de hortfruti pelo cinturão verde do DF. Após dois anos e meio da estruturação e da validação de todos os processos, foi acordado com o sócio investidor a venda da empresa com mais de 70% de lucro em relação ao investimento inicial.</p>
+<p style="font-size: 16px;">•  DeltaHC <b>(2014-2016)</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><b>• Administrador</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><i>• 21.775.413/0001-18</i> – <b>(Baixada)</b></p>
+<p style="text-align: justify; font-size: 15px; margin-top: -10px; margin-bottom: 20px;">Inspirado por conexões estabelecidas em meu networking, fundei a DeltaHC, uma fábrica de softwares. Na empresa, desenvolvíamos e administrávamos sites e sistemas, além de elaborar novos projetos por meio da divulgação orgânica.</p>
 
-<p style="font-size: 15px;">•  HortMinas <b>(2018-2020)</b></p>
-<p style="font-size: 13px; margin-left: 55px;"><b>• Desenvolvedor</b></p>
-<p style="font-size: 13px; margin-left: 55px;  margin-top: -15px;"><i>• 05.326.844/0001-40</i> – <b>(Ativa)</b></p>
+<p style="font-size: 16px;">•  CEBGAS <b>(2012-2013)</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><b>• Estagiário</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><i>• 04.363.670/0001-23</i> – <b>(Ativa)</b></p>
+<p style="text-align: justify; font-size: 15px; margin-top: -10px; margin-bottom: 20px;">Trabalhei em conjunto com a equipe administrativa e diretamente sob a orientação do gestor. Desenvolvi um dashboard web equipado com diversas ferramentas. Esse sistema foi projetado para gerenciar documentos e monitorar a quantidade de gás GNV nos tanques de alta pressão dos postos de gasolina, otimizando a logística de abastecimento em Brasília.</p>
 
-<p style="text-align: justify; font-size: 13px;">Responsável por minerar todos os dados relacionados a distribuição de hortfruti para as escolas públicas de brasília, facilitei a troca de informações entre o governo e a empresa.</p>
+<p style="font-size: 16px;">•  Balança de Cargas <b>(2010-2011)</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><b>• Administrador</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><i>• 12.141.260/0001-66</i> – <b>(Ativa)</b></p>
+<p style="text-align: justify; font-size: 15px; margin-top: -10px; margin-bottom: 20px;">Conquistei uma concessão pública para administrar a balança de pesagens do CEASA-DF por um período de quinze anos através de processo licitatório. Durante minha gestão, aperfeiçoei processos e fluxogramas da empresa. No entanto, com crescente interesse em tecnologia, decidi vender os direitos de concessão para me dedicar plenamente à carreira de TI.</p>
 
-<p style="font-size: 15px;">•  BRB Conveniência <b>(2017-2018)</b></p>
-<p style="font-size: 13px; margin-left: 55px;"><b>• Administrador</b></p>
-<p style="font-size: 13px; margin-left: 55px;  margin-top: -15px;"><i>• 11.453.998/0001-04</i> – <b>(Baixada)</b></p>
-
-<p style="text-align: justify; font-size: 13px;">Administração de grandes valores baseado na arrecadação proveniênte de diversos tipos de contas e boletos do bairro, realizei assim a conexão da população com o banco de Brasília.</p>
-
-<p style="font-size: 15px;">•  DeltaHC <b>(2014-2016)</b></p>
-<p style="font-size: 13px; margin-left: 55px;"><b>• Administrador</b></p>
-<p style="font-size: 13px; margin-left: 55px;  margin-top: -15px;"><i>• 21.775.413/0001-18</i> – <b>(Baixada)</b></p>
-
-<p style="text-align: justify; font-size: 13px;">Após o networking com alguns clientes, fundei minha própria fábrica de softwares responsável por desenvolver e administrar sites e sistemas, assim como elaborar novos projetos apartir da divulgação orgânica.</p>
-
-<p style="font-size: 15px;">•  CEBGAS <b>(2012-2013)</b></p>
-<p style="font-size: 13px; margin-left: 55px;"><b>• Estagiário</b></p>
-<p style="font-size: 13px; margin-left: 55px;  margin-top: -15px;"><i>• 04.363.670/0001-23</i> – <b>(Ativa)</b></p>
-
-<p style="text-align: justify; font-size: 13px;">Atuei em equipe com os funcionários administrativos e diretamente com o gestor, desenvolvendo um dashboard web com diversas ferramentas, responsável por gerênciar documentos e a quantidade de gás GNV disponível nos tanques de alta pressão dos postos de gasolína, melhorando assim a logística de abastecimento em Brasília.</p>
-
-<p style="font-size: 15px;">•  Balança de Cargas <b>(2010-2011)</b></p>
-<p style="font-size: 13px; margin-left: 55px;"><b>• Administrador</b></p>
-<p style="font-size: 13px; margin-left: 55px;  margin-top: -15px;"><i>• 12.141.260/0001-66</i> – <b>(Ativa)</b></p>
-
-<p style="text-align: justify; font-size: 13px;">Ganhei uma concessão pública para gerir a balança de pesagens do CEASA-DF por quinze anos. Através de processo licitatório, obtive autorização para administrar a empresa, onde aperfeiçoei processos e fluxogramas. Após essa estruturação e já no processo de estudos em tecnologia, optei pela venda dos direitos de concessão para focar na carreira de TI.</p>
-
-<p style="font-size: 15px;">•  xPlound Sound Car <b>(2008-2009)</b></p>
-<p style="font-size: 13px; margin-left: 55px;"><b>• Sócio</b></p>
-<p style="font-size: 13px; margin-left: 55px;  margin-top: -15px;"><i>• 07.831.610/0001-86</i> – <b>(Ativa)</b></p>
-
-<p style="text-align: justify; font-size: 13px;">Como instalador me aperfeiçoei em sonorização automotiva, aprendendo fundamentos de litragens baseadas em RMS e na harmonização sonora. Em seguida como sócio, melhorei a organização da empresa com fluxogramas, otimizando os resultados financeiros até a sua venda posteriormente.</p>
+<p style="font-size: 16px;">•  xPlound Sound Car <b>(2008-2009)</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><b>• Sócio</b></p>
+<p style="font-size: 15px; margin-left: 55px; margin-top: -10px;"><i>• 07.831.610/0001-86</i> – <b>(Ativa)</b></p>
+<p style="text-align: justify; font-size: 15px; margin-top: -10px; margin-bottom: 20px;">Iniciei como instalador, aprimorando-me em sonorização automotiva e adquirindo conhecimentos em litragens baseadas em RMS e harmonização sonora. Ao me tornar sócio, implementei melhorias na organização da empresa através de fluxogramas, otimizando os resultados financeiros. Posteriormente, optei pela venda da empresa.</p>
