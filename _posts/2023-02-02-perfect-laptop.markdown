@@ -1,11 +1,11 @@
 ---
-title:  "Notebook perfeito"
+title:  "Notebook Definitivo"
 date:   2023-02-02 11:39:00
 categories: [building]
 tags: [tech]
 ---
 
-Neste artigo iremos mergulhar mais fundo nesse notebook que pretende ter o hardware definitivo para os próximos anos. Explorando suas especificações, recursos e desempenho vamos descobrir por que ele é a escolha perfeita para a construção de um robusto triple boot.
+Artigo que mergulha na construção de um notebook definitivo para os próximos anos. Explorando especificações, recursos e desempenho mostro como ele pode ser uma escolha perfeita para a construção de um robusto triple boot.
 
 <!--mais-->
 
