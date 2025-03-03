@@ -1,3 +1,8 @@
+---
+date:   2023-02-02 11:39:00
+categories: [test]
+---
+
 Com base nos dados do edital e na sua classificação (**posição 17**), vamos calcular sua probabilidade de ser chamado(a) para o **Cargo 3 (Redes de Computadores)**:
 
 ---
