@@ -24,6 +24,6 @@ Já o Assessor Militar do Departamento de Segurança da Informação do GSI, o C
 
 ![Debate do Cenário Regulatório da SI](/asset/images/events/sec-leaders-2019/debate_cenario_regulatorio.jpg)
 
-https://lip.sh/asset/files/events/sec-leaders-2019/cenario_regulatorio_LGPD_GDPR_PNSI_e_os_impactos_na_SI.mp3
+<!-- https://lip.sh/asset/files/events/sec-leaders-2019/cenario_regulatorio_LGPD_GDPR_PNSI_e_os_impactos_na_SI.mp3 ARQUIVO PERDIDO =/ -->
 
 ![Plateia](/asset/images/events/sec-leaders-2019/plateia.jpg)
