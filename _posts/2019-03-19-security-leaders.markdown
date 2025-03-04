@@ -1,7 +1,7 @@
 ---
 title:  "Secutiry Leaders"
 date:   2019-03-19 09:30:00
-categories: [infosec]
+categories: [forum]
 tags: [infosec]
 ---
 De olho na [CSTM](http://cstmexpo.com) que acontece de 25 à 27 de junho, o fórum desse ano foi propício para a discussão de temas que poderiam interessar tanto o setor privado como o setor público e acadêmico, no que tange a questão da segurança da informação, permitindo interações e possibilitando uma atualização de conhecimentos que podem ter bastante relevância, como a concepção e a situação atual da proposta da Política Nacional de Segurança.
