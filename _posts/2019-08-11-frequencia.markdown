@@ -1,7 +1,7 @@
 ---
 title:  "Análise de Frequência"
 date:   2019-08-11 21:18:00
-categories: [analytics]
+categories: [algoritmo]
 tags: [bigdata]
 ---
 

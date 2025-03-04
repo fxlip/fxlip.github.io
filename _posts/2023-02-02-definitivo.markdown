@@ -1,7 +1,7 @@
 ---
 title:  "Notebook Definitivo"
 date:   2023-02-02 11:39:00
-categories: [building]
+categories: [notebook]
 tags: [tech]
 ---
 
