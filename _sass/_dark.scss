@@ -4,24 +4,24 @@
 
 @mixin theme() {
   :root {
-    --base-color: #DBDBDB;
-    --border: dashed 1px rgba(219, 219, 219, 0.9);
-    --selection-background: rgba(219, 219, 219, 0.99);
-    --selection-text: #000;
-    --background-color: #000;
+    --base-color: #878BA6;
+    --border: dashed 1px rgba(135, 139, 166, 0.15);
+    --selection-background: rgba(135, 139, 166, 0.25);
+    --selection-text: #1E202F;
+    --background-color: #1E202F;
     --text-color: var(--base-color);
     --placeholder-color: var(--base-color);
-    --link-color: var(--base-color);
-    --code-color-1: #aaaaaa;
-    --code-color-2: #ffffcc;
-    --code-color-3: #F00000;
-    --code-color-4: #F0A0A0;
-    --code-color-5: #b38aff;
-    --code-color-6: #5ba711;
-    --code-color-7: #e4e477;
-    --code-color-8: #000080;
-    --code-color-9: #05ca05;
-    --code-color-10: #888888;
+    --link-color: #A0ACFE;
+    --code-color-1: #444864;
+    --code-color-2: #D14781;
+    --code-color-3: #FB6FA9;
+    --code-color-4: #FFB3D2;
+    --code-color-5: #FFB3D2;
+    --code-color-6: #A0ACFE;
+    --code-color-7: #D14781;
+    --code-color-8: #A0ACFE;
+    --code-color-9: #D14781;
+    --code-color-10: #878BA6;
     --code-color-11: #555555;
     --code-color-12: #800080;
     --code-color-13: #00d4d4;
