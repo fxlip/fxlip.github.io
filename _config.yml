@@ -7,6 +7,8 @@ baseurl: ''
 link: 'https://felip.com.br'
 locale: pt_BR
 
+style: dark
+
 author:
   name: 'Felip Barbosa de Medeiros'
   email: fxlip@tuta.io

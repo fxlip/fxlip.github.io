@@ -1,72 +1,36 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="color-scheme" content="dark light">
+  <title>{{ page.title }}</title>
+  {%- seo title=false -%}
 
+  {% if page.robots %}
+  <meta name="robots" content="{{page.robots}}" />
+  {% endif %}
 
-  <!-------------------------------------+
-   |    Hey Desenvolvedor, como vai?     |
-   |     Seja bem-vindo ao meu site.     |
-   |   Aqui no codigo fonte eu comento   |
-   |     todas os includes que uso =)    |
-   +------------------------------------->
+  {%- unless site.disable_google_fonts -%}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet">
+  {%- endunless -%}
 
-   <head>
+  {%- if site.listen_for_clients_preferred_style -%}
+  <link rel="stylesheet" type="text/css" href="{{ "/assets/main.css" | relative_url }}">
+  {%- else -%}
+  {%- if site.style == 'nord' -%}
+  <link rel="stylesheet" type="text/css" href="{{ "/assets/main-nord.css" | relative_url }}">
+  {%- elsif site.style == 'light' -%}
+  <link rel="stylesheet" type="text/css" href="{{ "/assets/main-light.css" | relative_url }}">
+  {%- elsif site.style == 'hacker' -%}
+  <link rel="stylesheet" type="text/css" href="{{ "/assets/main-hacker.css" | relative_url }}">
+  {%- else -%}
+  <link rel="stylesheet" type="text/css" href="{{ "/assets/main-dark.css" | relative_url }}">
+  {%- endif -%}
+  {%- endif -%}
 
-    <!-- O básico -->
-    <meta charset="utf-8">
-    <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
-    <!-- {% if page.robots %}<meta name="robots" content="{{ page.robots }}">{% endif %} -->
-    <meta name="author" content="{{ site.author.name }}">
-    <meta http-equiv="content-language" content="pt-br">
-    <link rel="stylesheet" href="{{ site.baseurl }}/asset/css/all.min.css">
-    <link rel="stylesheet" href="{{ site.baseurl }}/asset/css/solid.min.css">
-    <link type="text/plain" rel="author" href="{{ site.baseurl }}/humans.txt" />
-    <link rel="manifest" href="{{ site.baseurl }}/asset/images/favicons/manifest.json">
-    <link rel="shortcut icon" href="{{ site.baseurl }}/asset/images/favicons/favicon.ico">
-    <link rel="stylesheet" href="{{ site.baseurl }}/asset/css/main.css?{{site.time | date: '%s%N'}}">
-    <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html }}{% else %}{{ site.description_seo }}{% endif %}">
-    <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ site.baseurl }}/feed.xml">
-
-    <!-- Configuração personalizada para navegadores -->
-    <meta name="MobileOptimized" content="320">
-    <meta name="HandheldFriendly" content="True">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="viewport" content="width=device-width initial-scale=1" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-    <!-- Configuração dos thumbnails para o twitter -->
-    <meta name="twitter:card" content="summary">
-    {% if site.author.twitter_username %}<meta name="twitter:creator" content="{{ site.author.twitter_username }}">{% endif %}
-    <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
-    <meta name="twitter:image" content="{{ site.baseurl }}/asset/images/favicons/favicon-194x194.png" />
-    <meta name="twitter:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html }}{% else %}{{ site.description }}{% endif %}">
-
-    <!-- Configuração dos thumbnails para o open graph -->
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
-    <meta property="og:image" content="{{ site.baseurl }}/asset/images/favicons/favicon-194x194.png" />
-    <meta property="og:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html }}{% else %}{{ site.description }}{% endif %}">
-
-    <!-- Configuração de web clips para iOS -->
-    <link rel="apple-touch-icon" sizes="57x57" href="{{ site.baseurl }}/asset/images/favicons/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="{{ site.baseurl }}/asset/images/favicons/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="{{ site.baseurl }}/asset/images/favicons/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="{{ site.baseurl }}/asset/images/favicons/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="{{ site.baseurl }}/asset/images/favicons/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="{{ site.baseurl }}/asset/images/favicons/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="{{ site.baseurl }}/asset/images/favicons/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="{{ site.baseurl }}/asset/images/favicons/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ site.baseurl }}/asset/images/favicons/apple-icon-180x180.png">
-
-    <!-- Configuração de web clips para Windows 8 ou superior -->
-    <meta name="theme-color" content="#ffffff">
-    <meta name="msapplication-TileColor" content="#ffc40d">
-    <meta name="msapplication-TileImage" content="{{ site.baseurl }}/asset/images/favicons/ms-icon-144x144.png">
-
-    <!-- Favicons de todos os tamanhos usáveis -->
-    <link rel="icon" type="image/png" href="{{ site.baseurl }}/asset/images/favicons/favicon-16x16.png" sizes="16x16">
-    <link rel="icon" type="image/png" href="{{ site.baseurl }}/asset/images/favicons/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="{{ site.baseurl }}/asset/images/favicons/favicon-96x96.png" sizes="96x96">
-    <link rel="icon" type="image/png" href="{{ site.baseurl }}/asset/images/favicons/favicon-194x194.png" sizes="194x194">
-    <link rel="icon" type="image/png" href="{{ site.baseurl }}/asset/images/favicons/android-icon-192x192.png" sizes="192x192">
-
-   </head>
+  {%- if jekyll.environment == 'production' and site.tracking -%}
+  {%- include tracker.html -%}
+  {%- endif -%}
+</head>

@@ -1,148 +1,16 @@
-
-    <!-- Se o usuário estiver no celular o menu será esse -->
-    <span class="mobile btn-mobile-menu">
-      <i class="fas btn-mobile-menu__icon fa-bars"></i>
-      <i class="fas btn-mobile-close__icon hidden fa-times"></i>
-    </span>
-
-    <!-- A home do site será o header -->
-    <header class="panel-cover" style="background: url({{ site.baseurl }}/asset/images/background.gif) repeat">
-      <div class="panel-main">
-        <div class="panel-main__inner panel-inverted">
-          <div class="panel-main__content">
-
-            <!-- Avatar -->
-            <a href="{{ site.baseurl }}/" title="Link pra home">
-              <div class="nb-spinner" width="46px"></div>
-              <img src="{{ site.baseurl }}/asset/images/newprofile.png" class="user-image" alt="Euzinho">
-              <h1 class="panel-cover__title panel-title">{{ site.author.name }}</h1>
-            </a>
-            <hr class="panel-cover__divider">
-
-            <!-- Descrição -->
-            <p class="panel-cover__description">{{ site.description_site }}</p>
-            <hr class="panel-cover__divider panel-cover__divider--secondary">
-
-            <!-- Opções -->
-            <div class="navigation-wrapper">
-
-              <!-- Blog -->
-              <nav class="cover-navigation cover-navigation--primary">
-                <ul class="navigation">
-                  <!-- Currículo 
-                  <li class="navigation__item"><a href="{{ site.baseurl }}/asset/files/curriculo.pdf" title="Meu currículo" target="_blank" style="padding-top: 8px;padding-left: 12px;padding-bottom: 10px;padding-right: 12px;"><i class="fas fa-clipboard-list"></i></a></li>
-                   Conteudo -->
-                  <li class="navigation__item"><a href="{{ site.baseurl }}/#notas" title="Ler as publicações" class="blog-button">Notas</a></li>
-                </ul>
-              </nav>
-
-              <!-- Redes sociais -->
-              <nav class="cover-navigation navigation--social">
-                <ul class="navigation">{% if site.author.whatsapp_number %}
-                  <!-- Easter Egg 01
-                  <li class="navigation__item">
-                    <a href="https://api.whatsapp.com/send?phone={{ site.author.whatsapp_number }}" title="Fale comigo pelo whatsapp" target="_blank">
-                      <i class="fab fa-whatsapp"></i>
-                      <span class="label">Whatsapp</span>
-                    </a> 
-                  </li>-->
-                {% endif %}{% if site.author.email %}
-                  <!-- E-mail -->
-                  <li class="navigation__item">
-                    <a href="mailto:{{ site.author.email }}" title="Melhor forma de falar comigo!" target="_blank">
-                      <i class="fas fa-envelope"></i>
-                      <span class="label">Email</span>
-                    </a>
-                  </li>
-                {% endif %}{% if site.author.github_username %}
-                  <!-- GitHub -->
-                  <li class="navigation__item">
-                    <a href="http://github.com/{{ site.author.github_username }}" title="Meus códigos no github" target="_blank">
-                      <i class="fab fa-github"></i>
-                      <span class="label">GitHub</span>
-                    </a>
-                  </li>
-                {% endif %}{% if site.author.keybase_username %}
-                  <!-- Keybase -->
-                  <li class="navigation__item">
-                    <a href="https://keybase.io/{{ site.author.github_username }}" title="Minhas chaves no keybase" target="_blank">
-                      <i class="fab fa-keybase"></i>
-                      <span class="label">Keybase</span>
-                    </a>
-                  </li>
-                {% endif %}{% if site.author.twitter_username %}
-                <!--  Twitter  OFF 
-                <style>
-                /* fix */
-                    .fab.fa-twitter{
-                        font-family:sans-serif;
-                        font-size:18px;
-                        margin-top:0.5px;
-                    }
-                    .fab.fa-twitter::before{
-                        content:"𝕏";
-                    }
-                </style>
-                <li class="navigation__item">
-                  <a href="http://x.com/{{ site.author.twitter_username }}" title="Meus últimos tweets" target="_blank">
-                    <i class="fab fa-twitter"></i>
-                    <span class="label">Twitter</span>
-                  </a> 
-                </li> -->
-                {% endif %}{% if site.author.telegram_username %}
-                  <!-- Easter Egg 02
-                  <li class="navigation__item">
-                    <a href="https://t.me/{{ site.author.telegram_username }}" title="Fale comigo pelo telegram" target="_blank">
-                      <i class="fab fa-telegram"></i>
-                      <span class="label">Telegram</span>
-                    </a>
-                  </li>-->
-                {% endif %}{% if site.author.discord_link %}
-                  <!-- Easter Egg 03
-                  <li class="navigation__item">
-                    <a href="http://discordapp.com/invite/{{ site.author.discord_link }}" title="The Chain Gang no Discord" target="_blank">
-                      <i class="fab fa-discord"></i>
-                      <span class="label">Discord</span>
-                    </a>
-                  </li> -->
-                {% endif %}{% if site.author.strava_link %}
-                <!--  Easter Egg 04
-                <li class="navigation__item">
-                  <a href="http://strava.com/athletes/{{ site.author.strava_link }}" title="Minhas atividades no Strava" target="_blank">
-                    <i class="fab fa-strava"></i>
-                    <span class="label">Strava</span>
-                  </a>
-                </li> -->
-                {% endif %}{% if site.author.instagram_username %}
-                  <!-- Easter Egg 05
-                  <li class="navigation__item">
-                    <a href="http://instagr.am/{{ site.author.instagram_username }}" title="Minhas fotos no instagram" target="_blank">
-                      <i class="fab fa-instagram"></i>
-                      <span class="label">Instagram</span>
-                    </a> 
-                  </li> -->
-                {% endif %}{% if site.author.steam_username %}
-                  <!-- Easter Egg 06
-                  <li class="navigation__item">
-                    <a href="http://steamcommunity.com/id/{{ site.author.steam_username }}" title="Meus jogos no computador" target="_blank">
-                      <i class="fab fa-steam"></i>
-                      <span class="label">Steam</span>
-                    </a>
-                  </li>-->
-                {% endif %}{% if site.author.psn_username %}
-                  <!-- Easter Egg 07
-                  <li class="navigation__item">
-                    <a href="http://psnprofiles.com/{{ site.author.psn_username }}" title="Meus jogos no console" target="_blank">
-                      <i class="fab fa-playstation"></i>
-                      <span class="label">Playstation Network</span>
-                    </a>
-                  </li>-->
-                {% endif %}
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </div>
-        <div class="panel-cover--overlay"></div>
-      </div>
-    </header>
+{%- assign default_paths = site.html_pages | map: 'path' -%}
+{%- assign page_paths = site.header_pages | default: default_paths -%}
+<header>
+  <div class="menu">
+    <ul>
+      {%- for path in page_paths -%}
+        {%- assign my_page = site.pages | where: "path", path | first -%}
+        {%- if my_page.title -%}
+        <li>
+          <a href="{{ my_page.url | relative_url }}"{% if page.url == my_page.url %} aria-current="page"{% endif %}>{{ my_page.title | escape }}</a>
+        </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+</header>
