@@ -1,14 +1,15 @@
-# frozen_string_literal: true
-
+# Gemfile
 source "https://rubygems.org"
-gemspec
 
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
-gem 'webrick'
+gem "jekyll", "~> 4.3.0"
+gem "jekyll-seo-tag"
+gem "jekyll-sitemap"
+gem "jekyll-feed"
+gem "jekyll-paginate" # <--- ADICIONE ISTO
+gem "webrick"
 
-gem 'nokogiri'
-# Use libsass via jekyll-sass-converter 2.x to avoid Dart Sass
-# deprecation warnings for @import during local development.
-# Pin Jekyll to a version compatible with converter 2.x.
-gem 'jekyll', '~> 4.2.2'
-gem 'jekyll-sass-converter', '~> 2.2'
+group :jekyll_plugins do
+  gem "jekyll-minifier"
+end

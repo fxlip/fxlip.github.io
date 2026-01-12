@@ -6,13 +6,47 @@ require 'yaml'
 require 'fileutils'
 
 ROOT = File.expand_path(File.join(__dir__, '..'))
-POSTS_DIR = File.join(ROOT, '_posts')
+POSTS_DIR = File.join(ROOT, '_curadoria') # Atualizado para ler da pasta certa
 DATA_DIR = File.join(ROOT, '_data')
 PREVIEWS_FILE = File.join(DATA_DIR, 'previews.yml')
 
+# 1. Método para limpar títulos baseado no domínio (AQUI ESTÁ A MÁGICA)
+def apply_domain_rules(data, url)
+  return data unless data['title']
+  
+  begin
+    host = URI.parse(url).host.downcase
+  rescue
+    return data
+  end
+
+  case host
+  # REGRAS PARA O G1
+  when /g1\.globo\.com/
+    # Remove "| G1" ou "- G1" do final
+    data['title'] = data['title'].gsub(/\s*\|\s*G1\s*$/, '').gsub(/\s*-\s*G1\s*$/, '')
+  
+  # REGRAS PARA O YOUTUBE (Exemplo futuro)
+  when /youtube\.com/, /youtu\.be/
+    data['title'] = data['title'].gsub(/\s*-\s*YouTube$/, '')
+
+  # REGRAS PARA O UOL (Exemplo futuro)
+  when /uol\.com\.br/
+    data['title'] = data['title'].gsub(/\s*-\s*UOL.*$/, '')
+  
+  # ADICIONE NOVOS SITES AQUI SEGUINDO O PADRÃO:
+  # when /site\.com/
+  #   data['title'] = ...
+  end
+
+  # Limpeza geral (espaços extras)
+  data['title'] = data['title'].strip
+  data
+end
+
 def find_first_link(text)
   return nil unless text
-  # match http(s) links
+  # Encontra links http(s)
   m = text.match(/https?:\/\/[^)\s"'>]+/i)
   m && m[0]
 end
@@ -26,33 +60,37 @@ def fetch_url(url, limit = 5)
   http.use_ssl = (uri.scheme == 'https')
   http.open_timeout = 8
   http.read_timeout = 10
-  req = Net::HTTP::Get.new(uri.request_uri)
-  req['User-Agent'] = 'Mozilla/5.0 (compatible; link-preview-bot/1.0)'
+  
+  request = Net::HTTP::Get.new(uri.request_uri)
+  # User-Agent genérico para evitar bloqueios
+  request['User-Agent'] = 'Mozilla/5.0 (compatible; LinkPreviewBot/1.0; +http://felip.com.br)'
 
-  res = http.request(req)
-  case res
-  when Net::HTTPSuccess
-    return res.body
-  when Net::HTTPRedirection
-    location = res['location']
-    return fetch_url(location, limit - 1) if location
-    return nil
-  else
-    return nil
+  begin
+    response = http.request(request)
+    case response
+    when Net::HTTPSuccess
+      response.body
+    when Net::HTTPRedirection
+      location = response['location']
+      fetch_url(location, limit - 1)
+    else
+      nil
+    end
+  rescue
+    nil
   end
-rescue => e
-  warn "fetch error for #{url}: #{e.message}"
-  nil
 end
 
-def extract_preview(body, base_url)
-  return nil unless body
-  doc = Nokogiri::HTML(body)
+def extract_og_data(html, url)
+  doc = Nokogiri::HTML(html)
   og = {}
+  
+  # Estratégia de fallback: OG Tags -> Meta Tags -> Title Tag
   doc.css('meta').each do |m|
-    prop = (m['property'] || m['name'] || '').to_s.downcase
+    prop = m['property'] || m['name']
     content = m['content'] || m['value']
     next unless prop && content
+    
     if prop.start_with?('og:')
       key = prop.sub('og:', '')
       og[key] = content
@@ -63,44 +101,68 @@ def extract_preview(body, base_url)
     end
   end
 
-  title = og['title'] || (doc.at('title') && doc.at('title').text.strip)
+  title = og['title'] || (doc.at('title') && doc.at('title').text)
   desc = og['description'] || (doc.at('meta[name="description"]') && doc.at('meta[name="description"]')['content'])
   img = og['image']
-  if img && base_url
+
+  # Corrige URLs relativas de imagem
+  if img && !img.start_with?('http')
     begin
-      img = URI.join(base_url, img).to_s
+      img = URI.join(url, img).to_s
     rescue
     end
   end
 
-  { 'title' => title, 'description' => desc, 'image' => img }
+  { 'title' => title, 'description' => desc, 'image' => img, 'url' => url }
 end
 
-previews = {}
-Dir.mkdir(DATA_DIR) unless Dir.exist?(DATA_DIR)
+# Carrega previews existentes
+previews = File.exist?(PREVIEWS_FILE) ? YAML.load_file(PREVIEWS_FILE) : {}
+previews ||= {} # Garante que não é nil
 
-Dir.glob(File.join(POSTS_DIR, '*')) do |post_path|
-  next unless File.file?(post_path)
+updated = false
+
+# Varre a pasta de curadoria
+Dir.glob(File.join(POSTS_DIR, '*.{md,markdown}')) do |post_path|
   filename = File.basename(post_path)
+  # Slug é o nome do arquivo sem data e extensão
   slug = filename.sub(/^\d{4}-\d{2}-\d{2}-/, '').sub(/\.[^.]+$/, '')
+  
+  # Se já tem preview e título, pula (Economia de recurso)
+  next if previews[slug] && previews[slug]['title']
+
   content = File.read(post_path)
-  link = find_first_link(content)
-  next unless link
-  puts "Processing #{filename} -> #{link}"
-  body = fetch_url(link)
-  preview = extract_preview(body, link)
-  if preview.nil?
-    warn "warning: could not extract preview for #{link} (empty body or parse error)"
-    preview = {}
+  
+  # Verifica se tem link no Front Matter (novo padrão) ou no corpo
+  # Tenta extrair do front matter primeiro (mais seguro)
+  if content =~ /^link_url:\s*"?([^"\n]+)"?/
+    link = $1
+  else
+    link = find_first_link(content)
   end
-  preview['url'] = link
+
+  next unless link
+  
+  puts "[PROCESSING] #{slug} -> #{link}"
+  
+  body = fetch_url(link)
+  next unless body
+
+  preview = extract_og_data(body, link)
+  
+  # APLICA A LIMPEZA DE TÍTULO AQUI
+  preview = apply_domain_rules(preview, link)
+
   previews[slug] = preview
-  # small delay to be polite
-  sleep 0.5
+  updated = true
+  
+  # Delay anti-block
+  sleep 1
 end
 
-File.open(PREVIEWS_FILE, 'w') do |f|
-  f.write(previews.to_yaml)
+if updated
+  File.open(PREVIEWS_FILE, 'w') { |f| f.write(previews.to_yaml) }
+  puts "[SUCCESS] Previews database updated."
+else
+  puts "[INFO] No new links to process."
 end
-
-puts "Wrote #{PREVIEWS_FILE} with #{previews.keys.size} previews"

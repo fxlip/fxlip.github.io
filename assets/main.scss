@@ -1,16 +1,134 @@
 ---
-# Only the main Sass file needs front matter (the dashes are enough)
+# Front Matter
 ---
 
-// Use @import for compatibility with GitHub Pages (libsass)
-@import "base";
+/* ==========================================================================
+   1. CORE VARIABLES
+   ========================================================================== */
+:root {
+  --base-color: #878BA6;
+  --background-color: #1E202F;
+  --text-color: var(--base-color);
+  --placeholder-color: var(--base-color);
+  
+  /* BORDAS */
+  --border: dashed 1px rgba(135, 139, 166, 0.15);
+  --card-border: 1px solid rgba(255, 255, 255, 0.04);
+  
+  /* LINKS */
+  --link-color: #FFB3D2;
+  --link-hover-color: #FB6FA9;
+  --selection-background: rgba(135, 139, 166, 0.25);
+  --selection-text: #1E202F;
 
-// Import light theme and include its variables first
-@import "light";
-@include theme();
-
-// Then import dark theme and include inside media query
-@import "dark";
-@media (prefers-color-scheme: dark) {
-  @include theme();
+  /* SYNTAX HIGHLIGHTING */
+  --code-color-1: #444864; --code-color-2: #D14781; --code-color-3: #FB6FA9;
+  --code-color-11: #555555;
 }
+
+/* ==========================================================================
+   2. RESET & TYPOGRAPHY
+   ========================================================================== */
+body {
+  background-color: var(--background-color);
+  margin: 0 auto; padding: 0;
+  font-family: monospace;
+  font-size: 14px;
+  color: var(--text-color);
+  text-align: left;
+  line-height: 1.5 !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: 14px; margin: 0; margin-top: 22px;
+  font-weight: bold; color: var(--text-color);
+}
+
+/* Links Globais */
+a { text-decoration: underline; color: var(--link-color); }
+a:hover { color: var(--link-hover-color); background-color: transparent; }
+
+/* ==========================================================================
+   3. LAYOUT: HEADER
+   ========================================================================== */
+header {
+  margin-top: 25px; margin-bottom: 30px;
+  border-top: var(--border);
+  border-bottom: var(--border);
+  padding-top: 15px; padding-bottom: 15px;
+  text-align: right;
+}
+
+.menu ul { list-style: none; padding: 0; margin: 0; }
+.menu ul li { display: inline-block; margin-left: 20px; }
+
+/* Menu limpo */
+.menu a { 
+  text-decoration: none; 
+  border-bottom: none !important;
+}
+
+/* ==========================================================================
+   4. POSTS & SEPARADORES
+   ========================================================================== */
+hr, .post-list__divider {
+  border: 0; 
+  border-bottom: var(--border);
+  margin: 2em 0; /* Margem padrão do separador (~28px) */
+  display: block;
+  height: 1px;
+  background: transparent;
+}
+
+/* AQUI: Ajuste da Data (5px de distância) */
+.post-date {
+  display: block;
+  text-align: right;
+  margin-top: 5px; /* Puxado para cima */
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+/* ==========================================================================
+   5. LINK CARDS
+   ========================================================================== */
+.link-card {
+  margin-top: 10px;
+  background: rgba(255,255,255,0.02);
+  border: var(--card-border);
+  padding: 10px;
+  border-radius: 6px;
+  color: var(--base-color);
+  display: flex; gap: 10px; align-items: flex-start;
+}
+
+.link-card a {
+  text-decoration: none !important;
+  border: none;
+}
+
+.link-card .lc-img { width: 120px; height: 80px; object-fit: cover; border-radius: 4px; flex: 0 0 120px; }
+.link-card .lc-meta { flex: 1 1 auto; }
+.link-card .lc-host { color: var(--link-hover-color); font-weight: 700; }
+.link-card .lc-desc { color: var(--placeholder-color); font-size: 0.95em; margin-top: 6px; }
+
+/* ==========================================================================
+   6. UTILS & FOOTER
+   ========================================================================== */
+.container { width: 90%; max-width: 600px; margin: 0 auto; }
+
+/* AQUI: Footer Puxado */
+footer { 
+  /* Margem negativa para compensar o HR de cima e igualar ao Header */
+  margin: -10px 0 30px 0; 
+  text-align: right; 
+  opacity: 1; 
+}
+
+input, textarea {
+  background-color: var(--background-color); color: var(--text-color);
+  border: 1px solid rgba(135, 139, 166, 0.3);
+  width: 100%; padding: 8px; margin-bottom: 10px;
+}
+
+@media only screen and (max-device-width: 500px) { * { font-size: 12px !important; } }
