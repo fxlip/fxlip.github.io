@@ -1,8 +1,8 @@
 ---
-title:  "teste 3"
+title:  "teste 4"
 date:   2026-01-12 12:04:20
 ---
 
-Aaron Hillel Swartz foi um programador, escritor, ativista político e hackativista estadunidense. Participou na criação do feed RSS, da linguagem de marcação simples Markdown, da organização Creative Commons e do framework web.py, assim como foi cofundador da rede social e de notícias Reddit.
+aparentemente existe uma máquina linux ideal para o torvalds, mas qual seria a do stallman? acho que provavelmente alguma da technoethical
 
-https://www.instagram.com/p/DTXd7zNlKzI/
+https://www.youtube.com/watch?v=Qq-FZtSBlA0
