@@ -10,36 +10,29 @@ DATA_DIR = File.join(ROOT, '_data')
 PREVIEWS_FILE = File.join(DATA_DIR, 'previews.yml')
 TARGET_DIRS = ['_curadoria', '_posts']
 
-puts "--- LINK PREVIEW GENERATOR V7 (Embed Protocol) ---"
+puts "--- LINK PREVIEW GENERATOR V8 (Embed Extractor) ---"
 
 # 1. Filtro Sanitário
 def apply_domain_rules(data, url)
   return data unless data['title']
-  
   if data['title'].respond_to?(:force_encoding)
     data['title'] = data['title'].force_encoding('UTF-8')
   end
-
-  begin
-    host = URI.parse(url).host.downcase
-  rescue
-    return data
-  end
   
+  host = URI.parse(url).host.downcase rescue nil
+  return data unless host
+
   case host
   when /g1\.globo\.com/
     data['title'] = data['title'].gsub(/\s*\|\s*G1.*$/, '').gsub(/\s*-\s*G1.*$/, '')
-  when /youtube\.com/, /youtu\.be/
-    data['title'] = data['title'].gsub(/\s*-\s*YouTube$/, '')
   when /uol\.com\.br/
     data['title'] = data['title'].gsub(/\s*-\s*UOL.*$/, '')
   end
-
   data['title'] = data['title'].strip
   data
 end
 
-# 2. Fetch Genérico
+# 2. Fetch Genérico (Para sites normais e tentativa de título YT)
 def fetch_url(url, limit = 5)
   return nil if limit == 0
   uri = URI.parse(url)
@@ -51,6 +44,7 @@ def fetch_url(url, limit = 5)
   http.read_timeout = 8
   
   request = Net::HTTP::Get.new(uri.request_uri)
+  # User-Agent mobile as vezes passa melhor no YouTube
   request['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
   
   begin
@@ -65,45 +59,8 @@ def fetch_url(url, limit = 5)
   end
 end
 
-# 3. Especialista YouTube (Via Embed)
-def fetch_youtube_data(url)
-  # Extrai ID do vídeo
-  vid_id = nil
-  if url =~ /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/
-    vid_id = $1
-  end
-
-  return nil unless vid_id
-
-  # A Mágica: Acessa a página de Embed (menos bloqueada)
-  embed_url = "https://www.youtube-nocookie.com/embed/#{vid_id}"
-  html = fetch_url(embed_url)
-  
-  return nil unless html
-
-  # Extrai Título direto do código fonte (Regex rápido)
-  title = nil
-  if html =~ /<title>(.*?) - YouTube<\/title>/
-    title = $1
-  elsif html =~ /<title>(.*?)<\/title>/
-    title = $1
-  end
-
-  # Limpa entidades HTML no título (ex: &#39; -> ')
-  title = CGI.unescapeHTML(title) if title
-
-  # Monta imagem manualmente (Alta Qualidade)
-  image = "https://img.youtube.com/vi/#{vid_id}/hqdefault.jpg"
-
-  return {
-    'title' => title,
-    'description' => "Assista no YouTube", # Embed não tem descrição completa
-    'image' => image,
-    'url' => url
-  }
-end
-
 def extract_og_data(html, url)
+  return nil unless html
   doc = Nokogiri::HTML(html)
   og = {}
   doc.css('meta').each do |m|
@@ -112,10 +69,6 @@ def extract_og_data(html, url)
     next unless prop && content
     if prop.start_with?('og:')
       og[prop.sub('og:', '')] = content
-    elsif prop == 'twitter:title' && !og['title']
-      og['title'] = content
-    elsif prop == 'description' && !og['description']
-      og['description'] = content
     end
   end
   
@@ -129,8 +82,6 @@ def extract_og_data(html, url)
   
   { 'title' => title, 'description' => desc, 'image' => img, 'url' => url }
 end
-
-require 'cgi' # Necessário para limpar títulos
 
 # --- LÓGICA PRINCIPAL ---
 
@@ -158,38 +109,62 @@ TARGET_DIRS.each do |dir_name|
 
     next unless link
 
-    # Força atualização se o título estiver vazio ou for genérico "YouTube"
-    needs_update = !previews[slug] || 
-                   previews[slug]['title'].to_s.strip.empty? || 
-                   previews[slug]['title'] == "YouTube"
+    # --- DETECÇÃO DE YOUTUBE (Prioridade Máxima) ---
+    video_id = nil
+    if link =~ /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/
+      video_id = $1
+    end
 
-    if !needs_update
-      # Apenas aplica filtros de limpeza
-      old_title = previews[slug]['title']
-      previews[slug] = apply_domain_rules(previews[slug], previews[slug]['url'])
-      if old_title != previews[slug]['title']
-        puts " [FIX] #{slug} (Título limpo)"
+    # Se já tem preview completo, verifica limpeza
+    if previews[slug] && previews[slug]['title'] && !previews[slug]['title'].to_s.empty?
+      # Se for vídeo e não tiver ID salvo, adiciona
+      if video_id && !previews[slug]['video_id']
+        previews[slug]['video_id'] = video_id
+        puts " [UPGRADE] #{slug} -> Adicionado Video ID: #{video_id}"
         updated = true
+      else
+        # Limpeza de título
+        old_title = previews[slug]['title']
+        previews[slug] = apply_domain_rules(previews[slug], previews[slug]['url'])
+        if old_title != previews[slug]['title']
+          puts " [FIX] #{slug} (Título limpo)"
+          updated = true
+        end
       end
     else
+      # --- DOWNLOAD NOVO ---
       puts " [FETCH] #{slug} -> #{link}"
       
-      data = nil
-      if link =~ /youtube\.com|youtu\.be/
-        data = fetch_youtube_data(link)
+      data = {}
+      
+      if video_id
+        # Se tem ID, garantimos o embed mesmo sem título
+        data['video_id'] = video_id
+        data['image'] = "https://img.youtube.com/vi/#{video_id}/hqdefault.jpg"
+        
+        # Tenta pegar título via HTML simples (Embed URL)
+        embed_url = "https://www.youtube.com/embed/#{video_id}"
+        body = fetch_url(embed_url)
+        if body && body =~ /<title>(.*?) - YouTube<\/title>/
+          data['title'] = $1
+        else
+          data['title'] = "Assista no YouTube" # Fallback
+        end
       else
+        # Site normal
         body = fetch_url(link)
         data = extract_og_data(body, link) if body
       end
 
-      if data && data['title'] && !data['title'].empty?
+      if data
+        data['url'] = link
         data = apply_domain_rules(data, link)
         previews[slug] = data
         updated = true
-        puts "   -> Sucesso: #{data['title']}"
+        puts "   -> Sucesso: #{data['title']} #{video_id ? '[VIDEO]' : ''}"
         sleep 2
       else
-        puts "   -> Falha: Dados insuficientes."
+        puts "   -> Falha."
       end
     end
   end

@@ -23,19 +23,35 @@ layout: default
         </div>
 
         {% if pv %}
-          <div class="link-card">
-            {% if pv.image %}
-              <img src="{{ pv.image }}" alt="{{ pv.title | escape }}" class="lc-img" />
-            {% endif %}
-            <div class="lc-meta">
-              <div class="lc-host">
-                <a href="{{ pv.url }}" target="_blank" rel="noopener noreferrer">{{ pv.title }}</a>
-              </div>
-              {% if pv.description %}
-                <div class="lc-desc">{{ pv.description }}</div>
-              {% endif %}
+          
+          {% if pv.video_id %}
+            <div class="video-wrapper">
+              <iframe 
+                src="https://www.youtube-nocookie.com/embed/{{ pv.video_id }}" 
+                title="{{ pv.title }}" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen 
+                loading="lazy">
+              </iframe>
             </div>
-          </div>
+          
+          {% else %}
+            <div class="link-card">
+              {% if pv.image %}
+                <img src="{{ pv.image }}" alt="{{ pv.title | escape }}" class="lc-img" />
+              {% endif %}
+              <div class="lc-meta">
+                <div class="lc-host">
+                  <a href="{{ pv.url }}" target="_blank" rel="noopener noreferrer">{{ pv.title }}</a>
+                </div>
+                {% if pv.description %}
+                  <div class="lc-desc">{{ pv.description }}</div>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+
         {% endif %}
 
         <time class="post-date" datetime="{{ post.date | date: "%Y-%m-%d %H:%M" }}">
