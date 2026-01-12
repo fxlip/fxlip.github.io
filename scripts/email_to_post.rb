@@ -17,11 +17,10 @@ POSTS_DIR = File.join(ROOT, '_posts')
 
 def slugify(text)
   return "post-#{SecureRandom.hex(4)}" if text.nil? || text.strip.empty?
-  # Remove caracteres especiais e espaços
   text.to_s.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
 end
 
-puts "--- INICIANDO PROTOCOLO EMAIL-TO-GIT (BRT) ---"
+puts "--- INICIANDO PROTOCOLO EMAIL-TO-GIT (FORÇANDO BRT) ---"
 
 begin
   imap = Net::IMAP.new(IMAP_SERVER, port: IMAP_PORT, ssl: true)
@@ -40,15 +39,16 @@ begin
     msg = imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
     mail = Mail.new(msg)
 
-    # --- AJUSTE DE FUSO HORÁRIO (Brasília UTC-3) ---
-    # O servidor do GitHub roda em UTC. Forçamos a conversão.
-    now_br = Time.now.getlocal("-03:00")
-    
-    # TIMESTAMP COMO TÍTULO
-    # Se não tiver assunto, usa: YYYYMMDD-HHMMSS (ex: 20260112-221500)
+    # --- CORREÇÃO DE FUSO HORÁRIO (Cálculo Manual) ---
+    # O servidor está em UTC. Subtraímos 3 horas (3 * 3600 segundos) manualmente.
+    # Isso garante que 22:00 UTC vire 19:00 (Visualmente BRT)
+    utc_now = Time.now.utc
+    br_time = utc_now - 10800 
+
+    # Se não tiver assunto, usa o timestamp BRT ajustado
     subject = mail.subject
     if subject.nil? || subject.strip.empty?
-      subject = now_br.strftime('%Y%m%d-%H%M%S')
+      subject = br_time.strftime('%Y%m%d-%H%M%S') # Ex: 20260112-191500
     end
 
     body = if mail.multipart?
@@ -62,9 +62,10 @@ begin
 
     puts "Processando: #{subject}"
 
-    # Datas formatadas com o fuso correto
-    post_date = now_br.strftime('%Y-%m-%d %H:%M:%S %z') # Formato Jekyll completo
-    filename_date = now_br.strftime('%Y-%m-%d')
+    # Formata a data forçando a string do fuso para -0300
+    # O Jekyll vai ler isso e entender que é horário de Brasília
+    post_date = br_time.strftime('%Y-%m-%d %H:%M:%S -0300')
+    filename_date = br_time.strftime('%Y-%m-%d')
     
     slug = slugify(subject)
     
