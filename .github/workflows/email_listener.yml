@@ -1,0 +1,53 @@
+name: Email Listener Protocol
+
+on:
+  schedule:
+    - cron: '*/5 * * * *' # Checa a cada 5 minutos (Máxima velocidade permitida)
+  workflow_dispatch: # Permite disparo manual
+
+jobs:
+  check_emails:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5 # Segurança contra travamentos
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby with Cache
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true # Cache agressivo para rodar em ~15s
+
+      # Gemfile local para o cache funcionar
+      - name: Create Gemfile
+        run: |
+          echo "source 'https://rubygems.org'" > Gemfile
+          echo "gem 'mail'" >> Gemfile
+          echo "gem 'net-imap'" >> Gemfile
+
+      - name: Install Dependencies
+        run: bundle install
+
+      - name: Run Email Processor
+        env:
+          EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          ALLOWED_SENDER: ${{ secrets.ALLOWED_SENDER }}
+        run: ruby scripts/email_to_post.rb
+
+      - name: Commit and Push
+        run: |
+          git config user.name "Email Bot"
+          git config user.email "bot@felip.com.br"
+          git add _posts/
+          # Só comita se houver arquivos novos
+          if git diff --staged --quiet; then
+            echo "Nenhum post novo. Dormindo..."
+          else
+            git commit -m "feat(email): new post incoming via smtp"
+            git push
+          fi
