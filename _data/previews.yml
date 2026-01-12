@@ -20,7 +20,8 @@ test3:
   image: https://s2-g1.glbimg.com/JS960WX7BB4n_dwpCuMygJ1JJjU=/1400x0/filters:format(jpeg)/https://i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2026/R/d/FmvVtIQ3m0aNzJ3qDBcA/135782211-1334209480247457-8278645121229731837-n.jpg
   url: https://g1.globo.com/tecnologia/noticia/2026/01/07/google-e-startup-de-ia-fecham-acordo-em-processo-envolvendo-suicidio-de-jovem-motivado-por-chatbot.ghtml
 test4:
-  video_id: dQw4w9WgXcQ
-  image: https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg
-  title: Assista no YouTube
-  url: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+  title: YouTube
+  description: Assista no YouTube
+  image: https://img.youtube.com/vi/956p_PyP1Vo/hqdefault.jpg
+  url: https://youtu.be/956p_PyP1Vo
+  video_id: 956p_PyP1Vo
