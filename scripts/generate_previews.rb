@@ -4,14 +4,14 @@ require 'uri'
 require 'nokogiri'
 require 'yaml'
 require 'fileutils'
-require 'json'
+# require 'json' # Não precisamos mais do JSON
 
 ROOT = File.expand_path(File.join(__dir__, '..'))
 DATA_DIR = File.join(ROOT, '_data')
 PREVIEWS_FILE = File.join(DATA_DIR, 'previews.yml')
 TARGET_DIRS = ['_curadoria', '_posts']
 
-puts "--- LINK PREVIEW GENERATOR V5 (NoEmbed Proxy) ---"
+puts "--- LINK PREVIEW GENERATOR V6 (Stealth Scraper) ---"
 
 # 1. Filtro Sanitário
 def apply_domain_rules(data, url)
@@ -40,41 +40,7 @@ def apply_domain_rules(data, url)
   data
 end
 
-# 2. Módulo Especial para YouTube (Via NoEmbed)
-def fetch_youtube_data(url)
-  # Usamos o noembed.com como proxy para evitar bloqueio de IP do GitHub (Erro 401)
-  proxy_endpoint = "https://noembed.com/embed?url=#{url}"
-  
-  begin
-    uri = URI.parse(proxy_endpoint)
-    response = Net::HTTP.get_response(uri)
-    
-    if response.is_a?(Net::HTTPSuccess)
-      json = JSON.parse(response.body)
-      
-      if json['error']
-        puts "   [YOUTUBE] Erro do Proxy: #{json['error']}"
-        return nil
-      end
-
-      # NoEmbed retorna 'thumbnail_url' e 'title'
-      return {
-        'title' => json['title'],
-        'description' => nil, 
-        'image' => json['thumbnail_url'],
-        'url' => url
-      }
-    else
-      puts "   [YOUTUBE] Falha no Proxy: #{response.code}"
-      return nil
-    end
-  rescue => e
-    puts "   [YOUTUBE] Erro: #{e.message}"
-    return nil
-  end
-end
-
-# 3. Fetch Genérico
+# 2. Fetch Genérico (Agora usado para TUDO, inclusive YouTube)
 def fetch_url(url, limit = 5)
   return nil if limit == 0
   uri = URI.parse(url)
@@ -86,27 +52,40 @@ def fetch_url(url, limit = 5)
   http.read_timeout = 8
   
   request = Net::HTTP::Get.new(uri.request_uri)
-  request['User-Agent'] = 'Mozilla/5.0 (compatible; LinkPreviewBot/1.0; +http://felip.com.br)'
+  
+  # AQUI ESTÁ O TRUQUE: User-Agent de um Chrome real no Windows
+  request['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+  request['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
+  request['Accept-Language'] = 'en-US,en;q=0.5'
   
   begin
     response = http.request(request)
     case response
-    when Net::HTTPSuccess then response.body
-    when Net::HTTPRedirection then fetch_url(response['location'], limit - 1)
-    else nil
+    when Net::HTTPSuccess 
+      # Se o YouTube pedir consentimento (cookies), tentamos extrair mesmo assim
+      response.body
+    when Net::HTTPRedirection 
+      fetch_url(response['location'], limit - 1)
+    else 
+      puts "   [HTTP] Erro #{response.code} ao acessar #{url}"
+      nil
     end
-  rescue
+  rescue => e
+    puts "   [HTTP] Erro de conexão: #{e.message}"
     nil
   end
 end
 
 def extract_og_data(html, url)
+  return nil unless html
   doc = Nokogiri::HTML(html)
   og = {}
+  
   doc.css('meta').each do |m|
     prop = m['property'] || m['name']
     content = m['content'] || m['value']
     next unless prop && content
+    
     if prop.start_with?('og:')
       og[prop.sub('og:', '')] = content
     elsif prop == 'twitter:title' && !og['title']
@@ -120,6 +99,15 @@ def extract_og_data(html, url)
   desc = og['description'] || (doc.at('meta[name="description"]') ? doc.at('meta[name="description"]')['content'] : nil)
   img = og['image']
   
+  # Fallback específico para YouTube (às vezes og:image falha)
+  if url =~ /youtube\.com|youtu\.be/ && (!img || img.empty?)
+    # Tenta pegar o ID do vídeo e montar a URL da thumb manualmente
+    if url =~ /(?:v=|youtu\.be\/)([^&?]+)/
+      vid_id = $1
+      img = "https://img.youtube.com/vi/#{vid_id}/hqdefault.jpg"
+    end
+  end
+
   if img && !img.start_with?('http')
     img = URI.join(url, img).to_s rescue nil
   end
@@ -153,8 +141,8 @@ TARGET_DIRS.each do |dir_name|
 
     next unless link
 
-    # Se já existe e tem título válido, verifica se precisa de limpeza
-    if previews[slug] && previews[slug]['title'] && !previews[slug]['title'].to_s.strip.empty?
+    # Lógica de Retry: Se o título estiver vazio ou for "YouTube", tenta de novo
+    if previews[slug] && previews[slug]['title'] && !previews[slug]['title'].to_s.strip.empty? && previews[slug]['title'] != "YouTube"
       old_title = previews[slug]['title']
       previews[slug] = apply_domain_rules(previews[slug], previews[slug]['url'])
       if old_title != previews[slug]['title']
@@ -162,27 +150,23 @@ TARGET_DIRS.each do |dir_name|
         updated = true
       end
     else
-      # Modo Download (Novo ou Reparo de Erro)
+      # Modo Download
       puts " [FETCH] #{slug} -> #{link}"
       
-      data = nil
-      
-      # SE FOR YOUTUBE, USA O PROXY NOEMBED
-      if link =~ /youtube\.com|youtu\.be/
-        data = fetch_youtube_data(link)
+      body = fetch_url(link)
+      if body
+        data = extract_og_data(body, link)
+        if data && data['title']
+          data = apply_domain_rules(data, link)
+          previews[slug] = data
+          updated = true
+          puts "   -> Sucesso: #{data['title']}"
+          sleep 2 # Delay maior para não irritar o servidor
+        else
+          puts "   -> Dados incompletos extraídos."
+        end
       else
-        body = fetch_url(link)
-        data = extract_og_data(body, link) if body
-      end
-
-      if data && data['title']
-        data = apply_domain_rules(data, link)
-        previews[slug] = data
-        updated = true
-        puts "   -> Sucesso: #{data['title']}"
-        sleep 1
-      else
-        puts "   -> Falha ao obter dados"
+        puts "   -> Falha no download."
       end
     end
   end

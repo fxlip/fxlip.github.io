@@ -3,6 +3,6 @@ title:  "teste 4"
 date:   2026-01-12 12:04:20
 ---
 
-aparentemente existe uma máquina linux ideal para o torvalds, mas qual seria a do stallman? provavelmente alguma da technoethical.
+aparentemente existe uma máquina ideal para o torvalds, mas qual seria a do stallman? certamente alguma da technoethical.
 
 https://www.youtube.com/watch?v=Qq-FZtSBlA0
