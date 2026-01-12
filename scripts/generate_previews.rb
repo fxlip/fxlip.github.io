@@ -4,14 +4,13 @@ require 'uri'
 require 'nokogiri'
 require 'yaml'
 require 'fileutils'
-# require 'json' # Não precisamos mais do JSON
 
 ROOT = File.expand_path(File.join(__dir__, '..'))
 DATA_DIR = File.join(ROOT, '_data')
 PREVIEWS_FILE = File.join(DATA_DIR, 'previews.yml')
 TARGET_DIRS = ['_curadoria', '_posts']
 
-puts "--- LINK PREVIEW GENERATOR V6 (Stealth Scraper) ---"
+puts "--- LINK PREVIEW GENERATOR V7 (Embed Protocol) ---"
 
 # 1. Filtro Sanitário
 def apply_domain_rules(data, url)
@@ -40,7 +39,7 @@ def apply_domain_rules(data, url)
   data
 end
 
-# 2. Fetch Genérico (Agora usado para TUDO, inclusive YouTube)
+# 2. Fetch Genérico
 def fetch_url(url, limit = 5)
   return nil if limit == 0
   uri = URI.parse(url)
@@ -52,40 +51,65 @@ def fetch_url(url, limit = 5)
   http.read_timeout = 8
   
   request = Net::HTTP::Get.new(uri.request_uri)
-  
-  # AQUI ESTÁ O TRUQUE: User-Agent de um Chrome real no Windows
   request['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-  request['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
-  request['Accept-Language'] = 'en-US,en;q=0.5'
   
   begin
     response = http.request(request)
     case response
-    when Net::HTTPSuccess 
-      # Se o YouTube pedir consentimento (cookies), tentamos extrair mesmo assim
-      response.body
-    when Net::HTTPRedirection 
-      fetch_url(response['location'], limit - 1)
-    else 
-      puts "   [HTTP] Erro #{response.code} ao acessar #{url}"
-      nil
+    when Net::HTTPSuccess then response.body
+    when Net::HTTPRedirection then fetch_url(response['location'], limit - 1)
+    else nil
     end
-  rescue => e
-    puts "   [HTTP] Erro de conexão: #{e.message}"
+  rescue
     nil
   end
 end
 
-def extract_og_data(html, url)
+# 3. Especialista YouTube (Via Embed)
+def fetch_youtube_data(url)
+  # Extrai ID do vídeo
+  vid_id = nil
+  if url =~ /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/
+    vid_id = $1
+  end
+
+  return nil unless vid_id
+
+  # A Mágica: Acessa a página de Embed (menos bloqueada)
+  embed_url = "https://www.youtube-nocookie.com/embed/#{vid_id}"
+  html = fetch_url(embed_url)
+  
   return nil unless html
+
+  # Extrai Título direto do código fonte (Regex rápido)
+  title = nil
+  if html =~ /<title>(.*?) - YouTube<\/title>/
+    title = $1
+  elsif html =~ /<title>(.*?)<\/title>/
+    title = $1
+  end
+
+  # Limpa entidades HTML no título (ex: &#39; -> ')
+  title = CGI.unescapeHTML(title) if title
+
+  # Monta imagem manualmente (Alta Qualidade)
+  image = "https://img.youtube.com/vi/#{vid_id}/hqdefault.jpg"
+
+  return {
+    'title' => title,
+    'description' => "Assista no YouTube", # Embed não tem descrição completa
+    'image' => image,
+    'url' => url
+  }
+end
+
+def extract_og_data(html, url)
   doc = Nokogiri::HTML(html)
   og = {}
-  
   doc.css('meta').each do |m|
     prop = m['property'] || m['name']
     content = m['content'] || m['value']
     next unless prop && content
-    
     if prop.start_with?('og:')
       og[prop.sub('og:', '')] = content
     elsif prop == 'twitter:title' && !og['title']
@@ -99,21 +123,14 @@ def extract_og_data(html, url)
   desc = og['description'] || (doc.at('meta[name="description"]') ? doc.at('meta[name="description"]')['content'] : nil)
   img = og['image']
   
-  # Fallback específico para YouTube (às vezes og:image falha)
-  if url =~ /youtube\.com|youtu\.be/ && (!img || img.empty?)
-    # Tenta pegar o ID do vídeo e montar a URL da thumb manualmente
-    if url =~ /(?:v=|youtu\.be\/)([^&?]+)/
-      vid_id = $1
-      img = "https://img.youtube.com/vi/#{vid_id}/hqdefault.jpg"
-    end
-  end
-
   if img && !img.start_with?('http')
     img = URI.join(url, img).to_s rescue nil
   end
   
   { 'title' => title, 'description' => desc, 'image' => img, 'url' => url }
 end
+
+require 'cgi' # Necessário para limpar títulos
 
 # --- LÓGICA PRINCIPAL ---
 
@@ -141,8 +158,13 @@ TARGET_DIRS.each do |dir_name|
 
     next unless link
 
-    # Lógica de Retry: Se o título estiver vazio ou for "YouTube", tenta de novo
-    if previews[slug] && previews[slug]['title'] && !previews[slug]['title'].to_s.strip.empty? && previews[slug]['title'] != "YouTube"
+    # Força atualização se o título estiver vazio ou for genérico "YouTube"
+    needs_update = !previews[slug] || 
+                   previews[slug]['title'].to_s.strip.empty? || 
+                   previews[slug]['title'] == "YouTube"
+
+    if !needs_update
+      # Apenas aplica filtros de limpeza
       old_title = previews[slug]['title']
       previews[slug] = apply_domain_rules(previews[slug], previews[slug]['url'])
       if old_title != previews[slug]['title']
@@ -150,23 +172,24 @@ TARGET_DIRS.each do |dir_name|
         updated = true
       end
     else
-      # Modo Download
       puts " [FETCH] #{slug} -> #{link}"
       
-      body = fetch_url(link)
-      if body
-        data = extract_og_data(body, link)
-        if data && data['title']
-          data = apply_domain_rules(data, link)
-          previews[slug] = data
-          updated = true
-          puts "   -> Sucesso: #{data['title']}"
-          sleep 2 # Delay maior para não irritar o servidor
-        else
-          puts "   -> Dados incompletos extraídos."
-        end
+      data = nil
+      if link =~ /youtube\.com|youtu\.be/
+        data = fetch_youtube_data(link)
       else
-        puts "   -> Falha no download."
+        body = fetch_url(link)
+        data = extract_og_data(body, link) if body
+      end
+
+      if data && data['title'] && !data['title'].empty?
+        data = apply_domain_rules(data, link)
+        previews[slug] = data
+        updated = true
+        puts "   -> Sucesso: #{data['title']}"
+        sleep 2
+      else
+        puts "   -> Falha: Dados insuficientes."
       end
     end
   end
