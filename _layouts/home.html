@@ -55,7 +55,7 @@ layout: default
         {% endif %}
 
         <time class="post-date" datetime="{{ post.date | date: "%Y-%m-%d %H:%M" }}">
-          {{ post.date | date: "%-d de %b, %Y" }}
+          {{ post.date | date: "%H:%M" }} · {{ post.date | date: "%-d de %b de %Y" | downcase }}
         </time>
 
         <hr class="post-list__divider">

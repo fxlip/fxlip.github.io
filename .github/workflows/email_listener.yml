@@ -41,13 +41,13 @@ jobs:
 
       - name: Commit and Push
         run: |
-          git config user.name "Email Bot"
+          git config user.name "email-bot"
           git config user.email "bot@felip.com.br"
           git add _posts/
           # Só comita se houver arquivos novos
           if git diff --staged --quiet; then
             echo "Nenhum post novo. Dormindo..."
           else
-            git commit -m "feat(email): new post incoming via smtp"
+            git commit -m "new post via smtp"
             git push
           fi

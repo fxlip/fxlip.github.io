@@ -6,7 +6,7 @@ require 'fileutils'
 require 'securerandom'
 
 # Configurações
-IMAP_SERVER = 'imap.gmail.com' # Ajuste se não for Gmail
+IMAP_SERVER = 'imap.gmail.com'
 IMAP_PORT = 993
 USERNAME = ENV['EMAIL_USERNAME']
 PASSWORD = ENV['EMAIL_PASSWORD']
@@ -16,17 +16,18 @@ ROOT = File.expand_path(File.join(__dir__, '..'))
 POSTS_DIR = File.join(ROOT, '_posts')
 
 def slugify(text)
-  text.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+  return "post-#{SecureRandom.hex(4)}" if text.nil? || text.strip.empty?
+  # Remove caracteres especiais e espaços
+  text.to_s.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
 end
 
-puts "--- INICIANDO PROTOCOLO EMAIL-TO-GIT ---"
+puts "--- INICIANDO PROTOCOLO EMAIL-TO-GIT (BRT) ---"
 
 begin
   imap = Net::IMAP.new(IMAP_SERVER, port: IMAP_PORT, ssl: true)
   imap.login(USERNAME, PASSWORD)
   imap.select('INBOX')
 
-  # Busca apenas e-mails NÃO LIDOS vindos do REMETENTE PERMITIDO
   search_criteria = ['UNSEEN', 'FROM', ALLOWED_SENDER]
   email_ids = imap.search(search_criteria)
 
@@ -39,25 +40,33 @@ begin
     msg = imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
     mail = Mail.new(msg)
 
+    # --- AJUSTE DE FUSO HORÁRIO (Brasília UTC-3) ---
+    # O servidor do GitHub roda em UTC. Forçamos a conversão.
+    now_br = Time.now.getlocal("-03:00")
+    
+    # TIMESTAMP COMO TÍTULO
+    # Se não tiver assunto, usa: YYYYMMDD-HHMMSS (ex: 20260112-221500)
     subject = mail.subject
-    # Prioriza texto puro, se não tiver, tenta html decodificado
+    if subject.nil? || subject.strip.empty?
+      subject = now_br.strftime('%Y%m%d-%H%M%S')
+    end
+
     body = if mail.multipart?
              mail.text_part ? mail.text_part.decoded : mail.html_part.decoded
            else
              mail.body.decoded
            end
 
-    # Sanitização básica do corpo (encoding)
+    body = "" if body.nil?
     body = body.force_encoding('UTF-8').scrub
 
     puts "Processando: #{subject}"
 
-    # Criação do Front Matter
-    date = Time.now.strftime('%Y-%m-%d %H:%M:%S')
-    filename_date = Time.now.strftime('%Y-%m-%d')
+    # Datas formatadas com o fuso correto
+    post_date = now_br.strftime('%Y-%m-%d %H:%M:%S %z') # Formato Jekyll completo
+    filename_date = now_br.strftime('%Y-%m-%d')
+    
     slug = slugify(subject)
-    # Se o slug ficar vazio (assunto com emojis?), gera um hash
-    slug = "post-#{SecureRandom.hex(4)}" if slug.empty?
     
     filename = "#{filename_date}-#{slug}.markdown"
     filepath = File.join(POSTS_DIR, filename)
@@ -66,7 +75,7 @@ begin
       ---
       layout: post
       title:  "#{subject.gsub('"', '\"')}"
-      date:   #{date}
+      date:   #{post_date}
       ---
       
       #{body}
@@ -75,15 +84,15 @@ begin
     File.write(filepath, markdown_content)
     puts " -> Arquivo criado: #{filename}"
 
-    # Marca como Lido/Deletado para não processar de novo
     imap.store(message_id, "+FLAGS", [:Seen, :Deleted])
   end
 
-  imap.expunge # Remove permanentemente os deletados
+  imap.expunge
   imap.logout
   imap.disconnect
 
 rescue => e
   puts "ERRO CRÍTICO: #{e.message}"
+  puts e.backtrace.join("\n")
   exit 1
 end
