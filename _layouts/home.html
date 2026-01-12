@@ -64,15 +64,11 @@ layout: default
     {%- endfor -%}
   </div>
 
-  {% if paginator.total_pages > 1 %}
-    <div class="pagination" style="text-align: center; margin-top: 40px;">
-      {% if paginator.previous_page %}
-        <a href="{{ paginator.previous_page_path | relative_url }}">&laquo; Prev</a>
-      {% endif %}
-      <span> [ {{ paginator.page }} / {{ paginator.total_pages }} ] </span>
-      {% if paginator.next_page %}
-        <a href="{{ paginator.next_page_path | relative_url }}">Next &raquo;</a>
-      {% endif %}
+  {% if paginator.next_page %}
+    <div class="pagination-wrapper" style="text-align: center; margin: 40px 0;">
+      <a href="{{ paginator.next_page_path | relative_url }}" class="btn-load-more" id="load-more-btn">
+        Ver mais
+      </a>
     </div>
   {% endif %}
 {%- endif -%}

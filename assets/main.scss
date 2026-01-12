@@ -158,3 +158,31 @@ input, textarea {
   height: 100%;
   border: 0;
 }
+
+/* --- PAGINATION OVERRIDE (RETRO STYLE) --- */
+.btn-load-more {
+  display: inline-block;
+  padding: 10px 24px;
+  min-width: 160px; /* Garante que o botão não mude de largura durante a animação */
+  text-align: center;
+  
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  
+  /* CRUCIAL PARA A ANIMAÇÃO */
+  font-family: "Courier New", Courier, monospace; 
+  font-weight: bold;
+  font-size: 0.9em;
+  cursor: pointer;
+  background: transparent;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+    /* Efeito extra: Borda pontilhada no hover lembra DOS */
+    border-style: dashed; 
+  }
+}
