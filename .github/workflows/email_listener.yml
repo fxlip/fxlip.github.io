@@ -37,7 +37,7 @@ jobs:
           EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
           ALLOWED_SENDER: ${{ secrets.ALLOWED_SENDER }}
-        run: ruby scripts/email_to_post.rb
+        run: bundle exec ruby scripts/email_to_post.rb
 
       - name: Commit and Push
         run: |
