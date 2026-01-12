@@ -28,6 +28,8 @@ def apply_domain_rules(data, url)
     data['title'] = data['title'].gsub(/\s*\|\s*G1.*$/, '').gsub(/\s*-\s*G1.*$/, '')
   when /uol\.com\.br/
     data['title'] = data['title'].gsub(/\s*-\s*UOL.*$/, '')
+  when /cnnbrasil\.com\.br/
+    data['title'] = data['title'].gsub(/\s*\|\s*CNN\s*Brasil.*$/, '')
   when /youtube\.com/, /youtu\.be/
     data['title'] = data['title'].gsub(/\s*-\s*YouTube$/, '')
   end
