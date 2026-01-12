@@ -1,92 +1,130 @@
 document.addEventListener("DOMContentLoaded", function() {
-  const loadMoreBtn = document.getElementById("load-more-btn");
+  const loader = document.getElementById("infinite-loader");
   const postsContainer = document.querySelector(".posts-list");
+  
+  // Configuração do Delay (em milissegundos)
+  const ARTIFICIAL_DELAY = 2000; 
 
-  if (loadMoreBtn && postsContainer) {
-    loadMoreBtn.addEventListener("click", function(e) {
-      e.preventDefault();
+  if (loader && postsContainer) {
+    
+    // --- 1. CONFIGURAÇÃO DA ANIMAÇÃO (WIDESCREEN SCANNER) ---
+    const width = 30; // Barra mais larga para ocupar espaço visual
+    let position = 0;
+    let direction = 1;
+    let animationInterval = null;
+
+    function startAnimation() {
+      loader.classList.add('active');
+      loader.style.display = 'block';
       
-      // --- 1. CONFIGURAÇÃO DA ANIMAÇÃO (SCANNER STYLE) ---
-      const originalText = loadMoreBtn.innerText; // Guarda o texto "Ver mais"
-      const width = 10; // Largura da barra de scanner
-      let position = 0;
-      let direction = 1; // 1 = direita, -1 = esquerda
+      if (animationInterval) clearInterval(animationInterval);
       
-      // Trava o botão e fixa largura para não "sambar"
-      loadMoreBtn.style.pointerEvents = "none";
-      loadMoreBtn.style.minWidth = "160px"; 
-      
-      // Loop visual (Roda a cada 80ms)
-      const loadingInterval = setInterval(() => {
+      animationInterval = setInterval(() => {
         let bar = "";
         for (let i = 0; i < width; i++) {
-          if (i === position) bar += "■"; // O cursor ativo
-          else bar += " "; // Espaço vazio
+          if (i === position) bar += "█"; // Bloco sólido fica mais bonito
+          else bar += " "; // Espaço
         }
+        // Desenha: [      █      ] CARREGANDO_DADOS
+        loader.innerText = `[${bar}] PROCESSANDO...`;
         
-        loadMoreBtn.innerText = `[${bar}]`;
-        
-        // Lógica de "Bate e Volta"
         position += direction;
         if (position === width - 1 || position === 0) {
-          direction *= -1; 
+          direction *= -1;
         }
-      }, 80);
-      // ----------------------------------------------------
+      }, 60); // Rápido e fluído
+    }
 
-      const nextPageUrl = this.getAttribute("href");
+    function stopAnimation() {
+      clearInterval(animationInterval);
+      loader.classList.remove('active');
+    }
 
-      fetch(nextPageUrl)
+    // --- 2. LÓGICA DE CARREGAMENTO (OBSERVER) ---
+    const observer = new IntersectionObserver((entries) => {
+      // Se o loader entrou na tela (isIntersecting)
+      if (entries[0].isIntersecting) {
+        loadNextPage();
+      }
+    }, {
+      rootMargin: '100px', // Começa a carregar 100px antes de chegar no fundo
+      threshold: 0.1
+    });
+
+    // Inicia a observação
+    observer.observe(loader);
+
+    // --- 3. FUNÇÃO DE FETCH COM DELAY ---
+    let isLoading = false;
+
+    function loadNextPage() {
+      if (isLoading) return;
+      isLoading = true;
+      
+      const nextPageUrl = loader.getAttribute("data-next-url");
+      if (!nextPageUrl) {
+        observer.disconnect(); // Sem mais páginas, desliga o sensor
+        loader.style.display = 'none';
+        return;
+      }
+
+      // Inicia o show visual
+      startAnimation();
+
+      // Promessa do Fetch (Dados)
+      const fetchPromise = fetch(nextPageUrl)
         .then(response => {
           if (!response.ok) throw new Error("Erro de conexão");
           return response.text();
-        })
-        .then(html => {
-          // --- 2. PROCESSAMENTO DO HTML RECEBIDO ---
+        });
+
+      // Promessa do Delay (Tempo)
+      const delayPromise = new Promise(resolve => setTimeout(resolve, ARTIFICIAL_DELAY));
+
+      // Espera OS DOIS terminarem (Dados + Tempo)
+      Promise.all([fetchPromise, delayPromise])
+        .then(([html, _]) => {
+          // --- PROCESSAMENTO ---
           const parser = new DOMParser();
           const doc = parser.parseFromString(html, "text/html");
-          
           const newPosts = doc.querySelectorAll(".posts-list .post-item");
-          const nextBtnData = doc.getElementById("load-more-btn");
+          const nextData = doc.getElementById("infinite-loader");
 
-          // Injeta os novos posts na lista atual
+          // Injeção
           newPosts.forEach(post => {
-            post.style.animation = "fadeIn 0.5s"; // Efeito visual suave
+            post.style.animation = "fadeIn 0.8s ease-out"; // Entrada suave
             postsContainer.appendChild(post);
             
-            // Adiciona o divisor entre posts
             const hr = document.createElement('hr');
             hr.className = 'post-list__divider';
             postsContainer.appendChild(hr);
           });
 
-          // --- 3. FINALIZAÇÃO ---
-          clearInterval(loadingInterval); // Para a animação
-          
-          if (nextBtnData) {
-            // Atualiza o link para a próxima página (ex: page/3/)
-            loadMoreBtn.setAttribute("href", nextBtnData.getAttribute("href"));
-            loadMoreBtn.innerText = originalText;
-            loadMoreBtn.style.pointerEvents = "auto";
+          // Prepara para a próxima
+          if (nextData) {
+            const nextUrl = nextData.getAttribute("data-next-url");
+            loader.setAttribute("data-next-url", nextUrl);
+            isLoading = false; 
+            // O loader continua visível se o usuário continuar scrollando
+            // e o observer disparará novamente se necessário
           } else {
-            // Se não houver mais páginas, esconde o botão
-            loadMoreBtn.style.display = "none";
+            // Fim do blog
+            loader.removeAttribute("data-next-url");
+            loader.innerText = "[ FIM DA TRANSMISSÃO ]";
+            observer.disconnect();
+            setTimeout(() => { loader.style.display = 'none'; }, 3000);
           }
         })
         .catch(err => {
           console.error(err);
-          // Feedback de erro visual
-          clearInterval(loadingInterval);
-          loadMoreBtn.innerText = "[ ERRO ]";
-          loadMoreBtn.style.color = "red";
-          
-          // Restaura o botão após 2 segundos
+          loader.innerText = "[ ERRO DE CONEXÃO - TENTANDO NOVAMENTE... ]";
+          loader.style.color = "red";
+          // Tenta de novo em 3 segundos
           setTimeout(() => {
-             loadMoreBtn.innerText = originalText;
-             loadMoreBtn.style.color = "";
-             loadMoreBtn.style.pointerEvents = "auto";
-          }, 2000);
+            isLoading = false;
+            loader.style.color = "";
+          }, 3000);
         });
-    });
+    }
   }
 });

@@ -65,10 +65,8 @@ layout: default
   </div>
 
   {% if paginator.next_page %}
-    <div class="pagination-wrapper" style="text-align: center; margin: 40px 0;">
-      <a href="{{ paginator.next_page_path | relative_url }}" class="btn-load-more" id="load-more-btn">
-        Ver mais
-      </a>
+    <div id="infinite-loader" class="terminal-loader" data-next-url="{{ paginator.next_page_path | relative_url }}">
+      [ LOADING ]
     </div>
   {% endif %}
 {%- endif -%}

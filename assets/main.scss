@@ -159,30 +159,27 @@ input, textarea {
   border: 0;
 }
 
-/* --- PAGINATION OVERRIDE (RETRO STYLE) --- */
-.btn-load-more {
-  display: inline-block;
-  padding: 10px 24px;
-  min-width: 160px; /* Garante que o botão não mude de largura durante a animação */
+/* --- TERMINAL LOADER (Infinite Scroll) --- */
+.terminal-loader {
+  width: 100%;
+  padding: 30px 0; /* Espaço vertical generoso */
+  margin-top: 20px;
+  
   text-align: center;
-  
-  border: 1px solid var(--text-color);
-  color: var(--text-color);
-  text-decoration: none;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  
-  /* CRUCIAL PARA A ANIMAÇÃO */
-  font-family: "Courier New", Courier, monospace; 
+  font-family: "Courier New", Courier, monospace;
   font-weight: bold;
-  font-size: 0.9em;
-  cursor: pointer;
-  background: transparent;
+  font-size: 1.1em; /* Um pouco maior para destaque */
+  color: var(--text-color);
+  
+  /* Opcional: Um background sutil para marcar a área de loading */
+  background: rgba(0, 0, 0, 0.05); 
+  border-top: 1px dashed var(--text-color);
+  border-bottom: 1px dashed var(--text-color);
+  
+  opacity: 0; /* Começa invisível até o JS ativar */
+  transition: opacity 0.3s ease;
+}
 
-  &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    text-decoration: none;
-    /* Efeito extra: Borda pontilhada no hover lembra DOS */
-    border-style: dashed; 
-  }
+.terminal-loader.active {
+  opacity: 1;
 }
