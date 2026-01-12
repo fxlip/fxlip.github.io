@@ -39,6 +39,7 @@ jobs:
           EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
           ALLOWED_SENDER: ${{ secrets.ALLOWED_SENDER }}
+          TZ: 'America/Sao_Paulo'
         run: |
           echo ">>> 1. Verificando E-mails..."
           bundle exec ruby scripts/email_to_post.rb

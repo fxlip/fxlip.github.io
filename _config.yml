@@ -22,3 +22,6 @@ paginate_path: "/page/:num/"
 sass:
   style: compressed
   quiet_deps: true
+
+# Timezone
+timezone: America/Sao_Paulo
