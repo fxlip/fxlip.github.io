@@ -4,13 +4,14 @@ require 'uri'
 require 'nokogiri'
 require 'yaml'
 require 'fileutils'
+require 'cgi'
 
 ROOT = File.expand_path(File.join(__dir__, '..'))
 DATA_DIR = File.join(ROOT, '_data')
 PREVIEWS_FILE = File.join(DATA_DIR, 'previews.yml')
 TARGET_DIRS = ['_curadoria', '_posts']
 
-puts "--- LINK PREVIEW GENERATOR V8 (Embed Extractor) ---"
+puts "--- LINK PREVIEW GENERATOR V9 (Smart Diff) ---"
 
 # 1. Filtro Sanitário
 def apply_domain_rules(data, url)
@@ -27,12 +28,14 @@ def apply_domain_rules(data, url)
     data['title'] = data['title'].gsub(/\s*\|\s*G1.*$/, '').gsub(/\s*-\s*G1.*$/, '')
   when /uol\.com\.br/
     data['title'] = data['title'].gsub(/\s*-\s*UOL.*$/, '')
+  when /youtube\.com/, /youtu\.be/
+    data['title'] = data['title'].gsub(/\s*-\s*YouTube$/, '')
   end
   data['title'] = data['title'].strip
   data
 end
 
-# 2. Fetch Genérico (Para sites normais e tentativa de título YT)
+# 2. Fetch Genérico
 def fetch_url(url, limit = 5)
   return nil if limit == 0
   uri = URI.parse(url)
@@ -44,7 +47,6 @@ def fetch_url(url, limit = 5)
   http.read_timeout = 8
   
   request = Net::HTTP::Get.new(uri.request_uri)
-  # User-Agent mobile as vezes passa melhor no YouTube
   request['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
   
   begin
@@ -57,6 +59,31 @@ def fetch_url(url, limit = 5)
   rescue
     nil
   end
+end
+
+# 3. Especialista YouTube (Embed + ID)
+def fetch_youtube_data(url, vid_id)
+  embed_url = "https://www.youtube-nocookie.com/embed/#{vid_id}"
+  html = fetch_url(embed_url)
+  return nil unless html
+
+  title = nil
+  if html =~ /<title>(.*?) - YouTube<\/title>/
+    title = $1
+  elsif html =~ /<title>(.*?)<\/title>/
+    title = $1
+  end
+  
+  title = CGI.unescapeHTML(title) if title
+  title = "Assista no YouTube" if !title || title.strip.empty?
+
+  return {
+    'title' => title,
+    'description' => "Assista no YouTube",
+    'image' => "https://img.youtube.com/vi/#{vid_id}/hqdefault.jpg",
+    'url' => url,
+    'video_id' => vid_id
+  }
 end
 
 def extract_og_data(html, url)
@@ -109,55 +136,48 @@ TARGET_DIRS.each do |dir_name|
 
     next unless link
 
-    # --- DETECÇÃO DE YOUTUBE (Prioridade Máxima) ---
+    # --- VERIFICAÇÃO DE MUDANÇA (SMART DIFF) ---
+    current_data = previews[slug]
+    url_changed = current_data && current_data['url'] != link
+    
+    # Se o link mudou, força reprocessamento
+    if url_changed
+      puts " [UPDATE] Link alterado em #{slug}. Reprocessando..."
+    end
+
+    # --- DETECÇÃO DE YOUTUBE ---
     video_id = nil
     if link =~ /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/
       video_id = $1
     end
 
-    # Se já tem preview completo, verifica limpeza
-    if previews[slug] && previews[slug]['title'] && !previews[slug]['title'].to_s.empty?
-      # Se for vídeo e não tiver ID salvo, adiciona
-      if video_id && !previews[slug]['video_id']
-        previews[slug]['video_id'] = video_id
-        puts " [UPGRADE] #{slug} -> Adicionado Video ID: #{video_id}"
+    needs_fetch = !current_data || 
+                  url_changed || 
+                  current_data['title'].to_s.strip.empty? ||
+                  (video_id && !current_data['video_id']) # Se é vídeo mas não tem ID salvo
+
+    if !needs_fetch
+      # Cache Hit: Apenas aplica filtros sanitários por garantia
+      old_title = previews[slug]['title']
+      previews[slug] = apply_domain_rules(previews[slug], previews[slug]['url'])
+      if old_title != previews[slug]['title']
+        puts " [FIX] #{slug} (Título limpo)"
         updated = true
-      else
-        # Limpeza de título
-        old_title = previews[slug]['title']
-        previews[slug] = apply_domain_rules(previews[slug], previews[slug]['url'])
-        if old_title != previews[slug]['title']
-          puts " [FIX] #{slug} (Título limpo)"
-          updated = true
-        end
       end
     else
-      # --- DOWNLOAD NOVO ---
+      # Cache Miss ou Link Alterado
       puts " [FETCH] #{slug} -> #{link}"
       
-      data = {}
-      
+      data = nil
       if video_id
-        # Se tem ID, garantimos o embed mesmo sem título
-        data['video_id'] = video_id
-        data['image'] = "https://img.youtube.com/vi/#{video_id}/hqdefault.jpg"
-        
-        # Tenta pegar título via HTML simples (Embed URL)
-        embed_url = "https://www.youtube.com/embed/#{video_id}"
-        body = fetch_url(embed_url)
-        if body && body =~ /<title>(.*?) - YouTube<\/title>/
-          data['title'] = $1
-        else
-          data['title'] = "Assista no YouTube" # Fallback
-        end
+        data = fetch_youtube_data(link, video_id)
       else
-        # Site normal
         body = fetch_url(link)
         data = extract_og_data(body, link) if body
       end
 
-      if data
-        data['url'] = link
+      if data && (data['title'] || data['video_id'])
+        data['url'] = link # Garante que salvamos o link NOVO
         data = apply_domain_rules(data, link)
         previews[slug] = data
         updated = true
