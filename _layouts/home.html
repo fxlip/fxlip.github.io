@@ -1,0 +1,38 @@
+---
+layout: default
+---
+
+{{ content }}
+{% assign contentwonl = content | strip_newlines %} {% unless contentwonl == ""  %} <br /> {% endunless %} <!-- add line break if there is any content -->
+
+{%- if site.posts.size > 0 -%}
+  <div class="posts-list">
+    {%- for post in paginator.posts -%}
+      {% assign pv = site.data.previews[post.slug] %}
+      <article class="post-item{% if pv %} has-preview{% endif %}"{% if pv %} data-preview-url="{{ pv.url }}"{% endif %}>
+        <header class="post-item__meta">
+          <hr class="post-list__divider">
+        </header>
+        {% if pv %}
+          <div class="link-card">
+            {% if pv.image %}
+              <img src="{{ pv.image }}" alt="{{ pv.title | escape }}" class="lc-img" />
+            {% endif %}
+            <div class="lc-meta">
+              <div class="lc-host"><a href="{{ pv.url }}" target="_blank" rel="noopener noreferrer">{{ pv.title }}</a></div>
+              {% if pv.description %}<div class="lc-desc">{{ pv.description }}</div>{% endif %}
+            </div>
+          </div>
+        {% else %}
+          <div class="post-excerpt">{{ post.excerpt | markdownify }}</div>
+        {% endif %}
+        <time datetime="{{ post.date | date: "%Y-%m-%d %H:%M" }}">{{ post.date | date: "%-d de %b, %Y" }}</time>
+      </article>
+    {%- endfor -%}
+  </div>
+  
+  <!-- Paginação tradicional (será ocultada pelo infinite-scroll.js) -->
+  {% if paginator.previous_page or paginator.next_page %}
+    {% include pagination.html %}
+  {% endif %}
+{%- endif -%}
