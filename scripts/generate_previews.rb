@@ -4,29 +4,29 @@ require 'uri'
 require 'nokogiri'
 require 'yaml'
 require 'fileutils'
+require 'json' # Adicionado para processar OEmbed
 
 ROOT = File.expand_path(File.join(__dir__, '..'))
 DATA_DIR = File.join(ROOT, '_data')
 PREVIEWS_FILE = File.join(DATA_DIR, 'previews.yml')
-
-# Configuração de busca (Procura em ambos os lugares)
 TARGET_DIRS = ['_curadoria', '_posts']
 
-puts "--- INICIANDO DIAGNÓSTICO AVANÇADO ---"
-puts "Raiz do projeto: #{ROOT}"
-puts "Conteúdo da raiz (O que o GitHub vê):"
-puts Dir.glob(File.join(ROOT, '*')).map { |f| File.basename(f) }.join(', ')
+puts "--- LINK PREVIEW GENERATOR V4 (YouTube OEmbed) ---"
 
-# 1. Filtro Sanitário
+# 1. Filtro Sanitário (Mantido e Expandido)
 def apply_domain_rules(data, url)
   return data unless data['title']
+  
+  # Garante codificação UTF-8 para evitar erros de caractere
+  if data['title'].respond_to?(:force_encoding)
+    data['title'] = data['title'].force_encoding('UTF-8')
+  end
+
   begin
     host = URI.parse(url).host.downcase
   rescue
     return data
   end
-  
-  original_title = data['title'].dup
   
   case host
   when /g1\.globo\.com/
@@ -35,17 +35,43 @@ def apply_domain_rules(data, url)
     data['title'] = data['title'].gsub(/\s*-\s*YouTube$/, '')
   when /uol\.com\.br/
     data['title'] = data['title'].gsub(/\s*-\s*UOL.*$/, '')
-  when /folha\.uol\.com\.br/
-    data['title'] = data['title'].gsub(/\s*-\s*Folha.*$/, '')
   end
 
   data['title'] = data['title'].strip
-  if original_title != data['title']
-    puts "   [CLEANER] Limpo: '#{original_title}' -> '#{data['title']}'"
-  end
   data
 end
 
+# 2. Módulo Especial para YouTube (OEmbed)
+def fetch_youtube_data(url)
+  # Endpoint oficial do YouTube para metadados públicos
+  oembed_endpoint = "https://www.youtube.com/oembed?url=#{url}&format=json"
+  
+  begin
+    uri = URI.parse(oembed_endpoint)
+    response = Net::HTTP.get_response(uri)
+    
+    if response.is_a?(Net::HTTPSuccess)
+      json = JSON.parse(response.body)
+      
+      # OEmbed retorna 'thumbnail_url' e 'title'. 
+      # Nota: YouTube não fornece 'description' via OEmbed, melhor deixar vazio do que lixo.
+      return {
+        'title' => json['title'],
+        'description' => nil, 
+        'image' => json['thumbnail_url'],
+        'url' => url
+      }
+    else
+      puts "   [YOUTUBE] Falha no OEmbed: #{response.code}"
+      return nil
+    end
+  rescue => e
+    puts "   [YOUTUBE] Erro: #{e.message}"
+    return nil
+  end
+end
+
+# 3. Fetch Genérico para outros sites
 def fetch_url(url, limit = 5)
   return nil if limit == 0
   uri = URI.parse(url)
@@ -98,28 +124,19 @@ def extract_og_data(html, url)
   { 'title' => title, 'description' => desc, 'image' => img, 'url' => url }
 end
 
+# --- LÓGICA PRINCIPAL ---
+
 previews = File.exist?(PREVIEWS_FILE) ? YAML.load_file(PREVIEWS_FILE) : {}
 previews ||= {}
 updated = false
 
 TARGET_DIRS.each do |dir_name|
   full_path = File.join(ROOT, dir_name)
-  
-  unless Dir.exist?(full_path)
-    puts "\n[AVISO] Pasta não encontrada: #{dir_name} (Pulando)"
-    next
-  end
+  next unless Dir.exist?(full_path)
 
   puts "\nProcessando pasta: #{dir_name}"
   
-  # Busca Case Insensitive para .md e .markdown
-  files = Dir.glob(File.join(full_path, '*.{md,markdown,MD,MARKDOWN}'))
-  
-  if files.empty?
-    puts " -> Pasta existe mas está vazia de arquivos Markdown."
-  end
-
-  files.each do |post_path|
+  Dir.glob(File.join(full_path, '*.{md,markdown,MD,MARKDOWN}')).each do |post_path|
     filename = File.basename(post_path)
     slug = filename.sub(/^\d{4}-\d{2}-\d{2}-/, '').sub(/\.[^.]+$/, '')
     content = File.read(post_path)
@@ -131,32 +148,40 @@ TARGET_DIRS.each do |dir_name|
       link = $&
     end
 
-    unless link
-      puts " [SKIP] #{slug} (Sem link)"
-      next
-    end
+    next unless link
 
-    if previews[slug] && previews[slug]['title']
-      # Modo Correção (aplica regras G1 mesmo se já existe)
+    # Se já existe e tem título válido, pula (ou aplica só o cleaner)
+    # Mas se o título estiver vazio (caso do erro do YouTube), força reprocessamento
+    if previews[slug] && previews[slug]['title'] && !previews[slug]['title'].empty?
+      # Modo Manutenção
       old_title = previews[slug]['title']
       previews[slug] = apply_domain_rules(previews[slug], previews[slug]['url'])
       if old_title != previews[slug]['title']
-        puts " [FIX] #{slug} (Regra aplicada)"
+        puts " [FIX] #{slug} (Título limpo)"
         updated = true
       end
     else
-      # Modo Download
-      puts " [NEW] #{slug} -> Baixando..."
-      body = fetch_url(link)
-      if body
-        data = extract_og_data(body, link)
+      # Modo Download (Novo ou Reparo de Erro)
+      puts " [FETCH] #{slug} -> #{link}"
+      
+      data = nil
+      
+      # SE FOR YOUTUBE, USA A ROTA ESPECIAL
+      if link =~ /youtube\.com|youtu\.be/
+        data = fetch_youtube_data(link)
+      else
+        body = fetch_url(link)
+        data = extract_og_data(body, link) if body
+      end
+
+      if data
         data = apply_domain_rules(data, link)
         previews[slug] = data
         updated = true
         puts "   -> Sucesso: #{data['title']}"
         sleep 1
       else
-        puts "   -> Falha no download"
+        puts "   -> Falha ao obter dados"
       end
     end
   end
