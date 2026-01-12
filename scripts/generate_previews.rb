@@ -4,20 +4,19 @@ require 'uri'
 require 'nokogiri'
 require 'yaml'
 require 'fileutils'
-require 'json' # Adicionado para processar OEmbed
+require 'json'
 
 ROOT = File.expand_path(File.join(__dir__, '..'))
 DATA_DIR = File.join(ROOT, '_data')
 PREVIEWS_FILE = File.join(DATA_DIR, 'previews.yml')
 TARGET_DIRS = ['_curadoria', '_posts']
 
-puts "--- LINK PREVIEW GENERATOR V4 (YouTube OEmbed) ---"
+puts "--- LINK PREVIEW GENERATOR V5 (NoEmbed Proxy) ---"
 
-# 1. Filtro Sanitário (Mantido e Expandido)
+# 1. Filtro Sanitário
 def apply_domain_rules(data, url)
   return data unless data['title']
   
-  # Garante codificação UTF-8 para evitar erros de caractere
   if data['title'].respond_to?(:force_encoding)
     data['title'] = data['title'].force_encoding('UTF-8')
   end
@@ -41,20 +40,24 @@ def apply_domain_rules(data, url)
   data
 end
 
-# 2. Módulo Especial para YouTube (OEmbed)
+# 2. Módulo Especial para YouTube (Via NoEmbed)
 def fetch_youtube_data(url)
-  # Endpoint oficial do YouTube para metadados públicos
-  oembed_endpoint = "https://www.youtube.com/oembed?url=#{url}&format=json"
+  # Usamos o noembed.com como proxy para evitar bloqueio de IP do GitHub (Erro 401)
+  proxy_endpoint = "https://noembed.com/embed?url=#{url}"
   
   begin
-    uri = URI.parse(oembed_endpoint)
+    uri = URI.parse(proxy_endpoint)
     response = Net::HTTP.get_response(uri)
     
     if response.is_a?(Net::HTTPSuccess)
       json = JSON.parse(response.body)
       
-      # OEmbed retorna 'thumbnail_url' e 'title'. 
-      # Nota: YouTube não fornece 'description' via OEmbed, melhor deixar vazio do que lixo.
+      if json['error']
+        puts "   [YOUTUBE] Erro do Proxy: #{json['error']}"
+        return nil
+      end
+
+      # NoEmbed retorna 'thumbnail_url' e 'title'
       return {
         'title' => json['title'],
         'description' => nil, 
@@ -62,7 +65,7 @@ def fetch_youtube_data(url)
         'url' => url
       }
     else
-      puts "   [YOUTUBE] Falha no OEmbed: #{response.code}"
+      puts "   [YOUTUBE] Falha no Proxy: #{response.code}"
       return nil
     end
   rescue => e
@@ -71,7 +74,7 @@ def fetch_youtube_data(url)
   end
 end
 
-# 3. Fetch Genérico para outros sites
+# 3. Fetch Genérico
 def fetch_url(url, limit = 5)
   return nil if limit == 0
   uri = URI.parse(url)
@@ -150,10 +153,8 @@ TARGET_DIRS.each do |dir_name|
 
     next unless link
 
-    # Se já existe e tem título válido, pula (ou aplica só o cleaner)
-    # Mas se o título estiver vazio (caso do erro do YouTube), força reprocessamento
-    if previews[slug] && previews[slug]['title'] && !previews[slug]['title'].empty?
-      # Modo Manutenção
+    # Se já existe e tem título válido, verifica se precisa de limpeza
+    if previews[slug] && previews[slug]['title'] && !previews[slug]['title'].to_s.strip.empty?
       old_title = previews[slug]['title']
       previews[slug] = apply_domain_rules(previews[slug], previews[slug]['url'])
       if old_title != previews[slug]['title']
@@ -166,7 +167,7 @@ TARGET_DIRS.each do |dir_name|
       
       data = nil
       
-      # SE FOR YOUTUBE, USA A ROTA ESPECIAL
+      # SE FOR YOUTUBE, USA O PROXY NOEMBED
       if link =~ /youtube\.com|youtu\.be/
         data = fetch_youtube_data(link)
       else
@@ -174,7 +175,7 @@ TARGET_DIRS.each do |dir_name|
         data = extract_og_data(body, link) if body
       end
 
-      if data
+      if data && data['title']
         data = apply_domain_rules(data, link)
         previews[slug] = data
         updated = true
