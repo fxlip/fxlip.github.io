@@ -31,3 +31,10 @@ test4:
   image: https://img.youtube.com/vi/956p_PyP1Vo/hqdefault.jpg
   url: https://youtu.be/956p_PyP1Vo
   video_id: 956p_PyP1Vo
+20260112-194700:
+  title: Hackers roubam 86 milhões de músicas do Spotify para preservação digital;
+    empresa confirma
+  description: Um grupo hacktivista afirmou ter extraído praticamente todo o catálogo
+    do Spotify por meio de scraping em larga escala. A empresa confirmou o ataque.
+  image: https://tm.ibxk.com.br/2025/04/16/16162706625004.jpg?ims=1600x900/filters:format(jpg)
+  url: https://www.tecmundo.com.br/software/409472-hackers-roubaram-86-milhoes-de-musicas-do-spotify-para-preservacao-digital-empresa-confirma.htm
