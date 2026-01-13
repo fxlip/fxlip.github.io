@@ -1,0 +1,9 @@
+---
+layout: post
+title:  "20260112-220610"
+date:   2026-01-12 22:06:10 -0300
+---
+
+aparentemente o load ta funcionando mas ta paginando os posts com double hr 😒
+
+será que meu bot vai conseguir ler e criar dois posts distintos no próximo hook do cron? 🙏🏼

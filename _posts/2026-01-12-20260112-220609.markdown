@@ -1,0 +1,7 @@
+---
+layout: post
+title:  "20260112-220609"
+date:   2026-01-12 22:06:09 -0300
+---
+
+testando se o auto-loading da paginação infinita ta funcionando 😵‍💫
