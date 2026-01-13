@@ -1,0 +1,18 @@
+---
+layout: post
+title:  "20260112-222301"
+date:   2026-01-12 22:23:01 -0300
+---
+
+
+próximos updates:
+- atualizar loading de mais posts
+- criar menus:
+- - sobre (página com textão contando minha trajetória na TI)
+- - sysadmin (estruturar páginas de jobs usando categorias)
+- - infosec (estruturar páginas de estudos usando tags)
+- - software (página com resumo do dilema das redes + SOs livres e proprietários usados)
+- - hardware (descrição dos hardwares usados, livres e proprietários)
+- - shop (link pro sr.robo com logomarca)
+
+
