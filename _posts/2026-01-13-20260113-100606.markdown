@@ -1,0 +1,46 @@
+---
+layout: post
+title:  "20260113-100606"
+date:   2026-01-13 10:06:06 -0300
+---
+
+
+aparentemente os posts conseguem ter formatação markdown, testando:
+
+Um texto em **negrito**.
+
+Um texto em *italico*.
+
+Um texto _sublinhado_.
+* Marcador um
+
+* Marcador dois
+
+etapa um
+etapa dois
+
+# Título 1
+
+## Título 2
+
+### Título 3
+
+> Citação 
+
+Código “embutido”
+
+```
+bloco de códigos 
+```
+
+![Texto de uma imagem] (https://m.media-amazon.com/images/S/pv-target-images/8a7b993b0645d6466e0f6ceb46a59ade2b31cffb56277fdf34805bb7461756aa._SX1080_FMjpg_.jpg)
+
+[Um link] (https://felip.com.br/sysadmin)
+
+—-
+
+Check
+
+
+
+
