@@ -195,3 +195,33 @@ input, textarea {
     transform: translateY(0); 
   }
 }
+
+/* ==========================================================================
+   8. IMAGENS NO POST (Estilo Link Card)
+   ========================================================================== */
+.post-content img {
+  /* 1. Correção de Layout (Evita Overflow) */
+  max-width: 100%; 
+  height: auto;
+  display: block;
+  margin: 20px auto; /* Centraliza e dá respiro vertical */
+
+  /* 2. Estética "Link Card" */
+  background: rgba(255, 255, 255, 0.02); /* Mesmo fundo do card */
+  border: var(--card-border);             /* Mesma borda sutil */
+  padding: 8px;                           /* Moldura interna */
+  border-radius: 6px;                     /* Cantos arredondados */
+  
+  /* 3. Toque Extra */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Leve sombra para profundidade */
+}
+
+/* Opcional: Estilo para legendas (se usar *itálico* logo abaixo da img) */
+.post-content img + em {
+  display: block;
+  text-align: center;
+  font-size: 0.85em;
+  color: var(--placeholder-color);
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
