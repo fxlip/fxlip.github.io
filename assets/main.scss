@@ -159,41 +159,41 @@ input, textarea {
   border: 0;
 }
 
-/* --- TERMINAL LOADER (Infinite Scroll) --- */
+/* --- TERMINAL LOADER (Infinite Scroll Fix) --- */
 .terminal-loader {
   width: 100%;
-  padding: 30px 0; /* Espaço vertical generoso */
-  margin-top: 20px;
+  /* Aumentei o padding para afastar do último post e do footer */
+  padding: 40px 0 60px 0; 
+  margin-top: 0;
   
   text-align: center;
   font-family: "Courier New", Courier, monospace;
   font-weight: bold;
-  font-size: 1.1em; /* Um pouco maior para destaque */
+  font-size: 1.2em;
   color: var(--text-color);
   
-  /* Opcional: Um background sutil para marcar a área de loading */
-  background: rgba(0, 0, 0, 0.05); 
-  border-top: 1px dashed var(--text-color);
-  border-bottom: 1px dashed var(--text-color);
+  /* REMOVIDO: Bordas e Background que causavam duplicação visual e poluição */
+  background: transparent;
+  border: none; 
   
-  opacity: 0; /* Começa invisível até o JS ativar */
-  transition: opacity 0.3s ease;
+  display: none; /* JS controla o display */
+  opacity: 1;    /* Sempre opaco quando visível */
+  
+  /* Garante que o loader fique "acima" de elementos flutuantes se houver */
+  position: relative; 
+  z-index: 10;
 }
 
-.terminal-loader.active {
-  opacity: 1;
+/* Efeito de Cursor piscando no final do texto */
+.terminal-loader::after {
+  content: "█";
+  animation: blink 1s infinite;
+  margin-left: 5px;
 }
 
-/* --- ANIMAÇÕES --- */
-@keyframes fadeIn {
-  from { 
-    opacity: 0; 
-    transform: translateY(20px); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
-  }
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 /* ==========================================================================

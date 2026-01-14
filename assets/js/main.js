@@ -2,59 +2,61 @@ document.addEventListener("DOMContentLoaded", function() {
   const loader = document.getElementById("infinite-loader");
   const postsContainer = document.querySelector(".posts-list");
   
-  // Configuração do Delay (em milissegundos)
+  // Delay mantido para apreciação (2 segundos)
   const ARTIFICIAL_DELAY = 2000; 
 
   if (loader && postsContainer) {
     
-    // --- 1. CONFIGURAÇÃO DA ANIMAÇÃO (WIDESCREEN SCANNER) ---
-    const width = 30; // Barra mais larga para ocupar espaço visual
-    let position = 0;
-    let direction = 1;
+    // --- 1. NOVA ANIMAÇÃO: DATA DECRYPTION (SCRAMBLE) ---
+    // Caracteres usados para o efeito "Matrix/Hacker"
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>";
+    const targetText = "CARREGANDO_DADOS_DO_SERVIDOR...";
     let animationInterval = null;
 
     function startAnimation() {
-      loader.classList.add('active');
       loader.style.display = 'block';
+      let iteration = 0;
       
       if (animationInterval) clearInterval(animationInterval);
       
       animationInterval = setInterval(() => {
-        let bar = "";
-        for (let i = 0; i < width; i++) {
-          if (i === position) bar += "█"; // Bloco sólido fica mais bonito
-          else bar += " "; // Espaço
-        }
-        // Desenha: [      █      ] CARREGANDO_DADOS
-        loader.innerText = `[${bar}] PROCESSANDO...`;
+        // Gera o texto embaralhado
+        loader.innerText = targetText
+          .split("")
+          .map((letter, index) => {
+            // Se já passou da iteração, fixa a letra certa
+            if (index < iteration) {
+              return targetText[index];
+            }
+            // Senão, mostra caractere aleatório
+            return chars[Math.floor(Math.random() * chars.length)];
+          })
+          .join("");
         
-        position += direction;
-        if (position === width - 1 || position === 0) {
-          direction *= -1;
+        // Controla a velocidade da revelação (decodificação)
+        if (iteration < targetText.length) {
+          iteration += 1 / 3; // Quanto menor, mais tempo "decodificando"
         }
-      }, 60); // Rápido e fluído
+      }, 30); // 30ms = Framerate frenético
     }
 
     function stopAnimation() {
       clearInterval(animationInterval);
-      loader.classList.remove('active');
     }
 
     // --- 2. LÓGICA DE CARREGAMENTO (OBSERVER) ---
     const observer = new IntersectionObserver((entries) => {
-      // Se o loader entrou na tela (isIntersecting)
       if (entries[0].isIntersecting) {
         loadNextPage();
       }
     }, {
-      rootMargin: '100px', // Começa a carregar 100px antes de chegar no fundo
+      rootMargin: '50px', 
       threshold: 0.1
     });
 
-    // Inicia a observação
     observer.observe(loader);
 
-    // --- 3. FUNÇÃO DE FETCH COM DELAY ---
+    // --- 3. FETCH & INJECTION ---
     let isLoading = false;
 
     function loadNextPage() {
@@ -63,66 +65,70 @@ document.addEventListener("DOMContentLoaded", function() {
       
       const nextPageUrl = loader.getAttribute("data-next-url");
       if (!nextPageUrl) {
-        observer.disconnect(); // Sem mais páginas, desliga o sensor
+        observer.disconnect();
         loader.style.display = 'none';
         return;
       }
 
-      // Inicia o show visual
       startAnimation();
 
-      // Promessa do Fetch (Dados)
       const fetchPromise = fetch(nextPageUrl)
         .then(response => {
-          if (!response.ok) throw new Error("Erro de conexão");
+          if (!response.ok) throw new Error("Falha na conexão");
           return response.text();
         });
 
-      // Promessa do Delay (Tempo)
       const delayPromise = new Promise(resolve => setTimeout(resolve, ARTIFICIAL_DELAY));
 
-      // Espera OS DOIS terminarem (Dados + Tempo)
       Promise.all([fetchPromise, delayPromise])
         .then(([html, _]) => {
-          // --- PROCESSAMENTO ---
           const parser = new DOMParser();
           const doc = parser.parseFromString(html, "text/html");
+          
+          // Seleciona APENAS os articles, ignorando HRs antigos da outra página
           const newPosts = doc.querySelectorAll(".posts-list .post-item");
           const nextData = doc.getElementById("infinite-loader");
 
-          // Injeção
           newPosts.forEach(post => {
-            post.style.animation = "fadeIn 0.8s ease-out"; // Entrada suave
-            postsContainer.appendChild(post);
-            
+            // Cria o HR ANTES de inserir o post (separador de topo)
+            // Isso evita criar um HR no final de tudo que briga com o footer
             const hr = document.createElement('hr');
             hr.className = 'post-list__divider';
             postsContainer.appendChild(hr);
+
+            // Insere o post com animação
+            post.style.animation = "fadeIn 0.5s ease-out forwards";
+            postsContainer.appendChild(post);
           });
 
-          // Prepara para a próxima
+          // Atualiza estado
           if (nextData) {
             const nextUrl = nextData.getAttribute("data-next-url");
             loader.setAttribute("data-next-url", nextUrl);
             isLoading = false; 
-            // O loader continua visível se o usuário continuar scrollando
-            // e o observer disparará novamente se necessário
+            // Mantém loader visível se ainda estiver na tela, observer cuida do resto
           } else {
-            // Fim do blog
+            stopAnimation();
+            loader.innerText = "EOF [ END_OF_FILE ]";
             loader.removeAttribute("data-next-url");
-            loader.innerText = "[ FIM DA TRANSMISSÃO ]";
             observer.disconnect();
-            setTimeout(() => { loader.style.display = 'none'; }, 3000);
+            
+            // Remove o loader suavemente após 3s
+            setTimeout(() => { 
+                loader.style.display = 'none'; 
+            }, 3000);
           }
         })
         .catch(err => {
           console.error(err);
-          loader.innerText = "[ ERRO DE CONEXÃO - TENTANDO NOVAMENTE... ]";
-          loader.style.color = "red";
-          // Tenta de novo em 3 segundos
+          stopAnimation();
+          loader.innerText = "[ CONEXÃO_INTERROMPIDA ]";
+          loader.style.color = "#FF4444";
+          
           setTimeout(() => {
             isLoading = false;
             loader.style.color = "";
+            // Se o usuário scrollar de novo, tenta de novo
           }, 3000);
         });
     }
