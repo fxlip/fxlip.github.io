@@ -2,8 +2,8 @@ document.addEventListener("DOMContentLoaded", function() {
   const loader = document.getElementById("infinite-loader");
   const postsContainer = document.querySelector(".posts-list");
   
-  // Delay mantido (2 segundos)
-  const ARTIFICIAL_DELAY = 2000; 
+  // AUMENTADO: 4 segundos para apreciar a "decodificação"
+  const ARTIFICIAL_DELAY = 4000; 
 
   if (loader && postsContainer) {
     
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (iteration < targetText.length) {
           iteration += 1 / 3; 
         }
-      }, 70); // 70ms = Mais lento para apreciar o binário
+      }, 70); // 70ms = Ritmo "Cinematográfico"
     }
 
     function stopAnimation() {
@@ -88,9 +88,8 @@ document.addEventListener("DOMContentLoaded", function() {
           const nextData = doc.getElementById("infinite-loader");
 
           newPosts.forEach(post => {
-            const hr = document.createElement('hr');
-            hr.className = 'post-list__divider';
-            postsContainer.appendChild(hr);
+            // REMOVIDO: O código que criava o <hr> extra foi deletado aqui.
+            // Agora usamos apenas o <hr> que já vem dentro do post.
 
             post.style.animation = "fadeIn 0.5s ease-out forwards";
             postsContainer.appendChild(post);
@@ -102,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
             loader.setAttribute("data-next-url", nextUrl);
             isLoading = false; 
           } else {
-            // FIM SILENCIOSO: Se não tem próxima, some agora.
+            // FIM SILENCIOSO
             stopAnimation();
             loader.removeAttribute("data-next-url");
             observer.disconnect();
