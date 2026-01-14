@@ -15,14 +15,16 @@
   --border: dashed 1px rgba(135, 139, 166, 0.15);
   --card-border: 1px solid rgba(255, 255, 255, 0.04);
   
-  /* LINKS */
+  /* LINKS & HIGHLIGHTS */
   --link-color: #FFB3D2;
   --link-hover-color: #FB6FA9;
   --selection-background: rgba(135, 139, 166, 0.25);
   --selection-text: #1E202F;
 
   /* SYNTAX HIGHLIGHTING */
-  --code-color-1: #444864; --code-color-2: #D14781; --code-color-3: #FB6FA9;
+  --code-color-1: #444864; 
+  --code-color-2: #D14781; 
+  --code-color-3: #FB6FA9;
   --code-color-11: #555555;
 }
 
@@ -48,68 +50,146 @@ h1, h2, h3, h4, h5, h6 {
 a { text-decoration: underline; color: var(--link-color); }
 a:hover { color: var(--link-hover-color); background-color: transparent; }
 
+input, textarea {
+  background-color: var(--background-color); color: var(--text-color);
+  border: 1px solid rgba(135, 139, 166, 0.3);
+  width: 100%; padding: 8px; margin-bottom: 10px;
+}
+
 /* ==========================================================================
-   3. LAYOUT: HEADER
+   3. LAYOUT: HEADER & NAVIGATION
    ========================================================================== */
 header {
   margin-top: 25px; margin-bottom: 30px;
   border-top: var(--border);
   border-bottom: var(--border);
   padding-top: 15px; padding-bottom: 15px;
-  text-align: right;
+  text-align: center; 
 }
 
 .menu ul { list-style: none; padding: 0; margin: 0; }
-.menu ul li { display: inline-block; margin-left: 20px; }
 
-/* Menu limpo */
+.menu ul li { 
+  display: inline-block; 
+  margin: 0 5px; /* Espaçamento reduzido para comportar o padding dos links */
+}
+
+/* --- ESTADO NORMAL (Links) --- */
 .menu a { 
   text-decoration: none; 
   border-bottom: none !important;
+  padding: 2px 6px; /* Padding igual ao ativo para evitar pulos */
+  display: inline-block;
+  border-radius: 2px;
+  transition: background-color 0.2s ease;
+  font-weight: normal; /* Mantém peso normal para estabilidade */
+}
+
+.menu a:hover {
+  background-color: rgba(255, 255, 255, 0.1); 
+  color: var(--link-hover-color);
+}
+
+/* --- ESTADO ATIVO (Highlight / Selected) --- */
+.menu-active {
+  background-color: var(--link-hover-color); 
+  color: var(--background-color);
+  padding: 2px 6px;       
+  border-radius: 2px;
+  font-weight: normal; 
+  text-decoration: none;
+  cursor: default;
+  display: inline-block;
+}
+
+/* Limpeza de pseudo-elementos antigos */
+.menu-active::before,
+.menu-active::after {
+  content: none;
 }
 
 /* ==========================================================================
-   4. POSTS & SEPARADORES
+   4. LAYOUT: POSTS & TEXT CONTENT
    ========================================================================== */
+.container { width: 90%; max-width: 600px; margin: 0 auto; }
+
+/* Separadores */
 hr, .post-list__divider {
   border: 0; 
   border-bottom: var(--border);
-  margin: 2em 0; /* Margem padrão do separador (~28px) */
+  margin: 2em 0; 
   display: block;
   height: 1px;
   background: transparent;
 }
 
-/* AQUI: Ajuste da Data (5px de distância) */
+/* Data do Post */
 .post-date {
   display: block;
   text-align: right;
-  margin-top: 5px; /* Puxado para cima */
+  margin-top: 5px; 
   font-size: 0.8em;
   opacity: 0.6;
 }
 
+/* Prevenção de Overflow (Hashes e URLs) */
+.post-content {
+  overflow-wrap: break-word; 
+  word-wrap: break-word;     
+  word-break: break-word; 
+}
+
+.post-content a { word-break: break-all; }
+
+.post-content code, 
+.post-content pre {
+  white-space: pre-wrap;       
+  word-break: break-all;       
+  max-width: 100%;             
+}
+
 /* ==========================================================================
-   5. LINK CARDS (Absolute Image Fix)
+   5. COMPONENT: IMAGENS NO POST
+   ========================================================================== */
+.post-content img {
+  box-sizing: border-box;
+  width: 100%;            
+  height: auto;
+  display: block;
+  margin: 20px 0;         
+
+  background: rgba(255, 255, 255, 0.02);
+  border: var(--card-border);
+  padding: 10px;          
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.post-content img + em {
+  display: block;
+  text-align: center;
+  font-size: 0.85em;
+  color: var(--placeholder-color);
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+/* ==========================================================================
+   6. COMPONENT: LINK CARDS (Absolute Layout)
    ========================================================================== */
 .link-card {
-  position: relative; /* Cria o contexto para a imagem absoluta */
+  position: relative; 
   margin-top: 10px;
   background: rgba(255,255,255,0.02);
   border: var(--card-border);
   border-radius: 6px;
   color: var(--base-color);
-  
-  /* Garante uma altura mínima visual (80px img + 20px padding) */
   min-height: 100px; 
-  
-  /* A MÁGICA: Empurramos todo o conteúdo para a direita */
-  /* 10px (padding esq) + 120px (img) + 15px (gap) = 145px */
+  /* Padding Esquerdo reservado para a imagem: 10px + 120px + 15px gap */
   padding: 10px 10px 10px 145px; 
-  
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centraliza o texto verticalmente */
+  justify-content: center; 
 }
 
 .link-card a {
@@ -118,19 +198,13 @@ hr, .post-list__divider {
 }
 
 .link-card .lc-img { 
-  /* Sai do fluxo e fixa na esquerda */
   position: absolute;
   top: 10px;
   left: 10px;
-  
   width: 120px;
-  /* Altura calculada: 100% do card menos o padding (10px cima + 10px baixo) */
   height: calc(100% - 20px); 
-  
-  object-fit: cover; /* Corta o excesso vertical da imagem */
+  object-fit: cover; 
   border-radius: 4px; 
-  
-  /* Sombra sutil para destacar do fundo */
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
@@ -138,85 +212,54 @@ hr, .post-list__divider {
   width: 100%;
   display: flex;
   flex-direction: column;
-  /* O texto agora manda na altura do card. Se o texto crescer, o card cresce */
-  /* e a imagem absoluta acompanha esticando junto. */
 }
 
 .link-card .lc-host { color: var(--link-hover-color); font-weight: 700; }
 .link-card .lc-desc { color: var(--placeholder-color); font-size: 0.95em; margin-top: 6px; }
 
-/* FIX: Se houver cards SEM imagem, removemos o padding extra via CSS moderno */
+/* Se não houver imagem, remove o padding esquerdo extra */
 .link-card:not(:has(.lc-img)) {
   padding-left: 10px;
 }
 
-
 /* ==========================================================================
-   6. UTILS & FOOTER
-   ========================================================================== */
-.container { width: 90%; max-width: 600px; margin: 0 auto; }
-
-/* AQUI: Footer Puxado */
-footer { 
-  /* Margem negativa para compensar o HR de cima e igualar ao Header */
-  margin: -10px 0 30px 0; 
-  text-align: right; 
-  opacity: 1; 
-}
-
-input, textarea {
-  background-color: var(--background-color); color: var(--text-color);
-  border: 1px solid rgba(135, 139, 166, 0.3);
-  width: 100%; padding: 8px; margin-bottom: 10px;
-}
-
-@media only screen and (max-device-width: 500px) { * { font-size: 12px !important; } }
-
-/* ==========================================================================
-   7. VIDEO EMBED (YouTube 16:9)
+   7. COMPONENT: VIDEO EMBED (16:9)
    ========================================================================== */
 .video-wrapper {
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  padding-bottom: 56.25%; 
   height: 0;
   margin-top: 10px;
-  
-  /* Mantém a estética do Link Card */
   background: rgba(255,255,255,0.02);
   border: var(--card-border);
   border-radius: 6px;
-  overflow: hidden; /* Garante que o iframe não vaze as bordas arredondadas */
+  overflow: hidden; 
 }
 
 .video-wrapper iframe {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   border: 0;
 }
 
-/* --- TERMINAL LOADER (Infinite Scroll Fix) --- */
+/* ==========================================================================
+   8. COMPONENT: TERMINAL LOADER (Infinite Scroll)
+   ========================================================================== */
 .terminal-loader {
   width: 100%;
   padding: 40px 0 60px 0;
   margin-top: 0;
-  
   text-align: center;
   font-family: "Courier New", Courier, monospace;
   font-weight: bold;
   font-size: 1.2em;
   color: var(--text-color);
-  
   background: transparent;
   border: none; 
-  
-  /* CRUCIAL: Removemos o display: none */
   display: block; 
   opacity: 1;
-  
   position: relative; 
   z-index: 10;
 }
@@ -232,73 +275,15 @@ input, textarea {
   50% { opacity: 0; }
 }
 
-/* Efeito de Cursor piscando no final do texto */
-.terminal-loader::after {
-  content: "█";
-  animation: blink 1s infinite;
-  margin-left: 5px;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
 /* ==========================================================================
-   8. IMAGENS NO POST (Estilo Link Card - Largura Corrigida)
+   9. LAYOUT: FOOTER & MEDIA QUERIES
    ========================================================================== */
-.post-content img {
-  /* 1. Correção de Layout e Box Model */
-  box-sizing: border-box; /* CRUCIAL: O padding passa a contar DENTRO dos 100% */
-  width: 100%;            /* Força a largura idêntica ao Link Card */
-  height: auto;
-  display: block;
-  margin: 20px 0;         /* Margem vertical igualada (sem auto na lateral pois é 100%) */
-
-  /* 2. Estética "Link Card" (Valores Idênticos) */
-  background: rgba(255, 255, 255, 0.02);
-  border: var(--card-border);
-  padding: 10px;          /* Ajustado de 8px para 10px para bater exato com o Card */
-  border-radius: 6px;
-  
-  /* 3. Toque Extra */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+footer { 
+  margin: -10px 0 30px 0; 
+  text-align: right; 
+  opacity: 1; 
 }
 
-/* Legendas */
-.post-content img + em {
-  display: block;
-  text-align: center;
-  font-size: 0.85em;
-  color: var(--placeholder-color);
-  margin-top: -10px;
-  margin-bottom: 20px;
-}
-
-/* ==========================================================================
-   9. PREVENÇÃO DE OVERFLOW (Hashes e Textos Longos)
-   ========================================================================== */
-
-/* 1. Proteção Geral para todo o conteúdo do post */
-.post-content {
-  /* Se a palavra for muito longa (hash), quebra ela para a próxima linha */
-  overflow-wrap: break-word; 
-  word-wrap: break-word;     
-  
-  /* Mantém palavras normais intactas, só quebra se não houver espaço */
-  word-break: break-word; 
-}
-
-/* 2. Tratamento Especial para Links crus */
-.post-content a {
-  word-break: break-all; /* Links longos podem quebrar em qualquer caractere */
-}
-
-/* 3. Tratamento para Códigos e Hashes (ex: `blocks`) */
-.post-content code, 
-.post-content pre {
-  /* Permite que código quebre linha visualmente em vez de criar barra de rolagem */
-  white-space: pre-wrap;       
-  word-break: break-all;       /* Quebra agressiva para hashes hexadecimais */
-  max-width: 100%;             /* Garante respeito ao container */
+@media only screen and (max-device-width: 500px) { 
+  * { font-size: 12px !important; } 
 }
