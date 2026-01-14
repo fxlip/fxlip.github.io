@@ -162,8 +162,7 @@ input, textarea {
 /* --- TERMINAL LOADER (Infinite Scroll Fix) --- */
 .terminal-loader {
   width: 100%;
-  /* Aumentei o padding para afastar do último post e do footer */
-  padding: 40px 0 60px 0; 
+  padding: 40px 0 60px 0;
   margin-top: 0;
   
   text-align: center;
@@ -172,16 +171,26 @@ input, textarea {
   font-size: 1.2em;
   color: var(--text-color);
   
-  /* REMOVIDO: Bordas e Background que causavam duplicação visual e poluição */
   background: transparent;
   border: none; 
   
-  display: none; /* JS controla o display */
-  opacity: 1;    /* Sempre opaco quando visível */
+  /* CRUCIAL: Removemos o display: none */
+  display: block; 
+  opacity: 1;
   
-  /* Garante que o loader fique "acima" de elementos flutuantes se houver */
   position: relative; 
   z-index: 10;
+}
+
+.terminal-loader::after {
+  content: "█";
+  animation: blink 1s infinite;
+  margin-left: 5px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 /* Efeito de Cursor piscando no final do texto */

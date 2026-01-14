@@ -2,15 +2,14 @@ document.addEventListener("DOMContentLoaded", function() {
   const loader = document.getElementById("infinite-loader");
   const postsContainer = document.querySelector(".posts-list");
   
-  // Delay mantido para apreciação (2 segundos)
+  // Delay mantido (2 segundos)
   const ARTIFICIAL_DELAY = 2000; 
 
   if (loader && postsContainer) {
     
-    // --- 1. NOVA ANIMAÇÃO: DATA DECRYPTION (SCRAMBLE) ---
-    // Caracteres usados para o efeito "Matrix/Hacker"
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>";
-    const targetText = "CARREGANDO_DADOS_DO_SERVIDOR...";
+    // --- 1. NOVA ANIMAÇÃO: BINARY RESOLVER ---
+    const chars = "01"; // Apenas binário
+    const targetText = "carregando..."; // Texto solicitado
     let animationInterval = null;
 
     function startAnimation() {
@@ -20,24 +19,22 @@ document.addEventListener("DOMContentLoaded", function() {
       if (animationInterval) clearInterval(animationInterval);
       
       animationInterval = setInterval(() => {
-        // Gera o texto embaralhado
         loader.innerText = targetText
           .split("")
           .map((letter, index) => {
-            // Se já passou da iteração, fixa a letra certa
             if (index < iteration) {
               return targetText[index];
             }
-            // Senão, mostra caractere aleatório
+            // Retorna 0 ou 1 aleatoriamente
             return chars[Math.floor(Math.random() * chars.length)];
           })
           .join("");
         
-        // Controla a velocidade da revelação (decodificação)
+        // Velocidade da revelação (decodificação)
         if (iteration < targetText.length) {
-          iteration += 1 / 3; // Quanto menor, mais tempo "decodificando"
+          iteration += 1 / 3; 
         }
-      }, 30); // 30ms = Framerate frenético
+      }, 70); // 70ms = Mais lento para apreciar o binário
     }
 
     function stopAnimation() {
@@ -64,6 +61,8 @@ document.addEventListener("DOMContentLoaded", function() {
       isLoading = true;
       
       const nextPageUrl = loader.getAttribute("data-next-url");
+      
+      // Se não tem URL, desliga tudo imediatamente (Fim Silencioso)
       if (!nextPageUrl) {
         observer.disconnect();
         loader.style.display = 'none';
@@ -85,50 +84,40 @@ document.addEventListener("DOMContentLoaded", function() {
           const parser = new DOMParser();
           const doc = parser.parseFromString(html, "text/html");
           
-          // Seleciona APENAS os articles, ignorando HRs antigos da outra página
           const newPosts = doc.querySelectorAll(".posts-list .post-item");
           const nextData = doc.getElementById("infinite-loader");
 
           newPosts.forEach(post => {
-            // Cria o HR ANTES de inserir o post (separador de topo)
-            // Isso evita criar um HR no final de tudo que briga com o footer
             const hr = document.createElement('hr');
             hr.className = 'post-list__divider';
             postsContainer.appendChild(hr);
 
-            // Insere o post com animação
             post.style.animation = "fadeIn 0.5s ease-out forwards";
             postsContainer.appendChild(post);
           });
 
-          // Atualiza estado
+          // Verifica se existe próxima página
           if (nextData) {
             const nextUrl = nextData.getAttribute("data-next-url");
             loader.setAttribute("data-next-url", nextUrl);
             isLoading = false; 
-            // Mantém loader visível se ainda estiver na tela, observer cuida do resto
           } else {
+            // FIM SILENCIOSO: Se não tem próxima, some agora.
             stopAnimation();
-            loader.innerText = "EOF [ END_OF_FILE ]";
             loader.removeAttribute("data-next-url");
             observer.disconnect();
-            
-            // Remove o loader suavemente após 3s
-            setTimeout(() => { 
-                loader.style.display = 'none'; 
-            }, 3000);
+            loader.style.display = 'none'; 
           }
         })
         .catch(err => {
           console.error(err);
           stopAnimation();
-          loader.innerText = "[ CONEXÃO_INTERROMPIDA ]";
+          loader.innerText = "[ erro ]"; // Feedback minimalista
           loader.style.color = "#FF4444";
           
           setTimeout(() => {
             isLoading = false;
             loader.style.color = "";
-            // Se o usuário scrollar de novo, tenta de novo
           }, 3000);
         });
     }
