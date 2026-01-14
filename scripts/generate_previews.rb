@@ -11,7 +11,7 @@ DATA_DIR = File.join(ROOT, '_data')
 PREVIEWS_FILE = File.join(DATA_DIR, 'previews.yml')
 TARGET_DIRS = ['_curadoria', '_posts']
 
-puts "--- LINK PREVIEW GENERATOR V9 (Smart Diff) ---"
+puts "--- LINK PREVIEW GENERATOR V10 (Smart Diff + Twitter Fix) ---"
 
 # 1. Filtro Sanitário
 def apply_domain_rules(data, url)
@@ -30,6 +30,9 @@ def apply_domain_rules(data, url)
     data['title'] = data['title'].gsub(/\s*-\s*UOL.*$/, '')
   when /cnnbrasil\.com\.br/
     data['title'] = data['title'].gsub(/\s*\|\s*CNN\s*Brasil.*$/, '')
+  when /(twitter|x)\.com/, /fixupx\.com/
+    # Limpa sufixos comuns do X
+    data['title'] = data['title'].gsub(/\s*on X$/, '').gsub(/\s*on Twitter$/, '')
   when /youtube\.com/, /youtu\.be/
     data['title'] = data['title'].gsub(/\s*-\s*YouTube$/, '')
   end
@@ -49,7 +52,7 @@ def fetch_url(url, limit = 5)
   http.read_timeout = 8
   
   request = Net::HTTP::Get.new(uri.request_uri)
-  request['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+  request['User-Agent'] = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' # User-Agent de Bot ajuda com FixupX
   
   begin
     response = http.request(request)
@@ -88,6 +91,29 @@ def fetch_youtube_data(url, vid_id)
   }
 end
 
+# 4. Especialista X/Twitter (Via FixupX)
+def fetch_twitter_data(original_url)
+  # Substitui o domínio original pelo proxy de metadados
+  proxy_url = original_url.gsub(%r{https?://(www\.)?(twitter|x)\.com}, 'https://fixupx.com')
+  
+  html = fetch_url(proxy_url)
+  return nil unless html
+
+  # Usa o parser padrão para extrair as tags que o FixupX gerou
+  data = extract_og_data(html, original_url)
+  
+  if data
+    data['url'] = original_url # Garante que o link final aponte para o X real
+    
+    # Se a descrição for vazia, tenta pegar o título como descrição (comum em tweets curtos)
+    if data['description'].nil? || data['description'].empty?
+      data['description'] = data['title']
+    end
+  end
+  
+  data
+end
+
 def extract_og_data(html, url)
   return nil unless html
   doc = Nokogiri::HTML(html)
@@ -98,11 +124,13 @@ def extract_og_data(html, url)
     next unless prop && content
     if prop.start_with?('og:')
       og[prop.sub('og:', '')] = content
+    elsif prop == 'description'
+      og['description'] = content
     end
   end
   
   title = og['title'] || (doc.at('title') ? doc.at('title').text : nil)
-  desc = og['description'] || (doc.at('meta[name="description"]') ? doc.at('meta[name="description"]')['content'] : nil)
+  desc = og['description']
   img = og['image']
   
   if img && !img.start_with?('http')
@@ -142,24 +170,23 @@ TARGET_DIRS.each do |dir_name|
     current_data = previews[slug]
     url_changed = current_data && current_data['url'] != link
     
-    # Se o link mudou, força reprocessamento
     if url_changed
       puts " [UPDATE] Link alterado em #{slug}. Reprocessando..."
     end
 
-    # --- DETECÇÃO DE YOUTUBE ---
-    video_id = nil
-    if link =~ /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/
-      video_id = $1
-    end
+    # --- DETECÇÃO DE PLATAFORMA ---
+    is_youtube = link =~ /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/
+    video_id = $1 if is_youtube
+    
+    is_twitter = link =~ /https?:\/\/(www\.)?(twitter|x)\.com/
 
     needs_fetch = !current_data || 
                   url_changed || 
                   current_data['title'].to_s.strip.empty? ||
-                  (video_id && !current_data['video_id']) # Se é vídeo mas não tem ID salvo
+                  (is_youtube && !current_data['video_id'])
 
     if !needs_fetch
-      # Cache Hit: Apenas aplica filtros sanitários por garantia
+      # Cache Hit: Sanitização
       old_title = previews[slug]['title']
       previews[slug] = apply_domain_rules(previews[slug], previews[slug]['url'])
       if old_title != previews[slug]['title']
@@ -167,23 +194,26 @@ TARGET_DIRS.each do |dir_name|
         updated = true
       end
     else
-      # Cache Miss ou Link Alterado
+      # Cache Miss: Fetch
       puts " [FETCH] #{slug} -> #{link}"
       
       data = nil
-      if video_id
+      if is_youtube
         data = fetch_youtube_data(link, video_id)
+      elsif is_twitter
+        # Rota especial para o X
+        data = fetch_twitter_data(link)
       else
         body = fetch_url(link)
         data = extract_og_data(body, link) if body
       end
 
-      if data && (data['title'] || data['video_id'])
-        data['url'] = link # Garante que salvamos o link NOVO
+      if data && (data['title'] || data['image'])
+        data['url'] = link 
         data = apply_domain_rules(data, link)
         previews[slug] = data
         updated = true
-        puts "   -> Sucesso: #{data['title']} #{video_id ? '[VIDEO]' : ''}"
+        puts "   -> Sucesso: #{data['title']}"
         sleep 2
       else
         puts "   -> Falha."

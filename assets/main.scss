@@ -226,3 +226,31 @@ input, textarea {
   margin-top: -10px;
   margin-bottom: 20px;
 }
+
+/* ==========================================================================
+   9. PREVENÇÃO DE OVERFLOW (Hashes e Textos Longos)
+   ========================================================================== */
+
+/* 1. Proteção Geral para todo o conteúdo do post */
+.post-content {
+  /* Se a palavra for muito longa (hash), quebra ela para a próxima linha */
+  overflow-wrap: break-word; 
+  word-wrap: break-word;     
+  
+  /* Mantém palavras normais intactas, só quebra se não houver espaço */
+  word-break: break-word; 
+}
+
+/* 2. Tratamento Especial para Links crus */
+.post-content a {
+  word-break: break-all; /* Links longos podem quebrar em qualquer caractere */
+}
+
+/* 3. Tratamento para Códigos e Hashes (ex: `blocks`) */
+.post-content code, 
+.post-content pre {
+  /* Permite que código quebre linha visualmente em vez de criar barra de rolagem */
+  white-space: pre-wrap;       
+  word-break: break-all;       /* Quebra agressiva para hashes hexadecimais */
+  max-width: 100%;             /* Garante respeito ao container */
+}
