@@ -1,7 +1,7 @@
 ---
-title: /hardwares
+title: hardwares
 layout: page
-permalink: /notebook
+permalink: /hardwares
 ---
 
 [smartphone_1]

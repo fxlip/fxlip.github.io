@@ -1,6 +1,6 @@
 ---
 layout: tags
-title: Tags
-permalink: /tags/
+title: infosec
+permalink: /infosec/
 robots: noindex
 ---

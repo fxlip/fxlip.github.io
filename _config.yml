@@ -2,10 +2,11 @@
 
 header_pages:
   - index.html
-#  - sobre.md
-#  - contato.md
-#  - redes.md
-#  - hardware.md
+  - sobre.md
+  - sysadmin.md
+  - infosec.md
+  - softwares.md
+  - hardware.md
 
 footer: 'me manda um <a href="mailto:fxlip@tuta.io">e-mail</a> ツ'
 

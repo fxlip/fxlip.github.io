@@ -90,16 +90,26 @@ hr, .post-list__divider {
 }
 
 /* ==========================================================================
-   5. LINK CARDS
+   5. LINK CARDS (Absolute Image Fix)
    ========================================================================== */
 .link-card {
+  position: relative; /* Cria o contexto para a imagem absoluta */
   margin-top: 10px;
   background: rgba(255,255,255,0.02);
   border: var(--card-border);
-  padding: 10px;
   border-radius: 6px;
   color: var(--base-color);
-  display: flex; gap: 10px; align-items: flex-start;
+  
+  /* Garante uma altura mínima visual (80px img + 20px padding) */
+  min-height: 100px; 
+  
+  /* A MÁGICA: Empurramos todo o conteúdo para a direita */
+  /* 10px (padding esq) + 120px (img) + 15px (gap) = 145px */
+  padding: 10px 10px 10px 145px; 
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centraliza o texto verticalmente */
 }
 
 .link-card a {
@@ -107,10 +117,39 @@ hr, .post-list__divider {
   border: none;
 }
 
-.link-card .lc-img { width: 120px; height: 80px; object-fit: cover; border-radius: 4px; flex: 0 0 120px; }
-.link-card .lc-meta { flex: 1 1 auto; }
+.link-card .lc-img { 
+  /* Sai do fluxo e fixa na esquerda */
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  
+  width: 120px;
+  /* Altura calculada: 100% do card menos o padding (10px cima + 10px baixo) */
+  height: calc(100% - 20px); 
+  
+  object-fit: cover; /* Corta o excesso vertical da imagem */
+  border-radius: 4px; 
+  
+  /* Sombra sutil para destacar do fundo */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.link-card .lc-meta { 
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* O texto agora manda na altura do card. Se o texto crescer, o card cresce */
+  /* e a imagem absoluta acompanha esticando junto. */
+}
+
 .link-card .lc-host { color: var(--link-hover-color); font-weight: 700; }
 .link-card .lc-desc { color: var(--placeholder-color); font-size: 0.95em; margin-top: 6px; }
+
+/* FIX: Se houver cards SEM imagem, removemos o padding extra via CSS moderno */
+.link-card:not(:has(.lc-img)) {
+  padding-left: 10px;
+}
+
 
 /* ==========================================================================
    6. UTILS & FOOTER

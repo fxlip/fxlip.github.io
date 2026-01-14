@@ -1,6 +1,6 @@
 ---
 layout: categories
-title: Categories
-permalink: /categories/
+title: sysadmin
+permalink: /sysadmin/
 robots: noindex
 ---

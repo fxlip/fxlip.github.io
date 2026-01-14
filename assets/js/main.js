@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // --- 1. NOVA ANIMAÇÃO: BINARY RESOLVER ---
     const chars = "01"; // Apenas binário
-    const targetText = "carregando..."; // Texto solicitado
+    const targetText = "carregando"; // Texto solicitado
     let animationInterval = null;
 
     function startAnimation() {

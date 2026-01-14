@@ -1,7 +1,7 @@
 ---
-title: /redes
+title: softwares
 layout: page
-permalink: /redes
+permalink: /softwares
 ---
 
 [Minhas redes sociais]:

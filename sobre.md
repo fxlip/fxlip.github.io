@@ -1,5 +1,5 @@
 ---
-title: /sobre
+title: sobre
 layout: page
 permalink: /sobre
 ---
