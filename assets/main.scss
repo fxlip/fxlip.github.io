@@ -197,26 +197,27 @@ input, textarea {
 }
 
 /* ==========================================================================
-   8. IMAGENS NO POST (Estilo Link Card)
+   8. IMAGENS NO POST (Estilo Link Card - Largura Corrigida)
    ========================================================================== */
 .post-content img {
-  /* 1. Correção de Layout (Evita Overflow) */
-  max-width: 100%; 
+  /* 1. Correção de Layout e Box Model */
+  box-sizing: border-box; /* CRUCIAL: O padding passa a contar DENTRO dos 100% */
+  width: 100%;            /* Força a largura idêntica ao Link Card */
   height: auto;
   display: block;
-  margin: 20px auto; /* Centraliza e dá respiro vertical */
+  margin: 20px 0;         /* Margem vertical igualada (sem auto na lateral pois é 100%) */
 
-  /* 2. Estética "Link Card" */
-  background: rgba(255, 255, 255, 0.02); /* Mesmo fundo do card */
-  border: var(--card-border);             /* Mesma borda sutil */
-  padding: 8px;                           /* Moldura interna */
-  border-radius: 6px;                     /* Cantos arredondados */
+  /* 2. Estética "Link Card" (Valores Idênticos) */
+  background: rgba(255, 255, 255, 0.02);
+  border: var(--card-border);
+  padding: 10px;          /* Ajustado de 8px para 10px para bater exato com o Card */
+  border-radius: 6px;
   
   /* 3. Toque Extra */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Leve sombra para profundidade */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Opcional: Estilo para legendas (se usar *itálico* logo abaixo da img) */
+/* Legendas */
 .post-content img + em {
   display: block;
   text-align: center;
