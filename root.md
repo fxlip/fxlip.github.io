@@ -56,8 +56,8 @@ permalink: /root/
 <div class="sysadmin-tree">
   <div class="sys-root">/var/www/fxlip</div>
 
-  {% comment %} 1. Agrupa todos os docs da coleção sysadmin por CATEGORIA {% endcomment %}
-  {% assign grouped_by_category = site.sysadmin | group_by: "categories" %}
+  {% comment %} 1. CORREÇÃO CRÍTICA: Mudado de site.sysadmin para site.root {% endcomment %}
+  {% assign grouped_by_category = site.root | group_by: "categories" %}
 
   {% for cat_group in grouped_by_category %}
     <div class="sys-category">
