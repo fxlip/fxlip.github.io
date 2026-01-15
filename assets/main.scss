@@ -71,18 +71,18 @@ header {
 
 .menu ul li { 
   display: inline-block; 
-  margin: 0 5px; /* Espaçamento reduzido para comportar o padding dos links */
+  margin: 0 5px; 
 }
 
 /* --- ESTADO NORMAL (Links) --- */
 .menu a { 
   text-decoration: none; 
   border-bottom: none !important;
-  padding: 2px 6px; /* Padding igual ao ativo para evitar pulos */
+  padding: 2px 6px; 
   display: inline-block;
   border-radius: 2px;
   transition: background-color 0.2s ease;
-  font-weight: normal; /* Mantém peso normal para estabilidade */
+  font-weight: normal; 
 }
 
 .menu a:hover {
@@ -102,7 +102,6 @@ header {
   display: inline-block;
 }
 
-/* Limpeza de pseudo-elementos antigos */
 .menu-active::before,
 .menu-active::after {
   content: none;
@@ -185,7 +184,6 @@ hr, .post-list__divider {
   border-radius: 6px;
   color: var(--base-color);
   min-height: 100px; 
-  /* Padding Esquerdo reservado para a imagem: 10px + 120px + 15px gap */
   padding: 10px 10px 10px 145px; 
   display: flex;
   flex-direction: column;
@@ -286,20 +284,4 @@ footer {
 
 @media only screen and (max-device-width: 500px) { 
   * { font-size: 12px !important; } 
-}
-
-/* ==========================================================================
-   10. PREFIXO DO USUÁRIO (Terminal Style)
-   ========================================================================== */
-h1::before {
-  /* O prefixo mágico */
-  content: "fxlip/"; 
-  
-  /* Estilo visual */
-  color: var(--link-hover-color); /* Usa o rosa para destacar o user */
-  opacity: 0.8;                   /* Leve transparência para não brigar com o título */
-  font-weight: bold;
-  
-  /* Espaçamento */
-  margin-right: 0px; 
 }
