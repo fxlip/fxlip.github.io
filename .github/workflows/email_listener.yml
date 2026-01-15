@@ -50,12 +50,22 @@ jobs:
           git config user.name "kernel-bot"
           git config user.email "bot@felip.com.br"
           
-          # CORREÇÃO AQUI: Adicionamos a pasta _root/ ao comando git add
+          # Adiciona as pastas relevantes
           git add _posts/ _root/ _data/previews.yml
           
+          # Verifica se há algo para commitar
           if git diff --staged --quiet; then
             echo "Nenhuma alteração detectada. Encerrando."
           else
-            git commit -m "new post via smtp"
+            # LÓGICA DE DETECÇÃO:
+            # Verifica se existe algum arquivo na pasta _root/ dentro do stage
+            if git diff --staged --name-only | grep -q "^_root/"; then
+               MSG="new page via smtp"
+            else
+               MSG="new post via smtp"
+            fi
+            
+            echo "Committing with message: $MSG"
+            git commit -m "$MSG"
             git push
           fi
