@@ -22,7 +22,7 @@ def slugify(text)
   text.to_s.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
 end
 
-puts "--- INICIANDO PROTOCOLO EMAIL-TO-GIT (ROUTING V2) ---"
+puts "--- INICIANDO PROTOCOLO EMAIL-TO-GIT (DEBUG MODE V3) ---"
 puts "Hora do Sistema: #{Time.now}"
 
 begin
@@ -41,53 +41,70 @@ begin
   email_ids.each do |message_id|
     msg = imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
     mail = Mail.new(msg)
-
     now = Time.now
-    subject = mail.subject
+    
+    # Normalização do Assunto (Remove prefixos de resposta como 'Re:', 'Fwd:')
+    raw_subject = mail.subject.to_s
+    subject = raw_subject.gsub(/^(Re|Fwd): /i, '').strip
+    
+    puts " [DEBUG] Assunto Detectado: '#{subject}'"
     
     # --- ROTEAMENTO INTELIGENTE ---
-    # Verifica se o assunto segue o padrão: categoria/tag/titulo
     is_sysadmin = false
     category = nil
     tag = nil
     clean_title = nil
-
-    if subject && subject.include?('/')
+    
+    # Verifica a presença de barras para roteamento
+    if subject.include?('/')
       parts = subject.split('/').map(&:strip)
-      # Aceita apenas se tiver exatamente 3 partes (cat/tag/title)
+      puts " [DEBUG] Partes identificadas: #{parts.inspect} (Total: #{parts.length})"
+      
       if parts.length == 3
         is_sysadmin = true
         category = parts[0].downcase
         tag = parts[1].downcase
         clean_title = parts[2]
+      else
+        puts " [AVISO] Barras detectadas, mas formato incorreto. Esperado: cat/tag/titulo. Caindo para Post padrão."
       end
     end
 
-    # Define diretório e título final
     if is_sysadmin
       display_title = clean_title
       target_dir = SYSADMIN_DIR
-      FileUtils.mkdir_p(target_dir) # Cria a pasta _sysadmin se não existir
-      puts " [ROUTE] Redirecionando para SYSADMIN: #{category}/#{tag}"
-    else
-      # Fluxo Padrão (Blog Post)
-      if subject.nil? || subject.strip.empty?
-        raw_slug = now.strftime('%Y%m%d-%H%M%S')
-        display_title = raw_slug
-      else
-        display_title = subject.gsub('"', '\"')
-      end
-      target_dir = POSTS_DIR
-      puts " [ROUTE] Redirecionando para POSTS (Padrão)"
-    end
-
-    # Slugify do título
-    if is_sysadmin
+      FileUtils.mkdir_p(target_dir)
+      
+      # Força o layout page explicitamente
+      front_matter = <<~EOF
+        ---
+        layout: page
+        title: "#{display_title}"
+        date:   #{now.strftime('%Y-%m-%d %H:%M:%S %z')}
+        categories: [#{category}]
+        tags: [#{tag}]
+        ---
+      EOF
+      
+      puts " [ROUTE] MODO SYSADMIN ATIVADO -> #{category}/#{tag}"
       raw_slug = slugify(clean_title)
     else
+      display_title = subject.empty? ? now.strftime('%Y%m%d-%H%M%S') : subject.gsub('"', '\"')
+      target_dir = POSTS_DIR
+      
+      front_matter = <<~EOF
+        ---
+        layout: post
+        title:  "#{display_title}"
+        date:   #{now.strftime('%Y-%m-%d %H:%M:%S %z')}
+        ---
+      EOF
+      
+      puts " [ROUTE] MODO BLOG POST (PADRÃO)"
       raw_slug = slugify(display_title)
     end
     
+    # Fallback para slug
     if raw_slug.nil? || raw_slug.empty?
       raw_slug = "post-#{SecureRandom.hex(4)}"
     end
@@ -98,43 +115,18 @@ begin
            else
              mail.body.decoded
            end
+    body = body.to_s.force_encoding('UTF-8').scrub
     body = "" if body.nil?
-    body = body.force_encoding('UTF-8').scrub
 
-    # Definição do Arquivo
-    post_date_str = now.strftime('%Y-%m-%d %H:%M:%S %z')
-    filename_date = now.strftime('%Y-%m-%d')
-    filename = "#{filename_date}-#{raw_slug}.md" # Extensão .md simplificada
+    filename = "#{now.strftime('%Y-%m-%d')}-#{raw_slug}.md"
     filepath = File.join(target_dir, filename)
-
-    # Front Matter Dinâmico
-    if is_sysadmin
-      # Layout específico para sysadmin ou genérico page
-      front_matter = <<~EOF
-        ---
-        layout: page
-        title: "#{display_title}"
-        date:   #{post_date_str}
-        categories: [#{category}]
-        tags: [#{tag}]
-        ---
-      EOF
-    else
-      # Layout padrão de blog
-      front_matter = <<~EOF
-        ---
-        layout: post
-        title:  "#{display_title}"
-        date:   #{post_date_str}
-        ---
-      EOF
-    end
 
     full_content = "#{front_matter}\n#{body}"
 
     File.write(filepath, full_content)
-    puts " -> Arquivo criado: #{filepath}"
+    puts " -> Arquivo gravado em: #{filepath}"
 
+    # Marca como lido e deleta
     imap.store(message_id, "+FLAGS", [:Seen, :Deleted])
   end
 
