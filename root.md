@@ -56,7 +56,7 @@ permalink: /root/
 <div class="sysadmin-tree">
   <div class="sys-root">/var/www/fxlip</div>
 
-  {% comment %} 1. CORREÇÃO CRÍTICA: Mudado de site.sysadmin para site.root {% endcomment %}
+  {% comment %} AQUI ESTAVA O ERRO: Mudado de site.sysadmin para site.root {% endcomment %}
   {% assign grouped_by_category = site.root | group_by: "categories" %}
 
   {% for cat_group in grouped_by_category %}
@@ -64,7 +64,6 @@ permalink: /root/
       /{{ cat_group.name | default: "uncategorized" | first }}
     </div>
 
-    {% comment %} 2. Dentro da categoria, agrupa por TAG {% endcomment %}
     {% assign grouped_by_tag = cat_group.items | group_by: "tags" %}
 
     {% for tag_group in grouped_by_tag %}

@@ -14,7 +14,8 @@ ALLOWED_SENDER = ENV['ALLOWED_SENDER']
 
 ROOT = File.expand_path(File.join(__dir__, '..'))
 POSTS_DIR = File.join(ROOT, '_posts')
-SYSADMIN_DIR = File.join(ROOT, '_root')
+# ATUALIZADO: Aponta para a pasta da coleção _root
+COLLECTION_DIR = File.join(ROOT, '_root') 
 
 # --- FUNÇÕES AUXILIARES ---
 def slugify(text)
@@ -22,7 +23,7 @@ def slugify(text)
   text.to_s.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
 end
 
-puts "--- INICIANDO PROTOCOLO EMAIL-TO-GIT (DEBUG MODE V3) ---"
+puts "--- INICIANDO PROTOCOLO EMAIL-TO-GIT (ROOT ROUTING V4) ---"
 puts "Hora do Sistema: #{Time.now}"
 
 begin
@@ -43,39 +44,36 @@ begin
     mail = Mail.new(msg)
     now = Time.now
     
-    # Normalização do Assunto (Remove prefixos de resposta como 'Re:', 'Fwd:')
     raw_subject = mail.subject.to_s
     subject = raw_subject.gsub(/^(Re|Fwd): /i, '').strip
     
-    puts " [DEBUG] Assunto Detectado: '#{subject}'"
+    puts " [DEBUG] Assunto: '#{subject}'"
     
     # --- ROTEAMENTO INTELIGENTE ---
-    is_sysadmin = false
+    is_collection_item = false
     category = nil
     tag = nil
     clean_title = nil
     
-    # Verifica a presença de barras para roteamento
+    # Verifica padrão: categoria/tag/titulo
     if subject.include?('/')
       parts = subject.split('/').map(&:strip)
-      puts " [DEBUG] Partes identificadas: #{parts.inspect} (Total: #{parts.length})"
       
       if parts.length == 3
-        is_sysadmin = true
+        is_collection_item = true
         category = parts[0].downcase
         tag = parts[1].downcase
         clean_title = parts[2]
       else
-        puts " [AVISO] Barras detectadas, mas formato incorreto. Esperado: cat/tag/titulo. Caindo para Post padrão."
+        puts " [AVISO] Formato incorreto. Esperado: cat/tag/titulo."
       end
     end
 
-    if is_sysadmin
+    if is_collection_item
       display_title = clean_title
-      target_dir = SYSADMIN_DIR
+      target_dir = COLLECTION_DIR
       FileUtils.mkdir_p(target_dir)
       
-      # Força o layout page explicitamente
       front_matter = <<~EOF
         ---
         layout: page
@@ -86,7 +84,7 @@ begin
         ---
       EOF
       
-      puts " [ROUTE] MODO SYSADMIN ATIVADO -> #{category}/#{tag}"
+      puts " [ROUTE] MODO ROOT ATIVADO -> #{category}/#{tag}"
       raw_slug = slugify(clean_title)
     else
       display_title = subject.empty? ? now.strftime('%Y%m%d-%H%M%S') : subject.gsub('"', '\"')
@@ -104,12 +102,10 @@ begin
       raw_slug = slugify(display_title)
     end
     
-    # Fallback para slug
     if raw_slug.nil? || raw_slug.empty?
       raw_slug = "post-#{SecureRandom.hex(4)}"
     end
 
-    # Corpo do Email
     body = if mail.multipart?
              mail.text_part ? mail.text_part.decoded : mail.html_part.decoded
            else
@@ -124,9 +120,8 @@ begin
     full_content = "#{front_matter}\n#{body}"
 
     File.write(filepath, full_content)
-    puts " -> Arquivo gravado em: #{filepath}"
+    puts " -> Arquivo gravado: #{filepath}"
 
-    # Marca como lido e deleta
     imap.store(message_id, "+FLAGS", [:Seen, :Deleted])
   end
 

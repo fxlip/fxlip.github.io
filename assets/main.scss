@@ -287,3 +287,19 @@ footer {
 @media only screen and (max-device-width: 500px) { 
   * { font-size: 12px !important; } 
 }
+
+/* ==========================================================================
+   10. PREFIXO DO USUÁRIO (Terminal Style)
+   ========================================================================== */
+h1::before {
+  /* O prefixo mágico */
+  content: "fxlip/"; 
+  
+  /* Estilo visual */
+  color: var(--link-hover-color); /* Usa o rosa para destacar o user */
+  opacity: 0.8;                   /* Leve transparência para não brigar com o título */
+  font-weight: bold;
+  
+  /* Espaçamento */
+  margin-right: 0px; 
+}
