@@ -53,7 +53,7 @@ permalink: /root/
 </style>
 
 <div class="sysadmin-tree">
-  <div class="sys-root">/var/www/fxlip</div>
+  <div class="sys-root"></div>
 
   {% comment %} Agrupa por Categoria {% endcomment %}
   {% assign grouped_by_category = site.root | group_by: "categories" %}
