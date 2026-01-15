@@ -1,8 +1,8 @@
 ---
-title: comandos_basicos
+title: /comandos_basicos
 date:   2016-01-08 15:04:23
 categories: [/linux]
-tags: [/comandos_basicos]
+tags: [/intro]
 ---
 
 aula 1

@@ -14,26 +14,22 @@ ALLOWED_SENDER = ENV['ALLOWED_SENDER']
 
 ROOT = File.expand_path(File.join(__dir__, '..'))
 POSTS_DIR = File.join(ROOT, '_posts')
+SYSADMIN_DIR = File.join(ROOT, '_sysadmin')
 
 # --- FUNÇÕES AUXILIARES ---
 def slugify(text)
-  # Se o texto for nulo, retorna nil para ser tratado depois
   return nil if text.nil? || text.strip.empty?
-  
-  # Remove acentos, caracteres especiais e espaços
   text.to_s.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
 end
 
-puts "--- INICIANDO PROTOCOLO EMAIL-TO-GIT (SYSTEM TIMEZONE) ---"
-puts "Hora do Sistema: #{Time.now}" # Log para confirmar se o TZ pegou
+puts "--- INICIANDO PROTOCOLO EMAIL-TO-GIT (ROUTING V2) ---"
+puts "Hora do Sistema: #{Time.now}"
 
 begin
-  # Conexão IMAP
   imap = Net::IMAP.new(IMAP_SERVER, port: IMAP_PORT, ssl: true)
   imap.login(USERNAME, PASSWORD)
   imap.select('INBOX')
 
-  # Filtro de Segurança: Apenas não lidos do seu e-mail
   search_criteria = ['UNSEEN', 'FROM', ALLOWED_SENDER]
   email_ids = imap.search(search_criteria)
 
@@ -46,67 +42,102 @@ begin
     msg = imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
     mail = Mail.new(msg)
 
-    # 1. Captura da Data/Hora (Usa o TZ do sistema definido no Workflow)
     now = Time.now
-    
-    # 2. Tratamento do Assunto
     subject = mail.subject
     
-    # Se vier sem assunto, gera um ID baseado no tempo: 20260112-193000
-    if subject.nil? || subject.strip.empty?
-      raw_slug = now.strftime('%Y%m%d-%H%M%S')
-      display_title = raw_slug # O título no post será o timestamp
-    else
-      raw_slug = slugify(subject)
-      display_title = subject.gsub('"', '\"')
+    # --- ROTEAMENTO INTELIGENTE ---
+    # Verifica se o assunto segue o padrão: categoria/tag/titulo
+    is_sysadmin = false
+    category = nil
+    tag = nil
+    clean_title = nil
+
+    if subject && subject.include?('/')
+      parts = subject.split('/').map(&:strip)
+      # Aceita apenas se tiver exatamente 3 partes (cat/tag/title)
+      if parts.length == 3
+        is_sysadmin = true
+        category = parts[0].downcase
+        tag = parts[1].downcase
+        clean_title = parts[2]
+      end
     end
 
-    # Garante slug único se algo falhar
+    # Define diretório e título final
+    if is_sysadmin
+      display_title = clean_title
+      target_dir = SYSADMIN_DIR
+      FileUtils.mkdir_p(target_dir) # Cria a pasta _sysadmin se não existir
+      puts " [ROUTE] Redirecionando para SYSADMIN: #{category}/#{tag}"
+    else
+      # Fluxo Padrão (Blog Post)
+      if subject.nil? || subject.strip.empty?
+        raw_slug = now.strftime('%Y%m%d-%H%M%S')
+        display_title = raw_slug
+      else
+        display_title = subject.gsub('"', '\"')
+      end
+      target_dir = POSTS_DIR
+      puts " [ROUTE] Redirecionando para POSTS (Padrão)"
+    end
+
+    # Slugify do título
+    if is_sysadmin
+      raw_slug = slugify(clean_title)
+    else
+      raw_slug = slugify(display_title)
+    end
+    
     if raw_slug.nil? || raw_slug.empty?
       raw_slug = "post-#{SecureRandom.hex(4)}"
     end
 
-    # 3. Tratamento do Corpo (Texto ou HTML)
+    # Corpo do Email
     body = if mail.multipart?
              mail.text_part ? mail.text_part.decoded : mail.html_part.decoded
            else
              mail.body.decoded
            end
-
     body = "" if body.nil?
-    
-    # Limpeza de encoding e caracteres estranhos
     body = body.force_encoding('UTF-8').scrub
 
-    puts "Processando: #{display_title}"
-
-    # 4. Definição do Arquivo
-    # O date no front matter usa %z para gravar o offset (ex: -0300) explicitamente
+    # Definição do Arquivo
     post_date_str = now.strftime('%Y-%m-%d %H:%M:%S %z')
     filename_date = now.strftime('%Y-%m-%d')
-    
-    filename = "#{filename_date}-#{raw_slug}.markdown"
-    filepath = File.join(POSTS_DIR, filename)
+    filename = "#{filename_date}-#{raw_slug}.md" # Extensão .md simplificada
+    filepath = File.join(target_dir, filename)
 
-    # 5. Criação do Markdown
-    markdown_content = <<~EOF
-      ---
-      layout: post
-      title:  "#{display_title}"
-      date:   #{post_date_str}
-      ---
-      
-      #{body}
-    EOF
+    # Front Matter Dinâmico
+    if is_sysadmin
+      # Layout específico para sysadmin ou genérico page
+      front_matter = <<~EOF
+        ---
+        layout: page
+        title: "#{display_title}"
+        date:   #{post_date_str}
+        categories: [#{category}]
+        tags: [#{tag}]
+        ---
+      EOF
+    else
+      # Layout padrão de blog
+      front_matter = <<~EOF
+        ---
+        layout: post
+        title:  "#{display_title}"
+        date:   #{post_date_str}
+        ---
+      EOF
+    end
 
-    File.write(filepath, markdown_content)
-    puts " -> Arquivo criado: #{filename}"
+    full_content = "#{front_matter}\n#{body}"
 
-    # 6. Marcar como Lido e Deletado
+    File.write(filepath, full_content)
+    puts " -> Arquivo criado: #{filepath}"
+
     imap.store(message_id, "+FLAGS", [:Seen, :Deleted])
   end
 
-  # Limpeza final no servidor de e-mail
   imap.expunge
   imap.logout
   imap.disconnect

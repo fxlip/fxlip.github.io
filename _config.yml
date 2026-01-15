@@ -25,3 +25,9 @@ sass:
 
 # Timezone
 timezone: America/Sao_Paulo
+
+# Collections
+collections:
+  sysadmin:
+    output: true
+    permalink: /sysadmin/:path/
