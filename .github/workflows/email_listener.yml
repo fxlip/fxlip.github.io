@@ -22,7 +22,6 @@ jobs:
           ruby-version: '3.0'
           bundler-cache: true
 
-      # MUDANÇA 1: Adicionamos 'nokogiri' ao Gemfile para o script de previews
       - name: Create Gemfile
         run: |
           echo "source 'https://rubygems.org'" > Gemfile
@@ -33,7 +32,6 @@ jobs:
       - name: Install Dependencies
         run: bundle install
 
-      # MUDANÇA 2: Execução Sequencial (Post -> Preview)
       - name: Run Protocol (Email + Previews)
         env:
           EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
@@ -47,14 +45,13 @@ jobs:
           echo ">>> 2. Atualizando Link Cards..."
           bundle exec ruby scripts/generate_previews.rb
 
-      # MUDANÇA 3: Commit Unificado
       - name: Commit and Push
         run: |
           git config user.name "kernel-bot"
           git config user.email "bot@felip.com.br"
           
-          # Adiciona tanto os posts novos quanto o arquivo de dados atualizado
-          git add _posts/ _data/previews.yml
+          # CORREÇÃO AQUI: Adicionamos a pasta _root/ ao comando git add
+          git add _posts/ _root/ _data/previews.yml
           
           if git diff --staged --quiet; then
             echo "Nenhuma alteração detectada. Encerrando."
