@@ -30,4 +30,4 @@ timezone: America/Sao_Paulo
 collections:
   root:
     output: true
-    permalink: /:path/
+    permalink: /root/:path/
