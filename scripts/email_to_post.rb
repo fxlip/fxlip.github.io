@@ -14,7 +14,6 @@ ALLOWED_SENDER = ENV['ALLOWED_SENDER']
 
 ROOT = File.expand_path(File.join(__dir__, '..'))
 POSTS_DIR = File.join(ROOT, '_posts')
-# ATUALIZADO: Aponta para a pasta da coleção _root
 COLLECTION_DIR = File.join(ROOT, '_root') 
 
 # --- FUNÇÕES AUXILIARES ---
@@ -23,7 +22,7 @@ def slugify(text)
   text.to_s.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
 end
 
-puts "--- INICIANDO PROTOCOLO EMAIL-TO-GIT (ROOT ROUTING V4) ---"
+puts "--- INICIANDO PROTOCOLO EMAIL-TO-GIT (PERMALINK V5) ---"
 puts "Hora do Sistema: #{Time.now}"
 
 begin
@@ -55,7 +54,6 @@ begin
     tag = nil
     clean_title = nil
     
-    # Verifica padrão: categoria/tag/titulo
     if subject.include?('/')
       parts = subject.split('/').map(&:strip)
       
@@ -74,6 +72,11 @@ begin
       target_dir = COLLECTION_DIR
       FileUtils.mkdir_p(target_dir)
       
+      raw_slug = slugify(clean_title)
+      
+      # PERMALINK MÁGICO: Força a URL exata que você quer
+      custom_permalink = "/root/#{category}/#{tag}/#{raw_slug}/"
+      
       front_matter = <<~EOF
         ---
         layout: page
@@ -81,11 +84,11 @@ begin
         date:   #{now.strftime('%Y-%m-%d %H:%M:%S %z')}
         categories: [#{category}]
         tags: [#{tag}]
+        permalink: #{custom_permalink}
         ---
       EOF
       
-      puts " [ROUTE] MODO ROOT ATIVADO -> #{category}/#{tag}"
-      raw_slug = slugify(clean_title)
+      puts " [ROUTE] ROOT -> #{category}/#{tag} (Link: #{custom_permalink})"
     else
       display_title = subject.empty? ? now.strftime('%Y%m%d-%H%M%S') : subject.gsub('"', '\"')
       target_dir = POSTS_DIR
@@ -98,7 +101,7 @@ begin
         ---
       EOF
       
-      puts " [ROUTE] MODO BLOG POST (PADRÃO)"
+      puts " [ROUTE] BLOG POST (PADRÃO)"
       raw_slug = slugify(display_title)
     end
     

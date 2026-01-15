@@ -5,7 +5,6 @@ permalink: /root/
 ---
 
 <style>
-  /* Estilo Local para Árvore de Diretórios */
   .sysadmin-tree {
     font-family: 'Courier New', monospace;
     color: var(--text-color);
@@ -13,11 +12,11 @@ permalink: /root/
   }
   .sys-category {
     font-weight: bold;
-    color: var(--link-hover-color); /* Rosa */
+    color: var(--link-hover-color); 
     margin-top: 20px;
   }
   .sys-tag {
-    color: var(--code-color-3); /* Rosa suave ou Roxo */
+    color: var(--code-color-3); 
     margin-left: 20px;
     margin-top: 10px;
     font-weight: bold;
@@ -56,19 +55,21 @@ permalink: /root/
 <div class="sysadmin-tree">
   <div class="sys-root">/var/www/fxlip</div>
 
-  {% comment %} AQUI ESTAVA O ERRO: Mudado de site.sysadmin para site.root {% endcomment %}
+  {% comment %} Agrupa por Categoria {% endcomment %}
   {% assign grouped_by_category = site.root | group_by: "categories" %}
 
   {% for cat_group in grouped_by_category %}
     <div class="sys-category">
-      /{{ cat_group.name | default: "uncategorized" | first }}
+      {% comment %} Removemos o 'first' e usamos 'join' para garantir que array vire string {% endcomment %}
+      /{{ cat_group.name | join: "" | default: "uncategorized" }}
     </div>
 
+    {% comment %} Agrupa por Tag {% endcomment %}
     {% assign grouped_by_tag = cat_group.items | group_by: "tags" %}
 
     {% for tag_group in grouped_by_tag %}
       <div class="sys-tag">
-        └── [ {{ tag_group.name | default: "general" | first }} ]
+        └── [ {{ tag_group.name | join: "" | default: "general" }} ]
       </div>
 
       {% for doc in tag_group.items %}
