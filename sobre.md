@@ -1,7 +1,7 @@
 ---
-title: sobre
+title: about
 layout: page
-permalink: /sobre
+permalink: /about
 ---
 
 # Felip Barbosa de Medeiros

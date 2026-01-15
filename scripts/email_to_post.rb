@@ -14,7 +14,7 @@ ALLOWED_SENDER = ENV['ALLOWED_SENDER']
 
 ROOT = File.expand_path(File.join(__dir__, '..'))
 POSTS_DIR = File.join(ROOT, '_posts')
-SYSADMIN_DIR = File.join(ROOT, '_sysadmin')
+SYSADMIN_DIR = File.join(ROOT, '_root')
 
 # --- FUNÇÕES AUXILIARES ---
 def slugify(text)

@@ -1,7 +1,7 @@
 ---
 layout: page
-title: sysadmin
-permalink: /sysadmin/
+title: root
+permalink: /root/
 ---
 
 <style>
@@ -54,7 +54,7 @@ permalink: /sysadmin/
 </style>
 
 <div class="sysadmin-tree">
-  <div class="sys-root">fxlip/sysadmin</div>
+  <div class="sys-root">/var/www/fxlip</div>
 
   {% comment %} 1. Agrupa todos os docs da coleção sysadmin por CATEGORIA {% endcomment %}
   {% assign grouped_by_category = site.sysadmin | group_by: "categories" %}

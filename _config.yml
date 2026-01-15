@@ -2,8 +2,8 @@
 
 header_pages:
   - index.html
-  - sobre.md
-  - sysadmin.md
+  - about.md
+  - root.md
   - softwares.md
   - hardwares.md
 
@@ -28,6 +28,6 @@ timezone: America/Sao_Paulo
 
 # Collections
 collections:
-  sysadmin:
+  root:
     output: true
-    permalink: /sysadmin/:path/
+    permalink: /:path/
