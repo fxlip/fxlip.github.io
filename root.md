@@ -6,64 +6,63 @@ permalink: /root/
 
 <style>
   .terminal-window {
-    font-family: 'Courier New', monospace;
+    font-family: 'Courier New', Courier, monospace;
     color: var(--text-color);
     margin-top: 30px;
-    line-height: 1.5;
-    /* Garante que espaços e identações sejam respeitados */
-    white-space: pre; 
-    overflow-x: auto; /* Scroll lateral se a árvore for muito grande */
+    line-height: 1.2; /* Aperta a altura para as linhas se tocarem */
+    white-space: pre; /* Respeita espaços rigorosamente */
+    overflow-x: auto;
+    font-size: 14px;
   }
   
-  /* Força cada linha a ser um bloco separado */
-  .terminal-line {
-    display: block;
-    width: 100%;
-  }
+  /* Cores baseadas no seu tema */
+  .prompt-user { color: #50fa7b; font-weight: bold; } /* Verde Terminal */
+  .prompt-path { color: #8be9fd; font-weight: bold; } /* Azul Terminal */
+  .tree-lines  { color: var(--base-color); opacity: 0.7; }
   
-  .prompt { display: inline-block; margin-bottom: 10px; }
-  .user { color: #50fa7b; font-weight: bold; } /* Verde */
-  .path { color: #8be9fd; font-weight: bold; } /* Azul Ciano */
+  /* Pastas em Rosa (Sua cor de destaque) */
+  .dir-name    { color: var(--link-hover-color); font-weight: bold; }
   
-  .dir-category { color: var(--link-hover-color); font-weight: bold; } /* Rosa */
-  .dir-tag { color: #bd93f9; font-weight: bold; } /* Roxo */
-  
-  .file-link a {
-    text-decoration: none;
-    color: var(--base-color);
-  }
-  .file-link a:hover {
-    color: #fff;
-    text-decoration: underline;
-  }
+  /* Arquivos na cor de texto padrão, hover em rosa */
+  .file-name   { color: var(--text-color); text-decoration: none; }
+  .file-name:hover { color: var(--link-hover-color); text-decoration: underline; }
 </style>
 
 <div class="terminal-window">
-  <div class="terminal-line"><span class="user">root@fxlip</span>:<span class="path">~/www</span>$ ls -R</div>
-  <div class="terminal-line">.</div>
-
+<span class="prompt-user">root@fxlip</span>:<span class="prompt-path">~/www</span>$ tree
+<span class="dir-name">.</span>
 {% assign cats = site.root | group_by: "categories" | sort: "name" -%}
 {% for cat in cats -%}
-  {%- assign clean_cat = cat.name | replace: '["', '' | replace: '"]', '' | replace: '"', '' | replace: '[', '' | replace: ']', '' -%}
-  <div class="terminal-line">├── <span class="dir-category">{{ clean_cat }}</span></div>
-  
+  {%- assign cat_clean = cat.name | replace: '["', '' | replace: '"]', '' | replace: '"', '' | replace: '[', '' | replace: ']', '' -%}
+  {%- if forloop.last -%}
+    {%- assign cat_conn = "└── " -%}
+    {%- assign cat_indent = "    " -%}
+  {%- else -%}
+    {%- assign cat_conn = "├── " -%}
+    {%- assign cat_indent = "│   " -%}
+  {%- endif -%}
+<span class="tree-lines">{{ cat_conn }}</span><span class="dir-name">{{ cat_clean }}</span>
   {%- assign tags = cat.items | group_by: "tags" | sort: "name" -%}
   {% for tag in tags -%}
-    {%- assign clean_tag = tag.name | replace: '["', '' | replace: '"]', '' | replace: '"', '' | replace: '[', '' | replace: ']', '' -%}
-    <div class="terminal-line">│&nbsp;&nbsp;&nbsp;├── <span class="dir-tag">{{ clean_tag }}</span></div>
-    
+    {%- assign tag_clean = tag.name | replace: '["', '' | replace: '"]', '' | replace: '"', '' | replace: '[', '' | replace: ']', '' -%}
+    {%- if forloop.last -%}
+      {%- assign tag_conn = "└── " -%}
+      {%- assign tag_indent = "    " -%}
+    {%- else -%}
+      {%- assign tag_conn = "├── " -%}
+      {%- assign tag_indent = "│   " -%}
+    {%- endif -%}
+<span class="tree-lines">{{ cat_indent }}{{ tag_conn }}</span><span class="dir-name">{{ tag_clean }}</span>
     {%- assign files = tag.items | sort: "title" -%}
     {% for file in files -%}
-      {% if forloop.last -%}
-        <div class="terminal-line">│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="file-link"><a href="{{ file.url }}">{{ file.title }}</a></span></div>
-      {% else -%}
-        <div class="terminal-line">│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="file-link"><a href="{{ file.url }}">{{ file.title }}</a></span></div>
-      {% endif -%}
+      {%- if forloop.last -%}
+        {%- assign file_conn = "└── " -%}
+      {%- else -%}
+        {%- assign file_conn = "├── " -%}
+      {%- endif -%}
+<span class="tree-lines">{{ cat_indent }}{{ tag_indent }}{{ file_conn }}</span><a href="{{ file.url }}" class="file-name">{{ file.title }}</a>
     {% endfor -%}
   {% endfor -%}
 {% endfor %}
-
-  <div class="terminal-line" style="margin-top: 15px;">
-    <span class="user">root@fxlip</span>:<span class="path">~/www</span>$ <span class="blink">_</span>
-  </div>
+<div style="margin-top: 10px;"><span class="prompt-user">root@fxlip</span>:<span class="prompt-path">~/www</span>$ <span class="blink">_</span></div>
 </div>
