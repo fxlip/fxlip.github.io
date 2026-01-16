@@ -3,8 +3,6 @@
 {%- comment -%}
   Build a practical CSP. It remains strict by default while allowing
   common use cases like external images and Google Fonts.
-  If you need to permit additional script/connect sources (e.g., analytics),
-  extend via `csp_extra` in your _config.yml.
 {%- endcomment -%}
 {%- capture csp -%}
 default-src 'none';
@@ -39,5 +37,6 @@ script-src 'self' 'unsafe-inline';
 
     </div>
     <script src="{{ "/assets/js/main.js" | relative_url }}"></script>
+    <script src="{{ "/assets/js/autolink.js" | relative_url }}"></script>
   </body>
 </html>
