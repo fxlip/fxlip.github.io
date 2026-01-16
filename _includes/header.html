@@ -8,10 +8,12 @@
         {%- assign my_page = site.pages | where: "path", path | first -%}
         {%- if my_page.title -%}
           <li>
+            {%- assign link_label = my_page.menu_title | default: my_page.title -%}
+            
             {%- if page.url == my_page.url -%}
-              <span class="menu-active">{{ my_page.title | escape }}</span>
+              <span class="menu-active">{{ link_label | escape }}</span>
             {%- else -%}
-              <a href="https://fxlip.com{{ my_page.url }}">{{ my_page.title | escape }}</a>
+              <a href="https://fxlip.com{{ my_page.url }}">{{ link_label | escape }}</a>
             {%- endif -%}
           </li>
         {%- endif -%}
