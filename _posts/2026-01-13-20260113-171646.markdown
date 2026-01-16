@@ -1,7 +1,0 @@
----
-layout: post
-title:  "20260113-171646"
-date:   2026-01-13 17:16:46 -0300
----
-
-ajustar quebra de palavras e imagens grandes

@@ -1,9 +1,0 @@
----
-layout: post
-title:  "20260112-221104"
-date:   2026-01-12 22:11:04 -0300
----
-
-Abandonei as redes sociais e resolvi criar meu próprio site. Aqui consigo compartilhar notícias, registrar estudos e documentar meu trabalho, sem oferecer meus dados pra nenhum algoritmo que trabalha incansavelmente tentando me vender coisas que não preciso.
-
-
