@@ -4,6 +4,7 @@ require 'mail'
 require 'date'
 require 'fileutils'
 require 'securerandom'
+require 'digest' # Módulo necessário para gerar MD5
 
 # --- CONFIGURAÇÕES ---
 IMAP_SERVER = 'imap.gmail.com'
@@ -16,13 +17,13 @@ ROOT = File.expand_path(File.join(__dir__, '..'))
 POSTS_DIR = File.join(ROOT, '_posts')
 COLLECTION_DIR = File.join(ROOT, '_root') 
 
-# --- HELPER: Slugify Limpo ---
+# --- HELPER: Slugify (Ainda usado para gerar a URL limpa) ---
 def slugify(text)
   return nil if text.nil? || text.strip.empty?
   text.to_s.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
 end
 
-puts "--- INICIANDO PROTOCOLO EMAIL-TO-GIT (ROOTLESS PERMALINK V7) ---"
+puts "--- INICIANDO PROTOCOLO EMAIL-TO-GIT (CRYPTO FILESYSTEM V8) ---"
 
 begin
   imap = Net::IMAP.new(IMAP_SERVER, port: IMAP_PORT, ssl: true)
@@ -67,14 +68,18 @@ begin
       target_dir = COLLECTION_DIR
       FileUtils.mkdir_p(target_dir)
       
+      # URL Limpa (Para o navegador)
       url_cat = slugify(category)
       url_tag = slugify(tag)
       url_title = slugify(clean_title)
-      
-      # PERMALINK CORRIGIDO: Removemos o /root do início
-      # Exemplo: /linux/intro/teste/
       custom_permalink = "/#{url_cat}/#{url_tag}/#{url_title}/"
       
+      # NOME DO ARQUIVO: Endereço de Memória (Hexadecimal)
+      # Gera algo como: 2026-01-15-0x4A1B.md
+      # Usamos 2 bytes (4 chars) para parecer um ponteiro curto ou inode
+      memory_address = "0x" + SecureRandom.hex(2).upcase
+      filename_slug = memory_address
+
       front_matter = <<~EOF
         ---
         layout: page
@@ -86,10 +91,17 @@ begin
         ---
       EOF
       
-      puts " [ROUTE] ROOT DETECTADO: #{custom_permalink}"
-      filename_slug = url_title
+      puts " [ROUTE] ROOT (MEM ADDR: #{memory_address}) -> #{custom_permalink}"
     else
+      # POSTS PADRÃO
       target_dir = POSTS_DIR
+      
+      # NOME DO ARQUIVO: Hash MD5
+      # Gera algo como: 2026-01-15-9e107d9d372bb6826bd81d3542a419d6.md
+      # Hash baseado no assunto + data para garantir unicidade
+      hash_slug = Digest::MD5.hexdigest("#{subject}#{now.to_f}")
+      filename_slug = hash_slug
+
       front_matter = <<~EOF
         ---
         layout: post
@@ -98,14 +110,10 @@ begin
         ---
       EOF
       
-      puts " [ROUTE] POST PADRÃO"
-      filename_slug = slugify(subject)
+      puts " [ROUTE] POST (MD5: #{hash_slug})"
     end
     
-    if filename_slug.nil? || filename_slug.empty?
-      filename_slug = "doc-#{SecureRandom.hex(4)}"
-    end
-
+    # Montagem Final
     body = if mail.multipart?
              mail.text_part ? mail.text_part.decoded : mail.html_part.decoded
            else
@@ -114,11 +122,12 @@ begin
     body = body.to_s.force_encoding('UTF-8').scrub
     body = "" if body.nil?
 
+    # O Jekyll EXIGE a data no começo, mas o resto agora é puro caos ordenado
     filename = "#{now.strftime('%Y-%m-%d')}-#{filename_slug}.md"
     filepath = File.join(target_dir, filename)
 
     File.write(filepath, "#{front_matter}\n#{body}")
-    puts " -> Criado em: #{filepath}"
+    puts " -> Artifact created: #{filepath}"
 
     imap.store(message_id, "+FLAGS", [:Seen, :Deleted])
   end
