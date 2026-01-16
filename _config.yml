@@ -31,3 +31,11 @@ collections:
   root:
     output: true
     permalink: /root/:path/
+
+exclude:
+  - scripts/
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
+  - README.md
+  - LICENSE
