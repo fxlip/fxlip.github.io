@@ -4,7 +4,7 @@ layout: page
 permalink: /about
 ---
 
-# // profile: Felip Barbosa de Medeiros
+# // Felip Barbosa de Medeiros
 
 Desenvolvedor, entusiasta de segurança e defensor do minimalismo digital.
 
@@ -18,6 +18,6 @@ Este espaço é um "jardim digital" curado. Enquanto a maioria vive no fluxo do 
 ### Status Atual:
 Focado em evoluir skills em Cybersecurity (LPIC-1 road) e construir ferramentas de automação.
 
-Se você procura discussões sobre arquitetura de sistemas, linux ou a filosofia do software livre, welcome.
+Se você procura discussões sobre arquitetura de sistemas, linux ou a filosofia do software livre, vem comigo.
 
-> *"A complexidade é inimiga da segurança."*
+---

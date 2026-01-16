@@ -4,8 +4,8 @@ header_pages:
   - index.html
   - about.md
   - root.md
-  - workflow.md
-  - setup.md
+  - stack.md
+  - manifesto.md
 
 footer: 'me manda um <a href="mailto:fxlip@tuta.io">e-mail</a> ツ'
 
