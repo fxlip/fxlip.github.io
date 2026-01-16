@@ -17,7 +17,6 @@ permalink: /root/
     width: 100%;
     overflow-x: auto;
     scrollbar-width: none;
-    /* Espaço extra no final para não cortar o último link */
     padding-bottom: 80px; 
   }
   
@@ -101,11 +100,11 @@ permalink: /root/
       {%- endif -%}
 
       <div class="t-row">
-        <span class="tree-lines">{{ cat_indent }}{{ tag_indent }}{{ file_conn }}</span><a href="{{ file.url }}" class="file-link">{{ file.title }}</a>
+        <span class="tree-lines">{{ cat_indent }}{{ tag_indent }}{{ file_conn }}</span><a href="https://fxlip.com{{ file.url }}" class="file-link">{{ file.title }}</a>
       </div>
 
     {%- endfor -%}
   {%- endfor -%}
 {%- endfor -%}
 
-  </div>
+</div>
