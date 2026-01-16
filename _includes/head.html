@@ -3,7 +3,7 @@
 
 <title>
   {%- if page.url == "/" -%}
-    fxlip
+    Felip Barbosa de Medeiros
   {%- else -%}
     fxlip
     {%- if page.categories.size > 0 -%}
@@ -16,8 +16,21 @@
   {%- endif -%}
 </title>
 
-{%- seo title=false -%}
+<meta name="robots" content="index, follow, noarchive">
 
-<link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
+<meta name="description" content="{{ page.description | default: site.description }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "fxlip", 
+  "alternateName": ["Felip Barbosa de Medeiros", "Felip"],
+  "url": "https://felip.com.br/"
+}
+</script>
+
+{%- seo title=false -%}
+<link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}">
 <link rel="shortcut icon" href="{{ "/favicon.ico" | relative_url }}" >
 <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | relative_url }}">
