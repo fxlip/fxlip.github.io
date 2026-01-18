@@ -4,16 +4,17 @@ layout: page
 permalink: /about
 ---
 
-# // Felip Barbosa de Medeiros
+# // Felip Barbosa de Medeiros (fxlip)
 
-Desenvolvedor, entusiasta de segurança e defensor da privacidade e minimalismo digital.
+Desenvolvedor, entusiasta de segurança e defensor da privacidade e do minimalismo digital.
 
 ![fxlip](https://felip.com.br/assets/img/profile.jpeg)
 
-Este lugar funciona como um _jardim digital_ pra mim. Enquanto a internet comercial prioriza cada vez mais o engajamento através de algoritmos duvidosos (e muitas vezes criminosos), optei por construir uma infraestrutura própria focada nos meus estudos, experimentações e uma curadoria de informações.
+Este lugar funciona como um **jardim digital** pra mim. Enquanto a internet comercial virou um suco de engajamento através de algoritmos duvidosos, e muitas vezes criminosos, optei por construir um espaço com infraestrutura própria e focar nos meus estudos, experimentações e fazer uma curadoria de informações úteis.
 
 Acredito que a tecnologia deve ser uma ferramenta de emancipação e não de controle. Escrevi um pouco mais sobre isso aqui nesse @manifesto.
 
+---
 
 ### // o que me move
 
