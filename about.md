@@ -24,6 +24,6 @@ Acredito que a tecnologia deve ser uma ferramenta de emancipação e não de con
 
 ### // status
 
-Atualmente focado na certificação **LPIC-1** e no desenvolvimento de automações em Python/Shell.
+Atualmente focado na certificação **LPIC-1** e no desenvolvimento de automações com Python/Shell.
 
 ---
