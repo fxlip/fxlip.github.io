@@ -18,16 +18,16 @@ Se o serviço é gratuito, o produto é você. Plataformas de Big Techs operam s
 --- 
 
 ### Soberania
-A descentralização não é apenas uma preferência técnica, mas (deveria ser) uma necessidade cívica. Manter seus próprios dados elimina intermediários e código fechado é uma caixa preta. Free Software é o único caminho para a confiança.
+A descentralização não é apenas uma preferência técnica, mas (deveria ser) uma necessidade cívica. Manter seus próprios dados elimina intermediários e código fechado é uma caixa preta. Free Software é a fonte da confiança e a coisa certa a fazer.
 
 ---
 
 ### Ferramenta
-A tecnologia deve ser uma bicicleta para a mente (eficiência), não uma máquina caça-níqueis (vício). Quando a ferramenta exige sua atenção com notificações constantes, ela deixou de servir a você.
+A tecnologia deve ser uma bicicleta para a mente promovendo a eficiência, não uma máquina caça-níqueis que promove o vício. Quando a ferramenta exige sua atenção com excesso de notificação, ela deixou de servir a você.
 
 ---
 
-**+Informações**
+**Leituras**
 
 * **Jaron Lanier:** *Ten Arguments for Deleting Your Social Media Accounts Right Now*
 * **Shoshana Zuboff:** *The Age of Surveillance Capitalism*
