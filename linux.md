@@ -1,7 +1,7 @@
 ---
 layout: page
-title: root
-permalink: /root/
+title: linux
+permalink: /linux/
 ---
 
 <style>
@@ -55,7 +55,7 @@ permalink: /root/
 
 <div class="terminal-window">
   <div class="t-row">
-    <span class="p-user">root</span><span class="p-at">@</span><span class="p-host">fxlip</span>:<span class="p-path">~/www</span><span class="p-sign">$</span> tree -L 2
+    <span class="p-user">root</span><span class="p-at">@</span><span class="p-host">fxlip</span>:<span class="p-path">~/linux</span><span class="p-sign">$</span> tree -L 2
   </div>
   <div class="t-row" style="color: var(--base-color);">.</div>
 

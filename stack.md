@@ -1,7 +1,7 @@
 ---
-title: stack
+title: setup
 layout: page
-permalink: /stack
+permalink: /setup
 ---
 
 Após contato com a **Free Software Foundation** (2017) e um *mindblowing* com o **Dilema das Redes** (2020), migrei de "consumidor de tecnologia" para "operador de sistemas". Hoje minha arquitetura reflete uma filosofia de **Soberania Digital**.
