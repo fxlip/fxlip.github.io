@@ -6,18 +6,25 @@ permalink: /about
 
 # // Felip Barbosa de Medeiros
 
-Desenvolvedor, entusiasta de segurança e defensor do minimalismo digital.
+Analista de sistemas, desenvolvedor, entusiasta de segurança e defensor da privacidade/minimalismo digital.
 
-Este espaço é um "jardim digital" curado. Enquanto a maioria vive no fluxo do algoritmo das redes sociais, optei por construir uma infraestrutura própria, focada em documentação técnica e experimentação.
+![fxlip](https://felip.com.br/assets/img/profile.jpeg)
 
-### O que me move?
-* **Código:** A busca pela elegância e simplicidade na resolução de problemas complexos.
-* **Soberania Digital:** Self-hosting, criptografia e software livre.
-* **Estética:** A tecnologia deve ser funcional e brutalista :D
+Este lugar funciona como um _jardim digital_ pra mim. Enquanto a internet comercial prioriza cada vez mais o engajamento através de algoritmos duvidosos (e muitas vezes criminosos), optei por construir uma infraestrutura própria focada nos meus estudos, experimentações e curadoria de informações.
 
-### Status Atual:
-Focado em evoluir skills em Cybersecurity (LPIC-1 road) e construir ferramentas de automação.
+Eu acredito que a tecnologia deve ser uma ferramenta de emancipação, não de controle. Escrevi um pouco mais sobre isso aqui nesse @manifesto.
 
-Se você procura discussões sobre arquitetura de sistemas, linux ou a filosofia do software livre, vem comigo.
+
+### // o que me move
+
+* **Kernel:** A busca pelo controle total do hardware.
+* **Security:** Estudo de vetores de ataque e defesa em infraestrutura.
+* **Aesthetic:** Ferramentas de terminal podem e devem ser bonitas. :D
+
+### // status
+
+Atualmente estou focado na certificação **LPIC-1** e no desenvolvimento de ferramentas de automação em Python/Shell.
+
+Se você procura discussões sobre arquitetura de sistemas, *tiling window managers* ou a ética do software livre, welcome.
 
 ---
