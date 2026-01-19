@@ -1,140 +1,121 @@
-#!/usr/bin/env ruby
-require 'net/imap'
 require 'mail'
-require 'date'
+require 'yaml'
 require 'fileutils'
+require 'date'
 require 'securerandom'
-require 'digest'
 
-# --- CONFIGURAÇÕES ---
-IMAP_SERVER = 'imap.gmail.com'
-IMAP_PORT = 993
-USERNAME = ENV['EMAIL_USERNAME']
-PASSWORD = ENV['EMAIL_PASSWORD']
-ALLOWED_SENDER = ENV['ALLOWED_SENDER']
+# CONFIGURAÇÃO
+POSTS_DIR = "_root"     # Onde ficam os conteúdos (linux, stack, etc)
+ASSETS_DIR = "_root/files" # Onde ficam os arquivos binários (files)
 
-ROOT = File.expand_path(File.join(__dir__, '..'))
-POSTS_DIR = File.join(ROOT, '_posts')
-COLLECTION_DIR = File.join(ROOT, '_root') 
-
-# --- HELPER: Slugify ---
+# Função para sanitizar nomes (remove acentos, espaços -> underline)
 def slugify(text)
-  return nil if text.nil? || text.strip.empty?
-  text.to_s.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+  text.to_s.downcase.strip.gsub(' ', '_').gsub(/[^\w-]/, '')
 end
 
-puts "--- INICIANDO PROTOCOLO EMAIL-TO-GIT (CRYPTO FILESYSTEM V9 - SELF HEALING) ---"
+# Processa cada e-mail não lido
+Mail.defaults do
+  retriever_method :pop3, :address    => "pop.gmail.com",
+                          :port       => 995,
+                          :user_name  => ENV['EMAIL_USER'],
+                          :password   => ENV['EMAIL_PASSWORD'],
+                          :enable_ssl => true
+end
 
-begin
-  imap = Net::IMAP.new(IMAP_SERVER, port: IMAP_PORT, ssl: true)
-  imap.login(USERNAME, PASSWORD)
-  imap.select('INBOX')
+puts "[ SYSTEM_READY ] Escaneando caixa de entrada..."
 
-  search_criteria = ['UNSEEN', 'FROM', ALLOWED_SENDER]
-  email_ids = imap.search(search_criteria)
+Mail.all.each do |email|
+  begin
+    puts ">> Processando: #{email.subject}"
+    
+    # 1. DECODIFICAR O COMANDO (ASSUNTO)
+    # Exemplo: linux/101/1/configs_hardware
+    raw_subject = email.subject.to_s.strip
+    parts = raw_subject.split('/')
+    
+    # Comando Primário (linux, files, stack...)
+    command = slugify(parts[0]) 
+    
+    # --- ROTA A: ARQUIVOS (FILES) ---
+    if command == 'files'
+      # Ex: files/eventos/cpbr
+      # Caminho destino: assets/docs/eventos/cpbr
+      
+      sub_path = parts[1..-1].map { |p| slugify(p) }.join('/')
+      target_dir = File.join(ASSETS_DIR, sub_path)
+      FileUtils.mkdir_p(target_dir)
 
-  if email_ids.empty?
-    puts "Nenhum novo comando encontrado."
-    exit
-  end
-
-  email_ids.each do |message_id|
-    msg = imap.fetch(message_id, 'RFC822')[0].attr['RFC822']
-    mail = Mail.new(msg)
-    now = Time.now
-    
-    raw_subject = mail.subject.to_s
-    subject = raw_subject.gsub(/^(Re|Fwd): /i, '').strip
-    
-    puts " [PROCESS] Analisando: '#{subject}'"
-    
-    # --- LÓGICA DE ROTEAMENTO ---
-    is_root_doc = false
-    category = "geral"
-    tag = "misc"
-    clean_title = subject
-    
-    if subject.include?('/')
-      parts = subject.split('/').map(&:strip)
-      if parts.length == 3
-        is_root_doc = true
-        category = parts[0].downcase
-        tag = parts[1].downcase
-        clean_title = parts[2]
+      email.attachments.each do | attachment |
+        filename = (attachment.content_type.start_with?('image/') ? 'img_' : 'doc_') + SecureRandom.hex(4) + File.extname(attachment.filename)
+        File.open(File.join(target_dir, filename), "wb") { |f| f.write(attachment.body.decoded) }
+        puts "   [UPLOAD] #{filename} salvo em #{target_dir}"
       end
-    end
 
-    if is_root_doc
-      target_dir = COLLECTION_DIR
-      FileUtils.mkdir_p(target_dir) # Cria _root se não existir
-      
-      # URL Limpa
-      url_cat = slugify(category)
-      url_tag = slugify(tag)
-      url_title = slugify(clean_title)
-      custom_permalink = "/#{url_cat}/#{url_tag}/#{url_title}/"
-      
-      # NOME DO ARQUIVO: Hex Address (0x...)
-      memory_address = "0x" + SecureRandom.hex(2).upcase
-      filename_slug = memory_address
-
-      front_matter = <<~EOF
-        ---
-        layout: page
-        title: "#{clean_title}"
-        date:   #{now.strftime('%Y-%m-%d %H:%M:%S %z')}
-        categories: [#{category}]
-        tags: [#{tag}]
-        permalink: #{custom_permalink}
-        ---
-      EOF
-      
-      puts " [ROUTE] ROOT (MEM ADDR: #{memory_address}) -> #{custom_permalink}"
+    # --- ROTA B: CONTEÚDO (LINUX, STACK, ROOT...) ---
     else
-      # POSTS PADRÃO
-      target_dir = POSTS_DIR
+      # Ex: linux/101/1/configs_hardware
+      # Caminho destino: _root/linux/101/1/
       
-      # CORREÇÃO CRÍTICA: Garante que a pasta _posts existe
-      FileUtils.mkdir_p(target_dir) 
-      
-      # NOME DO ARQUIVO: Hash MD5
-      hash_slug = Digest::MD5.hexdigest("#{subject}#{now.to_f}")
-      filename_slug = hash_slug
+      # Estrutura do Caminho
+      collection = command # linux
+      category = parts[1] ? slugify(parts[1]) : nil # 101
+      tag = parts[2] ? slugify(parts[2]) : nil      # 1
+      title_raw = parts.last
+      slug = slugify(title_raw)
 
-      front_matter = <<~EOF
-        ---
-        layout: post
-        title:  "#{subject.gsub('"', '\"')}"
-        date:   #{now.strftime('%Y-%m-%d %H:%M:%S %z')}
-        ---
-      EOF
+      # Monta o diretório físico
+      # Se tiver cat e tag: _root/linux/101/1/
+      dir_path = File.join(POSTS_DIR, collection)
+      dir_path = File.join(dir_path, category) if category
+      dir_path = File.join(dir_path, tag) if tag
       
-      puts " [ROUTE] POST (MD5: #{hash_slug})"
+      FileUtils.mkdir_p(dir_path)
+
+      # Data e Nome do Arquivo
+      date = DateTime.now
+      filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
+      filepath = File.join(dir_path, filename)
+
+      # Extrai o corpo e processa imagens inline (se houver)
+      body = email.body.decoded.force_encoding("UTF-8")
+      
+      # Se houver anexos no post (imagens ilustrativas), salvamos em assets/img/posts
+      if email.attachments.any?
+        img_dir = "assets/img/posts/#{slug}"
+        FileUtils.mkdir_p(img_dir)
+        email.attachments.each do |attachment|
+          img_name = attachment.filename
+          File.open("#{img_dir}/#{img_name}", "wb") { |f| f.write(attachment.body.decoded) }
+          # Substitui no texto (Markdown básico)
+          body += "\n\n![#{img_name}](/fxlip.github.io/#{img_dir}/#{img_name})"
+        end
+      end
+
+      # Monta o Front Matter Inteligente
+      front_matter = <<~HEREDOC
+      ---
+      layout: page
+      title: "#{title_raw}"
+      date: #{date.to_s}
+      permalink: /#{collection}/#{[category, tag, slug].compact.join('/')}/
+      categories: [#{category}]
+      tags: [#{tag}]
+      hide_footer: true
+      ---
+      HEREDOC
+
+      # Salva o arquivo final
+      File.open(filepath, 'w') do |file|
+        file.write(front_matter + "\n" + body)
+      end
+      
+      puts "   [POST] Criado em: #{filepath}"
     end
-    
-    body = if mail.multipart?
-             mail.text_part ? mail.text_part.decoded : mail.html_part.decoded
-           else
-             mail.body.decoded
-           end
-    body = body.to_s.force_encoding('UTF-8').scrub
-    body = "" if body.nil?
 
-    filename = "#{now.strftime('%Y-%m-%d')}-#{filename_slug}.md"
-    filepath = File.join(target_dir, filename)
+    # Deleta o e-mail após processar (Modo Destrutivo)
+    # email.mark_for_delete = true 
 
-    File.write(filepath, "#{front_matter}\n#{body}")
-    puts " -> Artifact created: #{filepath}"
-
-    imap.store(message_id, "+FLAGS", [:Seen, :Deleted])
+  rescue => e
+    puts "!! ERRO ao processar #{email.subject}: #{e.message}"
   end
-
-  imap.expunge
-  imap.logout
-  imap.disconnect
-
-rescue => e
-  puts "ERRO FATAL: #{e.message}"
-  puts e.backtrace.join("\n")
-  exit 1
 end

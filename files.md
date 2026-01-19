@@ -1,15 +1,27 @@
 ---
 layout: page
 title: files
-permalink: /files/
+permalink: /files
 hide_footer: true
+
+# --- CONFIGURAÇÃO DE DIRETÓRIOS ---
+# O script agora procura dentro de: _root/files/
+directories:
+  - id: "estudos"
+    desc: "Material de referência e certificações"
+  
+  - id: "eventos"
+    desc: "Slides e conteudos de palestras"
+    
+  - id: "misc"
+    desc: "Arquivos diversos e dumps"
+    
+  - id: "imgs"
+    desc: "Imagens hospedadas para posts"
 ---
 
 <style>
-  /* --- REMOVE FOOTER --- */
-  footer { display: none !important; }
-
-  /* --- CONFIGURAÇÕES DE TERMINAL --- */
+  /* --- CONFIGURAÇÕES DE TERMINAL (CSS Inline para garantir performance) --- */
   .terminal-window {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
     color: var(--text-color);
@@ -22,90 +34,83 @@ hide_footer: true
   }
   
   .terminal-window::-webkit-scrollbar { display: none; }
-
-  .t-row {
-    display: block;
-    line-height: 1.35;
-    white-space: nowrap;
-  }
-
-  /* --- PALETA DE CORES "SYMPHONIC PURPLE" --- */
-  .p-user { color: #FF79C6; font-weight: bold; } /* User Rosa */
-  .p-at, .p-sign { color: var(--base-color); opacity: 0.7; }
-  .p-host { color: #BD93F9; font-weight: bold; } /* Host Roxo */
-  .p-path { color: #D8B4FE; font-style: italic; } /* Path Lilás */
-
-  /* Árvore */
-  .tree-lines { color: var(--base-color); opacity: 0.4; }
-  .dir-cat { color: #FF79C6; font-weight: bold; } /* Categoria Rosa */
-  .dir-tag { color: #BD93F9; font-weight: bold; } /* Tag Roxa */
-  
-  /* Arquivos */
-  .file-link { 
-    text-decoration: none !important;
-    color: var(--text-color); 
-    transition: all 0.2s ease;
-  }
-  
-  .file-link:hover {
-    color: #FFFFFF; 
-    background-color: rgba(189, 147, 249, 0.2);
-    text-shadow: 0 0 5px rgba(216, 180, 254, 0.5);
-  }
 </style>
 
-<div class="terminal-window">
-  <div class="t-row">
-    <span class="p-user">root</span><span class="p-at">@</span><span class="p-host">fxlip</span>:<span class="p-path">~/files</span><span class="p-sign">$</span> tree -L 2
+# // index of /root/files
+
+Repositório central de arquivos estáticos.
+
+{% for dir in page.directories %}
+
+  <div style="margin-top: 40px; margin-bottom: 10px;">
+    <h3 style="
+      color: var(--link-hover-color); 
+      font-family: monospace; 
+      font-size: 1.1em; 
+      border-bottom: 1px dashed rgba(135, 139, 166, 0.3);
+      padding-bottom: 5px;
+    ">
+      ./{{ dir.id }}/
+      <span style="float: right; font-size: 0.7em; opacity: 0.6; font-weight: normal;">
+        # {{ dir.desc }}
+      </span>
+    </h3>
   </div>
-  <div class="t-row" style="color: var(--base-color);">.</div>
 
-{%- assign cats = site.root | group_by: "categories" | sort: "name" -%}
-{%- for cat in cats -%}
-  {%- assign clean_cat = cat.name | replace: '["', '' | replace: '"]', '' | replace: '"', '' | replace: '[', '' | replace: ']', '' -%}
-  
-  {%- if forloop.last -%}
-    {%- assign cat_conn = "└──&nbsp;" -%}
-    {%- assign cat_indent = "&nbsp;&nbsp;&nbsp;&nbsp;" -%}
-  {%- else -%}
-    {%- assign cat_conn = "├──&nbsp;" -%}
-    {%- assign cat_indent = "│&nbsp;&nbsp;&nbsp;" -%}
-  {%- endif -%}
+  <div class="terminal-window">
+    <table style="width: 100%; border-collapse: collapse; font-family: monospace;">
+      <tbody>
+        {% assign has_files = false %}
+        
+        {% assign target_path = '_root/files/' | append: dir.id %}
+        
+        {% assign files = site.static_files | sort: 'modified_time' | reverse %}
+        
+        {% for file in files %}
+          {% if file.path contains target_path %}
+          {% assign has_files = true %}
+          
+          {% assign ext = file.extname | downcase %}
+          {% if ext == '.pdf' %}
+            {% assign type = '[PDF]' %}{% assign color = '#FF5555' %}
+          {% elsif ext == '.jpg' or ext == '.jpeg' or ext == '.png' or ext == '.gif' %}
+            {% assign type = '[IMG]' %}{% assign color = '#BD93F9' %}
+          {% elsif ext == '.zip' or ext == '.tar' or ext == '.gz' %}
+            {% assign type = '[ZIP]' %}{% assign color = '#F1FA8C' %}
+          {% elsif ext == '.txt' or ext == '.md' or ext == '.sh' %}
+            {% assign type = '[TXT]' %}{% assign color = '#50FA7B' %}
+          {% else %}
+            {% assign type = '[BIN]' %}{% assign color = '#6272A4' %}
+          {% endif %}
 
-  <div class="t-row">
-    <span class="tree-lines">{{ cat_conn }}</span><span class="dir-cat">{{ clean_cat }}</span>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.02);">
+            <td style="color: {{ color }}; padding: 6px 5px; width: 50px;">{{ type }}</td>
+            <td style="padding: 6px 5px;">
+              <a href="{{ file.path }}" target="_blank" style="text-decoration: none; color: var(--text-color);">
+                {{ file.name }}
+              </a>
+            </td>
+            <td style="text-align: right; padding: 6px 5px; width: 80px;">
+              <span style="opacity: 0.4; font-size: 0.8em;">{{ file.modified_time | date: "%d/%m" }}</span>
+            </td>
+          </tr>
+          {% endif %}
+        {% endfor %}
+
+        {% if has_files == false %}
+          <tr>
+            <td colspan="3" style="padding: 10px; color: var(--placeholder-color); font-style: italic;">
+              (empty directory)
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
   </div>
 
-  {%- assign tags = cat.items | group_by: "tags" | sort: "name" -%}
-  {%- for tag in tags -%}
-    {%- assign clean_tag = tag.name | replace: '["', '' | replace: '"]', '' | replace: '"', '' | replace: '[', '' | replace: ']', '' -%}
-    
-    {%- if forloop.last -%}
-      {%- assign tag_conn = "└──&nbsp;" -%}
-      {%- assign tag_indent = "&nbsp;&nbsp;&nbsp;&nbsp;" -%}
-    {%- else -%}
-      {%- assign tag_conn = "├──&nbsp;" -%}
-      {%- assign tag_indent = "│&nbsp;&nbsp;&nbsp;" -%}
-    {%- endif -%}
+{% endfor %}
 
-    <div class="t-row">
-      <span class="tree-lines">{{ cat_indent }}{{ tag_conn }}</span><span class="dir-tag">{{ clean_tag }}</span>
-    </div>
-
-    {%- assign files = tag.items | sort: "title" -%}
-    {%- for file in files -%}
-      {%- if forloop.last -%}
-        {%- assign file_conn = "└──&nbsp;" -%}
-      {%- else -%}
-        {%- assign file_conn = "├──&nbsp;" -%}
-      {%- endif -%}
-
-      <div class="t-row">
-        <span class="tree-lines">{{ cat_indent }}{{ tag_indent }}{{ file_conn }}</span><a href="https://fxlip.com{{ file.url }}" class="file-link">{{ file.title }}</a>
-      </div>
-
-    {%- endfor -%}
-  {%- endfor -%}
-{%- endfor -%}
-
+<br>
+<div style="text-align: center; margin-top: 50px; opacity: 0.5; font-size: 0.8em;">
+  EOF
 </div>
