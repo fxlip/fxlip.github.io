@@ -35,51 +35,53 @@ def extract_body(mail)
   end
 end
 
-puts "[ SYSTEM_READY ] Iniciando conexão IMAP direta..."
+puts "[ SYSTEM_READY ] Conectando via IMAP..."
 
 begin
-  # 1. CONEXÃO DIRETA (Native Driver)
   imap = Net::IMAP.new(IMAP_SERVER, port: PORT, ssl: true)
   imap.login(USERNAME, PASSWORD)
   imap.select('INBOX')
 
-  # 2. BUSCA (Últimos 30)
-  # O Gmail retorna IDs sequenciais. Pegamos os últimos da lista.
-  all_uids = imap.uid_search(['ALL'])
+  # CORREÇÃO 1: Busca apenas e-mails que NÃO estão marcados como deletados
+  # Isso evita o loop de processar e-mails "zumbis"
+  puts ">> Buscando e-mails ativos..."
+  all_uids = imap.uid_search(['NOT', 'DELETED'])
+  
+  # Pega os 30 últimos da lista filtrada
   target_uids = all_uids.last(30)
 
-  if target_uids.empty?
-    puts ">> Nenhum e-mail na caixa de entrada."
+  if target_uids.empty? || target_uids.nil?
+    puts ">> Nenhum e-mail novo encontrado."
   else
     puts ">> Analisando #{target_uids.size} mensagens..."
     
-    # Processa do mais recente para o antigo
     target_uids.reverse.each do |uid|
       begin
-        # Baixa o conteúdo bruto do e-mail
         raw_data = imap.uid_fetch(uid, 'RFC822')[0].attr['RFC822']
         email = Mail.new(raw_data)
-        
         subject_str = email.subject.to_s.strip
         
         # Filtro de Ruído
-        if subject_str.empty? || subject_str.start_with?('[fxlip') || subject_str.include?('Run failed')
-           puts "   [LIXEIRA] Removendo notificação: #{subject_str.slice(0, 30)}..."
+        if subject_str.start_with?('[fxlip') || subject_str.include?('Run failed')
+           puts "   [LIXEIRA] Deletando notificação do GitHub..."
            imap.uid_store(uid, "+FLAGS", [:Deleted])
            next 
         end
 
-        puts ">> [UID:#{uid}] Analisando: '#{subject_str}'"
+        if subject_str.empty?
+          command = 'quick_post'
+          puts ">> [UID:#{uid}] (Sem Assunto) -> Rota Default"
+        else
+          puts ">> [UID:#{uid}] Analisando: '#{subject_str}'"
+          parts = subject_str.split('/')
+          command_raw = parts[0]
+          command = slugify(command_raw)
+        end
         
-        parts = subject_str.split('/')
-        command_raw = parts[0]
-        command = slugify(command_raw)
-        success = false
+        success = false 
 
         case command
-        
         when 'quick_post'
-          # ... (Lógica Rota 0) ...
           timestamp_slug = Time.now.strftime('%H%M%S')
           slug = "nota-#{timestamp_slug}"
           display_title = "Nota Rápida #{Time.now.strftime('%d/%m %H:%M')}"
@@ -114,7 +116,6 @@ begin
           success = true
 
         when 'files'
-          # ... (Lógica Rota A) ...
           puts "   -> COMANDO: UPLOAD DE ARQUIVO"
           path_args = parts[1..-1]
           custom_name = nil
@@ -145,7 +146,6 @@ begin
           success = true
 
         when 'linux', 'stack', 'dev', 'log'
-          # ... (Lógica Rota B) ...
           puts "   -> COMANDO: POST CUSTOM (#{command})"
           collection = command
           category = parts[1] ? slugify(parts[1]) : 'geral'
@@ -190,10 +190,21 @@ begin
           puts "   [IGNORADO] Comando '#{command}' desconhecido."
         end
 
-        # --- DELEÇÃO REAL (SERVER SIDE) ---
+        # CORREÇÃO 2: MOVER PARA LIXEIRA (Gmail Workaround)
         if success
-           puts "   [DELETANDO] Removendo e-mail do servidor..."
+           puts "   [DELETANDO] Movendo para a Lixeira..."
            imap.uid_store(uid, "+FLAGS", [:Deleted])
+           
+           # Tenta mover para Lixeira (português ou inglês) para garantir
+           # Se falhar (pasta não existe), o script continua sem quebrar
+           begin
+             imap.uid_copy(uid, "[Gmail]/Lixeira")
+           rescue
+             begin
+               imap.uid_copy(uid, "[Gmail]/Trash") 
+             rescue
+             end
+           end
         end
 
       rescue => e
@@ -201,9 +212,8 @@ begin
       end
     end
     
-    # EFETIVA A REMOÇÃO
     imap.expunge
-    puts "[ SYSTEM ] Limpeza concluída (EXPUNGE)."
+    puts "[ SYSTEM ] Limpeza concluída."
   end
 
   imap.logout
