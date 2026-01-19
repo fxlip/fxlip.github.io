@@ -47,60 +47,105 @@ hide_footer: true
   </div>
   <div class="t-row" style="color: var(--base-color);">.</div>
 
-{%- assign cats = site.root | group_by: "categories" | sort: "name" -%}
-{%- for cat in cats -%}
-  
-  {%- assign raw_name = cat.name | append: "" -%}
-  {%- assign clean_cat = raw_name | split: ',' | first -%}
-  {%- assign clean_cat = clean_cat | replace: '["', '' | replace: '"]', '' | replace: '"', '' | replace: '[', '' | replace: ']', '' | strip -%}
-  
-  {%- if clean_cat != "" -%}
+{%- assign raw_categories = "" -%}
+{%- assign all_posts = site.root | where_exp: "item", "item.path contains '_root/linux/'" -%}
 
+{%- for post in all_posts -%}
+  {%- assign relative_path = post.path | replace_first: '_root/linux/', '' -%}
+  {%- assign parts = relative_path | split: '/' -%}
+  {%- if parts.size > 0 -%}
+    {%- assign root_folder = parts[0] -%}
+    {%- assign raw_categories = raw_categories | append: root_folder | append: "|||" -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign unique_categories = raw_categories | split: "|||" | uniq | sort -%}
+
+{%- for cat in unique_categories -%}
+  {%- unless cat contains "." -%} 
+    
     {%- if forloop.last -%}
       {%- assign cat_conn = "└──&nbsp;" -%}
-      {%- assign cat_indent = "&nbsp;&nbsp;&nbsp;&nbsp;" -%}
+      {%- assign cat_indent = "&nbsp;&nbsp;&nbsp;&nbsp;" -%} 
     {%- else -%}
       {%- assign cat_conn = "├──&nbsp;" -%}
-      {%- assign cat_indent = "│&nbsp;&nbsp;&nbsp;" -%}
+      {%- assign cat_indent = "│&nbsp;&nbsp;&nbsp;" -%}    
     {%- endif -%}
 
     <div class="t-row">
-      <span class="tree-lines">{{ cat_conn }}</span><span class="dir-cat">{{ clean_cat }}</span>
+      <span class="tree-lines">{{ cat_conn }}</span><span class="dir-cat">{{ cat }}</span>
     </div>
 
-    {%- assign tags = cat.items | group_by: "tags" | sort: "name" -%}
-    {%- for tag in tags -%}
-      {%- assign raw_tag = tag.name | append: "" -%}
-      {%- assign clean_tag = raw_tag | split: ',' | first -%}
-      {%- assign clean_tag = clean_tag | replace: '["', '' | replace: '"]', '' | replace: '"', '' | replace: '[', '' | replace: ']', '' | strip -%}
+    {%- assign target_path = '_root/linux/' | append: cat | append: '/' -%}
+    {%- assign cat_posts = site.root | where_exp: "item", "item.path contains target_path" | sort: 'path' -%}
+    
+    {%- assign raw_subfolders = "" -%}
+    {%- assign orphan_count = 0 -%}
+    
+    {%- for post in cat_posts -%}
+      {%- assign relative = post.path | replace_first: target_path, "" -%}
+      {%- if relative contains "/" -%}
+         {%- assign sub_name = relative | split: "/" | first -%}
+         {%- assign raw_subfolders = raw_subfolders | append: sub_name | append: "|||" -%}
+      {%- else -%}
+         {%- assign orphan_count = orphan_count | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- assign unique_subfolders = raw_subfolders | split: "|||" | uniq | sort -%}
+    
+    {%- assign total_level2_items = unique_subfolders.size | plus: orphan_count -%}
+    {%- assign level2_counter = 0 -%}
+
+    {%- for sub in unique_subfolders -%}
+      {%- assign level2_counter = level2_counter | plus: 1 -%}
       
-      {%- if forloop.last -%}
+      {%- if level2_counter == total_level2_items -%}
         {%- assign tag_conn = "└──&nbsp;" -%}
-        {%- assign tag_indent = "&nbsp;&nbsp;&nbsp;&nbsp;" -%}
+        {%- assign tag_child_indent = "&nbsp;&nbsp;&nbsp;&nbsp;" -%}
       {%- else -%}
         {%- assign tag_conn = "├──&nbsp;" -%}
-        {%- assign tag_indent = "│&nbsp;&nbsp;&nbsp;" -%}
+        {%- assign tag_child_indent = "│&nbsp;&nbsp;&nbsp;" -%}
       {%- endif -%}
 
       <div class="t-row">
-        <span class="tree-lines">{{ cat_indent }}{{ tag_conn }}</span><span class="dir-tag">{{ clean_tag }}</span>
+        <span class="tree-lines">{{ cat_indent }}{{ tag_conn }}</span><span class="dir-tag">{{ sub }}</span>
       </div>
 
-      {%- assign files = tag.items | sort: "title" -%}
-      {%- for file in files -%}
+      {%- assign sub_target = target_path | append: sub | append: '/' -%}
+      {%- assign sub_posts = site.root | where_exp: "item", "item.path contains sub_target" | sort: 'title' -%}
+      
+      {%- for post in sub_posts -%}
         {%- if forloop.last -%}
           {%- assign file_conn = "└──&nbsp;" -%}
         {%- else -%}
           {%- assign file_conn = "├──&nbsp;" -%}
         {%- endif -%}
-
+        
         <div class="t-row">
-          <span class="tree-lines">{{ cat_indent }}{{ tag_indent }}{{ file_conn }}</span><a href="https://fxlip.com{{ file.url }}" class="file-link">{{ file.title }}</a>
+          <span class="tree-lines">{{ cat_indent }}{{ tag_child_indent }}{{ file_conn }}</span><a href="{{ post.url }}" class="file-link">{{ post.title }}</a>
         </div>
-
       {%- endfor -%}
     {%- endfor -%}
-  {%- endif -%}
+
+    {%- for post in cat_posts -%}
+      {%- assign relative = post.path | replace_first: target_path, "" -%}
+      {%- unless relative contains "/" -%}
+        {%- assign level2_counter = level2_counter | plus: 1 -%}
+        
+        {%- if level2_counter == total_level2_items -%}
+           {%- assign orphan_conn = "└──&nbsp;" -%}
+        {%- else -%}
+           {%- assign orphan_conn = "├──&nbsp;" -%}
+        {%- endif -%}
+
+        <div class="t-row">
+          <span class="tree-lines">{{ cat_indent }}{{ orphan_conn }}</span><a href="{{ post.url }}" class="file-link">{{ post.title }}</a>
+        </div>
+      {%- endunless -%}
+    {%- endfor -%}
+
+  {%- endunless -%}
 {%- endfor -%}
 
 </div>
