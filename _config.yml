@@ -1,13 +1,9 @@
-# Example Site settings
-
 header_pages:
   - index.html
   - about.md
   - linux.md
   - files.md
   - setup.md
-
-footer: 'me manda um <a href="mailto:fxlip@tuta.io">e-mail</a> ツ'
 
 plugins:
   - jekyll-seo-tag
@@ -25,6 +21,9 @@ sass:
 
 # Timezone
 timezone: America/Sao_Paulo
+
+# TIME TRAVEL FIX:
+future: true
 
 # Collections
 collections:
