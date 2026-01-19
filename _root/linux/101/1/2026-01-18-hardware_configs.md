@@ -3,8 +3,8 @@ layout: page
 title: "hardware_configs"
 date: 2026-01-19T18:57:57-03:00
 permalink: /linux/101/1/hardware_configs/
-categories: [linux, 102, 1]
-tags: []
+categories: [linux]
+tags: [101, 1]
 hide_footer: true
 ---
 

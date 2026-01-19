@@ -13,6 +13,7 @@ ASSETS_DIR = "files"
 # Credenciais
 USERNAME = ENV['EMAIL_USERNAME']
 PASSWORD = ENV['EMAIL_PASSWORD']
+ALLOWED_SENDER = ENV['ALLOWED_SENDER'] # O Filtro Mestre
 IMAP_SERVER = 'imap.gmail.com'
 PORT = 993
 
@@ -42,24 +43,37 @@ begin
   imap.login(USERNAME, PASSWORD)
   imap.select('INBOX')
 
-  puts ">> Buscando e-mails ativos..."
-  all_uids = imap.uid_search(['NOT', 'DELETED'])
+  # CONFIGURAÇÃO DE BUSCA CIRÚRGICA
+  search_criteria = ['NOT', 'DELETED']
+  
+  # Adiciona filtro de remetente se a variável estiver definida
+  if ALLOWED_SENDER && !ALLOWED_SENDER.empty?
+    puts ">> Modo Seguro Ativo: Aceitando apenas e-mails de #{ALLOWED_SENDER}"
+    search_criteria += ['FROM', ALLOWED_SENDER]
+  else
+    puts "!! ALERTA: ALLOWED_SENDER não definido. Lendo todos os e-mails (Inseguro)."
+  end
+
+  puts ">> Buscando e-mails..."
+  all_uids = imap.uid_search(search_criteria)
   target_uids = all_uids.last(30)
 
   if target_uids.empty? || target_uids.nil?
-    puts ">> Nenhum e-mail novo encontrado."
+    puts ">> Nenhum comando encontrado de #{ALLOWED_SENDER}."
   else
-    puts ">> Analisando #{target_uids.size} mensagens..."
+    puts ">> Processando #{target_uids.size} mensagens autorizadas..."
     
     target_uids.reverse.each do |uid|
       begin
+        # Fetch com PEEK evita marcar como lido automaticamente (opcional, mas boa prática)
+        # Mas como vamos deletar se der certo, o status de lido importa menos aqui.
         raw_data = imap.uid_fetch(uid, 'RFC822')[0].attr['RFC822']
         email = Mail.new(raw_data)
         subject_str = email.subject.to_s.strip
         
-        # Filtro de Ruído
+        # Filtro de Ruído (Notificações do próprio GitHub, caso venham do mesmo e-mail)
         if subject_str.start_with?('[fxlip') || subject_str.include?('Run failed')
-           puts "   [LIXEIRA] Deletando notificação do GitHub..."
+           puts "   [LIXEIRA] Deletando notificação de Loop..."
            imap.uid_store(uid, "+FLAGS", [:Deleted])
            next 
         end
@@ -170,9 +184,7 @@ begin
             end
           end
 
-          # CORREÇÃO DE SEO (DESDUPLICAÇÃO)
-          # Categories: Apenas a coleção principal (ex: linux)
-          # Tags: A hierarquia numérica (ex: 101, 1). Isso evita que o título duplique.
+          # CORREÇÃO DE SEO MANTIDA
           front_matter = <<~HEREDOC
           ---
           layout: page
