@@ -17,7 +17,7 @@ end
 Mail.defaults do
   retriever_method :pop3, :address    => "pop.gmail.com",
                           :port       => 995,
-                          :user_name  => ENV['EMAIL_USER'],
+                          :user_name  => ENV['EMAIL_USERNAME'],
                           :password   => ENV['EMAIL_PASSWORD'],
                           :enable_ssl => true
 end
