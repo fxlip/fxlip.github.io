@@ -5,14 +5,15 @@ require 'date'
 require 'securerandom'
 
 # CONFIGURAÇÃO
-POSTS_DIR = "_root"
+POSTS_ROOT = "_posts" # Pasta padrão do Jekyll para a Home
+POSTS_DIR = "_root"   # Pasta das suas coleções personalizadas (linux, etc)
 ASSETS_DIR = "files"
 
 def slugify(text)
   text.to_s.downcase.strip.gsub(' ', '_').gsub(/[^\w-]/, '')
 end
 
-# CONFIGURAÇÃO IMAP (BLINDADA)
+# CONFIGURAÇÃO IMAP
 Mail.defaults do
   retriever_method :imap, {
     :address        => "imap.gmail.com",
@@ -29,7 +30,6 @@ processed_count = 0
 MAX_EMAILS = 5 
 
 begin
-  # Busca os 30 últimos para garantir leitura profunda
   puts ">> Buscando os 30 últimos e-mails..."
   messages = Mail.find(count: 30, order: :asc, what: :last)
   messages = [messages] unless messages.is_a?(Array)
@@ -47,25 +47,76 @@ begin
       begin
         subject_str = email.subject.to_s.strip
         
-        # Filtro de Ruído: Ignora notificações do GitHub ou e-mails vazios
-        if subject_str.empty? || subject_str.start_with?('[fxlip') || subject_str.include?('Run failed')
+        # Filtro de Ruído: Ignora notificações do GitHub
+        if subject_str.start_with?('[fxlip') || subject_str.include?('Run failed')
            next 
         end
 
-        puts ">> [ANALISANDO] '#{subject_str}'"
-
-        parts = subject_str.split('/')
-        command_raw = parts[0]
-        command = slugify(command_raw) 
+        # LÓGICA DE ROTEAMENTO
+        if subject_str.empty?
+          command = 'quick_post' # Rota Default (Sem Assunto)
+          puts ">> [ANALISANDO] (Sem Assunto) -> Rota Default"
+        else
+          puts ">> [ANALISANDO] '#{subject_str}'"
+          parts = subject_str.split('/')
+          command_raw = parts[0]
+          command = slugify(command_raw)
+        end
         
         case command
         
-        # --- ROTA A: ARQUIVOS (COM AUTO-INCREMENTO) ---
+        # --- ROTA 0: POST RÁPIDO (DEFAULT / HOME) ---
+        when 'quick_post'
+          puts "   -> COMANDO IDENTIFICADO: POST NA HOME (_posts)"
+          
+          # Gera slug baseado no tempo para garantir unicidade
+          timestamp_slug = Time.now.strftime('%H%M%S')
+          slug = "nota-#{timestamp_slug}"
+          
+          # Título Genérico para o Front Matter
+          display_title = "Nota Rápida #{Time.now.strftime('%d/%m %H:%M')}"
+
+          date = DateTime.now
+          filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
+          
+          # Caminho direto para _posts
+          filepath = File.join(POSTS_ROOT, filename)
+
+          body = email.body.decoded.force_encoding("UTF-8").scrub("") 
+          
+          if email.attachments.any?
+            img_dir = "assets/img/posts/#{slug}"
+            FileUtils.mkdir_p(img_dir)
+            email.attachments.each do |attachment|
+              img_name = attachment.filename
+              File.open("#{img_dir}/#{img_name}", "wb") { |f| f.write(attachment.body.decoded) }
+              body += "\n\n![#{img_name}](/#{img_dir}/#{img_name})"
+            end
+          end
+
+          front_matter = <<~HEREDOC
+          ---
+          layout: post
+          title: "#{display_title}"
+          date: #{date.to_s}
+          categories: [cotidiano]
+          tags: [quicklog]
+          ---
+          HEREDOC
+
+          File.open(filepath, 'w') do |file|
+            file.write(front_matter + "\n" + body)
+          end
+          puts "   [SUCESSO] Post criado na Home: #{filepath}"
+          
+          email.mark_for_delete = true
+          processed_count += 1
+
+        # --- ROTA A: ARQUIVOS ---
         when 'files'
           puts "   -> COMANDO IDENTIFICADO: UPLOAD DE ARQUIVO"
           path_args = parts[1..-1]
           
-          # Define nome base (do assunto ou padrão)
           custom_name = nil
           if path_args.last && path_args.last.include?('.')
             custom_name = path_args.pop 
@@ -78,7 +129,6 @@ begin
           email.attachments.each_with_index do |attachment, index|
             real_ext = File.extname(attachment.filename)
             
-            # Define o nome base inicial
             if custom_name
               base_filename = slugify(File.basename(custom_name, ".*"))
             else
@@ -86,11 +136,8 @@ begin
               base_filename += "_#{SecureRandom.hex(4)}" unless custom_name
             end
 
-            # --- LÓGICA DE COLISÃO (NOVO) ---
-            # Verifica se arquivo existe e adiciona _1, _2, _3 até achar vaga
             final_filename = "#{base_filename}#{real_ext}"
             counter = 1
-            
             while File.exist?(File.join(target_dir, final_filename))
               final_filename = "#{base_filename}_#{counter}#{real_ext}"
               counter += 1
@@ -103,9 +150,9 @@ begin
           email.mark_for_delete = true 
           processed_count += 1
 
-        # --- ROTA B: CONTEÚDO ---
+        # --- ROTA B: CONTEÚDO CUSTOMIZADO ---
         when 'linux', 'stack', 'dev', 'log'
-          puts "   -> COMANDO IDENTIFICADO: POST (#{command})"
+          puts "   -> COMANDO IDENTIFICADO: POST CUSTOM (#{command})"
           collection = command
           category = parts[1] ? slugify(parts[1]) : 'geral'
           tag = parts[2] ? slugify(parts[2]) : 'misc'
