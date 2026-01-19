@@ -3,8 +3,8 @@ layout: page
 title: "runlevels"
 date: 2026-01-19T19:05:28-03:00
 permalink: /linux/101/3/runlevels/
-categories: [linux, 101, 3]
-tags: []
+categories: [linux]
+tags: [101, 3]
 hide_footer: true
 ---
 
