@@ -64,16 +64,11 @@ hide_footer: true
 {%- assign unique_categories = raw_categories | split: "|||" | uniq | sort -%}
 
 {%- for cat in unique_categories -%}
-  
-  {%- unless cat contains "." -%}
-
-    {%- if forloop.last -%}
+  {%- unless cat contains "." -%} {%- if forloop.last -%}
       {%- assign cat_conn = "└──&nbsp;" -%}
-      {%- assign cat_indent = "&nbsp;&nbsp;&nbsp;&nbsp;" -%}
-    {%- else -%}
+      {%- assign cat_indent = "&nbsp;&nbsp;&nbsp;&nbsp;" -%} {%- else -%}
       {%- assign cat_conn = "├──&nbsp;" -%}
-      {%- assign cat_indent = "│&nbsp;&nbsp;&nbsp;" -%}
-    {%- endif -%}
+      {%- assign cat_indent = "│&nbsp;&nbsp;&nbsp;" -%}    {%- endif -%}
 
     <div class="t-row">
       <span class="tree-lines">{{ cat_conn }}</span><span class="dir-cat">{{ cat }}</span>
@@ -83,30 +78,41 @@ hide_footer: true
     {%- assign cat_files = site.static_files | where_exp: "item", "item.path contains target_path" | sort: 'path' -%}
     
     {%- assign raw_subfolders = "" -%}
+    {%- assign orphan_count = 0 -%}
     
     {%- for file in cat_files -%}
       {%- assign relative = file.path | replace_first: target_path, "" -%}
-      {%- assign parts = relative | split: "/" -%}
-      {%- if parts.size > 1 -%}
-         {%- assign subfolder_name = parts[0] -%}
-         {%- assign raw_subfolders = raw_subfolders | append: subfolder_name | append: "|||" -%}
+      {%- if relative contains "/" -%}
+         {%- assign sub_name = relative | split: "/" | first -%}
+         {%- assign raw_subfolders = raw_subfolders | append: sub_name | append: "|||" -%}
+      {%- else -%}
+         {%- assign orphan_count = orphan_count | plus: 1 -%}
       {%- endif -%}
     {%- endfor -%}
 
     {%- assign unique_subfolders = raw_subfolders | split: "|||" | uniq | sort -%}
+    
+    {%- assign total_level2_items = unique_subfolders.size | plus: orphan_count -%}
+    {%- assign level2_counter = 0 -%}
 
     {%- for sub in unique_subfolders -%}
+      {%- assign level2_counter = level2_counter | plus: 1 -%}
       
-      {%- assign sub_target = target_path | append: sub | append: '/' -%}
-      {%- assign sub_files = site.static_files | where_exp: "item", "item.path contains sub_target" | sort: 'name' -%}
+      {%- if level2_counter == total_level2_items -%}
+        {%- assign tag_conn = "└──&nbsp;" -%}
+        {%- assign tag_child_indent = "&nbsp;&nbsp;&nbsp;&nbsp;" -%}
+      {%- else -%}
+        {%- assign tag_conn = "├──&nbsp;" -%}
+        {%- assign tag_child_indent = "│&nbsp;&nbsp;&nbsp;" -%}
+      {%- endif -%}
 
-      {%- assign tag_conn = "├──&nbsp;" -%}
-      {%- assign tag_indent = "│&nbsp;&nbsp;&nbsp;" -%}
-      
       <div class="t-row">
         <span class="tree-lines">{{ cat_indent }}{{ tag_conn }}</span><span class="dir-tag">{{ sub }}</span>
       </div>
 
+      {%- assign sub_target = target_path | append: sub | append: '/' -%}
+      {%- assign sub_files = site.static_files | where_exp: "item", "item.path contains sub_target" | sort: 'name' -%}
+      
       {%- for file in sub_files -%}
         {%- if forloop.last -%}
           {%- assign file_conn = "└──&nbsp;" -%}
@@ -115,16 +121,17 @@ hide_footer: true
         {%- endif -%}
         
         <div class="t-row">
-          <span class="tree-lines">{{ cat_indent }}{{ tag_indent }}{{ file_conn }}</span><a href="{{ file.path }}" target="_blank" class="file-link">{{ file.name }}</a>
+          <span class="tree-lines">{{ cat_indent }}{{ tag_child_indent }}{{ file_conn }}</span><a href="{{ file.path }}" target="_blank" class="file-link">{{ file.name }}</a>
         </div>
       {%- endfor -%}
-
     {%- endfor -%}
 
     {%- for file in cat_files -%}
       {%- assign relative = file.path | replace_first: target_path, "" -%}
       {%- unless relative contains "/" -%}
-        {%- if forloop.last -%}
+        {%- assign level2_counter = level2_counter | plus: 1 -%}
+        
+        {%- if level2_counter == total_level2_items -%}
            {%- assign orphan_conn = "└──&nbsp;" -%}
         {%- else -%}
            {%- assign orphan_conn = "├──&nbsp;" -%}
