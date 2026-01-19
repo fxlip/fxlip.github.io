@@ -5,6 +5,8 @@ header_pages:
   - files.md
   - setup.md
 
+footer: 'me manda um <a href="mailto:fxlip@tuta.io">e-mail</a> ツ'
+
 plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
