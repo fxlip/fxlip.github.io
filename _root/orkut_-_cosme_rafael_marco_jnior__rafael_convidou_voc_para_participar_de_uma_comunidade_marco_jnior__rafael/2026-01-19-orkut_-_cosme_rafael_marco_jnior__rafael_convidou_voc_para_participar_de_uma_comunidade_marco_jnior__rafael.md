@@ -1,14 +1,14 @@
 ---
 layout: page
 title: "orkut - Â°Â°COSME (Rafael) Marco JÃºnior & Rafael convidou vocÃª para participar de uma comunidade: Marco JÃºnior & Rafael"
-date: 2026-01-19T13:51:03-03:00
+date: 2026-01-19T14:03:57-03:00
 permalink: /orkut_-_cosme_rafael_marco_jnior__rafael_convidou_voc_para_participar_de_uma_comunidade_marco_jnior__rafael/orkut_-_cosme_rafael_marco_jnior__rafael_convidou_voc_para_participar_de_uma_comunidade_marco_jnior__rafael/
 categories: []
 tags: []
 hide_footer: true
 ---
 
-Uma otima quarta feira pra vc....
+Um forte abraço e otima quinta feira pra vc....Fique com Deus.
 
 °°COSME (Rafael) Marco Júnior & Rafael convidou você para participar da comunidade 'Marco Júnior & Rafael'.
 
