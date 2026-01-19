@@ -13,28 +13,35 @@ Vivemos sob a lógica do **Capitalismo de Vigilância**. O modelo de negócios d
 ---
 
 ### Dilema
-Se o serviço é gratuito, o produto é você. Plataformas de Big Techs operam sob a lógica de *Growth Hacking* e reforço intermitente para maximizar o tempo de tela. Minha resposta para isso se tornou o silêncio algorítmico. Nenhuma postagem. Contas desativadas. Conteúdos no meu próprio site hospedados aqui dentro do meu computador.
+Se o serviço é gratuito, o produto é você. Plataformas de Big Techs operam sob a lógica de *Growth Hacking* e reforço intermitente para maximizar o tempo de tela. Minha resposta para isso se tornou o silêncio algorítmico. Nenhuma postagem. Contas desativadas. Conteúdos no meu próprio site hospedados dentro do meu computador. Low-profile.
 
 --- 
 
 ### Soberania
-A descentralização não é apenas uma preferência técnica, mas (deveria ser) uma necessidade cívica. Manter seus próprios dados elimina intermediários e código fechado é uma caixa preta. Free Software é a fonte da confiança e a coisa certa a fazer.
+Descentralização não é só uma preferência, deveria ser uma necessidade cívica. Hospedar as próprias coisas elimina aquele intermediário bilionário que usa código fechado e te obriga a aceitar termos de uso.
+
+---
+
+> *"Free Software é fonte de liberdade e a coisa certa a usar."*
 
 ---
 
 ### Ferramenta
-A tecnologia deve ser uma bicicleta para a mente promovendo a eficiência, não uma máquina caça-níqueis que promove o vício. Quando a ferramenta exige sua atenção com excesso de notificação, ela deixou de servir a você.
+A tecnologia deveria ser uma bicicleta para ajudar a mente a correr, não uma máquina caça níquel que te deixa viciado. Quando a ferramenta exige atenção com excessos de notificação, ela deixou de servir a você.
 
 ---
 
-**Leituras**
+### Leitura
 
-* **Jaron Lanier:** *Ten Arguments for Deleting Your Social Media Accounts Right Now*
-* **Shoshana Zuboff:** *The Age of Surveillance Capitalism*
-* **Cal Newport:** *Digital Minimalism*
+*Digital Minimalism*, **Cal Newport**
+
+*The Age of Surveillance Capitalism*, **Shoshana Zuboff**
+
+*Ten Arguments for Deleting Your Social Media Accounts*, 
+**Jaron Lanier**
 
 ---
 
-> *"Qualquer tecnologia avançada é indistinguível da mágica. E a mágica sempre tem um preço."*
+> *"Qualquer tecnologia avançada é indistinguível da mágica. E a mágica sempre tem um preço."* — Arthur C. Clark
 
 ---
