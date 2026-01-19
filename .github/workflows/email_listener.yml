@@ -45,45 +45,51 @@ jobs:
           echo ">>> 2. Atualizando Link Cards..."
           bundle exec ruby scripts/generate_previews.rb
 
-      - name: Commit and Push
+        - name: Commit and Push
         run: |
           git config user.name "kernel-bot"
           git config user.email "bot@felip.com.br"
           
+          echo "=== INVESTIGAÇÃO DE SUBMÓDULOS ==="
+          # Se existir um .git dentro de files, delete-o para que vire uma pasta normal
+          if [ -d "files/.git" ]; then
+            echo "!! ALERTA: Repositório aninhado detectado em files/. Removendo .git interno..."
+            rm -rf files/.git
+          fi
+          
           echo "=== DIAGNÓSTICO DE ARQUIVOS ==="
-          # Mostra se o arquivo realmente existe no disco
           ls -R files/
           
-          echo "=== STATUS DO GIT ANTES DO ADD ==="
-          # Mostra o que o Git está vendo (ou ignorando)
-          git status -u
-          
-          echo "=== TENTATIVA DE ADD FORÇADO ==="
-          # Adiciona explicitamente qualquer arquivo novo na pasta files, não importa a regra
-          git add --force files/
-          git add --force _posts/
-          git add --force _root/
-          git add --force _data/previews.yml
-          
-          echo "=== STATUS DO GIT DEPOIS DO ADD ==="
+          echo "=== STATUS DO GIT ANTES ==="
           git status
           
-          # Verifica se há algo no Stage (Index)
+          echo "=== ADD FILES EXPLICITAMENTE ==="
+          # Adiciona tudo, verbose
+          git add --all --verbose
+          
+          # Se falhar, tenta adicionar a pasta files especificamente
+          git add files/ --verbose --force
+          
+          echo "=== STATUS DO GIT DEPOIS ==="
+          git status
+          
+          # Se ainda assim falhar, tenta commitar qualquer coisa que esteja lá
           if git diff --staged --quiet; then
-            echo "!! CRÍTICO: O Git continua ignorando os arquivos mesmo com force."
-            echo "Verificando regras de ignore para um arquivo de teste:"
-            git check-ignore -v files/img/campus2024/hackintosh.JPG || echo "O arquivo não está sendo ignorado explicitamente."
+             echo "!! FALHA TOTAL: O Git se recusa a ver as mudanças."
+             # Tenta commitar o Gemfile que vimos modificado no log anterior
+             git add Gemfile
+             git commit -m "chore: update dependencies" || echo "Nada para commitar mesmo no Gemfile"
           else
-            # LÓGICA DE DETECÇÃO DE TIPO DE COMMIT
-            if git diff --staged --name-only | grep -q "^_root/"; then
+             # Lógica padrão
+             if git diff --staged --name-only | grep -q "^_root/"; then
                 MSG="new content via smtp"
-            elif git diff --staged --name-only | grep -q "^files/"; then
+             elif git diff --staged --name-only | grep -q "^files/"; then
                 MSG="new asset via smtp"
-            else
+             else
                 MSG="auto-update via smtp"
-            fi
-            
-            echo "Committing with message: $MSG"
-            git commit -m "$MSG"
-            git push
+             fi
+             
+             echo "Committing: $MSG"
+             git commit -m "$MSG"
+             git push
           fi
