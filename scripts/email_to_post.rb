@@ -42,12 +42,8 @@ begin
   imap.login(USERNAME, PASSWORD)
   imap.select('INBOX')
 
-  # CORREÇÃO 1: Busca apenas e-mails que NÃO estão marcados como deletados
-  # Isso evita o loop de processar e-mails "zumbis"
   puts ">> Buscando e-mails ativos..."
   all_uids = imap.uid_search(['NOT', 'DELETED'])
-  
-  # Pega os 30 últimos da lista filtrada
   target_uids = all_uids.last(30)
 
   if target_uids.empty? || target_uids.nil?
@@ -81,10 +77,15 @@ begin
         success = false 
 
         case command
+        
+        # --- ROTA 0: POST RÁPIDO ---
         when 'quick_post'
-          timestamp_slug = Time.now.strftime('%H%M%S')
-          slug = "nota-#{timestamp_slug}"
+          # RESTAURAÇÃO DO HASH (Estética Original)
+          slug = SecureRandom.hex(16) 
+          
+          # Título de exibição continua legível
           display_title = "Nota Rápida #{Time.now.strftime('%d/%m %H:%M')}"
+          
           date = DateTime.now
           filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
           filepath = File.join(POSTS_ROOT, filename)
@@ -115,6 +116,7 @@ begin
           puts "   [SUCESSO] Post criado: #{filepath}"
           success = true
 
+        # --- ROTA A: ARQUIVOS ---
         when 'files'
           puts "   -> COMANDO: UPLOAD DE ARQUIVO"
           path_args = parts[1..-1]
@@ -145,6 +147,7 @@ begin
           end
           success = true
 
+        # --- ROTA B: CONTEÚDO CUSTOM ---
         when 'linux', 'stack', 'dev', 'log'
           puts "   -> COMANDO: POST CUSTOM (#{command})"
           collection = command
@@ -190,13 +193,9 @@ begin
           puts "   [IGNORADO] Comando '#{command}' desconhecido."
         end
 
-        # CORREÇÃO 2: MOVER PARA LIXEIRA (Gmail Workaround)
         if success
            puts "   [DELETANDO] Movendo para a Lixeira..."
            imap.uid_store(uid, "+FLAGS", [:Deleted])
-           
-           # Tenta mover para Lixeira (português ou inglês) para garantir
-           # Se falhar (pasta não existe), o script continua sem quebrar
            begin
              imap.uid_copy(uid, "[Gmail]/Lixeira")
            rescue
