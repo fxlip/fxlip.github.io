@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "orkut - . . escreveu um recado para você"
-date: 2026-01-19T13:31:52-03:00
+date: 2026-01-19T13:51:03-03:00
 permalink: /orkut_-___escreveu_um_recado_para_voc/orkut_-___escreveu_um_recado_para_voc/
 categories: []
 tags: []
@@ -14,14 +14,14 @@ Olá ㅤ,
 
 Para ler esse novo recado, visite a sua página de recados: http://www.orkut.com/Scrapbook.aspx
 
-Para ver o perfil de ., clique em: http://www.orkut.com/Profile.aspx?uid=6899572188406208330
+Para ver o perfil de ., clique em: http://www.orkut.com/Profile.aspx?uid=15099626799356134620
 
 
 * * *
 
 Para controlar os e-mails de notificação, acesse as suas Configurações da conta: http://www.orkut.com/NotificationSettings.aspx
 
-Se você quiser ignorar ., visite o perfil de . e clique em “ignorar”: http://www.orkut.com/Profile.aspx?uid=6899572188406208330
+Se você quiser ignorar ., visite o perfil de . e clique em “ignorar”: http://www.orkut.com/Profile.aspx?uid=15099626799356134620
 
 Se você não for usuário do orkut e quiser impedir que todos os usuários do orkut enviem e-mails para você, visite: http://www.orkut.com/Block.aspx
 

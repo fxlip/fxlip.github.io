@@ -1,14 +1,14 @@
 ---
 layout: page
 title: "orkut - AndrÃ© & Celia ************* convidou vocÃª para participar de uma comunidade: eu amo a cÃ©lia"
-date: 2026-01-19T12:48:11-03:00
+date: 2026-01-19T13:51:03-03:00
 permalink: /orkut_-_andr__celia__convidou_voc_para_participar_de_uma_comunidade_eu_amo_a_clia/orkut_-_andr__celia__convidou_voc_para_participar_de_uma_comunidade_eu_amo_a_clia/
 categories: []
 tags: []
 hide_footer: true
 ---
 
-ajuda ai a crescer a comu!!!!!!!!!!
+ajuda ai crescer minha comunidade vlw!!!!!!!!!!
 
 André & Celia ************* convidou você para participar da comunidade 'eu amo a célia'.
 
