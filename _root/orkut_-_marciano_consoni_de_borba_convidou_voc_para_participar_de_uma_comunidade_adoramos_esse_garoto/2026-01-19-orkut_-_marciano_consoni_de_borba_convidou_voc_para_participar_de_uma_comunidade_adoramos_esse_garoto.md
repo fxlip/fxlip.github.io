@@ -1,14 +1,14 @@
 ---
 layout: page
 title: "orkut - ****Marciano**** Consoni de Borba convidou vocÃª para participar de uma comunidade: adoramos esse garoto"
-date: 2026-01-19T12:35:23-03:00
+date: 2026-01-19T12:48:11-03:00
 permalink: /orkut_-_marciano_consoni_de_borba_convidou_voc_para_participar_de_uma_comunidade_adoramos_esse_garoto/orkut_-_marciano_consoni_de_borba_convidou_voc_para_participar_de_uma_comunidade_adoramos_esse_garoto/
 categories: []
 tags: []
 hide_footer: true
 ---
 
-aí pessoal me add ...vlw
+oi!! galera da uma ajudinha aí,add minha comunidade...vlw
 
 ****Marciano**** Consoni de Borba convidou você para participar da comunidade 'adoramos esse garoto'.
 

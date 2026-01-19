@@ -1,8 +1,8 @@
 ---
 layout: page
-title: "orkut - . . escreveu um recado para você"
+title: "orkut - Gisela Bacelar escreveu um recado para você"
 date: 2026-01-19T12:48:11-03:00
-permalink: /orkut_-___escreveu_um_recado_para_voc/orkut_-___escreveu_um_recado_para_voc/
+permalink: /orkut_-_gisela_bacelar_escreveu_um_recado_para_voc/orkut_-_gisela_bacelar_escreveu_um_recado_para_voc/
 categories: []
 tags: []
 hide_footer: true
@@ -10,18 +10,18 @@ hide_footer: true
 
 Olá ㅤ,
 
-. . deixou um recado para você.
+Gisela Bacelar deixou um recado para você.
 
 Para ler esse novo recado, visite a sua página de recados: http://www.orkut.com/Scrapbook.aspx
 
-Para ver o perfil de ., clique em: http://www.orkut.com/Profile.aspx?uid=2553551803235998544
+Para ver o perfil de Gisela, clique em: http://www.orkut.com/Profile.aspx?uid=14238758691918474361
 
 
 * * *
 
 Para controlar os e-mails de notificação, acesse as suas Configurações da conta: http://www.orkut.com/NotificationSettings.aspx
 
-Se você quiser ignorar ., visite o perfil de . e clique em “ignorar”: http://www.orkut.com/Profile.aspx?uid=2553551803235998544
+Se você quiser ignorar Gisela, visite o perfil de Gisela e clique em “ignorar”: http://www.orkut.com/Profile.aspx?uid=14238758691918474361
 
 Se você não for usuário do orkut e quiser impedir que todos os usuários do orkut enviem e-mails para você, visite: http://www.orkut.com/Block.aspx
 
