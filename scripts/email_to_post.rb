@@ -29,16 +29,15 @@ processed_count = 0
 MAX_EMAILS = 5 
 
 begin
-  puts ">> Buscando os 20 últimos e-mails..."
-  
-  # AUMENTADO PARA 20 PARA GARANTIR
-  messages = Mail.find(count: 20, order: :asc, what: :last)
+  # Aumentamos para 30 para cavar fundo sob as notificações se necessário
+  puts ">> Buscando os 30 últimos e-mails..."
+  messages = Mail.find(count: 30, order: :asc, what: :last)
   messages = [messages] unless messages.is_a?(Array)
 
   if messages.empty?
     puts ">> Nenhum e-mail encontrado na caixa."
   else
-    # Processa do mais novo para o mais antigo
+    # Inverte para processar do mais novo para o mais antigo
     messages.reverse.each do |email|
       
       if processed_count >= MAX_EMAILS
@@ -48,9 +47,15 @@ begin
 
       begin
         subject_str = email.subject.to_s.strip
-        next if subject_str.empty?
+        
+        # --- FILTRO DE RUÍDO (NOVO) ---
+        # Pula e-mails sem assunto ou notificações do repo
+        if subject_str.empty? || subject_str.start_with?('[fxlip') || subject_str.include?('Run failed')
+           # Opcional: Descomente para ver o que está sendo pulado
+           # puts ">> [PULANDO NOTIFICAÇÃO] #{subject_str}"
+           next 
+        end
 
-        # LOG DE DEBUG (Para vermos o que está chegando)
         puts ">> [ANALISANDO] '#{subject_str}'"
 
         parts = subject_str.split('/')
@@ -138,7 +143,6 @@ begin
           processed_count += 1
 
         else
-          # AGORA VAMOS VER PORQUE FALHOU
           puts "   [IGNORADO] Comando '#{command}' não está na whitelist. (Original: '#{parts[0]}')"
         end
 
