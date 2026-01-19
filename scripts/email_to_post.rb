@@ -6,7 +6,7 @@ require 'securerandom'
 
 # CONFIGURAÇÃO
 POSTS_DIR = "_root"     # Onde ficam os conteúdos (linux, stack, etc)
-ASSETS_DIR = "_root/files" # Onde ficam os arquivos binários (files)
+ASSETS_DIR = "files" # Onde ficam os arquivos binários (files)
 
 # Função para sanitizar nomes (remove acentos, espaços -> underline)
 def slugify(text)

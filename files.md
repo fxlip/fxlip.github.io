@@ -58,7 +58,7 @@ directories:
 
 <div class="terminal-window">
   <div class="t-row">
-    <span class="p-user">root</span><span class="p-at">@</span><span class="p-host">fxlip</span>:<span class="p-path">~/files</span><span class="p-sign">$</span> tree
+    <span class="p-user">root</span><span class="p-at">@</span><span class="p-host">fxlip</span>:<span class="p-path">~/files</span><span class="p-sign">$</span> tree - L 4
   </div>
   <div class="t-row" style="color: var(--base-color);">.</div>
 
@@ -76,7 +76,7 @@ directories:
     <span class="tree-lines">{{ dir_conn }}</span><span class="dir-folder">{{ dir.id }}/</span>
   </div>
 
-  {%- assign target_path = '_root/files/' | append: dir.id -%}
+  {%- assign target_path = '/files/' | append: dir.id -%}
   {%- assign files = site.static_files | where_exp: "item", "item.path contains target_path" | sort: 'modified_time' | reverse -%}
   
   {%- for file in files -%}
