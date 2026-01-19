@@ -2,6 +2,7 @@
 layout: page
 title: files
 permalink: /files/
+hide_footer: true
 ---
 
 <style>

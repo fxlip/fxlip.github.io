@@ -2,6 +2,7 @@
 layout: page
 title: linux
 permalink: /linux/
+hide_footer: true
 ---
 
 <style>

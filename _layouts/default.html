@@ -33,7 +33,9 @@ script-src 'self' 'unsafe-inline';
       {{ content }}
     </main>
 
-    {%- include footer.html -%}
+    {% unless page.collection == 'root' or page.hide_footer %}
+        {%- include footer.html -%}
+    {% endunless %}
 
     </div>
     <script src="{{ "/assets/js/main.js" | relative_url }}"></script>
