@@ -50,31 +50,18 @@ jobs:
           git config user.name "kernel-bot"
           git config user.email "bot@felip.com.br"
           
-          echo "=== DIAGNÓSTICO E CORREÇÃO DO INDEX ==="
-          
-          # 1. Tenta remover 'files' do índice (apenas memória RAM do git, mantém disco)
-          # Isso conserta o caso de "Submódulo Fantasma"
-          git rm -r --cached files || echo "Files não estava no index (ok)"
-          
-          # 2. Agora adicionamos tudo novamente como se fosse a primeira vez
-          git add .
-          
-          # 3. Força bruta na pasta files para garantir
-          git add files/ --force
-          
-          echo "=== STATUS FINAL ==="
-          git status
+          # Adiciona arquivos novos (files, posts, paginas)
+          git add _posts/ _root/ _data/previews.yml files/
           
           if git diff --staged --quiet; then
-            echo "!! CRÍTICO: Nada entrou no commit. Verifique permissões."
+            echo "Nenhuma alteração detectada. Encerrando."
           else
-            # LÓGICA DE MENSAGEM
             if git diff --staged --name-only | grep -q "^_root/"; then
                MSG="new content via smtp"
             elif git diff --staged --name-only | grep -q "^files/"; then
                MSG="new asset via smtp"
             else
-               MSG="system update via smtp"
+               MSG="auto-update via smtp"
             fi
             
             echo "Committing: $MSG"

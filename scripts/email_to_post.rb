@@ -12,7 +12,7 @@ def slugify(text)
   text.to_s.downcase.strip.gsub(' ', '_').gsub(/[^\w-]/, '')
 end
 
-# CONFIGURAÇÃO IMAP
+# CONFIGURAÇÃO IMAP (BLINDADA)
 Mail.defaults do
   retriever_method :imap, {
     :address        => "imap.gmail.com",
@@ -29,7 +29,7 @@ processed_count = 0
 MAX_EMAILS = 5 
 
 begin
-  # Aumentamos para 30 para cavar fundo sob as notificações se necessário
+  # Busca os 30 últimos para garantir leitura profunda
   puts ">> Buscando os 30 últimos e-mails..."
   messages = Mail.find(count: 30, order: :asc, what: :last)
   messages = [messages] unless messages.is_a?(Array)
@@ -37,7 +37,6 @@ begin
   if messages.empty?
     puts ">> Nenhum e-mail encontrado na caixa."
   else
-    # Inverte para processar do mais novo para o mais antigo
     messages.reverse.each do |email|
       
       if processed_count >= MAX_EMAILS
@@ -48,11 +47,8 @@ begin
       begin
         subject_str = email.subject.to_s.strip
         
-        # --- FILTRO DE RUÍDO (NOVO) ---
-        # Pula e-mails sem assunto ou notificações do repo
+        # Filtro de Ruído: Ignora notificações do GitHub ou e-mails vazios
         if subject_str.empty? || subject_str.start_with?('[fxlip') || subject_str.include?('Run failed')
-           # Opcional: Descomente para ver o que está sendo pulado
-           # puts ">> [PULANDO NOTIFICAÇÃO] #{subject_str}"
            next 
         end
 
@@ -64,31 +60,44 @@ begin
         
         case command
         
-        # --- ROTA A: ARQUIVOS ---
+        # --- ROTA A: ARQUIVOS (COM AUTO-INCREMENTO) ---
         when 'files'
           puts "   -> COMANDO IDENTIFICADO: UPLOAD DE ARQUIVO"
           path_args = parts[1..-1]
+          
+          # Define nome base (do assunto ou padrão)
           custom_name = nil
           if path_args.last && path_args.last.include?('.')
             custom_name = path_args.pop 
           end
+          
           sub_path = path_args.map { |p| slugify(p) }.join('/')
           target_dir = File.join(ASSETS_DIR, sub_path)
           FileUtils.mkdir_p(target_dir)
 
           email.attachments.each_with_index do |attachment, index|
             real_ext = File.extname(attachment.filename)
+            
+            # Define o nome base inicial
             if custom_name
-              desired_name = File.basename(custom_name, ".*")
-              safe_name = slugify(desired_name)
-              suffix = index > 0 ? "_#{index}" : ""
-              filename = "#{safe_name}#{suffix}#{real_ext}"
+              base_filename = slugify(File.basename(custom_name, ".*"))
             else
-              prefix = attachment.content_type.start_with?('image/') ? 'img_' : 'doc_'
-              filename = "#{prefix}#{SecureRandom.hex(4)}#{real_ext}"
+              base_filename = attachment.content_type.start_with?('image/') ? 'img' : 'doc'
+              base_filename += "_#{SecureRandom.hex(4)}" unless custom_name
             end
-            File.open(File.join(target_dir, filename), "wb") { |f| f.write(attachment.body.decoded) }
-            puts "   [SUCESSO] #{filename} salvo em #{target_dir}"
+
+            # --- LÓGICA DE COLISÃO (NOVO) ---
+            # Verifica se arquivo existe e adiciona _1, _2, _3 até achar vaga
+            final_filename = "#{base_filename}#{real_ext}"
+            counter = 1
+            
+            while File.exist?(File.join(target_dir, final_filename))
+              final_filename = "#{base_filename}_#{counter}#{real_ext}"
+              counter += 1
+            end
+            
+            File.open(File.join(target_dir, final_filename), "wb") { |f| f.write(attachment.body.decoded) }
+            puts "   [SUCESSO] #{final_filename} salvo em #{target_dir}"
           end
           
           email.mark_for_delete = true 
@@ -143,7 +152,7 @@ begin
           processed_count += 1
 
         else
-          puts "   [IGNORADO] Comando '#{command}' não está na whitelist. (Original: '#{parts[0]}')"
+          puts "   [IGNORADO] Comando '#{command}' não está na whitelist."
         end
 
       rescue => e
