@@ -1,4 +1,4 @@
-name: Email Listener Protocol
+name: email-listener-protocol
 
 on:
   schedule:

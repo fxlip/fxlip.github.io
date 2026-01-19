@@ -1,4 +1,4 @@
-name: Generate Link Previews
+name: generate-link-previews
 
 on:
   push:
