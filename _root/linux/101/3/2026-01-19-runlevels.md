@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "runlevels"
-date: 2026-01-19T18:57:57-03:00
+date: 2026-01-19T19:05:28-03:00
 permalink: /linux/101/3/runlevels/
 categories: [101]
 tags: [3]
