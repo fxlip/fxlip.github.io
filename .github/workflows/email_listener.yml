@@ -51,7 +51,7 @@ jobs:
           git config user.email "bot@felip.com.br"
           
           # Adiciona as pastas relevantes
-          git add _posts/ _root/ _data/previews.yml
+          git add _posts/ _root/ _data/previews.yml files/
           
           # Verifica se há algo para commitar
           if git diff --staged --quiet; then
