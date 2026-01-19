@@ -87,7 +87,7 @@ Mail.all.each do |email|
           img_name = attachment.filename
           File.open("#{img_dir}/#{img_name}", "wb") { |f| f.write(attachment.body.decoded) }
           # Substitui no texto (Markdown básico)
-          body += "\n\n![#{img_name}](/fxlip.github.io/#{img_dir}/#{img_name})"
+          body += "\n\n![#{img_name}](/#{img_dir}/#{img_name})"
         end
       end
 
