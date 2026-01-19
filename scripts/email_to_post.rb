@@ -5,15 +5,14 @@ require 'date'
 require 'securerandom'
 
 # CONFIGURAÇÃO
-POSTS_ROOT = "_posts" # Home
-POSTS_DIR = "_root"   # Coleções
+POSTS_ROOT = "_posts"
+POSTS_DIR = "_root"
 ASSETS_DIR = "files"
 
 def slugify(text)
   text.to_s.downcase.strip.gsub(' ', '_').gsub(/[^\w-]/, '')
 end
 
-# FUNÇÃO: Limpeza de Corpo de E-mail
 def extract_body(email)
   begin
     if email.multipart?
@@ -46,6 +45,8 @@ processed_count = 0
 MAX_EMAILS = 5 
 
 begin
+  # Busca apenas os não deletados.
+  # Nota: Mail.find por padrão busca 'ALL'.
   puts ">> Buscando os 30 últimos e-mails..."
   messages = Mail.find(count: 30, order: :asc, what: :last)
   messages = [messages] unless messages.is_a?(Array)
@@ -60,11 +61,17 @@ begin
         break
       end
 
+      # SKIP JÁ DELETADOS (Caso a gem traga lixo do cache)
+      next if email.is_marked_for_delete?
+
       begin
         subject_str = email.subject.to_s.strip
         
         # Filtro de Ruído
         if subject_str.start_with?('[fxlip') || subject_str.include?('Run failed')
+           # Marca notificação como deletada para não ler de novo
+           puts "   [LIXEIRA] Deletando notificação do GitHub..."
+           email.mark_for_delete = true
            next 
         end
 
@@ -78,12 +85,12 @@ begin
           command = slugify(command_raw)
         end
         
+        success = false # Flag de controle
+
         case command
         
-        # --- ROTA 0: POST RÁPIDO (DEFAULT) ---
+        # --- ROTA 0: POST RÁPIDO ---
         when 'quick_post'
-          puts "   -> COMANDO: POST NA HOME"
-          
           timestamp_slug = Time.now.strftime('%H%M%S')
           slug = "nota-#{timestamp_slug}"
           display_title = "Nota Rápida #{Time.now.strftime('%d/%m %H:%M')}"
@@ -97,11 +104,9 @@ begin
             img_dir = "assets/img/posts/#{slug}"
             FileUtils.mkdir_p(img_dir)
             email.attachments.each do |attachment|
-              # CORREÇÃO AQUI: .downcase na extensão
               ext = File.extname(attachment.filename).downcase
               base = slugify(File.basename(attachment.filename, ".*"))
               img_name = "#{base}#{ext}"
-              
               File.open("#{img_dir}/#{img_name}", "wb") { |f| f.write(attachment.body.decoded) }
               body += "\n\n![#{img_name}](/#{img_dir}/#{img_name})"
             end
@@ -121,26 +126,21 @@ begin
             file.write(front_matter + "\n" + body)
           end
           puts "   [SUCESSO] Post criado: #{filepath}"
-          email.mark_for_delete = true
-          processed_count += 1
+          success = true
 
         # --- ROTA A: ARQUIVOS ---
         when 'files'
-          puts "   -> COMANDO: UPLOAD DE ARQUIVO"
           path_args = parts[1..-1]
           custom_name = nil
           if path_args.last && path_args.last.include?('.')
             custom_name = path_args.pop 
           end
-          
           sub_path = path_args.map { |p| slugify(p) }.join('/')
           target_dir = File.join(ASSETS_DIR, sub_path)
           FileUtils.mkdir_p(target_dir)
 
           email.attachments.each_with_index do |attachment, index|
-            # CORREÇÃO AQUI: Force .downcase na extensão
             real_ext = File.extname(attachment.filename).downcase
-            
             if custom_name
               base_filename = slugify(File.basename(custom_name, ".*"))
             else
@@ -158,37 +158,29 @@ begin
             File.open(File.join(target_dir, final_filename), "wb") { |f| f.write(attachment.body.decoded) }
             puts "   [SUCESSO] #{final_filename} salvo em #{target_dir}"
           end
-          
-          email.mark_for_delete = true 
-          processed_count += 1
+          success = true
 
-        # --- ROTA B: CONTEÚDO CUSTOM ---
+        # --- ROTA B: CONTEÚDO ---
         when 'linux', 'stack', 'dev', 'log'
-          puts "   -> COMANDO: POST CUSTOM (#{command})"
           collection = command
           category = parts[1] ? slugify(parts[1]) : 'geral'
           tag = parts[2] ? slugify(parts[2]) : 'misc'
           title_raw = parts.last
           slug = slugify(title_raw)
-
           dir_path = File.join(POSTS_DIR, collection, category, tag)
           FileUtils.mkdir_p(dir_path)
-
           date = DateTime.now
           filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
           filepath = File.join(dir_path, filename)
-
           body = extract_body(email)
           
           if email.attachments.any?
             img_dir = "assets/img/posts/#{slug}"
             FileUtils.mkdir_p(img_dir)
             email.attachments.each do |attachment|
-              # CORREÇÃO AQUI: .downcase na extensão
               ext = File.extname(attachment.filename).downcase
               base = slugify(File.basename(attachment.filename, ".*"))
               img_name = "#{base}#{ext}"
-
               File.open("#{img_dir}/#{img_name}", "wb") { |f| f.write(attachment.body.decoded) }
               body += "\n\n![#{img_name}](/#{img_dir}/#{img_name})"
             end
@@ -210,11 +202,17 @@ begin
             file.write(front_matter + "\n" + body)
           end
           puts "   [SUCESSO] Post criado: #{filepath}"
-          email.mark_for_delete = true
-          processed_count += 1
+          success = true
 
         else
           puts "   [IGNORADO] Comando '#{command}' desconhecido."
+        end
+
+        # DELEÇÃO ATÔMICA E IMEDIATA
+        if success
+           puts "   [DELETANDO] Removendo e-mail da caixa..."
+           email.mark_for_delete = true
+           processed_count += 1
         end
 
       rescue => e
