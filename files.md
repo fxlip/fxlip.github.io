@@ -5,7 +5,6 @@ permalink: /files
 hide_footer: true
 
 # --- CONFIGURAÇÃO DE DIRETÓRIOS ---
-# O script agora procura dentro de: _root/files/
 directories:
   - id: "estudos"
     desc: "Material de referência e certificações"
@@ -21,7 +20,7 @@ directories:
 ---
 
 <style>
-  /* --- CONFIGURAÇÕES DE TERMINAL (CSS Inline para garantir performance) --- */
+  /* --- AESTHETICS (Cópia exata do linux.md) --- */
   .terminal-window {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
     color: var(--text-color);
@@ -32,85 +31,42 @@ directories:
     scrollbar-width: none;
     padding-bottom: 80px; 
   }
-  
   .terminal-window::-webkit-scrollbar { display: none; }
+  .t-row { display: block; line-height: 1.35; white-space: nowrap; }
+
+  /* --- PALETA DE CORES --- */
+  .p-user { color: #FF79C6; font-weight: bold; } 
+  .p-at, .p-sign { color: var(--base-color); opacity: 0.7; }
+  .p-host { color: #BD93F9; font-weight: bold; } 
+  .p-path { color: #D8B4FE; font-style: italic; } 
+  .tree-lines { color: var(--base-color); opacity: 0.4; }
+  
+  /* Cores específicas para Diretórios de Arquivos */
+  .dir-folder { color: #F1FA8C; font-weight: bold; } /* Amarelo para Pastas */
+  
+  .file-link { 
+    text-decoration: none !important;
+    color: var(--text-color); 
+    transition: all 0.2s ease;
+  }
+  .file-link:hover {
+    color: #FFFFFF; 
+    background-color: rgba(189, 147, 249, 0.2);
+    text-shadow: 0 0 5px rgba(216, 180, 254, 0.5);
+  }
 </style>
 
-# // index of /root/files
-
-Repositório central de arquivos estáticos.
+<div class="terminal-window">
+  <div class="t-row">
+    <span class="p-user">root</span><span class="p-at">@</span><span class="p-host">fxlip</span>:<span class="p-path">~/files</span><span class="p-sign">$</span> tree
+  </div>
+  <div class="t-row" style="color: var(--base-color);">.</div>
 
 {% for dir in page.directories %}
-
-  <div style="margin-top: 40px; margin-bottom: 10px;">
-    <h3 style="
-      color: var(--link-hover-color); 
-      font-family: monospace; 
-      font-size: 1.1em; 
-      border-bottom: 1px dashed rgba(135, 139, 166, 0.3);
-      padding-bottom: 5px;
-    ">
-      ./{{ dir.id }}/
-      <span style="float: right; font-size: 0.7em; opacity: 0.6; font-weight: normal;">
-        # {{ dir.desc }}
-      </span>
-    </h3>
-  </div>
-
-  <div class="terminal-window">
-    <table style="width: 100%; border-collapse: collapse; font-family: monospace;">
-      <tbody>
-        {% assign has_files = false %}
-        
-        {% assign target_path = '_root/files/' | append: dir.id %}
-        
-        {% assign files = site.static_files | sort: 'modified_time' | reverse %}
-        
-        {% for file in files %}
-          {% if file.path contains target_path %}
-          {% assign has_files = true %}
-          
-          {% assign ext = file.extname | downcase %}
-          {% if ext == '.pdf' %}
-            {% assign type = '[PDF]' %}{% assign color = '#FF5555' %}
-          {% elsif ext == '.jpg' or ext == '.jpeg' or ext == '.png' or ext == '.gif' %}
-            {% assign type = '[IMG]' %}{% assign color = '#BD93F9' %}
-          {% elsif ext == '.zip' or ext == '.tar' or ext == '.gz' %}
-            {% assign type = '[ZIP]' %}{% assign color = '#F1FA8C' %}
-          {% elsif ext == '.txt' or ext == '.md' or ext == '.sh' %}
-            {% assign type = '[TXT]' %}{% assign color = '#50FA7B' %}
-          {% else %}
-            {% assign type = '[BIN]' %}{% assign color = '#6272A4' %}
-          {% endif %}
-
-          <tr style="border-bottom: 1px solid rgba(255,255,255,0.02);">
-            <td style="color: {{ color }}; padding: 6px 5px; width: 50px;">{{ type }}</td>
-            <td style="padding: 6px 5px;">
-              <a href="{{ file.path }}" target="_blank" style="text-decoration: none; color: var(--text-color);">
-                {{ file.name }}
-              </a>
-            </td>
-            <td style="text-align: right; padding: 6px 5px; width: 80px;">
-              <span style="opacity: 0.4; font-size: 0.8em;">{{ file.modified_time | date: "%d/%m" }}</span>
-            </td>
-          </tr>
-          {% endif %}
-        {% endfor %}
-
-        {% if has_files == false %}
-          <tr>
-            <td colspan="3" style="padding: 10px; color: var(--placeholder-color); font-style: italic;">
-              (empty directory)
-            </td>
-          </tr>
-        {% endif %}
-      </tbody>
-    </table>
-  </div>
-
-{% endfor %}
-
-<br>
-<div style="text-align: center; margin-top: 50px; opacity: 0.5; font-size: 0.8em;">
-  EOF
-</div>
+  
+  {% if forloop.last %}
+    {% assign dir_conn = "└──&nbsp;" %}
+    {% assign dir_indent = "&nbsp;&nbsp;&nbsp;&nbsp;" %}
+  {% else %}
+    {% assign dir_conn = "├──&nbsp;" %}
+    {% assign dir_indent = "│&
