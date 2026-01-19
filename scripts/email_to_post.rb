@@ -26,40 +26,42 @@ end
 puts "[ SYSTEM_READY ] Conectando via IMAP..."
 
 processed_count = 0
-MAX_EMAILS = 5 # Limite de Sucessos
+MAX_EMAILS = 5 
 
 begin
-  puts ">> Buscando mensagens recentes..."
+  puts ">> Buscando os 20 últimos e-mails..."
   
-  # CORREÇÃO CRÍTICA: what: :last pega os e-mails NOVOS
-  messages = Mail.find(count: 10, order: :asc, what: :last)
+  # AUMENTADO PARA 20 PARA GARANTIR
+  messages = Mail.find(count: 20, order: :asc, what: :last)
   messages = [messages] unless messages.is_a?(Array)
 
   if messages.empty?
-    puts ">> Nenhum e-mail encontrado."
+    puts ">> Nenhum e-mail encontrado na caixa."
   else
-    # Inverte para processar do mais novo para o mais antigo
+    # Processa do mais novo para o mais antigo
     messages.reverse.each do |email|
       
       if processed_count >= MAX_EMAILS
-        puts "!! LIMITE DE PROCESSAMENTO ATINGIDO. Encerrando ciclo."
+        puts "!! LIMITE ATINGIDO. Encerrando."
         break
       end
 
       begin
         subject_str = email.subject.to_s.strip
-        # Ignora e-mails sem assunto
         next if subject_str.empty?
 
+        # LOG DE DEBUG (Para vermos o que está chegando)
+        puts ">> [ANALISANDO] '#{subject_str}'"
+
         parts = subject_str.split('/')
-        command = slugify(parts[0]) 
+        command_raw = parts[0]
+        command = slugify(command_raw) 
         
-        # === WHITELIST ===
         case command
         
         # --- ROTA A: ARQUIVOS ---
         when 'files'
-          puts ">> [PROCESSANDO] #{subject_str}"
+          puts "   -> COMANDO IDENTIFICADO: UPLOAD DE ARQUIVO"
           path_args = parts[1..-1]
           custom_name = nil
           if path_args.last && path_args.last.include?('.')
@@ -81,7 +83,7 @@ begin
               filename = "#{prefix}#{SecureRandom.hex(4)}#{real_ext}"
             end
             File.open(File.join(target_dir, filename), "wb") { |f| f.write(attachment.body.decoded) }
-            puts "   [UPLOAD] #{filename} salvo em #{target_dir}"
+            puts "   [SUCESSO] #{filename} salvo em #{target_dir}"
           end
           
           email.mark_for_delete = true 
@@ -89,7 +91,7 @@ begin
 
         # --- ROTA B: CONTEÚDO ---
         when 'linux', 'stack', 'dev', 'log'
-          puts ">> [PROCESSANDO] #{subject_str}"
+          puts "   -> COMANDO IDENTIFICADO: POST (#{command})"
           collection = command
           category = parts[1] ? slugify(parts[1]) : 'geral'
           tag = parts[2] ? slugify(parts[2]) : 'misc'
@@ -130,22 +132,22 @@ begin
           File.open(filepath, 'w') do |file|
             file.write(front_matter + "\n" + body)
           end
-          puts "   [POST] Criado em: #{filepath}"
+          puts "   [SUCESSO] Post criado: #{filepath}"
           
           email.mark_for_delete = true
           processed_count += 1
 
         else
-          # Modo Silencioso: Não polui o log com "IGNORADO" para e-mails velhos, a menos que seja relevante
-          # puts "!! IGNORADO: '#{command}'"
+          # AGORA VAMOS VER PORQUE FALHOU
+          puts "   [IGNORADO] Comando '#{command}' não está na whitelist. (Original: '#{parts[0]}')"
         end
 
       rescue => e
-        puts "!! ERRO no e-mail '#{email.subject}': #{e.message}"
+        puts "!! ERRO INTERNO no e-mail '#{email.subject}': #{e.message}"
       end
     end
   end
 
 rescue => e
-  puts "!! FALHA CRÍTICA IMAP: #{e.message}"
+  puts "!! FALHA CRÍTICA DE CONEXÃO: #{e.message}"
 end
