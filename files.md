@@ -42,7 +42,7 @@ directories:
   .tree-lines { color: var(--base-color); opacity: 0.4; }
   
   /* Cores específicas para Diretórios de Arquivos */
-  .dir-folder { color: #F1FA8C; font-weight: bold; } /* Amarelo para Pastas */
+  .dir-folder { color: #F1FA8C; font-weight: bold; } /* Amarelo */
   
   .file-link { 
     text-decoration: none !important;
@@ -62,11 +62,41 @@ directories:
   </div>
   <div class="t-row" style="color: var(--base-color);">.</div>
 
-{% for dir in page.directories %}
+{%- for dir in page.directories -%}
   
-  {% if forloop.last %}
-    {% assign dir_conn = "└──&nbsp;" %}
-    {% assign dir_indent = "&nbsp;&nbsp;&nbsp;&nbsp;" %}
-  {% else %}
-    {% assign dir_conn = "├──&nbsp;" %}
-    {% assign dir_indent = "│&
+  {%- if forloop.last -%}
+    {%- assign dir_conn = "└──&nbsp;" -%}
+    {%- assign dir_indent = "&nbsp;&nbsp;&nbsp;&nbsp;" -%}
+  {%- else -%}
+    {%- assign dir_conn = "├──&nbsp;" -%}
+    {%- assign dir_indent = "│&nbsp;&nbsp;&nbsp;" -%}
+  {%- endif -%}
+
+  <div class="t-row">
+    <span class="tree-lines">{{ dir_conn }}</span><span class="dir-folder">{{ dir.id }}/</span>
+  </div>
+
+  {%- assign target_path = '_root/files/' | append: dir.id -%}
+  {%- assign files = site.static_files | where_exp: "item", "item.path contains target_path" | sort: 'modified_time' | reverse -%}
+  
+  {%- for file in files -%}
+    {%- if forloop.last -%}
+      {%- assign file_conn = "└──&nbsp;" -%}
+    {%- else -%}
+      {%- assign file_conn = "├──&nbsp;" -%}
+    {%- endif -%}
+
+    <div class="t-row">
+      <span class="tree-lines">{{ dir_indent }}{{ file_conn }}</span><a href="{{ file.path }}" target="_blank" class="file-link">{{ file.name }}</a>
+    </div>
+  {%- endfor -%}
+
+  {%- if files.size == 0 -%}
+    <div class="t-row">
+      <span class="tree-lines">{{ dir_indent }}└──&nbsp;</span><span style="opacity: 0.3; font-style: italic;">(empty)</span>
+    </div>
+  {%- endif -%}
+
+{%- endfor -%}
+
+</div>
