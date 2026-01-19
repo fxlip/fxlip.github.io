@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "script> escreveu um recado para você"
-date: 2026-01-19T14:03:57-03:00
+date: 2026-01-19T14:17:39-03:00
 permalink: /orkut_-_scriptalert_xss_detected/script_escreveu_um_recado_para_voc/script_escreveu_um_recado_para_voc/
 categories: [script_escreveu_um_recado_para_voc]
 tags: []
