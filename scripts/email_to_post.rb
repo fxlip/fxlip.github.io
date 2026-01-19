@@ -38,15 +38,41 @@ Mail.all.each do |email|
     
     # --- ROTA A: ARQUIVOS (FILES) ---
     if command == 'files'
-      # Ex: files/eventos/cpbr
-      # Caminho destino: assets/docs/eventos/cpbr
+      # Ex Assunto: files/eventos/cpbr/hackintosh.jpg
       
-      sub_path = parts[1..-1].map { |p| slugify(p) }.join('/')
+      # Separa o caminho base dos argumentos
+      path_args = parts[1..-1]
+      custom_name = nil
+
+      # Lógica de Detecção: Se o último item tem ponto, é um nome de arquivo desejado.
+      if path_args.last && path_args.last.include?('.')
+        custom_name = path_args.pop # Remove o nome do arquivo da lista de pastas
+      end
+
+      # O que sobrou vira diretório (ex: files/eventos/cpbr)
+      sub_path = path_args.map { |p| slugify(p) }.join('/')
       target_dir = File.join(ASSETS_DIR, sub_path)
       FileUtils.mkdir_p(target_dir)
 
-      email.attachments.each do | attachment |
-        filename = (attachment.content_type.start_with?('image/') ? 'img_' : 'doc_') + SecureRandom.hex(4) + File.extname(attachment.filename)
+      email.attachments.each_with_index do |attachment, index|
+        # Define a extensão real do arquivo (Soberania do Binário)
+        real_ext = File.extname(attachment.filename)
+
+        if custom_name
+          # Usa o nome do assunto, mas sanitiza
+          desired_name = File.basename(custom_name, ".*") # Tira a extensão do assunto
+          safe_name = slugify(desired_name)
+          
+          # Se houver mais de 1 anexo, adiciona contador para não sobrescrever
+          suffix = index > 0 ? "_#{index}" : ""
+          
+          filename = "#{safe_name}#{suffix}#{real_ext}"
+        else
+          # Fallback para nome aleatório se não especificar no assunto
+          prefix = attachment.content_type.start_with?('image/') ? 'img_' : 'doc_'
+          filename = "#{prefix}#{SecureRandom.hex(4)}#{real_ext}"
+        end
+
         File.open(File.join(target_dir, filename), "wb") { |f| f.write(attachment.body.decoded) }
         puts "   [UPLOAD] #{filename} salvo em #{target_dir}"
       end
