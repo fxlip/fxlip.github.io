@@ -50,9 +50,9 @@ hide_footer: true
 {%- assign cats = site.root | group_by: "categories" | sort: "name" -%}
 {%- for cat in cats -%}
   
-  {%- assign raw_name = cat.name | array_to_sentence_string -%}
+  {%- assign raw_name = cat.name | append: "" -%}
   {%- assign clean_cat = raw_name | split: ',' | first -%}
-  {%- assign clean_cat = clean_cat | replace: '["', '' | replace: '"]', '' | replace: '"', '' | replace: '[', '' | replace: ']', '' | replace: ' and ', '' | strip -%}
+  {%- assign clean_cat = clean_cat | replace: '["', '' | replace: '"]', '' | replace: '"', '' | replace: '[', '' | replace: ']', '' | strip -%}
   
   {%- if clean_cat != "" -%}
 
@@ -70,9 +70,9 @@ hide_footer: true
 
     {%- assign tags = cat.items | group_by: "tags" | sort: "name" -%}
     {%- for tag in tags -%}
-      {%- assign raw_tag = tag.name | array_to_sentence_string -%}
+      {%- assign raw_tag = tag.name | append: "" -%}
       {%- assign clean_tag = raw_tag | split: ',' | first -%}
-      {%- assign clean_tag = clean_tag | replace: '["', '' | replace: '"]', '' | replace: '"', '' | replace: '[', '' | replace: ']', '' | replace: ' and ', '' | strip -%}
+      {%- assign clean_tag = clean_tag | replace: '["', '' | replace: '"]', '' | replace: '"', '' | replace: '[', '' | replace: ']', '' | strip -%}
       
       {%- if forloop.last -%}
         {%- assign tag_conn = "└──&nbsp;" -%}
