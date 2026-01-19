@@ -50,19 +50,19 @@ jobs:
           git config user.name "kernel-bot"
           git config user.email "bot@felip.com.br"
           
-          # Adiciona as pastas relevantes
-          git add _posts/ _root/ _data/previews.yml files/
+          # FORÇA A ADIÇÃO DE TUDO (Bypassing .gitignore)
+          git add -f _posts/ _root/ _data/previews.yml files/
           
-          # Verifica se há algo para commitar
           if git diff --staged --quiet; then
             echo "Nenhuma alteração detectada. Encerrando."
           else
-            # LÓGICA DE DETECÇÃO:
-            # Verifica se existe algum arquivo na pasta _root/ dentro do stage
+            # LÓGICA DE DETECÇÃO MELHORADA
             if git diff --staged --name-only | grep -q "^_root/"; then
-               MSG="new page via smtp"
+               MSG="new content via smtp"
+            elif git diff --staged --name-only | grep -q "^files/"; then
+               MSG="new asset via smtp"
             else
-               MSG="new post via smtp"
+               MSG="auto-update via smtp"
             fi
             
             echo "Committing with message: $MSG"
