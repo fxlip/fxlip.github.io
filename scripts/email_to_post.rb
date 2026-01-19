@@ -170,16 +170,17 @@ begin
             end
           end
 
-          # CORREÇÃO DE SEO: Hierarquia Plana em Categories
-          # Removemos 'tags' e colocamos tudo na árvore de categorias
+          # CORREÇÃO DE SEO (DESDUPLICAÇÃO)
+          # Categories: Apenas a coleção principal (ex: linux)
+          # Tags: A hierarquia numérica (ex: 101, 1). Isso evita que o título duplique.
           front_matter = <<~HEREDOC
           ---
           layout: page
           title: "#{title_raw.gsub('"', '\"')}"
           date: #{date.to_s}
           permalink: /#{collection}/#{category}/#{tag}/#{slug}/
-          categories: [#{collection}, #{category}, #{tag}]
-          tags: []
+          categories: [#{collection}]
+          tags: [#{category}, #{tag}]
           hide_footer: true
           ---
           HEREDOC
