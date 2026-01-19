@@ -1,10 +1,11 @@
 ---
 layout: page
 title: "hardware_configs"
-date:   2026-01-18 22:25:30 -0300
-categories: [101]
-tags: [1]
+date: 2026-01-19T18:57:57-03:00
 permalink: /linux/101/1/hardware_configs/
+categories: [102]
+tags: [1]
+hide_footer: true
 ---
 
 Página de exemplo para mostrar que sou capaz de identificar e editar configurações essenciais de hardware.

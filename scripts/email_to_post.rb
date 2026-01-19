@@ -1,3 +1,4 @@
+require 'net/imap'
 require 'mail'
 require 'yaml'
 require 'fileutils'
@@ -9,17 +10,23 @@ POSTS_ROOT = "_posts"
 POSTS_DIR = "_root"
 ASSETS_DIR = "files"
 
+# Credenciais
+USERNAME = ENV['EMAIL_USERNAME']
+PASSWORD = ENV['EMAIL_PASSWORD']
+IMAP_SERVER = 'imap.gmail.com'
+PORT = 993
+
 def slugify(text)
   text.to_s.downcase.strip.gsub(' ', '_').gsub(/[^\w-]/, '')
 end
 
-def extract_body(email)
+def extract_body(mail)
   begin
-    if email.multipart?
-      part = email.text_part || email.html_part
-      content = part ? part.decoded : email.body.decoded
+    if mail.multipart?
+      part = mail.text_part || mail.html_part
+      content = part ? part.decoded : mail.body.decoded
     else
-      content = email.body.decoded
+      content = mail.body.decoded
     end
     content = content.force_encoding("UTF-8").scrub("")
     return content.strip
@@ -28,76 +35,57 @@ def extract_body(email)
   end
 end
 
-# CONFIGURAÇÃO IMAP
-Mail.defaults do
-  retriever_method :imap, {
-    :address        => "imap.gmail.com",
-    :port           => 993,
-    :user_name      => ENV['EMAIL_USERNAME'],
-    :password       => ENV['EMAIL_PASSWORD'],
-    :enable_ssl     => true
-  }
-end
-
-puts "[ SYSTEM_READY ] Conectando via IMAP..."
-
-processed_count = 0
-MAX_EMAILS = 5 
+puts "[ SYSTEM_READY ] Iniciando conexão IMAP direta..."
 
 begin
-  # Busca apenas os não deletados.
-  # Nota: Mail.find por padrão busca 'ALL'.
-  puts ">> Buscando os 30 últimos e-mails..."
-  messages = Mail.find(count: 30, order: :asc, what: :last)
-  messages = [messages] unless messages.is_a?(Array)
+  # 1. CONEXÃO DIRETA (Native Driver)
+  imap = Net::IMAP.new(IMAP_SERVER, port: PORT, ssl: true)
+  imap.login(USERNAME, PASSWORD)
+  imap.select('INBOX')
 
-  if messages.empty?
-    puts ">> Nenhum e-mail encontrado na caixa."
+  # 2. BUSCA (Últimos 30)
+  # O Gmail retorna IDs sequenciais. Pegamos os últimos da lista.
+  all_uids = imap.uid_search(['ALL'])
+  target_uids = all_uids.last(30)
+
+  if target_uids.empty?
+    puts ">> Nenhum e-mail na caixa de entrada."
   else
-    messages.reverse.each do |email|
-      
-      if processed_count >= MAX_EMAILS
-        puts "!! LIMITE ATINGIDO. Encerrando."
-        break
-      end
-
-      # SKIP JÁ DELETADOS (Caso a gem traga lixo do cache)
-      next if email.is_marked_for_delete?
-
+    puts ">> Analisando #{target_uids.size} mensagens..."
+    
+    # Processa do mais recente para o antigo
+    target_uids.reverse.each do |uid|
       begin
+        # Baixa o conteúdo bruto do e-mail
+        raw_data = imap.uid_fetch(uid, 'RFC822')[0].attr['RFC822']
+        email = Mail.new(raw_data)
+        
         subject_str = email.subject.to_s.strip
         
         # Filtro de Ruído
-        if subject_str.start_with?('[fxlip') || subject_str.include?('Run failed')
-           # Marca notificação como deletada para não ler de novo
-           puts "   [LIXEIRA] Deletando notificação do GitHub..."
-           email.mark_for_delete = true
+        if subject_str.empty? || subject_str.start_with?('[fxlip') || subject_str.include?('Run failed')
+           puts "   [LIXEIRA] Removendo notificação: #{subject_str.slice(0, 30)}..."
+           imap.uid_store(uid, "+FLAGS", [:Deleted])
            next 
         end
 
-        if subject_str.empty?
-          command = 'quick_post'
-          puts ">> [ANALISANDO] (Sem Assunto) -> Rota Default"
-        else
-          puts ">> [ANALISANDO] '#{subject_str}'"
-          parts = subject_str.split('/')
-          command_raw = parts[0]
-          command = slugify(command_raw)
-        end
+        puts ">> [UID:#{uid}] Analisando: '#{subject_str}'"
         
-        success = false # Flag de controle
+        parts = subject_str.split('/')
+        command_raw = parts[0]
+        command = slugify(command_raw)
+        success = false
 
         case command
         
-        # --- ROTA 0: POST RÁPIDO ---
         when 'quick_post'
+          # ... (Lógica Rota 0) ...
           timestamp_slug = Time.now.strftime('%H%M%S')
           slug = "nota-#{timestamp_slug}"
           display_title = "Nota Rápida #{Time.now.strftime('%d/%m %H:%M')}"
           date = DateTime.now
           filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
           filepath = File.join(POSTS_ROOT, filename)
-
           body = extract_body(email)
           
           if email.attachments.any?
@@ -121,15 +109,13 @@ begin
           tags: [quicklog]
           ---
           HEREDOC
-
-          File.open(filepath, 'w') do |file|
-            file.write(front_matter + "\n" + body)
-          end
+          File.open(filepath, 'w') do |file| file.write(front_matter + "\n" + body) end
           puts "   [SUCESSO] Post criado: #{filepath}"
           success = true
 
-        # --- ROTA A: ARQUIVOS ---
         when 'files'
+          # ... (Lógica Rota A) ...
+          puts "   -> COMANDO: UPLOAD DE ARQUIVO"
           path_args = parts[1..-1]
           custom_name = nil
           if path_args.last && path_args.last.include?('.')
@@ -147,21 +133,20 @@ begin
               base_filename = attachment.content_type.start_with?('image/') ? 'img' : 'doc'
               base_filename += "_#{SecureRandom.hex(4)}" unless custom_name
             end
-
             final_filename = "#{base_filename}#{real_ext}"
             counter = 1
             while File.exist?(File.join(target_dir, final_filename))
               final_filename = "#{base_filename}_#{counter}#{real_ext}"
               counter += 1
             end
-            
             File.open(File.join(target_dir, final_filename), "wb") { |f| f.write(attachment.body.decoded) }
             puts "   [SUCESSO] #{final_filename} salvo em #{target_dir}"
           end
           success = true
 
-        # --- ROTA B: CONTEÚDO ---
         when 'linux', 'stack', 'dev', 'log'
+          # ... (Lógica Rota B) ...
+          puts "   -> COMANDO: POST CUSTOM (#{command})"
           collection = command
           category = parts[1] ? slugify(parts[1]) : 'geral'
           tag = parts[2] ? slugify(parts[2]) : 'misc'
@@ -197,10 +182,7 @@ begin
           hide_footer: true
           ---
           HEREDOC
-
-          File.open(filepath, 'w') do |file|
-            file.write(front_matter + "\n" + body)
-          end
+          File.open(filepath, 'w') do |file| file.write(front_matter + "\n" + body) end
           puts "   [SUCESSO] Post criado: #{filepath}"
           success = true
 
@@ -208,19 +190,25 @@ begin
           puts "   [IGNORADO] Comando '#{command}' desconhecido."
         end
 
-        # DELEÇÃO ATÔMICA E IMEDIATA
+        # --- DELEÇÃO REAL (SERVER SIDE) ---
         if success
-           puts "   [DELETANDO] Removendo e-mail da caixa..."
-           email.mark_for_delete = true
-           processed_count += 1
+           puts "   [DELETANDO] Removendo e-mail do servidor..."
+           imap.uid_store(uid, "+FLAGS", [:Deleted])
         end
 
       rescue => e
-        puts "!! ERRO INTERNO: #{e.message}"
+        puts "!! ERRO no e-mail UID #{uid}: #{e.message}"
       end
     end
+    
+    # EFETIVA A REMOÇÃO
+    imap.expunge
+    puts "[ SYSTEM ] Limpeza concluída (EXPUNGE)."
   end
 
+  imap.logout
+  imap.disconnect
+
 rescue => e
-  puts "!! FALHA CRÍTICA: #{e.message}"
+  puts "!! FALHA CRÍTICA DE CONEXÃO: #{e.message}"
 end
