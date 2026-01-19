@@ -80,12 +80,8 @@ begin
         
         # --- ROTA 0: POST RÁPIDO ---
         when 'quick_post'
-          # RESTAURAÇÃO DO HASH (Estética Original)
-          slug = SecureRandom.hex(16) 
-          
-          # Título de exibição continua legível
+          slug = SecureRandom.hex(16)
           display_title = "Nota Rápida #{Time.now.strftime('%d/%m %H:%M')}"
-          
           date = DateTime.now
           filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
           filepath = File.join(POSTS_ROOT, filename)
@@ -174,17 +170,19 @@ begin
             end
           end
 
+          # CORREÇÃO DE METADADOS (INSERÇÃO DA COLEÇÃO)
           front_matter = <<~HEREDOC
           ---
           layout: page
           title: "#{title_raw.gsub('"', '\"')}"
           date: #{date.to_s}
           permalink: /#{collection}/#{category}/#{tag}/#{slug}/
-          categories: [#{category}]
+          categories: [#{collection}, #{category}]
           tags: [#{tag}]
           hide_footer: true
           ---
           HEREDOC
+          
           File.open(filepath, 'w') do |file| file.write(front_matter + "\n" + body) end
           puts "   [SUCESSO] Post criado: #{filepath}"
           success = true
