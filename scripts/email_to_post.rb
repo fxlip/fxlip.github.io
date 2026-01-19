@@ -12,7 +12,7 @@ def slugify(text)
   text.to_s.downcase.strip.gsub(' ', '_').gsub(/[^\w-]/, '')
 end
 
-# CONFIGURAÇÃO IMAP (Porta 993)
+# CONFIGURAÇÃO IMAP
 Mail.defaults do
   retriever_method :imap, {
     :address        => "imap.gmail.com",
@@ -26,36 +26,31 @@ end
 puts "[ SYSTEM_READY ] Conectando via IMAP..."
 
 processed_count = 0
-MAX_EMAILS = 5
+MAX_EMAILS = 5 # Limite de Sucessos
 
 begin
-  # IMAP permite filtrar. Buscamos apenas 'UNSEEN' (Não lidos) ou 'ALL' se preferir.
-  # Para performance máxima em inbox suja, pegamos apenas os últimos 5 explicitamente.
+  puts ">> Buscando mensagens recentes..."
   
-  puts ">> Buscando mensagens..."
-  
-  # Mail.find com chaves IMAP é muito mais rápido que Mail.all
-  # count: 5 recupera os 5 mais recentes. order: :desc garante que pegamos os novos.
-  messages = Mail.find(count: 5, order: :desc, what: :first)
-
-  # Se retornar apenas um objeto (não array), forçamos array
+  # CORREÇÃO CRÍTICA: what: :last pega os e-mails NOVOS
+  messages = Mail.find(count: 10, order: :asc, what: :last)
   messages = [messages] unless messages.is_a?(Array)
 
   if messages.empty?
-    puts ">> Nenhum e-mail novo encontrado."
+    puts ">> Nenhum e-mail encontrado."
   else
-    messages.each do |email|
+    # Inverte para processar do mais novo para o mais antigo
+    messages.reverse.each do |email|
       
       if processed_count >= MAX_EMAILS
-        puts "!! LIMITE DE SEGURANÇA ATINGIDO. Parando."
+        puts "!! LIMITE DE PROCESSAMENTO ATINGIDO. Encerrando ciclo."
         break
       end
 
       begin
-        # Decodifica o assunto (UTF-8 fix)
         subject_str = email.subject.to_s.strip
-        puts ">> [#{processed_count + 1}] Analisando: #{subject_str}"
-        
+        # Ignora e-mails sem assunto
+        next if subject_str.empty?
+
         parts = subject_str.split('/')
         command = slugify(parts[0]) 
         
@@ -64,6 +59,7 @@ begin
         
         # --- ROTA A: ARQUIVOS ---
         when 'files'
+          puts ">> [PROCESSANDO] #{subject_str}"
           path_args = parts[1..-1]
           custom_name = nil
           if path_args.last && path_args.last.include?('.')
@@ -88,15 +84,12 @@ begin
             puts "   [UPLOAD] #{filename} salvo em #{target_dir}"
           end
           
-          # No IMAP, deletar é: marcar como Deleted e depois expurgar.
-          # A gem Mail geralmente lida com mark_for_delete ao fechar, mas no IMAP direto às vezes requer manobra.
-          # Vamos apenas marcar como lido para não processar de novo se usarmos filtro UNSEEN.
-          # Mas para garantir limpeza:
           email.mark_for_delete = true 
           processed_count += 1
 
         # --- ROTA B: CONTEÚDO ---
         when 'linux', 'stack', 'dev', 'log'
+          puts ">> [PROCESSANDO] #{subject_str}"
           collection = command
           category = parts[1] ? slugify(parts[1]) : 'geral'
           tag = parts[2] ? slugify(parts[2]) : 'misc'
@@ -143,7 +136,8 @@ begin
           processed_count += 1
 
         else
-          puts "!! IGNORADO: '#{command}' não está na whitelist."
+          # Modo Silencioso: Não polui o log com "IGNORADO" para e-mails velhos, a menos que seja relevante
+          # puts "!! IGNORADO: '#{command}'"
         end
 
       rescue => e
