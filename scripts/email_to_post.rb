@@ -170,15 +170,16 @@ begin
             end
           end
 
-          # CORREÇÃO DE METADADOS (INSERÇÃO DA COLEÇÃO)
+          # CORREÇÃO DE SEO: Hierarquia Plana em Categories
+          # Removemos 'tags' e colocamos tudo na árvore de categorias
           front_matter = <<~HEREDOC
           ---
           layout: page
           title: "#{title_raw.gsub('"', '\"')}"
           date: #{date.to_s}
           permalink: /#{collection}/#{category}/#{tag}/#{slug}/
-          categories: [#{collection}, #{category}]
-          tags: [#{tag}]
+          categories: [#{collection}, #{category}, #{tag}]
+          tags: []
           hide_footer: true
           ---
           HEREDOC
