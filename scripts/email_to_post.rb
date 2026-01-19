@@ -5,12 +5,31 @@ require 'date'
 require 'securerandom'
 
 # CONFIGURAÇÃO
-POSTS_ROOT = "_posts" # Pasta padrão do Jekyll para a Home
-POSTS_DIR = "_root"   # Pasta das suas coleções personalizadas (linux, etc)
+POSTS_ROOT = "_posts" # Home
+POSTS_DIR = "_root"   # Coleções
 ASSETS_DIR = "files"
 
 def slugify(text)
   text.to_s.downcase.strip.gsub(' ', '_').gsub(/[^\w-]/, '')
+end
+
+# NOVA FUNÇÃO: Limpeza de Corpo de E-mail
+def extract_body(email)
+  begin
+    if email.multipart?
+      # Prioriza a versão em Texto Puro para Markdown limpo
+      part = email.text_part || email.html_part
+      content = part ? part.decoded : email.body.decoded
+    else
+      content = email.body.decoded
+    end
+    
+    # Limpeza de Encoding e Espaços
+    content = content.force_encoding("UTF-8").scrub("")
+    return content.strip
+  rescue => e
+    return "Erro ao extrair texto: #{e.message}"
+  end
 end
 
 # CONFIGURAÇÃO IMAP
@@ -35,7 +54,7 @@ begin
   messages = [messages] unless messages.is_a?(Array)
 
   if messages.empty?
-    puts ">> Nenhum e-mail encontrado na caixa."
+    puts ">> Nenhum e-mail encontrado."
   else
     messages.reverse.each do |email|
       
@@ -47,14 +66,14 @@ begin
       begin
         subject_str = email.subject.to_s.strip
         
-        # Filtro de Ruído: Ignora notificações do GitHub
+        # Filtro de Ruído
         if subject_str.start_with?('[fxlip') || subject_str.include?('Run failed')
            next 
         end
 
         # LÓGICA DE ROTEAMENTO
         if subject_str.empty?
-          command = 'quick_post' # Rota Default (Sem Assunto)
+          command = 'quick_post'
           puts ">> [ANALISANDO] (Sem Assunto) -> Rota Default"
         else
           puts ">> [ANALISANDO] '#{subject_str}'"
@@ -65,24 +84,19 @@ begin
         
         case command
         
-        # --- ROTA 0: POST RÁPIDO (DEFAULT / HOME) ---
+        # --- ROTA 0: POST RÁPIDO (DEFAULT) ---
         when 'quick_post'
-          puts "   -> COMANDO IDENTIFICADO: POST NA HOME (_posts)"
+          puts "   -> COMANDO: POST NA HOME"
           
-          # Gera slug baseado no tempo para garantir unicidade
           timestamp_slug = Time.now.strftime('%H%M%S')
           slug = "nota-#{timestamp_slug}"
-          
-          # Título Genérico para o Front Matter
           display_title = "Nota Rápida #{Time.now.strftime('%d/%m %H:%M')}"
-
           date = DateTime.now
           filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
-          
-          # Caminho direto para _posts
           filepath = File.join(POSTS_ROOT, filename)
 
-          body = email.body.decoded.force_encoding("UTF-8").scrub("") 
+          # EXTRAÇÃO LIMPA (USANDO A NOVA FUNÇÃO)
+          body = extract_body(email)
           
           if email.attachments.any?
             img_dir = "assets/img/posts/#{slug}"
@@ -107,16 +121,15 @@ begin
           File.open(filepath, 'w') do |file|
             file.write(front_matter + "\n" + body)
           end
-          puts "   [SUCESSO] Post criado na Home: #{filepath}"
+          puts "   [SUCESSO] Post criado: #{filepath}"
           
           email.mark_for_delete = true
           processed_count += 1
 
         # --- ROTA A: ARQUIVOS ---
         when 'files'
-          puts "   -> COMANDO IDENTIFICADO: UPLOAD DE ARQUIVO"
+          puts "   -> COMANDO: UPLOAD DE ARQUIVO"
           path_args = parts[1..-1]
-          
           custom_name = nil
           if path_args.last && path_args.last.include?('.')
             custom_name = path_args.pop 
@@ -128,7 +141,6 @@ begin
 
           email.attachments.each_with_index do |attachment, index|
             real_ext = File.extname(attachment.filename)
-            
             if custom_name
               base_filename = slugify(File.basename(custom_name, ".*"))
             else
@@ -150,9 +162,9 @@ begin
           email.mark_for_delete = true 
           processed_count += 1
 
-        # --- ROTA B: CONTEÚDO CUSTOMIZADO ---
+        # --- ROTA B: CONTEÚDO CUSTOM ---
         when 'linux', 'stack', 'dev', 'log'
-          puts "   -> COMANDO IDENTIFICADO: POST CUSTOM (#{command})"
+          puts "   -> COMANDO: POST CUSTOM (#{command})"
           collection = command
           category = parts[1] ? slugify(parts[1]) : 'geral'
           tag = parts[2] ? slugify(parts[2]) : 'misc'
@@ -166,7 +178,8 @@ begin
           filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
           filepath = File.join(dir_path, filename)
 
-          body = email.body.decoded.force_encoding("UTF-8").scrub("") 
+          # EXTRAÇÃO LIMPA
+          body = extract_body(email)
           
           if email.attachments.any?
             img_dir = "assets/img/posts/#{slug}"
@@ -199,15 +212,15 @@ begin
           processed_count += 1
 
         else
-          puts "   [IGNORADO] Comando '#{command}' não está na whitelist."
+          puts "   [IGNORADO] Comando '#{command}' desconhecido."
         end
 
       rescue => e
-        puts "!! ERRO INTERNO no e-mail '#{email.subject}': #{e.message}"
+        puts "!! ERRO INTERNO: #{e.message}"
       end
     end
   end
 
 rescue => e
-  puts "!! FALHA CRÍTICA DE CONEXÃO: #{e.message}"
+  puts "!! FALHA CRÍTICA: #{e.message}"
 end
