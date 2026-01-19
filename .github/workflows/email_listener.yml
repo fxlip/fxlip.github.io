@@ -50,46 +50,34 @@ jobs:
           git config user.name "kernel-bot"
           git config user.email "bot@felip.com.br"
           
-          echo "=== INVESTIGAÇÃO DE SUBMÓDULOS ==="
-          # Se existir um .git dentro de files, delete-o para que vire uma pasta normal
-          if [ -d "files/.git" ]; then
-            echo "!! ALERTA: Repositório aninhado detectado em files/. Removendo .git interno..."
-            rm -rf files/.git
-          fi
+          echo "=== DIAGNÓSTICO E CORREÇÃO DO INDEX ==="
           
-          echo "=== DIAGNÓSTICO DE ARQUIVOS ==="
-          ls -R files/
+          # 1. Tenta remover 'files' do índice (apenas memória RAM do git, mantém disco)
+          # Isso conserta o caso de "Submódulo Fantasma"
+          git rm -r --cached files || echo "Files não estava no index (ok)"
           
-          echo "=== STATUS DO GIT ANTES ==="
+          # 2. Agora adicionamos tudo novamente como se fosse a primeira vez
+          git add .
+          
+          # 3. Força bruta na pasta files para garantir
+          git add files/ --force
+          
+          echo "=== STATUS FINAL ==="
           git status
           
-          echo "=== ADD FILES EXPLICITAMENTE ==="
-          # Adiciona tudo, verbose
-          git add --all --verbose
-          
-          # Se falhar, tenta adicionar a pasta files especificamente
-          git add files/ --verbose --force
-          
-          echo "=== STATUS DO GIT DEPOIS ==="
-          git status
-          
-          # Se ainda assim falhar, tenta commitar qualquer coisa que esteja lá
           if git diff --staged --quiet; then
-             echo "!! FALHA TOTAL: O Git se recusa a ver as mudanças."
-             # Tenta commitar o Gemfile que vimos modificado no log anterior
-             git add Gemfile
-             git commit -m "chore: update dependencies" || echo "Nada para commitar mesmo no Gemfile"
+            echo "!! CRÍTICO: Nada entrou no commit. Verifique permissões."
           else
-             # Lógica padrão
-             if git diff --staged --name-only | grep -q "^_root/"; then
-                MSG="new content via smtp"
-             elif git diff --staged --name-only | grep -q "^files/"; then
-                MSG="new asset via smtp"
-             else
-                MSG="auto-update via smtp"
-             fi
-             
-             echo "Committing: $MSG"
-             git commit -m "$MSG"
-             git push
+            # LÓGICA DE MENSAGEM
+            if git diff --staged --name-only | grep -q "^_root/"; then
+               MSG="new content via smtp"
+            elif git diff --staged --name-only | grep -q "^files/"; then
+               MSG="new asset via smtp"
+            else
+               MSG="system update via smtp"
+            fi
+            
+            echo "Committing: $MSG"
+            git commit -m "$MSG"
+            git push
           fi
