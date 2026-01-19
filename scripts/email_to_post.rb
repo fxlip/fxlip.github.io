@@ -19,13 +19,15 @@ Mail.defaults do
                           :port       => 995,
                           :user_name  => ENV['EMAIL_USERNAME'],
                           :password   => ENV['EMAIL_PASSWORD'],
-                          :enable_ssl => true
+                          :enable_ssl => true,
+                          :read_timeout   => 120, # AUMENTADO (Padrão era 60)
+                          :open_timeout   => 120  # AUMENTADO
 end
 
 puts "[ SYSTEM_READY ] Escaneando caixa de entrada..."
 
-Mail.all.each do |email|
-  begin
+Mail.last(5).each do |email|
+    begin
     puts ">> Processando: #{email.subject}"
     
     # 1. DECODIFICAR O COMANDO (ASSUNTO)
