@@ -45,18 +45,36 @@ jobs:
           echo ">>> 2. Atualizando Link Cards..."
           bundle exec ruby scripts/generate_previews.rb
 
-      - name: Commit and Push
+        - name: Commit and Push
         run: |
           git config user.name "kernel-bot"
           git config user.email "bot@felip.com.br"
           
-          # FORÇA A ADIÇÃO DE TUDO (Bypassing .gitignore)
-          git add -f _posts/ _root/ _data/previews.yml files/
+          echo "=== DIAGNÓSTICO DE ARQUIVOS ==="
+          # Mostra se o arquivo realmente existe no disco
+          ls -R files/
           
+          echo "=== STATUS DO GIT ANTES DO ADD ==="
+          # Mostra o que o Git está vendo (ou ignorando)
+          git status -u
+          
+          echo "=== TENTATIVA DE ADD FORÇADO ==="
+          # Adiciona explicitamente qualquer arquivo novo na pasta files, não importa a regra
+          git add --force files/
+          git add --force _posts/
+          git add --force _root/
+          git add --force _data/previews.yml
+          
+          echo "=== STATUS DO GIT DEPOIS DO ADD ==="
+          git status
+          
+          # Verifica se há algo no Stage (Index)
           if git diff --staged --quiet; then
-            echo "Nenhuma alteração detectada. Encerrando."
+            echo "!! CRÍTICO: O Git continua ignorando os arquivos mesmo com force."
+            echo "Verificando regras de ignore para um arquivo de teste:"
+            git check-ignore -v files/img/campus2024/hackintosh.JPG || echo "O arquivo não está sendo ignorado explicitamente."
           else
-            # LÓGICA DE DETECÇÃO MELHORADA
+            # LÓGICA DE DETECÇÃO DE TIPO DE COMMIT
             if git diff --staged --name-only | grep -q "^_root/"; then
                MSG="new content via smtp"
             elif git diff --staged --name-only | grep -q "^files/"; then
