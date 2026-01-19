@@ -13,18 +13,15 @@ def slugify(text)
   text.to_s.downcase.strip.gsub(' ', '_').gsub(/[^\w-]/, '')
 end
 
-# NOVA FUNÇÃO: Limpeza de Corpo de E-mail
+# FUNÇÃO: Limpeza de Corpo de E-mail
 def extract_body(email)
   begin
     if email.multipart?
-      # Prioriza a versão em Texto Puro para Markdown limpo
       part = email.text_part || email.html_part
       content = part ? part.decoded : email.body.decoded
     else
       content = email.body.decoded
     end
-    
-    # Limpeza de Encoding e Espaços
     content = content.force_encoding("UTF-8").scrub("")
     return content.strip
   rescue => e
@@ -54,7 +51,7 @@ begin
   messages = [messages] unless messages.is_a?(Array)
 
   if messages.empty?
-    puts ">> Nenhum e-mail encontrado."
+    puts ">> Nenhum e-mail encontrado na caixa."
   else
     messages.reverse.each do |email|
       
@@ -71,7 +68,6 @@ begin
            next 
         end
 
-        # LÓGICA DE ROTEAMENTO
         if subject_str.empty?
           command = 'quick_post'
           puts ">> [ANALISANDO] (Sem Assunto) -> Rota Default"
@@ -95,14 +91,17 @@ begin
           filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
           filepath = File.join(POSTS_ROOT, filename)
 
-          # EXTRAÇÃO LIMPA (USANDO A NOVA FUNÇÃO)
           body = extract_body(email)
           
           if email.attachments.any?
             img_dir = "assets/img/posts/#{slug}"
             FileUtils.mkdir_p(img_dir)
             email.attachments.each do |attachment|
-              img_name = attachment.filename
+              # CORREÇÃO AQUI: .downcase na extensão
+              ext = File.extname(attachment.filename).downcase
+              base = slugify(File.basename(attachment.filename, ".*"))
+              img_name = "#{base}#{ext}"
+              
               File.open("#{img_dir}/#{img_name}", "wb") { |f| f.write(attachment.body.decoded) }
               body += "\n\n![#{img_name}](/#{img_dir}/#{img_name})"
             end
@@ -122,7 +121,6 @@ begin
             file.write(front_matter + "\n" + body)
           end
           puts "   [SUCESSO] Post criado: #{filepath}"
-          
           email.mark_for_delete = true
           processed_count += 1
 
@@ -140,7 +138,9 @@ begin
           FileUtils.mkdir_p(target_dir)
 
           email.attachments.each_with_index do |attachment, index|
-            real_ext = File.extname(attachment.filename)
+            # CORREÇÃO AQUI: Force .downcase na extensão
+            real_ext = File.extname(attachment.filename).downcase
+            
             if custom_name
               base_filename = slugify(File.basename(custom_name, ".*"))
             else
@@ -178,14 +178,17 @@ begin
           filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
           filepath = File.join(dir_path, filename)
 
-          # EXTRAÇÃO LIMPA
           body = extract_body(email)
           
           if email.attachments.any?
             img_dir = "assets/img/posts/#{slug}"
             FileUtils.mkdir_p(img_dir)
             email.attachments.each do |attachment|
-              img_name = attachment.filename
+              # CORREÇÃO AQUI: .downcase na extensão
+              ext = File.extname(attachment.filename).downcase
+              base = slugify(File.basename(attachment.filename, ".*"))
+              img_name = "#{base}#{ext}"
+
               File.open("#{img_dir}/#{img_name}", "wb") { |f| f.write(attachment.body.decoded) }
               body += "\n\n![#{img_name}](/#{img_dir}/#{img_name})"
             end
@@ -207,7 +210,6 @@ begin
             file.write(front_matter + "\n" + body)
           end
           puts "   [SUCESSO] Post criado: #{filepath}"
-          
           email.mark_for_delete = true
           processed_count += 1
 
