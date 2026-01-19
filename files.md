@@ -28,8 +28,8 @@ hide_footer: true
   .tree-lines { color: var(--base-color); opacity: 0.4; }
   
   /* HIERARQUIA VISUAL */
-  .dir-cat { color: #FF79C6; font-weight: bold; } /* Nível 1: Categoria (img, apresentacao) */
-  .dir-tag { color: #BD93F9; font-weight: bold; } /* Nível 2: Tag (evento1) */
+  .dir-cat { color: #FF79C6; font-weight: bold; } /* Nível 1: Categoria */
+  .dir-tag { color: #BD93F9; font-weight: bold; } /* Nível 2: Tag */
   
   .file-link { 
     text-decoration: none !important;
@@ -68,58 +68,72 @@ hide_footer: true
   {%- unless cat contains "." -%}
 
     {%- if forloop.last -%}
-      {%- assign dir_conn = "└──&nbsp;" -%}
-      {%- assign dir_indent = "&nbsp;&nbsp;&nbsp;&nbsp;" -%}
+      {%- assign cat_conn = "└──&nbsp;" -%}
+      {%- assign cat_indent = "&nbsp;&nbsp;&nbsp;&nbsp;" -%}
     {%- else -%}
-      {%- assign dir_conn = "├──&nbsp;" -%}
-      {%- assign dir_indent = "│&nbsp;&nbsp;&nbsp;" -%}
+      {%- assign cat_conn = "├──&nbsp;" -%}
+      {%- assign cat_indent = "│&nbsp;&nbsp;&nbsp;" -%}
     {%- endif -%}
 
     <div class="t-row">
-      <span class="tree-lines">{{ dir_conn }}</span><span class="dir-cat">{{ cat }}</span>
+      <span class="tree-lines">{{ cat_conn }}</span><span class="dir-cat">{{ cat }}</span>
     </div>
 
     {%- assign target_path = '/files/' | append: cat | append: '/' -%}
     {%- assign cat_files = site.static_files | where_exp: "item", "item.path contains target_path" | sort: 'path' -%}
     
-    {%- assign current_subfolder = "" -%}
+    {%- assign raw_subfolders = "" -%}
     
     {%- for file in cat_files -%}
-      
       {%- assign relative = file.path | replace_first: target_path, "" -%}
       {%- assign parts = relative | split: "/" -%}
-      
       {%- if parts.size > 1 -%}
-        {%- assign is_tagged = true -%}
-        {%- assign subfolder = parts[0] -%}
-        {%- assign filename = parts | last -%}
-      {%- else -%}
-        {%- assign is_tagged = false -%}
-        {%- assign filename = relative -%}
+         {%- assign subfolder_name = parts[0] -%}
+         {%- assign raw_subfolders = raw_subfolders | append: subfolder_name | append: "|||" -%}
       {%- endif -%}
+    {%- endfor -%}
 
-      {%- if is_tagged and subfolder != current_subfolder -%}
-        {%- assign tag_conn = "├──&nbsp;" -%}
-        {%- assign tag_indent = "│&nbsp;&nbsp;&nbsp;" -%} 
+    {%- assign unique_subfolders = raw_subfolders | split: "|||" | uniq | sort -%}
 
-        <div class="t-row">
-          <span class="tree-lines">{{ dir_indent }}{{ tag_conn }}</span><span class="dir-tag">{{ subfolder }}</span>
-        </div>
-        {%- assign current_subfolder = subfolder -%}
-      {%- endif -%}
+    {%- for sub in unique_subfolders -%}
+      
+      {%- assign sub_target = target_path | append: sub | append: '/' -%}
+      {%- assign sub_files = site.static_files | where_exp: "item", "item.path contains sub_target" | sort: 'name' -%}
 
-      {%- assign file_conn = "├──&nbsp;" -%}
-      {%- if forloop.last and is_tagged == false -%}{%- assign file_conn = "└──&nbsp;" -%}{%- endif -%}
-
+      {%- assign tag_conn = "├──&nbsp;" -%}
+      {%- assign tag_indent = "│&nbsp;&nbsp;&nbsp;" -%}
+      
       <div class="t-row">
-        {%- if is_tagged -%}
-          <span class="tree-lines">{{ dir_indent }}{{ tag_indent }}{{ file_conn }}</span>
-        {%- else -%}
-          <span class="tree-lines">{{ dir_indent }}{{ file_conn }}</span>
-        {%- endif -%}
-        <a href="{{ file.path }}" target="_blank" class="file-link">{{ filename }}</a>
+        <span class="tree-lines">{{ cat_indent }}{{ tag_conn }}</span><span class="dir-tag">{{ sub }}</span>
       </div>
 
+      {%- for file in sub_files -%}
+        {%- if forloop.last -%}
+          {%- assign file_conn = "└──&nbsp;" -%}
+        {%- else -%}
+          {%- assign file_conn = "├──&nbsp;" -%}
+        {%- endif -%}
+        
+        <div class="t-row">
+          <span class="tree-lines">{{ cat_indent }}{{ tag_indent }}{{ file_conn }}</span><a href="{{ file.path }}" target="_blank" class="file-link">{{ file.name }}</a>
+        </div>
+      {%- endfor -%}
+
+    {%- endfor -%}
+
+    {%- for file in cat_files -%}
+      {%- assign relative = file.path | replace_first: target_path, "" -%}
+      {%- unless relative contains "/" -%}
+        {%- if forloop.last -%}
+           {%- assign orphan_conn = "└──&nbsp;" -%}
+        {%- else -%}
+           {%- assign orphan_conn = "├──&nbsp;" -%}
+        {%- endif -%}
+
+        <div class="t-row">
+          <span class="tree-lines">{{ cat_indent }}{{ orphan_conn }}</span><a href="{{ file.path }}" target="_blank" class="file-link">{{ file.name }}</a>
+        </div>
+      {%- endunless -%}
     {%- endfor -%}
 
   {%- endunless -%}
