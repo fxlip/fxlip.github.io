@@ -9,6 +9,7 @@ hide_footer: true
 ---
 
 Página de exemplo para mostrar que sou capaz de configurar partições de disco e criar sistemas de arquivos em mídias tais como discos rígidos. Isso inclui trabalhar com partições swap.
+
 *Principais Áreas de Conhecimento:*
 - Gerenciar tabela de partição MBR e GPT
 - Usar vários comandos mkfs para criar sistemas de arquivos tais como:

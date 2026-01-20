@@ -9,6 +9,7 @@ hide_footer: true
 ---
 
 Página de exemplo para mostrar que sou capaz de manter a integralidade dos sistemas de arquivos padrão, bem como os dados extras associados com um sistema de arquivos com journaling.
+
 *Principais Áreas de Conhecimento:*
 - Verificar a integralidade dos sistemas de arquivos.
 - Monitorar os espaços livres e inodes.
