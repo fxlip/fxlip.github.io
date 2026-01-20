@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ page.lang | default: site.lang | default: 'en' }}">
 {%- comment -%}
-  Build a practical CSP. It remains strict by default while allowing
-  common use cases like external images and Google Fonts.
+  CSP Configuration
 {%- endcomment -%}
 {%- capture csp -%}
 default-src 'none';
@@ -18,11 +17,59 @@ child-src 'self' https://www.youtube.com https://www.youtube-nocookie.com;
 script-src 'self' 'unsafe-inline';
 {%- endcapture -%}
 {%- capture csp_final -%}{{ csp | strip | replace: '\n', ' ' }} {%- if site.csp_extra %} {{ site.csp_extra }}{%- endif -%}{%- endcapture -%}
-<meta http-equiv="Content-Security-Policy" content="{{ csp_final | strip }}" />
-<meta http-equiv="X-XSS-Protection"  content="1;mode=block" always>
-<meta http-equiv="Referrer-Policy" content="no-referrer, strict-origin-when-cross-origin">
 
-  {%- include head.html -%}
+<{{ "head" }}>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta http-equiv="Content-Security-Policy" content="{{ csp_final | strip }}" />
+  <meta http-equiv="X-XSS-Protection"  content="1;mode=block" always>
+  <meta http-equiv="Referrer-Policy" content="no-referrer, strict-origin-when-cross-origin">
+
+  <title>
+    {%- if page.title and page.title != site.title -%}
+      {{ page.title }} | {{ site.title }}
+    {%- else -%}
+      {{ site.title }}
+    {%- endif -%}
+  </title>
+
+  {%- assign page_desc = page.description | default: site.description -%}
+  <meta name="description" content="{{ page_desc }}">
+
+  <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
+
+  <meta property="og:site_name" content="{{ site.title }}">
+  <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+  <meta property="og:title" content="{{ page.title | default: site.title }}">
+  <meta property="og:description" content="{{ page_desc }}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:locale" content="{{ site.lang | default: 'en_US' }}">
+  {%- if page.image -%}<meta property="og:image" content="{{ page.image | absolute_url }}">{%- endif -%}
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{{ page.title | default: site.title }}">
+  <meta name="twitter:description" content="{{ page_desc }}">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "{{ site.title }}",
+    "url": "{{ site.url }}{{ site.baseurl }}",
+    "description": "{{ site.description }}"
+  }
+  </script>
+
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | relative_url }}">
+  <link rel="shortcut icon" href="{{ "/favicon.ico" | relative_url }}">
+  <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}">
+
+  <style>
+    ::-webkit-scrollbar { display: none; }
+    body { scrollbar-width: none; }
+  </style>
+</{{ "head" }}>
 
   <body>
     <div class="container">
@@ -38,6 +85,7 @@ script-src 'self' 'unsafe-inline';
     {% endunless %}
 
     </div>
+    
     <script src="{{ "/assets/js/main.js" | relative_url }}"></script>
     <script src="{{ "/assets/js/autolink.js" | relative_url }}"></script>
   </body>
