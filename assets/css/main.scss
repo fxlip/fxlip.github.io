@@ -286,3 +286,98 @@ footer {
 @media only screen and (max-device-width: 500px) { 
   * { font-size: 12px !important; } 
 }
+
+/* ==========================================================================
+   10.  COMPONENTE: JANELA DE TERMINAL
+   ========================================================================== */
+.terminal-box {
+  background-color: #282a36;
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  margin: 20px 0;
+  border: 1px solid #44475a;
+  overflow: hidden;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 14px;
+  text-align: left;
+  width: 100%;
+}
+
+/* Link Killer */
+.terminal-box a {
+  color: inherit !important;
+  text-decoration: none !important;
+  pointer-events: none;
+  cursor: text;
+  border-bottom: none !important;
+}
+
+/* Barra de Título */
+.terminal-header {
+  background-color: #383a4c;
+  padding: 0 10px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-bottom: 1px solid #191a21;
+}
+
+.terminal-controls {
+  display: flex;
+  gap: 4px; /* Ícones mais próximos (era 8px) */
+  height: 100%;
+  align-items: center;
+}
+
+/* Botões "Flat" (Sem caixa) */
+.win-btn {
+  color: #f8f8f2;
+  opacity: 0.6; /* Levemente transparentes */
+  cursor: pointer;
+  font-family: sans-serif; 
+  font-size: 13px;
+  font-weight: bold;
+  
+  /* Centralização */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  
+  width: 16px;  /* Área de clique mais compacta */
+  height: 20px;
+  border-radius: 2px;
+  transition: opacity 0.2s, color 0.2s;
+  
+  background: transparent !important; /* Garante que não tenha "caixa" */
+}
+
+.win-btn:hover {
+  background: transparent !important; /* Sem fundo no hover também */
+  opacity: 1; /* Brilho total no hover */
+}
+
+/* Nudge Vertical (Ajuste do traço) */
+.btn-min { transform: translateY(2px); }
+
+/* Apenas a cor muda, sem criar borda */
+.btn-min:hover { color: #f1fa8c; } /* Amarelo */
+.btn-close:hover { color: #ff5555; } /* Vermelho */
+
+/* Corpo */
+.terminal-body {
+  padding: 10px 15px;
+  color: #f8f8f2;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+.terminal-body div { margin: 0; padding: 0; }
+
+/* Sintaxe */
+.t-user { color: #FF79C6; font-weight: bold; } 
+.t-host { color: #BD93F9; font-weight: bold; } 
+.t-path { color: #D8B4FE; font-style: italic; } 
+.t-gray, .t-cmd { color: #878BA6; font-weight: normal; }
+.t-out { color: #bfbfbf; display: block; } 
+.t-dim { color: #6272a4; }

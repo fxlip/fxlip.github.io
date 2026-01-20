@@ -45,7 +45,7 @@ hide_footer: true
 
 <div class="terminal-window">
   <div class="t-row">
-    <span class="p-user">root</span><span class="p-at">@</span><span class="p-host">fxlip</span>:<span class="p-path">~/files</span><span class="p-sign">$</span> tree -L 3
+    <span class="p-user">fxlip</span><span class="p-at">@</span><span class="p-host">www</span>:<span class="p-path">~/files</span><span class="p-sign">$</span> tree -L 3
   </div>
   <div class="t-row" style="color: var(--base-color);">.</div>
 
