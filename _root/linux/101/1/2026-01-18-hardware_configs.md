@@ -1,8 +1,8 @@
 ---
 layout: page
-title: "hardware_configs"
+title: "hardwares"
 date: 2026-01-19T18:57:57-03:00
-permalink: /linux/101/1/hardware_configs/
+permalink: /linux/101/1/hardwares/
 categories: [linux]
 tags: [101, 1]
 hide_footer: true
