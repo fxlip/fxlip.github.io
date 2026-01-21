@@ -18,7 +18,7 @@ Se o serviço é gratuito, o produto é você. Plataformas de Big Techs operam s
 --- 
 
 ### Soberania
-Descentralização não é só uma preferência, deveria ser uma necessidade cívica. Hospedar as próprias coisas elimina aquele intermediário bilionário que usa código fechado e te obriga a aceitar termos de uso.
+Descentralização não é só uma preferência, deveria ser uma necessidade cívica. Hospedar as próprias coisas elimina aquele intermediário bilionário que usa código fechado e te obriga a aceitar os termos de uso.
 
 ---
 
