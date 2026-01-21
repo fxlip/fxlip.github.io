@@ -8,7 +8,7 @@ permalink: /manifesto
 
 ---
 
-Vivemos no **Capitalismo de Vigilância**. O modelo de negócios da internet na última década deixou de ser vender produtos e passou a ser extrair tempo e prever o comportamento das pessoas.
+Vivemos no **Capitalismo de Vigilância**. O modelo de negócios da internet que na última década deixou de ser apenas vender produtos e passou a ser extrair de tempo e prever de comportamento.
 
 ---
 
