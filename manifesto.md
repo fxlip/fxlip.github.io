@@ -4,7 +4,7 @@ layout: page
 permalink: /manifesto
 ---
 
-> *"Existem apenas duas indústrias que chamam seus clientes de usuários: a de drogas e a de software."* — Edward Tufte
+> *"Free Software é a fonte da liberdade e a coisa certa a se usar."*
 
 ---
 
@@ -22,7 +22,8 @@ Descentralização não é só uma preferência, deveria ser uma necessidade cí
 
 ---
 
-> *"Free Software é fonte de liberdade e a coisa certa a usar."*
+
+> *"Qualquer tecnologia avançada é indistinguível da mágica. E a mágica sempre tem um preço."* — Arthur C. Clark
 
 ---
 
@@ -42,6 +43,6 @@ A tecnologia deveria ser uma bicicleta para ajudar a mente a correr, não uma m�
 
 ---
 
-> *"Qualquer tecnologia avançada é indistinguível da mágica. E a mágica sempre tem um preço."* — Arthur C. Clark
+> *"Existem apenas duas indústrias que chamam seus clientes de usuários: a de drogas e a de software."* — Edward Tufte
 
 ---
