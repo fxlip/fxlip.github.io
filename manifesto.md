@@ -8,7 +8,7 @@ permalink: /manifesto
 
 ---
 
-Vivemos sob a lógica do **Capitalismo de Vigilância**. O modelo de negócios da internet na última década deixou de ser vender produtos e passou a ser extrair o tempo e prever os comportamentos das pessoas.
+Vivemos sob a lógica do **Capitalismo de Vigilância**. O modelo de negócios da internet na última década deixou de ser vender produtos e passou a ser extrair tempo e prever o comportamento das pessoas.
 
 ---
 
