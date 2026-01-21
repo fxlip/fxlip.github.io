@@ -8,12 +8,12 @@ permalink: /manifesto
 
 ---
 
-Vivemos sob a lógica do **Capitalismo de Vigilância**. O modelo de negócios da internet na última década deixou de ser vender produtos e passou a ser extrair tempo e prever o comportamento das pessoas.
+Vivemos no **Capitalismo de Vigilância**. O modelo de negócios da internet na última década deixou de ser vender produtos e passou a ser extrair tempo e prever o comportamento das pessoas.
 
 ---
 
 ### Dilema
-Se o serviço é gratuito, o produto é você. Plataformas de Big Techs operam sob a lógica de *Growth Hacking* e reforço intermitente para maximizar o tempo de tela. Minha resposta para isso se tornou o off. Nenhum feed. Contas desativadas. Conteúdos apenas no meu próprio site hospedados dentro do meu computador.
+Se o serviço é gratuito, o produto é você. Plataformas de Big Techs operam sob a lógica de *Growth Hacking* e reforço intermitente para maximizar tempo de tela. Minha resposta para isso se tornou o off. Contas desativadas. Nenhum feed. Conteúdos apenas no meu site, hospedados dentro do meu próprio computador.
 
 --- 
 
