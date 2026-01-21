@@ -6,7 +6,7 @@ permalink: /about
 
 # > Felip Barbosa de Medeiros [fxlip]
 
-Desenvolvedor, entusiasta de segurança e defensor da privacidade.
+Desenvolvedor, entusiasta de infosec e defensor da privacidade.
 
 ![fxlip](https://felip.com.br/files/img/avatar/profile.jpg)
 

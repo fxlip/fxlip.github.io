@@ -4,7 +4,7 @@ layout: page
 permalink: /manifesto
 ---
 
-> *"Free Software é a fonte da liberdade e a coisa certa usar."*
+> *Free Software é a fonte da liberdade e a coisa certa a usar.*
 
 ---
 
