@@ -10,7 +10,7 @@ Desenvolvedor, entusiasta de infosec e defensor da privacidade.
 
 ![fxlip](https://felip.com.br/files/img/avatar/profile.jpg)
 
-Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez mais essa metrópolis de engajamento com algoritmos duvidosos, decidi fugir pras colinas e construir um espaço com infraestrutura própria, focada nos meus estudos e experiências com uma seleção de artigos que julgo relevantes. Pra mim a tecnologia deveria ser isso, mais emancipação e menos controle. Escrevo mais nesse @manifesto.
+Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez mais essa metrópoles de engajamento com algoritmos duvidosos, decidi fugir pras colinas e construir um espaço com infraestrutura própria, focada nos meus estudos e experiências com uma seleção de artigos que julgo relevantes. Pra mim a tecnologia deveria ser isso, mais emancipação e menos controle. Escrevo mais nesse @manifesto.
 
 ---
 
