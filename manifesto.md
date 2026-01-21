@@ -13,21 +13,21 @@ Vivemos sob a lógica do **Capitalismo de Vigilância**. O modelo de negócios d
 ---
 
 ### Dilema
-Se o serviço é gratuito, o produto é você. Plataformas de Big Techs operam sob a lógica de *Growth Hacking* e reforço intermitente para maximizar o tempo de tela. Minha resposta para isso se tornou o off. Nenhum feed. Contas desativadas. Conteúdos apenas no meu próprio site hospedado dentro do meu computador. Low-profile raiz.
+Se o serviço é gratuito, o produto é você. Plataformas de Big Techs operam sob a lógica de *Growth Hacking* e reforço intermitente para maximizar o tempo de tela. Minha resposta para isso se tornou o off. Nenhum feed. Contas desativadas. Conteúdos apenas no meu próprio site hospedados dentro do meu computador.
 
 --- 
 
 ### Soberania
-Descentralização não é só uma preferência, deveria ser uma necessidade cívica! Ser o dono dos seus próprios dados elimina aquele intermediário bilionário que te obriga a aceitar os termos de uso e usar a aplicação de código fechado dele.
----
+Descentralização não é só uma preferência, deveria ser uma necessidade cívica! Ser o dono dos seus próprios dados é a única forma de eliminar o intermediário bilionário que te obrigou a aceitar um longo termos de uso que você não leu, pra usar um programa de código fechado que você não sabe como funciona.
 
+---
 
 > *"Qualquer tecnologia avançada é indistinguível da mágica. E a mágica sempre tem um preço."* — Arthur C. Clark
 
 ---
 
 ### Ferramenta
-Quando é a notificação que diz a hora de você vai usar o celular, quem serve a quem? A tecnologia deveria ser uma bicicleta para ajudar a mente a correr, não um tigrinho que te deixa viciado. 
+Quando é a notificação que diz a hora de você vai usar o celular, quem está servindo a quem? A tecnologia deveria ser uma "bicicleta da mente" e potencializar nossas habilidades cognitivas, permitindo-nos ir muito mais longe e mais rapido com menos esforço, transformando ideias em realidade de forma eficiente, não um tigrinho que te deixa viciado. 
 
 ---
 
