@@ -8,18 +8,17 @@ permalink: /manifesto
 
 ---
 
-Vivemos sob a lógica do **Capitalismo de Vigilância**. O modelo de negócios da internet na última década deixou de ser vender produtos e passou a ser extrair tempo e prever comportamentos.
+Vivemos sob a lógica do **Capitalismo de Vigilância**. O modelo de negócios da internet na última década deixou de ser vender produtos e passou a ser extrair o tempo e prever os comportamentos das pessoas.
 
 ---
 
 ### Dilema
-Se o serviço é gratuito, o produto é você. Plataformas de Big Techs operam sob a lógica de *Growth Hacking* e reforço intermitente para maximizar o tempo de tela. Minha resposta para isso se tornou o silêncio algorítmico. Nenhuma postagem. Contas desativadas. Conteúdos no meu próprio site hospedados dentro do meu computador. Low-profile.
+Se o serviço é gratuito, o produto é você. Plataformas de Big Techs operam sob a lógica de *Growth Hacking* e reforço intermitente para maximizar o tempo de tela. Minha resposta para isso se tornou o off. Nenhum feed. Contas desativadas. Conteúdos apenas no meu próprio site hospedado dentro do meu computador. Low-profile raiz.
 
 --- 
 
 ### Soberania
-Descentralização não é só uma preferência, deveria ser uma necessidade cívica. Hospedar as próprias coisas elimina aquele intermediário bilionário que usa código fechado e te obriga a aceitar os termos de uso.
-
+Descentralização não é só uma preferência, deveria ser uma necessidade cívica! Ser o dono dos seus próprios dados elimina aquele intermediário bilionário que te obriga a aceitar os termos de uso e usar a aplicação de código fechado dele.
 ---
 
 
@@ -28,7 +27,7 @@ Descentralização não é só uma preferência, deveria ser uma necessidade cí
 ---
 
 ### Ferramenta
-Quando é a notificação que dita a hora de você vai usar o celular, quem serve a quem? A tecnologia deveria ser uma bicicleta para ajudar a mente a correr, não um tigrinho que te deixa viciado. 
+Quando é a notificação que diz a hora de você vai usar o celular, quem serve a quem? A tecnologia deveria ser uma bicicleta para ajudar a mente a correr, não um tigrinho que te deixa viciado. 
 
 ---
 
