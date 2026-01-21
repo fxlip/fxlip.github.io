@@ -4,7 +4,7 @@ layout: page
 permalink: /manifesto
 ---
 
-> *"Free Software é a fonte da liberdade e a coisa certa a se usar."*
+> *"Free Software é a fonte da liberdade e a coisa certa usar."*
 
 ---
 
@@ -28,7 +28,7 @@ Descentralização não é só uma preferência, deveria ser uma necessidade cí
 ---
 
 ### Ferramenta
-A tecnologia deveria ser uma bicicleta para ajudar a mente a correr, não uma máquina caça níquel que te deixa viciado. Quando a ferramenta exige atenção com excessos de notificação, ela deixou de servir a você.
+Quando é a notificação que dita a hora de você vai usar o celular, quem serve a quem? A tecnologia deveria ser uma bicicleta para ajudar a mente a correr, não um tigrinho que te deixa viciado. 
 
 ---
 
