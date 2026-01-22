@@ -17,9 +17,9 @@
   --placeholder-color: #5c5f77;
   
   /* --- ACCENTS --- */
-  --link-color: #ff79c6;       /* ROSA (Active/Highlight) */
-  --link-hover-color: #bd93f9; /* ROXO (Secondary/Hover) */
-  --accent-cyan: #8be9fd;      /* CIANO (Tech Info / Quotes) */
+  --link-color: #ff79c6;       /* ROSA */
+  --link-hover-color: #bd93f9; /* ROXO */
+  --accent-cyan: #8be9fd;      /* CIANO */
   --accent-cyan-bright: #ddf8ff; 
 
   /* --- MENU SPECIFIC --- */
@@ -41,7 +41,7 @@ body {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-size: 14px;
   color: var(--text-color);
-  line-height: 1.7;        
+  line-height: 1.6;        /* Reduzi de 1.7 para 1.6 (Mais compacto) */
   letter-spacing: -0.01em; 
   overflow-x: hidden;      
 }
@@ -59,53 +59,49 @@ body::before {
   opacity: 0.1;
 }
 
-/* --- HEADERS --- */
+/* --- HEADERS (COMPACT MODE) --- */
 
 h1 { 
   font-size: 1.5em; 
   color: var(--link-hover-color); 
   text-align: center; 
-  margin-top: 30px;
-  margin-bottom: 15px; 
+  margin-top: 15px;    /* Reduzido de 30px */
+  margin-bottom: 10px; /* Reduzido de 15px */
   font-weight: 700;
   letter-spacing: 0.02em;
 }
 
 h2, h4, h5, h6 {
   color: #ffffff;
-  margin-top: 24px;
+  margin-top: 20px; /* Reduzido de 24px */
   font-weight: 700;
 }
 
 h3 {
   color: var(--link-hover-color); 
-  margin-top: 24px;
+  margin-top: 20px;
   font-weight: 700;
 }
 
-/* --- LEAD PARAGRAPH (ABOUT FIX) --- */
+/* Lead Paragraph (About) */
 h1 + p {
   text-align: center;
   color: var(--base-color); 
   font-style: italic;
   font-size: 1em;
-  margin-bottom: 30px;
+  margin-bottom: 25px; /* Reduzido */
   max-width: 90%;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: auto; margin-right: auto;
 }
 
-/* --- BLOCKQUOTES (CYAN FIX) --- */
+/* Blockquotes */
 blockquote {
-  margin: 30px auto;       
-  padding: 0;              
-  border: none;            
-  text-align: center;      
-  font-style: italic;      
+  margin: 20px auto; /* Reduzido de 30px */
+  padding: 0; border: none;            
+  text-align: center; font-style: italic;      
   color: var(--accent-cyan); 
-  opacity: 0.9;
-  max-width: 85%;          
-  line-height: 1.6;
+  opacity: 0.9; max-width: 85%;          
+  line-height: 1.5;
 }
 
 /* --- LINKS GLOBAIS --- */
@@ -120,10 +116,10 @@ a:hover {
   border-bottom-color: var(--link-hover-color);
 }
 
-/* Tags Especiais no Texto (@files, @linux) */
+/* Tags Especiais (@files) */
 code a, a code {
   border: 1px solid rgba(189, 147, 249, 0.3);
-  padding: 2px 6px;
+  padding: 1px 5px; /* Mais fino */
   border-radius: 4px;
   background: rgba(189, 147, 249, 0.05);
   border-bottom: none !important;
@@ -137,42 +133,39 @@ code a:hover, a code:hover {
   color: var(--link-color);
 }
 
-/* --- LINKS DA ÁRVORE DE ARQUIVOS (.file-link) --- */
+/* Links da Árvore (.file-link) */
 .file-link {
-  display: inline; 
-  font-family: inherit;
+  display: inline; font-family: inherit;
   color: var(--text-color) !important; 
   text-decoration: none !important;
-  border: none !important; 
-  background: none !important; 
+  border: none !important; background: none !important; 
   padding: 0 !important;
   transition: color 0.2s ease, text-shadow 0.2s ease;
 }
-
 .file-link:hover {
   color: var(--link-color) !important; 
   text-shadow: 0 0 8px rgba(255, 121, 198, 0.6); 
-  background: none !important;
-  border: none !important;
+  background: none !important; border: none !important;
 }
 
 input, textarea {
-  background-color: var(--code-bg);
-  color: var(--text-color);
+  background-color: var(--code-bg); color: var(--text-color);
   border: 1px solid rgba(135, 139, 166, 0.3);
   width: 100%; padding: 10px; margin-bottom: 10px;
-  border-radius: 4px;
-  font-family: inherit;
+  border-radius: 4px; font-family: inherit;
 }
 
 /* ==========================================================================
-   3. NAVIGATION
+   3. NAVIGATION (COMPACT HEADER)
    ========================================================================== */
 header {
-  margin-top: 30px; margin-bottom: 40px;
+  /* AQUI ESTÁ A CORREÇÃO DO "INCHAÇO" */
+  margin-top: 20px;    /* Era 30px */
+  margin-bottom: 25px; /* Era 40px */
+  padding: 10px 0;     /* Era 15px - Mais fino */
+  
   border-top: var(--border);
   border-bottom: var(--border);
-  padding: 15px 0;
   text-align: center; 
 }
 
@@ -182,7 +175,7 @@ header {
 /* Links do Menu */
 .menu a { 
   display: inline-block;
-  padding: 5px 12px;
+  padding: 4px 10px; /* Reduzido de 5px 12px */
   color: var(--nav-link-idle); 
   font-weight: 500;
   border: 1px solid transparent; 
@@ -200,7 +193,7 @@ header {
 
 .menu-active {
   display: inline-block;
-  padding: 5px 12px;
+  padding: 4px 10px; /* Reduzido */
   color: var(--nav-link-active); 
   border: 1px solid transparent; 
   background-color: transparent !important; 
@@ -216,35 +209,31 @@ header {
    ========================================================================== */
 .container { width: 90%; max-width: 650px; margin: 0 auto; }
 
+/* DIVISORES (O Ponto Crítico do "Inchaço") */
 hr, .post-list__divider {
   border: 0; 
   border-bottom: var(--border);
-  margin: 3em 0; 
+  margin: 1.5em 0; /* Reduzido drasticamente de 3em para 1.5em */
   display: block;
 }
 
 .post-date {
-  display: block;
-  text-align: right;
-  margin-top: 5px; 
-  font-size: 0.85em;
-  color: var(--base-color);
+  display: block; text-align: right;
+  margin-top: 5px; font-size: 0.85em; color: var(--base-color);
 }
 
 pre, code {
   font-family: 'JetBrains Mono', monospace;
-  background-color: var(--code-bg);
-  border-radius: 4px;
+  background-color: var(--code-bg); border-radius: 4px;
 }
 pre { padding: 15px; overflow-x: auto; border: 1px solid #2d2b3b; }
 
 /* IMAGENS GLOBAIS (Card Structure) */
 main img {
   box-sizing: border-box;
-  max-width: 100%; 
-  height: auto;
+  max-width: 100%; height: auto;
   display: block; 
-  margin: 30px auto; 
+  margin: 20px auto; /* Reduzido de 30px */
   
   padding: 10px;
   background-color: var(--card-bg);
@@ -256,8 +245,7 @@ main img {
   transition: opacity 0.3s, border-color 0.3s;
 }
 main img:hover { 
-  opacity: 1; 
-  border-color: rgba(189, 147, 249, 0.3); 
+  opacity: 1; border-color: rgba(189, 147, 249, 0.3); 
 }
 
 /* ==========================================================================
@@ -268,25 +256,18 @@ main img:hover {
   border: 1px solid #333545;
   border-radius: 6px; 
   box-shadow: var(--terminal-shadow);
-  margin: 25px 0;
+  margin: 20px 0; /* Reduzido de 25px */
   overflow: hidden; 
 }
 
 .terminal-header {
-  background-color: #1a1b24; 
-  border-bottom: 1px solid #2d2b3b;
-  height: 32px; 
-  display: flex;
-  align-items: center;
-  justify-content: space-between; 
-  padding: 0 12px;
+  background-color: #1a1b24; border-bottom: 1px solid #2d2b3b;
+  height: 32px; display: flex; align-items: center;
+  justify-content: space-between; padding: 0 12px;
 }
 
 .terminal-title {
-  font-size: 12px;
-  color: #6272a4;
-  font-weight: 600;
-  user-select: none;
+  font-size: 12px; color: #6272a4; font-weight: 600; user-select: none;
 }
 
 .terminal-controls {
@@ -323,7 +304,7 @@ main img:hover {
    6. TERMINAL LOADER
    ========================================================================== */
 .terminal-loader {
-  display: block; margin: 40px auto; text-align: center; 
+  display: block; margin: 30px auto; text-align: center; 
   font-family: inherit; font-size: 14px; 
   color: var(--text-color); 
   background: transparent; border: none; 
@@ -389,41 +370,31 @@ footer a[href^="mailto"]:hover {
 }
 
 /* ==========================================================================
-   9. MOBILE OPTIMIZATION (COMPRESSION)
+   9. MOBILE OPTIMIZATION
    ========================================================================== */
 @media only screen and (max-width: 600px) { 
   .container { width: 92%; }
-  
-  /* Link Cards Mobile */
   .link-card { padding-left: 10px; padding-top: 130px; } 
   .link-card .lc-img { width: calc(100% - 20px); height: 110px; }
-  
-  /* Footer Mobile */
   footer {
     flex-direction: column-reverse; align-items: center; gap: 15px; text-align: center;
   }
 
-  /* --- MENU FIX PARA NÃO QUEBRAR LINHA --- */
-  /* Força tudo numa linha só, com scroll se necessário, e reduz padding */
+  /* Menu Compression (No-Break) */
   .menu ul {
-    white-space: nowrap; /* A Chave: Proíbe quebra de linha */
-    overflow-x: auto;    /* Permite scroll horizontal se a tela for minúscula */
-    display: block;      /* Garante que o container respeite o scroll */
-    padding-bottom: 5px; /* Espaço para não cortar o glow/sombra */
-    
-    /* Esconde Scrollbar (Chrome/Safari/Opera) */
+    white-space: nowrap; 
+    overflow-x: auto;    
+    display: block;      
+    padding-bottom: 5px; 
     -webkit-overflow-scrolling: touch; 
   }
-  .menu ul::-webkit-scrollbar { display: none; } /* Esconde Scrollbar */
-  .menu ul { -ms-overflow-style: none;  scrollbar-width: none; } /* IE/Edge/Firefox */
+  .menu ul::-webkit-scrollbar { display: none; } 
+  .menu ul { -ms-overflow-style: none;  scrollbar-width: none; } 
 
-  /* Reduz margens entre os itens (de 4px para 1px) */
   .menu ul li { margin: 0 1px; }
 
-  /* Reduz drasticamente o padding interno dos botões */
-  /* De 5px 12px (Desktop) para 5px 6px (Mobile) */
   .menu a, .menu-active {
     padding: 5px 6px; 
-    font-size: 0.95em; /* Reduz levemente a fonte */
+    font-size: 0.95em; 
   }
 }
