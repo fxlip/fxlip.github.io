@@ -18,7 +18,7 @@ Vivemos no **Capitalismo de Vigilância**. O modelo de negócios da internet que
 --- 
 
 ### Soberania
-Descentralização não é só uma preferência mas deveria ser uma necessidade cívica. Hospedar seus próprios dados elimina o bilionário no meio do caminho que usa código fechado e te obriga a aceitar os termos de uso dele. ☠️
+Descentralização não é só uma preferência mas acredito que deveria ser uma necessidade cívica! Manter seus próprios dados elimina o intermediário bilionário no meio do caminho que usa código fechado e ainda te obriga a aceitar os termos de uso dele. ☠️
 
 ---
 
