@@ -4,7 +4,8 @@ layout: page
 permalink: /about
 ---
 
-# > Felip Barbosa de Medeiros [fxlip]
+# Felip Barbosa de Medeiros
+
 
 Desenvolvedor, entusiasta de infosec e defensor da privacidade.
 
@@ -16,11 +17,11 @@ Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez
 
 ### // o que me move
 
-> **Kernels** e controle de hardware.
+**Kernels** e controle de hardware.
 
-> **Security** de vetores de ataque e defesa de infraestrutura.
+**Security** de vetores de ataque e defesa de infraestrutura.
 
-> e **Aesthetics**, porque as ferramentas podem ser elegantes :D
+e **Aesthetics**, porque as ferramentas podem ser elegantes :D
 
 ---
 

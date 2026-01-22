@@ -3,381 +3,397 @@
 ---
 
 /* ==========================================================================
-   1. CORE VARIABLES
+   1. CORE VARIABLES & PALETTE
    ========================================================================== */
 :root {
-  --base-color: #878BA6;
-  --background-color: #1E202F;
-  --text-color: var(--base-color);
-  --placeholder-color: var(--base-color);
+  /* --- BACKGROUNDS --- */
+  --background-color: #13121d; 
+  --card-bg: #1c1a26;          
+  --code-bg: #0f0e14;          
   
-  /* BORDAS */
-  --border: dashed 1px rgba(135, 139, 166, 0.15);
-  --card-border: 1px solid rgba(255, 255, 255, 0.04);
+  /* --- TYPOGRAPHY --- */
+  --text-color: #c5c6d0;       
+  --base-color: #7a7e99;       
+  --placeholder-color: #5c5f77;
   
-  /* LINKS & HIGHLIGHTS */
-  --link-color: #FFB3D2;
-  --link-hover-color: #FB6FA9;
-  --selection-background: rgba(135, 139, 166, 0.25);
-  --selection-text: #1E202F;
+  /* --- ACCENTS --- */
+  --link-color: #ff79c6;       /* ROSA (Active/Highlight) */
+  --link-hover-color: #bd93f9; /* ROXO (Secondary/Hover) */
+  --accent-cyan: #8be9fd;      /* CIANO (Tech Info / Quotes) */
+  --accent-cyan-bright: #ddf8ff; 
 
-  /* SYNTAX HIGHLIGHTING */
-  --code-color-1: #444864; 
-  --code-color-2: #D14781; 
-  --code-color-3: #FB6FA9;
-  --code-color-11: #555555;
+  /* --- MENU SPECIFIC --- */
+  --nav-link-idle: #9ca5d6;    
+  --nav-link-active: #ff79c6;  
+  
+  /* --- STRUCTURAL --- */
+  --border: dashed 1px rgba(189, 147, 249, 0.2); 
+  --card-border: 1px solid rgba(255, 255, 255, 0.05);
+  --terminal-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 /* ==========================================================================
-   2. RESET & TYPOGRAPHY
+   2. RESET & GLOBAL TYPOGRAPHY
    ========================================================================== */
 body {
   background-color: var(--background-color);
   margin: 0 auto; padding: 0;
-  font-family: monospace;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-size: 14px;
   color: var(--text-color);
-  text-align: left;
-  line-height: 1.5 !important;
+  line-height: 1.7;        
+  letter-spacing: -0.01em; 
+  overflow-x: hidden;      
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-size: 14px; margin: 0; margin-top: 22px;
-  font-weight: bold; color: var(--text-color);
+/* Scanline Effect */
+body::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+  background-size: 100% 4px;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.1;
 }
 
-/* Links Globais */
-a { text-decoration: underline; color: var(--link-color); }
-a:hover { color: var(--link-hover-color); background-color: transparent; }
+/* --- HEADERS --- */
+
+h1 { 
+  font-size: 1.5em; 
+  color: var(--link-hover-color); 
+  text-align: center; 
+  margin-top: 30px;
+  margin-bottom: 15px; /* Reduzi um pouco a margem inferior */
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+h2, h4, h5, h6 {
+  color: #ffffff;
+  margin-top: 24px;
+  font-weight: 700;
+}
+
+h3 {
+  color: var(--link-hover-color); 
+  margin-top: 24px;
+  font-weight: 700;
+}
+
+/* --- LEAD PARAGRAPH (A CORREÇÃO DO ABOUT) --- */
+/* Todo parágrafo logo após um H1 vira um subtítulo elegante e discreto */
+h1 + p {
+  text-align: center;
+  color: var(--base-color); /* Cinza-azulado (Frio e Neutro) */
+  font-style: italic;
+  font-size: 1em;
+  margin-bottom: 30px;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- BLOCKQUOTES (CIANO PARA DADOS/CITAÇÕES) --- */
+blockquote {
+  margin: 30px auto;       
+  padding: 0;              
+  border: none;            
+  text-align: center;      
+  font-style: italic;      
+  color: var(--accent-cyan); 
+  opacity: 0.9;
+  max-width: 85%;          
+  line-height: 1.6;
+}
+
+/* --- LINKS GLOBAIS --- */
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+a:hover {
+  color: var(--link-hover-color);
+  border-bottom-color: var(--link-hover-color);
+}
+
+/* Tags Especiais no Texto (@files, @linux) */
+code a, a code {
+  border: 1px solid rgba(189, 147, 249, 0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(189, 147, 249, 0.05);
+  border-bottom: none !important;
+  text-decoration: none !important;
+  display: inline-block;
+  font-size: 0.9em;
+}
+code a:hover, a code:hover {
+  background: rgba(255, 121, 198, 0.1);
+  border-color: var(--link-color); 
+  color: var(--link-color);
+}
+
+/* --- LINKS DA ÁRVORE DE ARQUIVOS (.file-link) --- */
+.file-link {
+  display: inline; 
+  font-family: inherit;
+  color: var(--text-color) !important; 
+  text-decoration: none !important;
+  border: none !important; 
+  background: none !important; 
+  padding: 0 !important;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.file-link:hover {
+  color: var(--link-color) !important; 
+  text-shadow: 0 0 8px rgba(255, 121, 198, 0.6); 
+  background: none !important;
+  border: none !important;
+}
 
 input, textarea {
-  background-color: var(--background-color); color: var(--text-color);
+  background-color: var(--code-bg);
+  color: var(--text-color);
   border: 1px solid rgba(135, 139, 166, 0.3);
-  width: 100%; padding: 8px; margin-bottom: 10px;
+  width: 100%; padding: 10px; margin-bottom: 10px;
+  border-radius: 4px;
+  font-family: inherit;
 }
 
 /* ==========================================================================
-   3. LAYOUT: HEADER & NAVIGATION
+   3. NAVIGATION
    ========================================================================== */
 header {
-  margin-top: 25px; margin-bottom: 30px;
+  margin-top: 30px; margin-bottom: 40px;
   border-top: var(--border);
   border-bottom: var(--border);
-  padding-top: 15px; padding-bottom: 15px;
+  padding: 15px 0;
   text-align: center; 
 }
 
 .menu ul { list-style: none; padding: 0; margin: 0; }
+.menu ul li { display: inline-block; margin: 0 4px; }
 
-.menu ul li { 
-  display: inline-block; 
-  margin: 0 5px; 
-}
-
-/* --- ESTADO NORMAL (Links) --- */
+/* Links do Menu */
 .menu a { 
-  text-decoration: none; 
-  border-bottom: none !important;
-  padding: 2px 6px; 
   display: inline-block;
-  border-radius: 2px;
-  transition: background-color 0.2s ease;
-  font-weight: normal; 
+  padding: 5px 12px;
+  color: var(--nav-link-idle); 
+  font-weight: 500;
+  border: 1px solid transparent; 
+  border-radius: 2px; 
+  transition: all 0.2s ease;
+  background-color: transparent !important; 
 }
 
 .menu a:hover {
-  background-color: rgba(255, 255, 255, 0.1); 
-  color: var(--link-hover-color);
+  color: var(--link-hover-color); 
+  background-color: transparent !important; 
+  border-color: transparent; 
+  text-shadow: 0 0 8px rgba(189, 147, 249, 0.6); 
 }
 
-/* --- ESTADO ATIVO (Highlight / Selected) --- */
 .menu-active {
-  background-color: var(--link-hover-color); 
-  color: var(--background-color);
-  padding: 2px 6px;       
+  display: inline-block;
+  padding: 5px 12px;
+  color: var(--nav-link-active); 
+  border: 1px solid transparent; 
+  background-color: transparent !important; 
+  text-shadow: 0 0 10px rgba(255, 121, 198, 0.6); 
   border-radius: 2px;
-  font-weight: normal; 
+  font-weight: 500; 
   text-decoration: none;
   cursor: default;
-  display: inline-block;
-}
-
-.menu-active::before,
-.menu-active::after {
-  content: none;
 }
 
 /* ==========================================================================
-   4. LAYOUT: POSTS & TEXT CONTENT
+   4. CONTENT LAYOUT & IMAGES
    ========================================================================== */
-.container { width: 90%; max-width: 600px; margin: 0 auto; }
+.container { width: 90%; max-width: 650px; margin: 0 auto; }
 
-/* Separadores */
 hr, .post-list__divider {
   border: 0; 
   border-bottom: var(--border);
-  margin: 2em 0; 
+  margin: 3em 0; 
   display: block;
-  height: 1px;
-  background: transparent;
 }
 
-/* Data do Post */
 .post-date {
   display: block;
   text-align: right;
   margin-top: 5px; 
-  font-size: 0.8em;
-  opacity: 0.6;
-}
-
-/* Prevenção de Overflow (Hashes e URLs) */
-.post-content {
-  overflow-wrap: break-word; 
-  word-wrap: break-word;     
-  word-break: break-word; 
-}
-
-.post-content a { word-break: break-all; }
-
-.post-content code, 
-.post-content pre {
-  white-space: pre-wrap;       
-  word-break: break-all;       
-  max-width: 100%;             
-}
-
-/* ==========================================================================
-   5. COMPONENT: IMAGENS NO POST
-   ========================================================================== */
-.post-content img {
-  box-sizing: border-box;
-  width: 100%;            
-  height: auto;
-  display: block;
-  margin: 20px auto;         
-
-  background: rgba(255, 255, 255, 0.02);
-  border: var(--card-border);
-  padding: 10px;          
-  border-radius: 6px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.post-content img + em {
-  display: block;
-  text-align: center;
   font-size: 0.85em;
-  color: var(--placeholder-color);
-  margin-top: -10px;
-  margin-bottom: 20px;
-}
-
-/* ==========================================================================
-   6. COMPONENT: LINK CARDS (Absolute Layout)
-   ========================================================================== */
-.link-card {
-  position: relative; 
-  margin-top: 10px;
-  background: rgba(255,255,255,0.02);
-  border: var(--card-border);
-  border-radius: 6px;
   color: var(--base-color);
-  min-height: 100px; 
-  padding: 10px 10px 10px 145px; 
-  display: flex;
-  flex-direction: column;
-  justify-content: center; 
 }
 
-.link-card a {
-  text-decoration: none !important;
-  border: none;
+pre, code {
+  font-family: 'JetBrains Mono', monospace;
+  background-color: var(--code-bg);
+  border-radius: 4px;
 }
+pre { padding: 15px; overflow-x: auto; border: 1px solid #2d2b3b; }
 
-.link-card .lc-img { 
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 120px;
-  height: calc(100% - 20px); 
-  object-fit: cover; 
-  border-radius: 4px; 
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+/* IMAGENS GLOBAIS (Card Structure) */
+main img {
+  box-sizing: border-box;
+  max-width: 100%; 
+  height: auto;
+  display: block; 
+  margin: 30px auto; 
+  
+  padding: 10px;
+  background-color: var(--card-bg);
+  border: var(--card-border);
+  border-radius: 6px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3); 
+  
+  opacity: 0.95;
+  transition: opacity 0.3s, border-color 0.3s;
 }
-
-.link-card .lc-meta { 
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.link-card .lc-host { color: var(--link-hover-color); font-weight: 700; }
-.link-card .lc-desc { color: var(--placeholder-color); font-size: 0.95em; margin-top: 6px; }
-
-/* Se não houver imagem, remove o padding esquerdo extra */
-.link-card:not(:has(.lc-img)) {
-  padding-left: 10px;
+main img:hover { 
+  opacity: 1; 
+  border-color: rgba(189, 147, 249, 0.3); 
 }
 
 /* ==========================================================================
-   7. COMPONENT: VIDEO EMBED (16:9)
+   5. COMPONENT: TERMINAL WINDOW
    ========================================================================== */
-.video-wrapper {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%; 
-  height: 0;
-  margin-top: 10px;
-  background: rgba(255,255,255,0.02);
-  border: var(--card-border);
-  border-radius: 6px;
+.terminal-box {
+  background-color: var(--code-bg);
+  border: 1px solid #333545;
+  border-radius: 6px; 
+  box-shadow: var(--terminal-shadow);
+  margin: 25px 0;
   overflow: hidden; 
 }
 
-.video-wrapper iframe {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  border: 0;
-}
-
-/* ==========================================================================
-   8. COMPONENT: TERMINAL LOADER (Infinite Scroll)
-   ========================================================================== */
-.terminal-loader {
-  width: 100%;
-  padding: 40px 0 60px 0;
-  margin-top: 0;
-  text-align: center;
-  font-family: "Courier New", Courier, monospace;
-  font-weight: bold;
-  font-size: 1.2em;
-  color: var(--text-color);
-  background: transparent;
-  border: none; 
-  display: block; 
-  opacity: 1;
-  position: relative; 
-  z-index: 10;
-}
-
-.terminal-loader::after {
-  content: "█";
-  animation: blink 1s infinite;
-  margin-left: 5px;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-/* ==========================================================================
-   9. LAYOUT: FOOTER & MEDIA QUERIES
-   ========================================================================== */
-footer { 
-/* margin removido pois está inline no HTML */
-/* text-align: right; <--- ISSO PRECISA SUMIR PARA O FLEXBOX FUNCIONAR */
-  width: 100%;
-  opacity: 1; 
-}
-
-@media only screen and (max-device-width: 500px) { 
-  * { font-size: 12px !important; } 
-}
-
-/* ==========================================================================
-   10.  COMPONENTE: JANELA DE TERMINAL
-   ========================================================================== */
-.terminal-box {
-  background-color: #282a36;
-  border-radius: 6px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  margin: 20px 0;
-  border: 1px solid #44475a;
-  overflow: hidden;
-  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-  font-size: 14px;
-  text-align: left;
-  width: 100%;
-}
-
-/* Link Killer */
-.terminal-box a {
-  color: inherit !important;
-  text-decoration: none !important;
-  pointer-events: none;
-  cursor: text;
-  border-bottom: none !important;
-}
-
-/* Barra de Título */
 .terminal-header {
-  background-color: #383a4c;
-  padding: 0 10px;
-  height: 32px;
+  background-color: #1a1b24; 
+  border-bottom: 1px solid #2d2b3b;
+  height: 32px; 
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  border-bottom: 1px solid #191a21;
+  justify-content: space-between; 
+  padding: 0 12px;
+}
+
+.terminal-title {
+  font-size: 12px;
+  color: #6272a4;
+  font-weight: 600;
+  user-select: none;
 }
 
 .terminal-controls {
-  display: flex;
-  gap: 4px; /* Ícones mais próximos (era 8px) */
-  height: 100%;
-  align-items: center;
+  display: flex; gap: 12px; margin-left: auto; align-items: center;
 }
 
-/* Botões "Flat" (Sem caixa) */
 .win-btn {
-  color: #f8f8f2;
-  opacity: 0.6; /* Levemente transparentes */
-  cursor: pointer;
-  font-family: sans-serif; 
-  font-size: 13px;
-  font-weight: bold;
-  
-  /* Centralização */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  
-  width: 16px;  /* Área de clique mais compacta */
-  height: 20px;
-  border-radius: 2px;
-  transition: opacity 0.2s, color 0.2s;
-  
-  background: transparent !important; /* Garante que não tenha "caixa" */
+  color: #6272a4; font-family: monospace; font-weight: bold;
+  font-size: 14px; cursor: pointer; line-height: 1;
+  transition: color 0.2s; background: transparent !important; 
+  width: auto; height: auto;
 }
 
-.win-btn:hover {
-  background: transparent !important; /* Sem fundo no hover também */
-  opacity: 1; /* Brilho total no hover */
-}
+.btn-min { position: relative; top: -4px; transform: scale(1.1); }
+.btn-min:hover { color: #f8f8f2; text-shadow: 0 0 5px white; } 
+.btn-close:hover { color: #ff5555; text-shadow: 0 0 5px red; } 
 
-/* Nudge Vertical (Ajuste do traço) */
-.btn-min { transform: translateY(2px); }
-
-/* Apenas a cor muda, sem criar borda */
-.btn-min:hover { color: #f1fa8c; } /* Amarelo */
-.btn-close:hover { color: #ff5555; } /* Vermelho */
-
-/* Corpo */
 .terminal-body {
-  padding: 10px 15px;
-  color: #f8f8f2;
-  overflow-x: auto;
-  line-height: 1.5;
+  padding: 15px; color: #f8f8f2; font-size: 13px; overflow-x: auto;
 }
-.terminal-body div { margin: 0; padding: 0; }
 
-/* Sintaxe */
-.t-user { color: #FF79C6; font-weight: bold; } 
-.t-host { color: #BD93F9; font-weight: bold; } 
-.t-path { color: #D8B4FE; font-style: italic; } 
-.t-gray, .t-cmd { color: #878BA6; font-weight: normal; }
-.t-out { color: #bfbfbf; display: block; } 
-.t-dim { color: #6272a4; }
+.t-user { color: var(--link-color); font-weight: bold; }
+.t-host { color: var(--link-hover-color); }
+.t-path { color: var(--accent-cyan); }
+.t-cmd  { color: #f8f8f2; }
+.t-out  { color: var(--base-color); display: block; margin-top: 4px; margin-bottom: 12px;}
+
+.terminal-box a {
+  color: inherit !important; text-decoration: none !important;
+  pointer-events: none; cursor: text; border: none;
+}
+
+/* ==========================================================================
+   6. TERMINAL LOADER
+   ========================================================================== */
+.terminal-loader {
+  display: block; margin: 40px auto; text-align: center; 
+  font-family: inherit; font-size: 14px; 
+  color: var(--text-color); 
+  background: transparent; border: none; 
+}
+
+.terminal-loader::after {
+  content: "█"; color: var(--link-color); 
+  animation: blink 1s infinite; margin-left: 5px;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* ==========================================================================
+   7. LINK CARDS
+   ========================================================================== */
+.link-card {
+  position: relative; margin-top: 15px;
+  background: var(--card-bg); border: var(--card-border);
+  border-radius: 6px; min-height: 100px; 
+  padding: 10px 10px 10px 145px; 
+  display: flex; flex-direction: column; justify-content: center;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.link-card:hover {
+  transform: translateY(-2px); border-color: rgba(189, 147, 249, 0.4);
+}
+
+.link-card .lc-img { 
+  position: absolute; top: 10px; left: 10px;
+  width: 120px; height: calc(100% - 20px); 
+  object-fit: cover; border-radius: 4px; 
+  margin: 0 !important; padding: 0 !important; background: none !important; 
+  border: none !important; box-shadow: none !important;
+}
+
+.link-card .lc-host { color: var(--link-hover-color); font-weight: 700; font-size: 0.9em;}
+.link-card .lc-desc { color: var(--base-color); font-size: 0.9em; margin-top: 4px; }
+.link-card:not(:has(.lc-img)) { padding-left: 15px; }
+
+/* ==========================================================================
+   8. FOOTER
+   ========================================================================== */
+footer { 
+  width: 100%; margin-top: 40px; margin-bottom: 40px; 
+  display: flex; justify-content: space-between; align-items: flex-end; 
+  color: var(--base-color); font-size: 0.85em; opacity: 0.9; 
+}
+
+footer .build-info {
+  font-family: monospace; opacity: 0.5; color: var(--placeholder-color);
+}
+
+footer a[href^="mailto"] {
+  color: var(--accent-cyan); font-weight: bold; font-size: inherit; 
+  border: none !important; text-decoration: none !important;
+  transition: all 0.3s ease;
+}
+
+footer a[href^="mailto"]:hover {
+  color: var(--accent-cyan-bright);
+  text-shadow: 0 0 8px rgba(139, 233, 253, 0.6); 
+  background: transparent !important;
+}
+
+@media only screen and (max-width: 600px) { 
+  .container { width: 92%; }
+  .link-card { padding-left: 10px; padding-top: 130px; } 
+  .link-card .lc-img { width: calc(100% - 20px); height: 110px; }
+  footer {
+    flex-direction: column-reverse; align-items: center; gap: 15px; text-align: center;
+  }
+}
