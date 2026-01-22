@@ -342,7 +342,7 @@ main img:hover {
    7. LINK CARDS
    ========================================================================== */
 .link-card {
-  position: relative; margin-top: 15px;
+  position: relative; margin-top: 20px;
   background: var(--card-bg); border: var(--card-border);
   border-radius: 6px; min-height: 100px; 
   padding: 10px 10px 10px 145px; 
@@ -370,7 +370,7 @@ main img:hover {
    8. FOOTER
    ========================================================================== */
 footer { 
-  width: 100%; margin-top: 40px; margin-bottom: 40px; 
+  width: 100%; margin-top: 50px; margin-bottom: 40px; 
   display: flex; justify-content: space-between; align-items: flex-end; 
   color: var(--base-color); font-size: 0.85em; opacity: 0.9; 
 }
