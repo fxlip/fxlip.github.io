@@ -66,7 +66,7 @@ h1 {
   color: var(--link-hover-color); 
   text-align: center; 
   margin-top: 30px;
-  margin-bottom: 15px; /* Reduzi um pouco a margem inferior */
+  margin-bottom: 15px; 
   font-weight: 700;
   letter-spacing: 0.02em;
 }
@@ -83,11 +83,10 @@ h3 {
   font-weight: 700;
 }
 
-/* --- LEAD PARAGRAPH (A CORREÇÃO DO ABOUT) --- */
-/* Todo parágrafo logo após um H1 vira um subtítulo elegante e discreto */
+/* --- LEAD PARAGRAPH (ABOUT FIX) --- */
 h1 + p {
   text-align: center;
-  color: var(--base-color); /* Cinza-azulado (Frio e Neutro) */
+  color: var(--base-color); 
   font-style: italic;
   font-size: 1em;
   margin-bottom: 30px;
@@ -96,7 +95,7 @@ h1 + p {
   margin-right: auto;
 }
 
-/* --- BLOCKQUOTES (CIANO PARA DADOS/CITAÇÕES) --- */
+/* --- BLOCKQUOTES (CYAN FIX) --- */
 blockquote {
   margin: 30px auto;       
   padding: 0;              
@@ -389,11 +388,42 @@ footer a[href^="mailto"]:hover {
   background: transparent !important;
 }
 
+/* ==========================================================================
+   9. MOBILE OPTIMIZATION (COMPRESSION)
+   ========================================================================== */
 @media only screen and (max-width: 600px) { 
   .container { width: 92%; }
+  
+  /* Link Cards Mobile */
   .link-card { padding-left: 10px; padding-top: 130px; } 
   .link-card .lc-img { width: calc(100% - 20px); height: 110px; }
+  
+  /* Footer Mobile */
   footer {
     flex-direction: column-reverse; align-items: center; gap: 15px; text-align: center;
+  }
+
+  /* --- MENU FIX PARA NÃO QUEBRAR LINHA --- */
+  /* Força tudo numa linha só, com scroll se necessário, e reduz padding */
+  .menu ul {
+    white-space: nowrap; /* A Chave: Proíbe quebra de linha */
+    overflow-x: auto;    /* Permite scroll horizontal se a tela for minúscula */
+    display: block;      /* Garante que o container respeite o scroll */
+    padding-bottom: 5px; /* Espaço para não cortar o glow/sombra */
+    
+    /* Esconde Scrollbar (Chrome/Safari/Opera) */
+    -webkit-overflow-scrolling: touch; 
+  }
+  .menu ul::-webkit-scrollbar { display: none; } /* Esconde Scrollbar */
+  .menu ul { -ms-overflow-style: none;  scrollbar-width: none; } /* IE/Edge/Firefox */
+
+  /* Reduz margens entre os itens (de 4px para 1px) */
+  .menu ul li { margin: 0 1px; }
+
+  /* Reduz drasticamente o padding interno dos botões */
+  /* De 5px 12px (Desktop) para 5px 6px (Mobile) */
+  .menu a, .menu-active {
+    padding: 5px 6px; 
+    font-size: 0.95em; /* Reduz levemente a fonte */
   }
 }
