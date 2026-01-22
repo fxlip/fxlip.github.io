@@ -41,7 +41,9 @@ body {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-size: 14px;
   color: var(--text-color);
-  line-height: 1.6;        /* Reduzi de 1.7 para 1.6 (Mais compacto) */
+  
+  /* RESPIRO: Voltamos para 1.7 para leitura confortável */
+  line-height: 1.7;        
   letter-spacing: -0.01em; 
   overflow-x: hidden;      
 }
@@ -59,27 +61,30 @@ body::before {
   opacity: 0.1;
 }
 
-/* --- HEADERS (COMPACT MODE) --- */
+/* --- HEADERS (RESTORED SPACING) --- */
 
 h1 { 
   font-size: 1.5em; 
   color: var(--link-hover-color); 
   text-align: center; 
-  margin-top: 15px;    /* Reduzido de 30px */
-  margin-bottom: 10px; /* Reduzido de 15px */
+  
+  /* RESPIRO: Mais espaço no topo para não colar no menu */
+  margin-top: 40px;    
+  margin-bottom: 20px; 
+  
   font-weight: 700;
   letter-spacing: 0.02em;
 }
 
 h2, h4, h5, h6 {
   color: #ffffff;
-  margin-top: 20px; /* Reduzido de 24px */
+  margin-top: 30px; /* Restaurado */
   font-weight: 700;
 }
 
 h3 {
   color: var(--link-hover-color); 
-  margin-top: 20px;
+  margin-top: 30px; /* Restaurado */
   font-weight: 700;
 }
 
@@ -89,19 +94,19 @@ h1 + p {
   color: var(--base-color); 
   font-style: italic;
   font-size: 1em;
-  margin-bottom: 25px; /* Reduzido */
+  margin-bottom: 40px; /* Espaço generoso antes da imagem */
   max-width: 90%;
   margin-left: auto; margin-right: auto;
 }
 
 /* Blockquotes */
 blockquote {
-  margin: 20px auto; /* Reduzido de 30px */
+  margin: 30px auto; /* Restaurado para destaque */
   padding: 0; border: none;            
   text-align: center; font-style: italic;      
   color: var(--accent-cyan); 
   opacity: 0.9; max-width: 85%;          
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 /* --- LINKS GLOBAIS --- */
@@ -119,7 +124,7 @@ a:hover {
 /* Tags Especiais (@files) */
 code a, a code {
   border: 1px solid rgba(189, 147, 249, 0.3);
-  padding: 1px 5px; /* Mais fino */
+  padding: 2px 6px; 
   border-radius: 4px;
   background: rgba(189, 147, 249, 0.05);
   border-bottom: none !important;
@@ -156,32 +161,43 @@ input, textarea {
 }
 
 /* ==========================================================================
-   3. NAVIGATION (COMPACT HEADER)
+   3. NAVIGATION (FLEX ALIGNMENT + BREATHING ROOM)
    ========================================================================== */
 header {
-  /* AQUI ESTÁ A CORREÇÃO DO "INCHAÇO" */
-  margin-top: 20px;    /* Era 30px */
-  margin-bottom: 25px; /* Era 40px */
-  padding: 10px 0;     /* Era 15px - Mais fino */
+  margin-top: 30px;    /* Restaurado */
+  margin-bottom: 40px; /* Restaurado */
+  padding: 15px 0;     /* Altura confortável */
   
   border-top: var(--border);
   border-bottom: var(--border);
-  text-align: center; 
+  
+  /* Flexbox para centralizar tudo perfeitamente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.menu ul { list-style: none; padding: 0; margin: 0; }
-.menu ul li { display: inline-block; margin: 0 4px; }
+.menu ul { 
+  list-style: none; padding: 0; margin: 0; 
+  display: flex; 
+  gap: 6px;      /* Espaço confortável entre itens */
+  align-items: center;
+  justify-content: center;
+}
+
+.menu ul li { display: block; margin: 0; }
 
 /* Links do Menu */
 .menu a { 
-  display: inline-block;
-  padding: 4px 10px; /* Reduzido de 5px 12px */
+  display: block; 
+  padding: 6px 12px; /* Área de clique maior */
   color: var(--nav-link-idle); 
   font-weight: 500;
   border: 1px solid transparent; 
   border-radius: 2px; 
   transition: all 0.2s ease;
   background-color: transparent !important; 
+  line-height: 1.2;
 }
 
 .menu a:hover {
@@ -192,8 +208,8 @@ header {
 }
 
 .menu-active {
-  display: inline-block;
-  padding: 4px 10px; /* Reduzido */
+  display: block;
+  padding: 6px 12px; 
   color: var(--nav-link-active); 
   border: 1px solid transparent; 
   background-color: transparent !important; 
@@ -202,24 +218,30 @@ header {
   font-weight: 500; 
   text-decoration: none;
   cursor: default;
+  line-height: 1.2;
 }
 
 /* ==========================================================================
    4. CONTENT LAYOUT & IMAGES
    ========================================================================== */
-.container { width: 90%; max-width: 650px; margin: 0 auto; }
+.container { 
+  width: 90%; 
+  max-width: 640px; /* Levemente menor para aumentar as bordas laterais */
+  margin: 0 auto; 
+}
 
-/* DIVISORES (O Ponto Crítico do "Inchaço") */
+/* DIVISORES (Fluid Rhythm) */
+/* Aqui devolvemos o "ar" entre os posts */
 hr, .post-list__divider {
   border: 0; 
   border-bottom: var(--border);
-  margin: 1.5em 0; /* Reduzido drasticamente de 3em para 1.5em */
+  margin: 3em 0; /* Restaurado para 3em (aprox 48px) */
   display: block;
 }
 
 .post-date {
   display: block; text-align: right;
-  margin-top: 5px; font-size: 0.85em; color: var(--base-color);
+  margin-top: 8px; font-size: 0.85em; color: var(--base-color);
 }
 
 pre, code {
@@ -228,14 +250,14 @@ pre, code {
 }
 pre { padding: 15px; overflow-x: auto; border: 1px solid #2d2b3b; }
 
-/* IMAGENS GLOBAIS (Card Structure) */
+/* IMAGENS GLOBAIS */
 main img {
   box-sizing: border-box;
   max-width: 100%; height: auto;
   display: block; 
-  margin: 20px auto; /* Reduzido de 30px */
+  margin: 30px auto; /* Espaço vertical restaurado */
   
-  padding: 10px;
+  padding: 10px; 
   background-color: var(--card-bg);
   border: var(--card-border);
   border-radius: 6px;
@@ -256,7 +278,7 @@ main img:hover {
   border: 1px solid #333545;
   border-radius: 6px; 
   box-shadow: var(--terminal-shadow);
-  margin: 20px 0; /* Reduzido de 25px */
+  margin: 30px 0; /* Espaço restaurado */
   overflow: hidden; 
 }
 
@@ -304,7 +326,7 @@ main img:hover {
    6. TERMINAL LOADER
    ========================================================================== */
 .terminal-loader {
-  display: block; margin: 30px auto; text-align: center; 
+  display: block; margin: 40px auto; text-align: center; 
   font-family: inherit; font-size: 14px; 
   color: var(--text-color); 
   background: transparent; border: none; 
@@ -373,20 +395,22 @@ footer a[href^="mailto"]:hover {
    9. MOBILE OPTIMIZATION
    ========================================================================== */
 @media only screen and (max-width: 600px) { 
-  .container { width: 92%; }
+  .container { width: 90%; } /* Garante a margem lateral que você pediu */
   .link-card { padding-left: 10px; padding-top: 130px; } 
   .link-card .lc-img { width: calc(100% - 20px); height: 110px; }
   footer {
     flex-direction: column-reverse; align-items: center; gap: 15px; text-align: center;
   }
 
-  /* Menu Compression (No-Break) */
+  /* Menu Flex-Scroll (Alinhado e Confortável) */
   .menu ul {
+    justify-content: flex-start; 
+    flex-wrap: nowrap;
     white-space: nowrap; 
     overflow-x: auto;    
-    display: block;      
     padding-bottom: 5px; 
     -webkit-overflow-scrolling: touch; 
+    gap: 0; 
   }
   .menu ul::-webkit-scrollbar { display: none; } 
   .menu ul { -ms-overflow-style: none;  scrollbar-width: none; } 
@@ -394,7 +418,7 @@ footer a[href^="mailto"]:hover {
   .menu ul li { margin: 0 1px; }
 
   .menu a, .menu-active {
-    padding: 5px 6px; 
+    padding: 6px 10px; /* Área de clique decente no mobile */
     font-size: 0.95em; 
   }
 }
