@@ -8,17 +8,17 @@ permalink: /manifesto
 
 ---
 
-Vivemos no **Capitalismo de Vigilância**. O modelo de negócios da internet que na última década deixou de ser apenas vender produtos e passou a ser extrair tempo e prever comportamentos.
+Vivemos no **Capitalismo de Vigilância**. O modelo de negócios da internet que na última década deixou de ser apenas vender produtos e passou a ser extrair tempo prevendo comportamentos.
 
 ---
 
 ### Dilema
-**Se o serviço é gratuito, o produto é você**. As plataformas de Big Techs operam sob a lógica de *Growth Hacking* e reforço intermitente, maximizando o tempo de tela. Minha resposta para isso se tornou o off. Contas desativadas. Nenhum feed. Apenas conteúdos aqui no meu site hospedados dentro do meu próprio computador.
+**Se o serviço é gratuito, o produto é você**. As plataformas de Big Techs operam sob a lógica de *Growth Hacking* e reforço intermitente para maximizar o tempo de tela. Minha resposta para isso se tornou o off. Contas desativadas e nenhum feed. Apenas conteúdos no meu próprio site hospedados dentro do meu computador.
 
 --- 
 
 ### Soberania
-Descentralização não é só uma preferência mas deveria ser uma necessidade cívica. Hospedar suas próprias coisas elimina o intermediário bilionário que usa código fechado e te obriga a aceitar os termos de uso dele.
+Descentralização não é só uma preferência mas deveria ser uma necessidade cívica. Hospedar seus próprios dados elimina o bilionário no meio do caminho que usa código fechado e te obriga a aceitar os termos de uso dele. ☠️
 
 ---
 
@@ -28,7 +28,7 @@ Descentralização não é só uma preferência mas deveria ser uma necessidade 
 ---
 
 ### Ferramenta
-Quando é a notificação que diz a hora de você vai usar o celular, quem está servindo a quem? A tecnologia deveria ser uma “bicicleta da mente” e potencializar nossas habilidades cognitivas, permitindo-nos ir muito mais longe e mais rapido com menos esforço, transformando ideias em realidade de forma eficiente, enfim, não um tigrinho que te deixa viciado.
+Quando é a notificação que diz a hora de você vai usar o celular, quem está servindo a quem? A tecnologia deveria ser uma “bicicleta da mente” e potencializar nossas habilidades cognitivas, permitindo-nos ir muito mais longe e mais rapido com menos esforço, transformando ideias em realidade de forma eficiente... enfim, não apenas um tigrinho que te deixa viciado.
 
 ---
 
