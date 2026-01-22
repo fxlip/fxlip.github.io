@@ -4,7 +4,7 @@ layout: page
 permalink: /setup
 ---
 
-Depois de uma palestra da **Free Software Foundation** em 2017 e um *mindblowing* com o **The Social Dilemma** em 2020, resetei o mood de "consumidor de tecnologia" e incorporei o de "operador de sistemas". Hoje meu escritório segue uma filosofia.
+Depois de uma palestra da **Free Software Foundation** em 2017 e um *mindblowing* com o **The Social Dilemma** em 2020, resetei o mood de "consumidor de tecnologia" e incorporei o de "operador de sistemas". Hoje meu escritório ainda não é na praia, mas segue uma filosofia.
 
 ---
 
@@ -21,7 +21,7 @@ Depois de uma palestra da **Free Software Foundation** em 2017 e um *mindblowing
 
 ---
 
-### Laboratório [security_research]
+### Laboratório [researchs]
 
 * **Hardware:** Lenovo T400s. Technoethical Mod com Certificação RYF.
 * **Intel ME:** Deletado. Acesso remoto de nível de hardware removido.
