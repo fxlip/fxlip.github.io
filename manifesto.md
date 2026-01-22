@@ -28,7 +28,7 @@ Descentralização não é só uma preferência mas acredito que deveria ser uma
 ---
 
 ### Ferramenta
-Quando é a notificação que diz a hora que você vai usar o celular, quem está servindo a quem? A tecnologia deveria ser uma “bicicleta da mente” e potencializar nossas habilidades cognitivas, permitindo-nos ir muito mais longe e mais rapido com menos esforço, transformando ideias em realidade de forma eficiente... enfim, não apenas um tigrinho que te deixa viciado.
+Quando é a notificação que diz a hora que você vai usar o celular, quem está controlando quem? A tecnologia deveria ser como uma "bicicleta da mente", potencializando nossas habilidades cognitivas, nos permitindo ir muito mais longe e mais rapido com menos esforço, transformando ideias em realidade de uma forma eficiente... enfim, não apenas um tigrinho que te deixa viciado.
 
 ---
 
