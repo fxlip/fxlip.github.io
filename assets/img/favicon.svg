@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    text {
+      font-size: 85px;
+      line-height: 1;
+      text-anchor: middle;
+      dominant-baseline: central;
+      font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+    }
+  </style>
+  <text x="50" y="50">🕳️</text>
+</svg>
