@@ -13,7 +13,7 @@ Vivemos no **Capitalismo de Vigilância**. O modelo de negócios da internet que
 ---
 
 ### Dilema
-**Se o serviço é gratuito, o produto é você**. As plataformas de Big Techs operam sob a lógica de *Growth Hacking* e reforço intermitente para maximizar o tempo de tela. Minha resposta para isso se tornou o off. Contas desativadas e nenhum feed. Apenas conteúdos no meu próprio site hospedados dentro do meu computador.
+**Se o serviço é gratuito, o produto é você**. As plataformas de Big Techs operam sob a lógica de *Growth Hacking* e reforço intermitente para maximizar o tempo de tela. Minha resposta para isso se tornou o OFF. Contas desativadas e nenhum feed. Me tornei meu próprio algorítmo, indo atrás de notícias que eu quero ao invés de receber sugestões de clickbaits e propagandas, além de criar conteúdo aqui e hospedar dentro do meu próprio computador.
 
 --- 
 
