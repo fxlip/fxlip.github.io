@@ -1,5 +1,14 @@
+---
 cc01941768487e16:
-  title: "Nossa abordagem para a previsão da idade."
-  url: "https://openai.com/pt-BR/index/our-approach-to-age-prediction/"
-  image: "https://images.openai.com/blob/17f8a7c6-7b00-4e33-8758-132579296c02/age-prediction.jpg"
-  description: "Dando continuidade ao nosso trabalho para fortalecer a segurança dos adolescentes. Estamos implementando a previsão de idade nos planos de consumo do ChatGPT para ajudar a determinar se uma conta provavelmente pertence a alguém com menos de 18 anos ou com 18 anos ou mais."
+  title: Nossa abordagem para a previsão da idade.
+  url: https://openai.com/pt-BR/index/our-approach-to-age-prediction/
+  image: https://images.openai.com/blob/17f8a7c6-7b00-4e33-8758-132579296c02/age-prediction.jpg
+  description: Dando continuidade ao nosso trabalho para fortalecer a segurança dos
+    adolescentes. Estamos implementando a previsão de idade nos planos de consumo
+    do ChatGPT para ajudar a determinar se uma conta provavelmente pertence a alguém
+    com menos de 18 anos ou com 18 anos ou mais.
+bc0bdcebae3b831b:
+  title: 'Link: cybernews.com'
+  description: Clique para acessar o conteúdo original.
+  url: https://cybernews.com/security/investigator-exposes-white-supremacist-sites-users/
+  image:
