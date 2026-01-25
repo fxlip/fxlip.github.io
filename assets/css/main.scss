@@ -363,7 +363,12 @@ main img:hover {
 .t-dim { color: #6272a4; }
 
 /* Feed & Loader */
-.feed-terminal { margin-top: 60px; margin-bottom: 60px; width: 100%; font-size: 14px; }
+.feed-terminal { 
+  margin-top: 55px; 
+  margin-bottom: 60px; 
+  width: 100%; 
+  font-size: 14px; 
+}
 .terminal-loader { display: inline; margin: 0; padding: 0; font-family: inherit; font-size: inherit; color: var(--text-color); background: transparent; border: none; }
 .cursor-blink { display: inline-block; color: #ffffff; animation: blink 1.5s infinite; margin-left: 3px; vertical-align: baseline; transform: translateY(-2px); line-height: 1; }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
