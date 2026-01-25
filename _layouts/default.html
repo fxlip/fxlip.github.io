@@ -46,6 +46,9 @@ script-src 'self' 'unsafe-inline';
   <meta property="og:locale" content="{{ site.lang | default: 'en_US' }}">
   {%- if page.image -%}<meta property="og:image" content="{{ page.image | absolute_url }}">{%- endif -%}
 
+  {%- if page.image -%}<meta property="og:image" content="{{ page.image | absolute_url }}">{%- else -%}<meta property="og:image" content="https://felip.com.br/files/img/avatar/profile.jpeg">
+  {%- endif -%}
+
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="{{ page.title | default: site.title }}">
   <meta name="twitter:description" content="{{ page_desc }}">
