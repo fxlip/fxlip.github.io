@@ -21,7 +21,7 @@ Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez
 
 **Kernels** controlando hardware,
 
-e **Aesthetics**, sempre bem elegante.
+e **Aesthetic**, sempre bem elegante.
 
 ---
 
