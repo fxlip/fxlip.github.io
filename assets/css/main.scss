@@ -440,6 +440,42 @@ a.link-card:hover .lc-host {
 
 .link-card .lc-desc { color: var(--base-color); font-size: 0.9em; line-height: 1.5; }
 
+/* [NEW] URL METADATA STYLE */
+.lc-site {
+  margin-top: 8px; /* Separação da descrição */
+  font-size: 0.75em; /* Pequeno, hierarquia terciária */
+  font-family: 'JetBrains Mono', monospace; /* Vibe de terminal */
+  color: #6272a4; /* Dracula Comment (Cinza azulado discreto) */
+  text-transform: lowercase; 
+  letter-spacing: 0.02em;
+  
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  
+  transition: all 0.4s ease; /* Sincronizado com o card */
+}
+
+/* Ícone de Seta (CSS puro para limpeza) */
+.lc-site::before {
+  content: "↗"; 
+  font-family: sans-serif;
+  font-size: 1.1em;
+  opacity: 0.6;
+}
+
+/* [HOVER] Acende em Ciano (Contraste com o Rosa do Título) */
+a.link-card:hover .lc-site {
+  color: var(--accent-cyan); /* #8be9fd */
+  text-shadow: 0 0 5px rgba(139, 233, 253, 0.4); /* Glow Ciano Suave */
+}
+
+/* Mobile: Mantém legibilidade sem precisar de hover */
+@media only screen and (max-width: 600px) {
+  .lc-site {
+    color: rgba(139, 233, 253, 0.7); /* Levemente Ciano por padrão */
+  }
+}
 
 /* ==========================================================================
    7. FOOTER
