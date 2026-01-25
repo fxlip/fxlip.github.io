@@ -2,123 +2,171 @@ document.addEventListener("DOMContentLoaded", function() {
   const loader = document.getElementById("infinite-loader");
   const postsContainer = document.querySelector(".posts-list");
   
-  // AUMENTADO: 4 segundos para apreciar a "decodificação"
-  const ARTIFICIAL_DELAY = 4000; 
+// --- [NEW] HEADER ADAPTATIVO (SMART TRIGGER) ---
+  const header = document.querySelector('header');
+  // Alvo: O terminal do feed (Home) OU Janelas de terminal genéricas (Outras páginas)
+  const targetTerminal = document.querySelector('.feed-terminal') || document.querySelector('.terminal-window');
+
+  if (header && targetTerminal) {
+    window.addEventListener('scroll', () => {
+      // 1. Pega a posição do terminal relativa à janela visual (viewport)
+      const termRect = targetTerminal.getBoundingClientRect();
+      
+      // 2. Altura do Header (ponto de colisão)
+      const headerHeight = header.offsetHeight;
+      
+      // 3. Lógica de Colisão:
+      // Se o topo do terminal tocou ou passou pra cima da base do header...
+      // Ajuste fino: +10px de tolerância para garantir a transição suave
+      if (termRect.top <= (headerHeight + 10)) {
+        header.classList.add('header-terminal-mode');
+      } else {
+        header.classList.remove('header-terminal-mode');
+      }
+    });
+  }
+  // -----------------------------------------------
+
+  // CONFIGURAÇÃO
+  const COMMAND_TEXT = "./news.sh";
+  
+  // Mensagens separadas
+  const MSG_LINE_1 = "Pronto.";
+  const MSG_LINE_2 = "Você terminou de ler tudo que eu já publiquei. 🏆";
+  
+  const TYPING_SPEED = 100;  
+  const SUSPENSE_DELAY = 1500; 
 
   if (loader && postsContainer) {
     
-    // --- 1. NOVA ANIMAÇÃO: BINARY RESOLVER ---
-    const chars = "01"; // Apenas binário
-    const targetText = "carregando"; // Texto solicitado
-    let animationInterval = null;
-
-    function startAnimation() {
-      loader.style.display = 'block';
-      let iteration = 0;
-      
-      if (animationInterval) clearInterval(animationInterval);
-      
-      animationInterval = setInterval(() => {
-        loader.innerText = targetText
-          .split("")
-          .map((letter, index) => {
-            if (index < iteration) {
-              return targetText[index];
-            }
-            // Retorna 0 ou 1 aleatoriamente
-            return chars[Math.floor(Math.random() * chars.length)];
-          })
-          .join("");
-        
-        // Velocidade da revelação (decodificação)
-        if (iteration < targetText.length) {
-          iteration += 1 / 3; 
-        }
-      }, 70); // 70ms = Ritmo "Cinematográfico"
+    function typeCommand() {
+      return new Promise((resolve) => {
+        loader.innerText = ""; 
+        let i = 0;
+        const interval = setInterval(() => {
+          loader.innerText += COMMAND_TEXT.charAt(i);
+          i++;
+          if (i >= COMMAND_TEXT.length) {
+            clearInterval(interval);
+            resolve(); 
+          }
+        }, TYPING_SPEED);
+      });
     }
 
-    function stopAnimation() {
-      clearInterval(animationInterval);
-    }
-
-    // --- 2. LÓGICA DE CARREGAMENTO (OBSERVER) ---
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         loadNextPage();
       }
-    }, {
-      rootMargin: '50px', 
-      threshold: 0.1
-    });
+    }, { rootMargin: '50px', threshold: 0.1 });
 
     observer.observe(loader);
 
-    // --- 3. FETCH & INJECTION ---
     let isLoading = false;
 
     function loadNextPage() {
       if (isLoading) return;
       isLoading = true;
       
-      const nextPageUrl = loader.getAttribute("data-next-url");
+      const nextUrl = loader.getAttribute("data-next-url");
       
-      // Se não tem URL, desliga tudo imediatamente (Fim Silencioso)
-      if (!nextPageUrl) {
-        observer.disconnect();
-        loader.style.display = 'none';
+      // MUDANÇA CRUCIAL:
+      // Se não tem URL, significa que o usuário rolou até o fundo DEPOIS
+      // de ter carregado a última página. Hora do show final.
+      if (!nextUrl) {
+        runFinalSequence();
         return;
       }
 
-      startAnimation();
+      const fetchPromise = fetch(nextUrl).then(response => {
+        if (!response.ok) throw new Error("Erro na rede");
+        return response.text();
+      });
 
-      const fetchPromise = fetch(nextPageUrl)
-        .then(response => {
-          if (!response.ok) throw new Error("Falha na conexão");
-          return response.text();
-        });
-
-      const delayPromise = new Promise(resolve => setTimeout(resolve, ARTIFICIAL_DELAY));
-
-      Promise.all([fetchPromise, delayPromise])
-        .then(([html, _]) => {
+      // Fluxo normal de carregamento
+      typeCommand()
+        .then(() => new Promise(resolve => setTimeout(resolve, SUSPENSE_DELAY)))
+        .then(() => fetchPromise)
+        .then(html => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(html, "text/html");
-          
-          const newPosts = doc.querySelectorAll(".posts-list .post-item");
+          const newPosts = doc.querySelectorAll("article.post-item");
           const nextData = doc.getElementById("infinite-loader");
 
-          newPosts.forEach(post => {
-            // REMOVIDO: O código que criava o <hr> extra foi deletado aqui.
-            // Agora usamos apenas o <hr> que já vem dentro do post.
-
-            post.style.animation = "fadeIn 0.5s ease-out forwards";
-            postsContainer.appendChild(post);
-          });
-
-          // Verifica se existe próxima página
-          if (nextData) {
-            const nextUrl = nextData.getAttribute("data-next-url");
-            loader.setAttribute("data-next-url", nextUrl);
-            isLoading = false; 
-          } else {
-            // FIM SILENCIOSO
-            stopAnimation();
-            loader.removeAttribute("data-next-url");
-            observer.disconnect();
-            loader.style.display = 'none'; 
+          if (newPosts.length > 0) {
+            newPosts.forEach(post => {
+              post.style.animation = "fadeIn 0.8s ease forwards";
+              if (window.applyMentions) {
+                  window.applyMentions(post);
+              }
+              postsContainer.appendChild(post);
+            });
           }
+
+          // PREPARAÇÃO PARA O PRÓXIMO PASSO
+          if (nextData) {
+            const newNextUrl = nextData.getAttribute("data-next-url");
+            if (newNextUrl) {
+               // Tem mais páginas
+               loader.setAttribute("data-next-url", newNextUrl);
+            } else {
+               // ACABOU, MAS NÃO RODA O FINAL AINDA.
+               // Remove a URL e deixa o loader vazio esperando o scroll do usuário.
+               loader.removeAttribute("data-next-url");
+            }
+          } else {
+             // ACABOU (Caso sem nextData). Mesmo esquema.
+             loader.removeAttribute("data-next-url");
+          }
+
+          // Limpa o texto e libera o lock para o próximo scroll
+          loader.innerText = ""; 
+          isLoading = false; 
         })
         .catch(err => {
           console.error(err);
-          stopAnimation();
-          loader.innerText = "[ erro ]"; // Feedback minimalista
-          loader.style.color = "#FF4444";
-          
-          setTimeout(() => {
-            isLoading = false;
-            loader.style.color = "";
-          }, 3000);
+          isLoading = false; 
         });
+    }
+
+    // --- SEQUÊNCIA FINAL (Acionada pelo scroll no fim da página) ---
+    function runFinalSequence() {
+        // 1. Digita o comando
+        typeCommand()
+            // 2. Suspense
+            .then(() => new Promise(r => setTimeout(r, SUSPENSE_DELAY)))
+            // 3. Exibe as mensagens
+            .then(() => {
+                handleEndOfFeed();
+            });
+    }
+
+    // --- ENCERRAMENTO VISUAL (Sem logout, multilinha) ---
+    function handleEndOfFeed() {
+        // 1. Fixa o comando
+        loader.innerText = COMMAND_TEXT; 
+        
+        // 2. Some cursor
+        const currentCursor = loader.parentElement.querySelector(".cursor-blink");
+        if (currentCursor) currentCursor.style.display = "none";
+
+        // 3. Linha 1: "Pronto."
+        const line1 = document.createElement("div");
+        line1.className = "t-out";
+        line1.style.marginTop = "5px";
+        line1.innerText = MSG_LINE_1;
+        
+        // 4. Linha 2: "Você acabou..." (Com classe final para espaçamento)
+        const line2 = document.createElement("div");
+        line2.className = "t-eof"; // Classe que define a margem final
+        line2.innerText = MSG_LINE_2;
+        
+        // 5. Injeta
+        loader.parentElement.insertAdjacentElement('afterend', line1);
+        line1.insertAdjacentElement('afterend', line2);
+
+        // 6. Fim
+        observer.disconnect();
     }
   }
 });

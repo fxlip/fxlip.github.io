@@ -5,68 +5,74 @@ layout: default
 {{ content }}
 {% assign contentwonl = content | strip_newlines %} {% unless contentwonl == ""  %} <br /> {% endunless %}
 
-<hr class="post-list__divider">
-
-{%- if site.posts.size > 0 -%}
-  <div class="posts-list">
-    {%- for post in paginator.posts -%}
-      {% assign pv = site.data.previews[post.slug] %}
-      
-      <article class="post-item">
-        
-        <div class="post-content">
-          {% if pv %}
-            {{ post.content | remove: pv.url | markdownify }}
-          {% else %}
-            {{ post.content | markdownify }}
-          {% endif %}
-        </div>
-
-        {% if pv %}
-          
-          {% if pv.video_id %}
-            <div class="video-wrapper">
-              <iframe 
-                src="https://www.youtube.com/embed/{{ pv.video_id }}?rel=0&modestbranding=1"
-                title="{{ pv.title }}" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen 
-                loading="lazy">
-              </iframe>
-            </div>
-          
-          {% else %}
-            <div class="link-card">
-              {% if pv.image %}
-                <img src="{{ pv.image }}" alt="{{ pv.title | escape }}" class="lc-img" />
-              {% endif %}
-              <div class="lc-meta">
-                <div class="lc-host">
-                  <a href="{{ pv.url }}" target="_blank" rel="noopener noreferrer">{{ pv.title }}</a>
-                </div>
-                {% if pv.description %}
-                  <div class="lc-desc">{{ pv.description }}</div>
-                {% endif %}
-              </div>
-            </div>
-          {% endif %}
-
-        {% endif %}
-
-        <time class="post-date" datetime="{{ post.date | date: "%Y-%m-%d %H:%M" }}">
-          {{ post.date | date: "%H:%M" }} · {{ post.date | date: "%-d de %b de %Y" | downcase }}
-        </time>
-
-        <hr class="post-list__divider">
-
-      </article>
-    {%- endfor -%}
+<div class="terminal-box feed-terminal">
+  
+  <div class="terminal-header">
+    <div class="terminal-controls">
+      <div class="win-btn btn-min" title="Minimize">−</div>
+      <div class="win-btn btn-close" title="Close">✕</div>
+    </div>
   </div>
 
-  {% if paginator.next_page %}
-    <div id="infinite-loader" class="terminal-loader" data-next-url="{{ paginator.next_page_path | relative_url }}">
-      [ SYSTEM_READY ]
+  <div class="terminal-body">
+    <div>
+      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span class="t-cmd">./news.sh</span>
     </div>
-  {% endif %}
-{%- endif -%}
+    <div class="t-out">
+      Carregando novidades...
+    </div>
+    <br>
+
+    {%- if site.posts.size > 0 -%}
+      <div class="posts-list">
+        {%- for post in paginator.posts -%}
+          {% assign pv = site.data.previews[post.slug] %}
+          
+          <article class="post-item">
+            <div class="post-content">
+              {% if pv %}
+                {{ post.content | remove: pv.url | markdownify }}
+              {% else %}
+                {{ post.content | markdownify }}
+              {% endif %}
+            </div>
+
+            {% if pv %}
+              {% if pv.video_id %}
+                <div class="video-wrapper">
+                  <iframe src="https://www.youtube.com/embed/{{ pv.video_id }}?rel=0&modestbranding=1" title="{{ pv.title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                </div>
+              {% else %}
+                <div class="link-card">
+                  {% if pv.image %}
+                    <img src="{{ pv.image }}" alt="{{ pv.title | escape }}" class="lc-img" />
+                  {% endif %}
+                  <div class="lc-meta">
+                    <div class="lc-host"><a href="{{ pv.url }}" target="_blank" rel="noopener noreferrer">{{ pv.title }}</a></div>
+                    {% if pv.description %}<div class="lc-desc">{{ pv.description }}</div>{% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endif %}
+
+            <time class="post-date" datetime="{{ post.date | date: "%Y-%m-%d %H:%M" }}">
+              {{ post.date | date: "%H:%M" }} · {{ post.date | date: "%-d de %b de %Y" | downcase }}
+            </time>
+
+            <hr class="post-list__divider">
+          </article>
+        {%- endfor -%}
+      </div>
+
+      {% if paginator.next_page %}
+        <div style="margin-top: 10px;">
+          <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span id="infinite-loader" class="terminal-loader" data-next-url="{{ paginator.next_page_path | relative_url }}"></span><span class="cursor-blink">█</span>
+        </div>
+      {% else %}
+        <div style="margin-top: 10px;">
+          <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span class="cursor-blink">█</span>
+        </div>
+      {% endif %}
+    {%- endif -%}
+
+  </div> </div>
