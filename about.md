@@ -19,7 +19,7 @@ Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez
 
 **Segurança** azul e vermelho,
 
-**Kernels** e controle de hardware,
+**Kernels** controlando hardware,
 
 e **Aesthetics**, sempre bem elegante.
 
