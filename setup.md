@@ -10,7 +10,7 @@ Depois de assistir uma palestra da **Free Software Foundation** em 2017 e ter um
 
 ### Estação de Trabalho [default]
 
-* **Hardware:** Razer Blade Stealth Late 2019.
+* **Hardware:** Razer Blade Stealth.
 * **Wi-Fi:** Downgrade Intel AX201 para Broadcom DW1560 ativando AirDrop.
 * **NVMe:** Upgrade para o Samsung 970 EVO Plus. 1TB + High IOPS.
 * **Triple-Boot:**
@@ -22,10 +22,10 @@ Depois de assistir uma palestra da **Free Software Foundation** em 2017 e ter um
 
 ### Laboratório [researchs]
 
-* **Hardware:** Lenovo T400s com Certificação RYF.
+* **Hardware:** Lenovo T400s RYF.
+* **~~BIOS~~:** Com **Libreboot**.
 * **~~Intel ME~~.** Sem acesso remoto via hardware.
 * **OS:** Trisquel. Sem *blobs* binários.
-* **~~BIOS~~.** **Libreboot**.
 
 ---
 
