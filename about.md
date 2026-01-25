@@ -19,9 +19,9 @@ Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez
 
 **Kernels** e controle de hardware.
 
-**Security** de vetores de ataque e defesa de infraestrutura.
+**Segurança** azul e vermelho.
 
-e **Aesthetics**, porque as ferramentas podem ser elegantes :D
+e **Aesthetics**, sempre bem elegante.
 
 ---
 

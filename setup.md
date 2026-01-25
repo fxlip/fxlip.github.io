@@ -24,9 +24,9 @@ Depois de assistir uma palestra da **Free Software Foundation** em 2017 e ter um
 ### Laboratório [researchs]
 
 * **Hardware:** Lenovo T400s. Technoethical Mod com Certificação RYF.
-* **Intel ME:** Deletado. Acesso remoto de nível de hardware removido.
+* **~~Intel ME~~.** Acesso remoto de nível de hardware removido.
 * **Firmware:** BIOS proprietária substituída pelo **Libreboot**.
-* **OS:** Trisquel GNU/Linux. Ambiente livre de *blobs* binários.
+* **OS:** Trisquel GNU/Linux. Livre de *blobs* binários.
 
 ---
 
