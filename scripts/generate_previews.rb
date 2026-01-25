@@ -12,12 +12,14 @@ DATA_DIR = File.join(ROOT, '_data')
 PREVIEWS_FILE = File.join(DATA_DIR, 'previews.yml')
 TARGET_DIRS = ['_curadoria', '_posts']
 
-# [SETUP] Identidade "Stealth 2.0" (Imitando Chrome Windows)
-USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
+# [SETUP] Identidades
+UA_CHROME = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
+# A "Chave Mestra" que o WhatsApp usa:
+UA_SOCIAL = 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)'
 
-puts "--- LINK PREVIEW GENERATOR V12 (WAF Bypass Edition) ---"
+puts "--- LINK PREVIEW GENERATOR V13 (VIP Pass Edition) ---"
 
-# 1. Filtro Sanitário
+# 1. Filtro Sanitário (Mantido)
 def apply_domain_rules(data, url)
   return data unless data['title']
   if data['title'].respond_to?(:force_encoding)
@@ -43,8 +45,8 @@ def apply_domain_rules(data, url)
   data
 end
 
-# 2. Fetch Robusto com Headers de Navegador
-def fetch_url(url, limit = 5)
+# 2. Fetch Robusto com Retry Tático
+def fetch_url(url, limit = 5, use_social_ua = false)
   return nil if limit == 0
   uri = URI.parse(url)
   return nil unless uri.kind_of?(URI::HTTP)
@@ -61,17 +63,17 @@ def fetch_url(url, limit = 5)
   
   request = Net::HTTP::Get.new(uri.request_uri)
   
-  # [BYPASS] Headers completos de navegador
-  request['User-Agent'] = USER_AGENT
-  request['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8'
+  # [TACTIC] Troca de identidade se for a segunda tentativa
+  if use_social_ua
+    request['User-Agent'] = UA_SOCIAL
+  else
+    request['User-Agent'] = UA_CHROME
+  end
+
+  # Headers padrões para parecer navegador
+  request['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
   request['Accept-Language'] = 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7'
   request['Referer'] = 'https://www.google.com/'
-  request['Upgrade-Insecure-Requests'] = '1'
-  request['Sec-Fetch-Dest'] = 'document'
-  request['Sec-Fetch-Mode'] = 'navigate'
-  request['Sec-Fetch-Site'] = 'cross-site'
-  request['Sec-Fetch-User'] = '?1'
-  request['Cache-Control'] = 'max-age=0'
   
   begin
     response = http.request(request)
@@ -83,10 +85,9 @@ def fetch_url(url, limit = 5)
       if new_loc.start_with?('/')
         new_loc = uri.scheme + "://" + uri.host + new_loc
       end
-      fetch_url(new_loc, limit - 1)
+      fetch_url(new_loc, limit - 1, use_social_ua)
     else 
-      puts "   [DEBUG] Erro HTTP #{response.code} para #{url}"
-      nil
+      nil # Falha silenciosa para permitir retry
     end
   rescue => e
     puts "   [DEBUG] Exception: #{e.message} em #{url}"
@@ -94,7 +95,7 @@ def fetch_url(url, limit = 5)
   end
 end
 
-# 3. Especialista YouTube
+# 3. Especialista YouTube (Mantido)
 def fetch_youtube_data(url, vid_id)
   embed_url = "https://www.youtube-nocookie.com/embed/#{vid_id}"
   html = fetch_url(embed_url)
@@ -119,7 +120,7 @@ def fetch_youtube_data(url, vid_id)
   }
 end
 
-# 4. Especialista X/Twitter
+# 4. Especialista X/Twitter (Mantido)
 def fetch_twitter_data(original_url)
   proxy_url = original_url.gsub(%r{https?://(www\.)?(twitter|x)\.com}, 'https://fixupx.com')
   html = fetch_url(proxy_url)
@@ -156,7 +157,6 @@ def extract_og_data(html, url)
     title = doc.at('title')&.text
   end
 
-  # Fallback de Título se tudo falhar, usa o domínio
   if title.nil? || title.strip.empty?
      title = URI.parse(url).host rescue url
   end
@@ -185,7 +185,6 @@ TARGET_DIRS.each do |dir_name|
   
   Dir.glob(File.join(full_path, '*.{md,markdown,MD,MARKDOWN}')).each do |post_path|
     filename = File.basename(post_path)
-    # Remove data YYYY-MM-DD para o slug
     slug = filename.sub(/^\d{4}-\d{2}-\d{2}-/, '').sub(/\.[^.]+$/, '')
     
     content = File.read(post_path)
@@ -199,29 +198,21 @@ TARGET_DIRS.each do |dir_name|
 
     next unless link
 
+    # [FORCE REFRESH] Se o card atual é o fallback (sem imagem), tenta de novo
     current_data = previews[slug]
-    url_changed = current_data && current_data['url'] != link
     
-    # Verifica se é YouTube
     is_youtube = link =~ /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/
     video_id = $1 if is_youtube
     is_twitter = link =~ /https?:\/\/(www\.)?(twitter|x)\.com/
 
-    needs_fetch = !current_data || 
-                  url_changed || 
-                  current_data['title'].to_s.strip.empty? ||
-                  (is_youtube && !current_data['video_id'])
+    # Se o título for genérico "Link: dominio.com", força re-fetch
+    is_bad_card = current_data && current_data['title'].to_s.start_with?("Link: ")
+
+    needs_fetch = !current_data || is_bad_card || (is_youtube && !current_data['video_id'])
 
     if !needs_fetch
-      # Sanitização apenas
-      old_title = previews[slug]['title']
-      previews[slug] = apply_domain_rules(previews[slug], previews[slug]['url'])
-      if old_title != previews[slug]['title']
-        puts " [FIX] #{slug} (Clean)"
-        updated = true
-      end
+      # Nada a fazer
     else
-      # Fetch Real
       puts " [FETCH] #{slug} -> #{link}"
       
       data = nil
@@ -230,23 +221,30 @@ TARGET_DIRS.each do |dir_name|
       elsif is_twitter
         data = fetch_twitter_data(link)
       else
-        body = fetch_url(link)
+        # TENTATIVA 1: Modo Chrome Normal
+        body = fetch_url(link, 5, false)
+        
+        # TENTATIVA 2: Modo WhatsApp (Se falhou)
+        if !body
+           puts "   [WAF] Bloqueio Chrome. Tentando modo VIP (FacebookBot)..."
+           body = fetch_url(link, 5, true)
+        end
+
         if body
            data = extract_og_data(body, link) 
         else
-           # [FALLBACK] Se falhar o acesso (403), cria card manual apenas com domínio
-           puts "   [WAF] Bloqueio detectado. Criando card básico."
+           puts "   [FAIL] Bloqueio Total. Gerando fallback."
            host = URI.parse(link).host rescue link
            data = {
              'title' => "Link: #{host}",
              'description' => "Clique para acessar o conteúdo original.",
              'url' => link,
-             'image' => nil # Sem imagem, o CSS trata com classe .no-image
+             'image' => nil
            }
         end
       end
 
-      if data && data['title']
+      if data
         data['url'] = link 
         data = apply_domain_rules(data, link)
         previews[slug] = data
