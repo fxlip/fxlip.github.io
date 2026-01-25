@@ -268,11 +268,13 @@ main img {
   border: var(--card-border);
   border-radius: 6px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.3); 
-  opacity: 0.95;
+  opacity: 1;
+  image-rendering: -webkit-optimize-contrast;
+  object-fit: cover;
   transition: opacity 0.3s, border-color 0.3s;
 }
 main img:hover { 
-  opacity: 1; border-color: rgba(189, 147, 249, 0.3); 
+  border-color: rgba(189, 147, 249, 0.3); 
 }
 
 /* ==========================================================================
