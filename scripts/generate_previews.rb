@@ -12,10 +12,10 @@ DATA_DIR = File.join(ROOT, '_data')
 PREVIEWS_FILE = File.join(DATA_DIR, 'previews.yml')
 TARGET_DIRS = ['_curadoria', '_posts']
 
-# [SETUP] Identidade "Stealth" para passar por bloqueios básicos (Cloudflare/WAF)
-USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+# [SETUP] Identidade "Stealth 2.0" (Imitando Chrome Windows)
+USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
 
-puts "--- LINK PREVIEW GENERATOR V11 (Stealth + Debug) ---"
+puts "--- LINK PREVIEW GENERATOR V12 (WAF Bypass Edition) ---"
 
 # 1. Filtro Sanitário
 def apply_domain_rules(data, url)
@@ -43,7 +43,7 @@ def apply_domain_rules(data, url)
   data
 end
 
-# 2. Fetch Robusto com Debug
+# 2. Fetch Robusto com Headers de Navegador
 def fetch_url(url, limit = 5)
   return nil if limit == 0
   uri = URI.parse(url)
@@ -52,18 +52,26 @@ def fetch_url(url, limit = 5)
   http = Net::HTTP.new(uri.host, uri.port)
   http.use_ssl = (uri.scheme == 'https')
   
-  # Configurações de SSL para evitar erros de handshake antigos
   if http.use_ssl?
     http.verify_mode = OpenSSL::SSL::VERIFY_PEER
   end
 
-  http.open_timeout = 10 # Aumentei para 10s
-  http.read_timeout = 10
+  http.open_timeout = 15
+  http.read_timeout = 15
   
   request = Net::HTTP::Get.new(uri.request_uri)
+  
+  # [BYPASS] Headers completos de navegador
   request['User-Agent'] = USER_AGENT
-  request['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-  request['Accept-Language'] = 'en-US,en;q=0.5'
+  request['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8'
+  request['Accept-Language'] = 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7'
+  request['Referer'] = 'https://www.google.com/'
+  request['Upgrade-Insecure-Requests'] = '1'
+  request['Sec-Fetch-Dest'] = 'document'
+  request['Sec-Fetch-Mode'] = 'navigate'
+  request['Sec-Fetch-Site'] = 'cross-site'
+  request['Sec-Fetch-User'] = '?1'
+  request['Cache-Control'] = 'max-age=0'
   
   begin
     response = http.request(request)
@@ -71,9 +79,7 @@ def fetch_url(url, limit = 5)
     when Net::HTTPSuccess 
       response.body
     when Net::HTTPRedirection 
-      # Segue redirect mantendo cookies seria ideal, mas recursão simples resolve 90%
       new_loc = response['location']
-      # Trata redirect relativo
       if new_loc.start_with?('/')
         new_loc = uri.scheme + "://" + uri.host + new_loc
       end
@@ -134,7 +140,6 @@ def extract_og_data(html, url)
   doc = Nokogiri::HTML(html)
   og = {}
   
-  # Estratégia 1: Meta Tags OG
   doc.css('meta').each do |m|
     prop = m['property'] || m['name']
     content = m['content'] || m['value']
@@ -146,10 +151,14 @@ def extract_og_data(html, url)
     end
   end
   
-  # Estratégia 2: Fallback para Title tag HTML puro
   title = og['title']
   if title.nil? || title.empty?
     title = doc.at('title')&.text
+  end
+
+  # Fallback de Título se tudo falhar, usa o domínio
+  if title.nil? || title.strip.empty?
+     title = URI.parse(url).host rescue url
   end
 
   desc = og['description']
@@ -193,10 +202,7 @@ TARGET_DIRS.each do |dir_name|
     current_data = previews[slug]
     url_changed = current_data && current_data['url'] != link
     
-    if url_changed
-      puts " [UPDATE] Link alterado em #{slug}. Reprocessando..."
-    end
-
+    # Verifica se é YouTube
     is_youtube = link =~ /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/
     video_id = $1 if is_youtube
     is_twitter = link =~ /https?:\/\/(www\.)?(twitter|x)\.com/
@@ -207,7 +213,7 @@ TARGET_DIRS.each do |dir_name|
                   (is_youtube && !current_data['video_id'])
 
     if !needs_fetch
-      # Apenas sanitização
+      # Sanitização apenas
       old_title = previews[slug]['title']
       previews[slug] = apply_domain_rules(previews[slug], previews[slug]['url'])
       if old_title != previews[slug]['title']
@@ -225,18 +231,28 @@ TARGET_DIRS.each do |dir_name|
         data = fetch_twitter_data(link)
       else
         body = fetch_url(link)
-        data = extract_og_data(body, link) if body
+        if body
+           data = extract_og_data(body, link) 
+        else
+           # [FALLBACK] Se falhar o acesso (403), cria card manual apenas com domínio
+           puts "   [WAF] Bloqueio detectado. Criando card básico."
+           host = URI.parse(link).host rescue link
+           data = {
+             'title' => "Link: #{host}",
+             'description' => "Clique para acessar o conteúdo original.",
+             'url' => link,
+             'image' => nil # Sem imagem, o CSS trata com classe .no-image
+           }
+        end
       end
 
-      if data && (data['title'] || data['image'])
+      if data && data['title']
         data['url'] = link 
         data = apply_domain_rules(data, link)
         previews[slug] = data
         updated = true
         puts "   -> Sucesso: #{data['title'][0..50]}..."
-        sleep 2 # Respeito ao servidor (Rate Limiting)
-      else
-        puts "   -> Falha no processamento dos dados."
+        sleep 2 
       end
     end
   end
