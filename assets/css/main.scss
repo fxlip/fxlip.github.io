@@ -352,6 +352,12 @@ main img:hover {
 .t-user { color: var(--link-color); font-weight: bold; }
 .t-host { color: var(--link-hover-color); font-weight: bold; }
 .t-path { color: #D8B4FE; font-style: italic; }
+/* [FIX] Ajuste de Kerning do Prompt ($) */
+.t-path + .t-gray {
+  margin-left: 5px;  /* Afasta do ~/feed */
+  margin-right: 2px; /* Dá um leve respiro antes do comando */
+  display: inline-block; /* Garante que a margem seja renderizada corretamente */
+}
 .t-gray, .t-cmd { color: var(--base-color); font-weight: normal; }
 .t-out { color: #bfbfbf; display: block; }
 .t-dim { color: #6272a4; }

@@ -22,7 +22,17 @@ hide_footer: true
 
   /* --- PALETA DE CORES --- */
   .p-user { color: #FF79C6; font-weight: bold; } 
-  .p-at, .p-sign { color: var(--base-color); opacity: 0.7; }
+  .p-at { color: var(--base-color); opacity: 0.7; }
+  
+  /* [FIX] Ajuste do Prompt ($) - Sincronizado com a Home */
+  .p-sign { 
+    color: var(--base-color); 
+    opacity: 0.7;
+    margin-left: 5px;  /* Respiro à esquerda */
+    margin-right: 2px; /* Respiro à direita */
+    display: inline-block;
+  }
+  
   .p-host { color: #BD93F9; font-weight: bold; } 
   .p-path { color: #D8B4FE; font-style: italic; } 
   .tree-lines { color: var(--base-color); opacity: 0.4; }
