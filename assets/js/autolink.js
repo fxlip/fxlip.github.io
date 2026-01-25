@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
           area.innerHTML = area.innerHTML.replace(regex, function(match, path) {
             const url = `https://fxlip.com/${path}`;
             // Adicionei target="_blank" opcionalmente se quiser que abra em nova aba, mas padrão é mesma aba
-            return `<a href="${url}" class="mention-link" title="Navigate to ${path}">${match}</a>`;
+            return `<a href="${url}" class="mention-link" title="./${path}">${match}</a>`;
           });
       }
       

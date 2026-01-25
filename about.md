@@ -17,9 +17,9 @@ Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez
 
 ### // o que me move
 
-**Kernels** e controle de hardware.
+**Segurança** azul e vermelho,
 
-**Segurança** azul e vermelho.
+**Kernels** e controle de hardware,
 
 e **Aesthetics**, sempre bem elegante.
 
