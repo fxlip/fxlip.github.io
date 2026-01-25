@@ -5,13 +5,17 @@ require 'nokogiri'
 require 'yaml'
 require 'fileutils'
 require 'cgi'
+require 'openssl'
 
 ROOT = File.expand_path(File.join(__dir__, '..'))
 DATA_DIR = File.join(ROOT, '_data')
 PREVIEWS_FILE = File.join(DATA_DIR, 'previews.yml')
 TARGET_DIRS = ['_curadoria', '_posts']
 
-puts "--- LINK PREVIEW GENERATOR V10 (Smart Diff + Twitter Fix) ---"
+# [SETUP] Identidade "Stealth" para passar por bloqueios básicos (Cloudflare/WAF)
+USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+
+puts "--- LINK PREVIEW GENERATOR V11 (Stealth + Debug) ---"
 
 # 1. Filtro Sanitário
 def apply_domain_rules(data, url)
@@ -31,7 +35,6 @@ def apply_domain_rules(data, url)
   when /cnnbrasil\.com\.br/
     data['title'] = data['title'].gsub(/\s*\|\s*CNN\s*Brasil.*$/, '')
   when /(twitter|x)\.com/, /fixupx\.com/
-    # Limpa sufixos comuns do X
     data['title'] = data['title'].gsub(/\s*on X$/, '').gsub(/\s*on Twitter$/, '')
   when /youtube\.com/, /youtu\.be/
     data['title'] = data['title'].gsub(/\s*-\s*YouTube$/, '')
@@ -40,7 +43,7 @@ def apply_domain_rules(data, url)
   data
 end
 
-# 2. Fetch Genérico
+# 2. Fetch Robusto com Debug
 def fetch_url(url, limit = 5)
   return nil if limit == 0
   uri = URI.parse(url)
@@ -48,25 +51,44 @@ def fetch_url(url, limit = 5)
   
   http = Net::HTTP.new(uri.host, uri.port)
   http.use_ssl = (uri.scheme == 'https')
-  http.open_timeout = 5
-  http.read_timeout = 8
+  
+  # Configurações de SSL para evitar erros de handshake antigos
+  if http.use_ssl?
+    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+  end
+
+  http.open_timeout = 10 # Aumentei para 10s
+  http.read_timeout = 10
   
   request = Net::HTTP::Get.new(uri.request_uri)
-  request['User-Agent'] = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' # User-Agent de Bot ajuda com FixupX
+  request['User-Agent'] = USER_AGENT
+  request['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+  request['Accept-Language'] = 'en-US,en;q=0.5'
   
   begin
     response = http.request(request)
     case response
-    when Net::HTTPSuccess then response.body
-    when Net::HTTPRedirection then fetch_url(response['location'], limit - 1)
-    else nil
+    when Net::HTTPSuccess 
+      response.body
+    when Net::HTTPRedirection 
+      # Segue redirect mantendo cookies seria ideal, mas recursão simples resolve 90%
+      new_loc = response['location']
+      # Trata redirect relativo
+      if new_loc.start_with?('/')
+        new_loc = uri.scheme + "://" + uri.host + new_loc
+      end
+      fetch_url(new_loc, limit - 1)
+    else 
+      puts "   [DEBUG] Erro HTTP #{response.code} para #{url}"
+      nil
     end
-  rescue
+  rescue => e
+    puts "   [DEBUG] Exception: #{e.message} em #{url}"
     nil
   end
 end
 
-# 3. Especialista YouTube (Embed + ID)
+# 3. Especialista YouTube
 def fetch_youtube_data(url, vid_id)
   embed_url = "https://www.youtube-nocookie.com/embed/#{vid_id}"
   html = fetch_url(embed_url)
@@ -91,26 +113,19 @@ def fetch_youtube_data(url, vid_id)
   }
 end
 
-# 4. Especialista X/Twitter (Via FixupX)
+# 4. Especialista X/Twitter
 def fetch_twitter_data(original_url)
-  # Substitui o domínio original pelo proxy de metadados
   proxy_url = original_url.gsub(%r{https?://(www\.)?(twitter|x)\.com}, 'https://fixupx.com')
-  
   html = fetch_url(proxy_url)
   return nil unless html
 
-  # Usa o parser padrão para extrair as tags que o FixupX gerou
   data = extract_og_data(html, original_url)
-  
   if data
-    data['url'] = original_url # Garante que o link final aponte para o X real
-    
-    # Se a descrição for vazia, tenta pegar o título como descrição (comum em tweets curtos)
+    data['url'] = original_url 
     if data['description'].nil? || data['description'].empty?
       data['description'] = data['title']
     end
   end
-  
   data
 end
 
@@ -118,6 +133,8 @@ def extract_og_data(html, url)
   return nil unless html
   doc = Nokogiri::HTML(html)
   og = {}
+  
+  # Estratégia 1: Meta Tags OG
   doc.css('meta').each do |m|
     prop = m['property'] || m['name']
     content = m['content'] || m['value']
@@ -129,7 +146,12 @@ def extract_og_data(html, url)
     end
   end
   
-  title = og['title'] || (doc.at('title') ? doc.at('title').text : nil)
+  # Estratégia 2: Fallback para Title tag HTML puro
+  title = og['title']
+  if title.nil? || title.empty?
+    title = doc.at('title')&.text
+  end
+
   desc = og['description']
   img = og['image']
   
@@ -154,7 +176,9 @@ TARGET_DIRS.each do |dir_name|
   
   Dir.glob(File.join(full_path, '*.{md,markdown,MD,MARKDOWN}')).each do |post_path|
     filename = File.basename(post_path)
+    # Remove data YYYY-MM-DD para o slug
     slug = filename.sub(/^\d{4}-\d{2}-\d{2}-/, '').sub(/\.[^.]+$/, '')
+    
     content = File.read(post_path)
     
     link = nil
@@ -166,7 +190,6 @@ TARGET_DIRS.each do |dir_name|
 
     next unless link
 
-    # --- VERIFICAÇÃO DE MUDANÇA (SMART DIFF) ---
     current_data = previews[slug]
     url_changed = current_data && current_data['url'] != link
     
@@ -174,10 +197,8 @@ TARGET_DIRS.each do |dir_name|
       puts " [UPDATE] Link alterado em #{slug}. Reprocessando..."
     end
 
-    # --- DETECÇÃO DE PLATAFORMA ---
     is_youtube = link =~ /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/
     video_id = $1 if is_youtube
-    
     is_twitter = link =~ /https?:\/\/(www\.)?(twitter|x)\.com/
 
     needs_fetch = !current_data || 
@@ -186,22 +207,21 @@ TARGET_DIRS.each do |dir_name|
                   (is_youtube && !current_data['video_id'])
 
     if !needs_fetch
-      # Cache Hit: Sanitização
+      # Apenas sanitização
       old_title = previews[slug]['title']
       previews[slug] = apply_domain_rules(previews[slug], previews[slug]['url'])
       if old_title != previews[slug]['title']
-        puts " [FIX] #{slug} (Título limpo)"
+        puts " [FIX] #{slug} (Clean)"
         updated = true
       end
     else
-      # Cache Miss: Fetch
+      # Fetch Real
       puts " [FETCH] #{slug} -> #{link}"
       
       data = nil
       if is_youtube
         data = fetch_youtube_data(link, video_id)
       elsif is_twitter
-        # Rota especial para o X
         data = fetch_twitter_data(link)
       else
         body = fetch_url(link)
@@ -213,10 +233,10 @@ TARGET_DIRS.each do |dir_name|
         data = apply_domain_rules(data, link)
         previews[slug] = data
         updated = true
-        puts "   -> Sucesso: #{data['title']}"
-        sleep 2
+        puts "   -> Sucesso: #{data['title'][0..50]}..."
+        sleep 2 # Respeito ao servidor (Rate Limiting)
       else
-        puts "   -> Falha."
+        puts "   -> Falha no processamento dos dados."
       end
     end
   end
@@ -224,7 +244,7 @@ end
 
 if updated
   File.open(PREVIEWS_FILE, 'w') { |f| f.write(previews.to_yaml) }
-  puts "\n--- SUCESSO: Banco de dados salvo. ---"
+  puts "\n--- SUCESSO: previews.yml atualizado. ---"
 else
   puts "\n--- NENHUMA ALTERAÇÃO FEITA ---"
 end

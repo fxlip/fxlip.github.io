@@ -1,51 +1,64 @@
-// --- [1] DEFINIÇÃO GLOBAL IMEDIATA (Sem esperar DOMContentLoaded) ---
-window.applyMentions = function(context = document) {
-  // console.log("🔍 applyMentions executado em:", context); // (Debug)
-
-  const contentAreas = context.querySelectorAll('.post-content, .terminal-window p, .terminal-window div, .post-item');
-
-  contentAreas.forEach(area => {
-    if (area.dataset.mentionsProcessed) return;
-    
-    // Regex para @user, @linux/path, etc.
-    const regex = /@([a-zA-Z0-9_\-\/]+)/g;
-
-    if (area.innerHTML.match(regex)) {
-        area.innerHTML = area.innerHTML.replace(regex, function(match, path) {
-          const url = `https://fxlip.com/${path}`;
-          return `<a href="${url}" class="mention-link" title="Navigate to ${path}">${match}</a>`;
-        });
-    }
-    
-    area.dataset.mentionsProcessed = "true";
-  });
-};
-
-// --- [2] INJEÇÃO DE ESTILOS (Executa imediatamente) ---
-(function injectStyles() {
+document.addEventListener("DOMContentLoaded", function() {
+  
+  // 1. INJEÇÃO DE ESTILOS (UNIFIED SOFT NEON PALETTE)
   const styleSheet = document.createElement("style");
   styleSheet.innerText = `
     .mention-link {
-      color: #FF79C6; 
+      color: #FF79C6; /* Rosa Neon Base */
       text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      /* [FIX] Sincronizado com Link Card (0.4s) */
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      
       border-radius: 4px;
-      padding: 0 2px;
+      padding: 0 4px; /* Mais respiro para parecer um 'mini-bloco' */
       letter-spacing: -0.5px;
+      
+      /* Borda invisível para reservar espaço e não pular no hover */
+      border: 1px solid transparent; 
     }
+    
     .mention-link:hover {
-      color: #FFFFFF;
-      background-color: rgba(189, 147, 249, 0.25);
-      text-shadow: 0 0 8px rgba(216, 180, 254, 0.6);
-      box-shadow: 0 0 0 1px rgba(189, 147, 249, 0.1);
+      /* [FIX] Mantém Rosa (não vira branco) para consistência */
+      color: #FF79C6; 
+      
+      /* [FIX] Fundo Rosa Suave (igual ao Link Card) */
+      background-color: rgba(255, 121, 198, 0.1); 
+      
+      /* [FIX] Borda Rosa Suave (50% Opacity) */
+      border-color: rgba(255, 121, 198, 0.5);
+      
+      /* [FIX] Glow Suave (aura rosa) */
+      box-shadow: 0 0 15px rgba(255, 121, 198, 0.15);
+      
+      text-decoration: none;
       cursor: pointer;
     }
   `;
   document.head.appendChild(styleSheet);
-})();
 
-// --- [3] GATILHO INICIAL (Para conteúdo estático) ---
-// Como removemos o wrapper, adicionamos um listener apenas para a execução inicial
-document.addEventListener("DOMContentLoaded", function() {
-    window.applyMentions();
+  // 2. FUNÇÃO GLOBAL DE SUBSTITUIÇÃO
+  window.applyMentions = function(context = document) {
+    const contentAreas = context.querySelectorAll('.post-content, .terminal-window p, .terminal-window div, .post-item');
+
+    contentAreas.forEach(area => {
+      if (area.dataset.mentionsProcessed) return;
+      
+      // Regex para @path/to/file ou @user
+      const regex = /@([a-zA-Z0-9_\-\/]+)/g;
+
+      if (area.innerHTML.match(regex)) {
+          area.innerHTML = area.innerHTML.replace(regex, function(match, path) {
+            const url = `https://fxlip.com/${path}`;
+            // Adicionei target="_blank" opcionalmente se quiser que abra em nova aba, mas padrão é mesma aba
+            return `<a href="${url}" class="mention-link" title="Navigate to ${path}">${match}</a>`;
+          });
+      }
+      
+      area.dataset.mentionsProcessed = "true";
+    });
+  };
+
+  // 3. EXECUÇÃO INICIAL
+  window.applyMentions();
 });

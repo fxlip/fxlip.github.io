@@ -285,17 +285,12 @@ main img:hover {
   margin: 30px 0;
   border: 1px solid #333545;
   overflow: hidden;
-  
-  /* UNIFICAÇÃO TIPOGRÁFICA */
-  font-family: inherit; 
-  font-size: 14px;
-  
-  text-align: left;
-  width: 100%;
+  font-family: inherit; font-size: 14px;
+  text-align: left; width: 100%;
 }
 
-/* Link Killer (Exceção: Mention Links) */
-.terminal-box a:not(.mention-link) {
+/* [FIX] Link Killer (Lista de Exceções) */
+.terminal-box a:not(.mention-link):not(.link-card) {
   color: inherit !important;
   text-decoration: none !important;
   pointer-events: none;
@@ -309,72 +304,48 @@ main img:hover {
   cursor: pointer !important;
 }
 
+/* [FIX CRÍTICO] Interatividade para Link Cards */
+/* REMOVIDO: border-bottom !important (Isso estava travando o visual) */
+/* MANTIDO: pointer-events auto (Para garantir o clique) */
+.terminal-box a.link-card {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
 /* Barra de Título */
 .terminal-header {
   background-color: #1a1b24; 
-  padding: 0 10px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  padding: 0 10px; height: 32px;
+  display: flex; align-items: center; justify-content: flex-end;
   border-bottom: 1px solid #2d2b3b;
 }
 
 .terminal-controls {
-  display: flex;
-  gap: 4px;
-  height: 100%;
-  align-items: center;
+  display: flex; gap: 4px; height: 100%; align-items: center;
 }
 
-/* Botões Flat */
 .win-btn {
-  color: #6272a4;
-  opacity: 0.6;
-  cursor: pointer;
-  font-family: sans-serif; 
-  font-size: 13px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  width: 20px;
-  height: 20px;
-  border-radius: 2px;
+  color: #6272a4; opacity: 0.6; cursor: pointer;
+  font-family: sans-serif; font-size: 13px; font-weight: bold;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1; width: 20px; height: 20px; border-radius: 2px;
   transition: opacity 0.2s, color 0.2s;
   background: transparent !important;
 }
-
-.win-btn:hover {
-  background: transparent !important;
-  opacity: 1;
-}
-
+.win-btn:hover { background: transparent !important; opacity: 1; }
 .btn-min { transform: translateY(1px); }
 .btn-min:hover { color: #f1fa8c; }
 .btn-close:hover { color: #ff5555; }
 
 /* Corpo */
 .terminal-body {
-  padding: 10px 15px; 
-  color: #f8f8f2;
-  overflow-x: auto;
-  
-  /* Espaçamento otimizado para leitura */
-  line-height: 1.5; 
+  padding: 10px 15px; color: #f8f8f2; overflow-x: auto; line-height: 1.5; 
 }
 .terminal-body div { margin: 0; padding: 0; }
 
-/* HR: Estilo Padrão Raiz */
-.terminal-body hr, 
-.terminal-body .post-list__divider {
-  border: 0;
-  border-bottom: var(--border); 
-  margin: 3em 0;                
-  width: 100%;                  
-  display: block;
-  opacity: 0.6;                 
+.terminal-body hr, .terminal-body .post-list__divider {
+  border: 0; border-bottom: var(--border); 
+  margin: 3em 0; width: 100%; display: block; opacity: 0.6;                 
 }
 
 /* Sintaxe */
@@ -385,60 +356,53 @@ main img:hover {
 .t-out { color: #bfbfbf; display: block; }
 .t-dim { color: #6272a4; }
 
-/* Feed Terminal */
-.feed-terminal {
-  margin-top: 60px;
-  margin-bottom: 60px;
-  width: 100%;
-  font-size: 14px;
-}
-
-/* Terminal Loader */
-.terminal-loader {
-  display: inline;
-  margin: 0; padding: 0;
-  text-align: left;
-  font-family: inherit; font-size: inherit;
-  color: var(--text-color); background: transparent; border: none;
-}
-
-.cursor-blink {
-  display: inline-block;
-  color: #ffffff;
-  animation: blink 1.5s infinite;
-  margin-left: 3px;
-  vertical-align: baseline;
-  transform: translateY(-2px); 
-  line-height: 1;
-}
-
-@keyframes blink { 
-  0%, 100% { opacity: 1; } 
-  50% { opacity: 0; } 
-}
-
-/* Mensagem Final (EOF) */
-.t-eof {
-  margin-top: 2px;
-  margin-bottom: 60px; 
-  color: inherit; 
-  display: block;
-}
+/* Feed & Loader */
+.feed-terminal { margin-top: 60px; margin-bottom: 60px; width: 100%; font-size: 14px; }
+.terminal-loader { display: inline; margin: 0; padding: 0; font-family: inherit; font-size: inherit; color: var(--text-color); background: transparent; border: none; }
+.cursor-blink { display: inline-block; color: #ffffff; animation: blink 1.5s infinite; margin-left: 3px; vertical-align: baseline; transform: translateY(-2px); line-height: 1; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.t-eof { margin-top: 2px; margin-bottom: 60px; color: inherit; display: block; }
 
 /* ==========================================================================
-   6. LINK CARDS
+   6. LINK CARDS (SOFT DATA BLOCK)
    ========================================================================== */
-.link-card {
+a.link-card {
   position: relative; margin-top: 20px;
-  background: var(--card-bg); border: var(--card-border);
+  background: var(--card-bg); 
+  
+  /* Borda sutil inicial */
+  border: 1px solid rgba(255, 255, 255, 0.1); 
+  
   border-radius: 6px; min-height: 100px; 
   padding: 10px 10px 10px 145px; 
   display: flex; flex-direction: column; justify-content: center;
-  transition: transform 0.2s, border-color 0.2s;
+  box-shadow: none; transform: translateY(0);
+  
+  /* [FIX] Transição mais lenta e fluida (0.4s) para um efeito "fade-in" */
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* Resets */
+  text-decoration: none !important;
+  color: inherit !important;      
 }
 
-.link-card:hover {
-  transform: translateY(-2px); border-color: rgba(189, 147, 249, 0.4);
+a.link-card.no-image { padding: 15px !important; min-height: auto; }
+
+/* [HOVER SUAVE] */
+a.link-card:hover {
+  transform: translateY(-2px); 
+  
+  /* [FIX] Rosa Suave (50% de opacidade) em vez de Neon Puro */
+  border-color: rgba(255, 121, 198, 0.5); 
+  
+  /* Fundo muito sutil */
+  background-color: rgba(255, 121, 198, 0.03); 
+  
+  /* [FIX] Glow externo reduzido (0.2) para não "estourar" */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 
+              0 0 0 1px rgba(255, 121, 198, 0.05);
+  
+  cursor: pointer;
 }
 
 .link-card .lc-img { 
@@ -447,11 +411,35 @@ main img:hover {
   object-fit: cover; border-radius: 4px; 
   margin: 0 !important; padding: 0 !important; background: none !important; 
   border: none !important; box-shadow: none !important;
+  font-size: 0; color: transparent;
+  
+  /* A imagem começa P&B e ganha cor suavemente */
+  filter: grayscale(60%); 
+  transition: all 0.4s ease; /* Sincronizado com o card */
+  opacity: 0.9;
 }
 
-.link-card .lc-host { color: var(--link-hover-color); font-weight: 700; font-size: 0.9em;}
-.link-card .lc-desc { color: var(--base-color); font-size: 0.9em; margin-top: 4px; }
-.link-card:not(:has(.lc-img)) { padding-left: 15px; }
+a.link-card:hover .lc-img { 
+  filter: grayscale(0%); 
+  opacity: 1; 
+}
+
+.link-card .lc-host { 
+  color: var(--link-hover-color); font-weight: 700; font-size: 0.9em;
+  line-height: 1.4; display: block; margin-bottom: 4px;
+  text-decoration: none !important; 
+  
+  /* Transição lenta de cor */
+  transition: color 0.4s ease;
+}
+
+/* Título acende, mas mantendo a elegância (sem text-shadow) */
+a.link-card:hover .lc-host { 
+  color: var(--link-color); 
+}
+
+.link-card .lc-desc { color: var(--base-color); font-size: 0.9em; line-height: 1.5; }
+
 
 /* ==========================================================================
    7. FOOTER
@@ -484,39 +472,33 @@ footer a[href^="mailto"]:hover {
 @media only screen and (max-width: 600px) { 
   .container { width: 94%; } 
 
-  .link-card { padding-left: 10px; padding-top: 130px; } 
-  .link-card .lc-img { width: calc(100% - 20px); height: 110px; }
+  /* [MOBILE] Visual Semi-Ativo Padrão */
+  a.link-card {
+    /* Borda Roxo Discreta (Identidade visual clara) */
+    border-color: rgba(189, 147, 249, 0.4); 
+    background-color: rgba(189, 147, 249, 0.03);
+    transform: none; box-shadow: none;
+  }
   
-  footer {
-    flex-direction: column-reverse; align-items: center; gap: 15px; text-align: center;
+  /* Feedback de toque */
+  a.link-card:active {
+    background-color: rgba(189, 147, 249, 0.1);
+    border-color: var(--link-color);
+  }
+  
+  .link-card .lc-host { text-shadow: none; }
+
+  /* Layout */
+  .link-card:not(.no-image) { padding-left: 10px; padding-top: 130px; } 
+  .link-card .lc-img { width: calc(100% - 20px); height: 110px; filter: none; }
+  
+  hr, .post-list__divider {
+    display: block; width: 100%; margin: 3em 0; opacity: 1;        
+    clear: both; border: 0; border-bottom: var(--border); 
   }
 
-  header {
-    padding: 10px 0; 
-  }
-
-  .menu ul {
-    flex-wrap: wrap; 
-    justify-content: center;
-    white-space: normal; 
-    overflow-x: visible;    
-    gap: 2px;
-    width: 100%;
-  }
-
-  .menu a, .menu-active {
-    padding: 6px 8px; 
-    font-size: 0.85em;
-  }
-}
-
-/* Global Animations */
-.post-item {
-  display: block;
-  opacity: 1; 
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  footer { flex-direction: column-reverse; align-items: center; gap: 15px; text-align: center; }
+  header { padding: 10px 0; }
+  .menu ul { flex-wrap: wrap; justify-content: center; white-space: normal; overflow-x: visible; gap: 2px; width: 100%; }
+  .menu a, .menu-active { padding: 6px 8px; font-size: 0.85em; }
 }

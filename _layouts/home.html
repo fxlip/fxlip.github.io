@@ -19,7 +19,7 @@ layout: default
       <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span class="t-cmd">./news.sh</span>
     </div>
     <div class="t-out">
-      Carregando novidades...
+      Carregando notícias...
     </div>
     <br>
 
@@ -43,15 +43,21 @@ layout: default
                   <iframe src="https://www.youtube.com/embed/{{ pv.video_id }}?rel=0&modestbranding=1" title="{{ pv.title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
                 </div>
               {% else %}
-                <div class="link-card">
+                <a href="{{ pv.url }}" target="_blank" rel="noopener noreferrer" 
+                   class="link-card {% unless pv.image %}no-image{% endunless %}">
+                  
                   {% if pv.image %}
-                    <img src="{{ pv.image }}" alt="{{ pv.title | escape }}" class="lc-img" />
+                    <img src="{{ pv.image }}" 
+                         alt="{{ pv.title | escape }}" 
+                         class="lc-img" 
+                         onerror="this.style.display='none';this.closest('.link-card').classList.add('no-image');" />
                   {% endif %}
+                  
                   <div class="lc-meta">
-                    <div class="lc-host"><a href="{{ pv.url }}" target="_blank" rel="noopener noreferrer">{{ pv.title }}</a></div>
+                    <div class="lc-host">{{ pv.title }}</div>
                     {% if pv.description %}<div class="lc-desc">{{ pv.description }}</div>{% endif %}
                   </div>
-                </div>
+                </a>
               {% endif %}
             {% endif %}
 
