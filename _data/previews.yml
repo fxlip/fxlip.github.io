@@ -20,3 +20,10 @@ bc0bdcebae3b831b:
     to complete more or less complex tasks on their own, without stoppin...
   image:
   url: https://media.ccc.de/v/39c3-ai-agent-ai-spy
+44bb59b47bf62db5:
+  title: Asahi Linux - Porting Linux to Apple Silicon
+  description: |-
+    In this talk, you will learn how Apple Silicon hardware differs from regular laptops or desktops.
+    We'll cover how we reverse engineered t...
+  image:
+  url: https://media.ccc.de/v/39c3-asahi-linux-porting-linux-to-apple-silicon
