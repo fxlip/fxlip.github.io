@@ -23,9 +23,9 @@ Depois de assistir uma palestra da **Free Software Foundation** em 2017 e ter um
 ### Laboratório [researchs]
 
 * **Hardware:** Lenovo T400s RYF.
-* **~~BIOS~~:** Com **Libreboot**.
-* **~~Intel ME~~.** Sem acesso remoto via hardware.
+* **Libreboot:** Sem BIOS/UEFI.
 * **OS:** Trisquel. Sem *blobs* binários.
+* **~~Intel ME~~.** Sem acesso remoto via hardware.
 
 ---
 
