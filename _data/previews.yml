@@ -2,7 +2,7 @@
 cc01941768487e16:
   title: Nossa abordagem para a previsão da idade.
   url: https://openai.com/pt-BR/index/our-approach-to-age-prediction/
-  image: https://images.openai.com/blob/17f8a7c6-7b00-4e33-8758-132579296c02/age-prediction.jpg
+  image:
   description: Dando continuidade ao nosso trabalho para fortalecer a segurança dos
     adolescentes. Estamos implementando a previsão de idade nos planos de consumo
     do ChatGPT para ajudar a determinar se uma conta provavelmente pertence a alguém
@@ -12,5 +12,5 @@ bc0bdcebae3b831b:
   description: An investigative journalist infiltrated three white supremacist platforms,
     including the dating site WhiteDate, exfiltrating over 8,000 user profiles and
     100GB of sensitive data.
-  image: https://media.cybernews.com/images/featured-big/2026/01/dating-website-whitedate.jpg
+  image:
   url: https://cybernews.com/security/investigator-exposes-white-supremacist-sites-users/
