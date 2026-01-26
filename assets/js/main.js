@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // -----------------------------------------------
 
   // CONFIGURAÇÃO
-  const COMMAND_TEXT = "./news.sh";
+  const COMMAND_TEXT = "./nvdd.sh";
   
   // Mensagens separadas
   const MSG_LINE_1 = "Pronto.";
