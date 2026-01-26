@@ -10,7 +10,7 @@ Depois de assistir uma palestra da **Free Software Foundation** em 2017 e ter um
 
 ### Estação de Trabalho [default]
 
-* **Hardware:** Razer Blade Stealth.
+* **Hardware:** Razer Blade Stealth Late 2019.
 * **Wi-Fi:** Downgrade Intel AX201 para Broadcom DW1560 ativando AirDrop.
 * **NVMe:** Upgrade para o Samsung 970 EVO Plus. 1TB + High IOPS.
 * **Triple-Boot:**
