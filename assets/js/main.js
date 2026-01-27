@@ -8,20 +8,23 @@ document.addEventListener("DOMContentLoaded", function() {
   const targetTerminal = document.querySelector('.feed-terminal') || document.querySelector('.terminal-window');
 
   if (header && targetTerminal) {
+    let ticking = false;
+
     window.addEventListener('scroll', () => {
-      // 1. Pega a posição do terminal relativa à janela visual (viewport)
-      const termRect = targetTerminal.getBoundingClientRect();
-      
-      // 2. Altura do Header (ponto de colisão)
-      const headerHeight = header.offsetHeight;
-      
-      // 3. Lógica de Colisão:
-      // Se o topo do terminal tocou ou passou pra cima da base do header...
-      // Ajuste fino: +10px de tolerância para garantir a transição suave
-      if (termRect.top <= (headerHeight + 10)) {
-        header.classList.add('header-terminal-mode');
-      } else {
-        header.classList.remove('header-terminal-mode');
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const termRect = targetTerminal.getBoundingClientRect();
+          const headerHeight = header.offsetHeight;
+          
+          // Buffer aumentado para 15px para evitar flicker em telas de toque imprecisas
+          if (termRect.top <= (headerHeight + 15)) {
+            header.classList.add('header-terminal-mode');
+          } else {
+            header.classList.remove('header-terminal-mode');
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     });
   }

@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
   styleSheet.innerText = `
     /* --- BASE MENTION (Interativo) --- */
     .mention-link {
-      color: #FF79C6; 
+      color: var(--link-color); /* ERA #FF79C6 */
       text-decoration: none;
       transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       border-radius: 4px;
@@ -14,54 +14,25 @@ document.addEventListener("DOMContentLoaded", function() {
       border: 1px solid transparent; 
     }
     .mention-link:hover {
-      color: #FF79C6; 
-      background-color: rgba(255, 121, 198, 0.1); 
-      border-color: rgba(255, 121, 198, 0.5);
-      box-shadow: 0 0 15px rgba(255, 121, 198, 0.15);
+      color: var(--link-color); 
+      background-color: rgba(189, 147, 249, 0.1); /* Mantive RGB para alpha, mas idealmente use var se possível ou deixe fixo por opacidade */
+      border-color: rgba(189, 147, 249, 0.5);
+      box-shadow: 0 0 15px rgba(189, 147, 249, 0.15);
       cursor: pointer;
     }
-
-    /* --- IMAGE ATTACHMENT STYLE --- */
-    .embed-image-wrapper {
-      margin: 30px 0;
-      display: flex; 
-      flex-direction: column; 
-      width: fit-content; 
-      max-width: 100%;
-      background-color: transparent;
-      border: none;
-      border-radius: 6px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      line-height: 0; 
-    }
-    
-    .embed-image {
-      display: block; width: 100%; height: auto; object-fit: cover;
-      opacity: 0.95; transition: opacity 0.4s ease;
-      padding: 0 !important; margin: 0 !important;
-      background: none !important; border: none !important; 
-      border-radius: 0 !important; box-shadow: none !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-    }
-    
-    .embed-image:hover { opacity: 1; }
-    
+    /* ... (restante do código) ... */
     .embed-caption {
-      line-height: 1.5; width: 100%; box-sizing: border-box; padding: 8px 12px;
-      font-size: 0.85em; color: #6272a4; font-family: 'JetBrains Mono', monospace;
-      background-color: var(--card-bg, #1c1a26); 
+      /* ... */
+      color: var(--base-color); /* ERA #6272a4 */
+      background-color: var(--card-bg); 
     }
-
-    /* --- CODE TERMINAL INJECTION --- */
-    .embedded-terminal { margin: 20px 0; width: 100%; }
     .embedded-terminal pre {
-      margin: 0; padding: 0;
-      background: transparent; border: none;
-      white-space: pre-wrap; font-size: 0.9em; color: #f8f8f2;
+      /* ... */
+      color: var(--text-color); /* ERA #f8f8f2 */
     }
     .embedded-loading {
-      color: #6272a4; font-style: italic; padding: 20px; text-align: center;
+      color: var(--base-color); /* ERA #6272a4 */
+      /* ... */
     }
   `;
   document.head.appendChild(styleSheet);

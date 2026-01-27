@@ -58,7 +58,8 @@ body::before {
   background-size: 100% 4px;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.1;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
 }
 
 /* --- HEADERS --- */
@@ -453,6 +454,53 @@ main img:hover {
   white-space: pre-wrap;       /* [CRÍTICO] Respeita o ENTER do seu código */
   font-family: 'JetBrains Mono', monospace; /* Garante a fonte mono desde o início */
   display: block;
+}
+
+/* ==========================================================================
+   TAGS: GHOST PROTOCOL (ULTRA DISCREET)
+   ========================================================================== */
+code.tag {
+  display: inline-block;
+  color: #e2e4e9;
+  /* FUNDO: Quase inexistente (3% de branco). 
+     Apenas o suficiente para separar visualmente do fundo preto, 
+     sem criar uma "caixa" pesada. */
+  background-color: rgba(255, 255, 255, 0.03); 
+  
+  /* BORDA: Removida completamente no estado natural */
+  border: 1px solid transparent; 
+  border-radius: 4px;
+  
+  padding: 1px 6px; /* Padding reduzido para ficar mais compacto */
+  margin: 0 3px;
+  
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85em;
+  font-weight: 500; /* Peso médio para leitura limpa */
+  
+  /* Transição lenta para não assustar no hover */
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: default;
+}
+
+/* CORES (Mantendo a semântica, mas sem o peso das bordas) */
+code.tag.x { color: #f1fa8c; } /* Executável: Amarelo Pálido */
+code.tag.d { color: #8be9fd; } /* Diretório: Ciano */
+code.tag.f { color: #bd93f9; } /* Arquivo: Roxo */
+code.tag.m { color: #ffb86c; } /* Arquivo: Laranja Dracula */
+code.tag.k { color: #ff79c6; } /* Comando Interno: Pink Dracula */
+
+/* HOVER STATE (A interface "acorda") */
+code.tag:hover {
+  /* O fundo escurece levemente para destacar o texto (Deep Chip logic) */
+  background-color: #0b0a10;
+  
+  /* A borda aparece suavemente usando a cor do próprio texto */
+  border-color: rgba(255, 255, 255, 0.1); 
+  
+  /* Feedback sutil */
+  transform: translateY(0); /* Sem pulo físico, apenas luz */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
 /* ==========================================================================

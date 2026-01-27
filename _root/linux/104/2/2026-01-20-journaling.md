@@ -15,12 +15,24 @@ Página de exemplo para mostrar que sou capaz de manter a integralidade dos sist
 - Monitorar os espaços livres e inodes.
 - Reparar problemas simples dos sistemas de arquivos.
 
-du
-df
-fsck
-e2fsck
-mke2fs
-tune2fs
-xfs_repair
-xfs_fsr
-xfs_db
+`du`
+`df`
+`fsck`
+`e2fsck`
+`mke2fs`
+`tune2fs`
+`xfs_repair`
+`xfs_fsr`
+`xfs_db`
+
+<div class="terminal-box">
+  <div class="terminal-header">
+    <div class="terminal-controls">
+      <span class="win-btn btn-min">_</span>
+      <span class="win-btn btn-close">x</span>
+    </div>
+  </div>
+  
+  <div class="auto-term">
+fxlip@www:~/linux/104/2$
+</div>
