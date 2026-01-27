@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
       if (area.innerHTML.match(regex)) {
           area.innerHTML = area.innerHTML.replace(regex, function(match, path) {
-            const url = `https://felip.com.br/${path}`;
+            const url = `/${path}`;
 
             // A. CASO IMAGEM
             if (isImage(path)) {
