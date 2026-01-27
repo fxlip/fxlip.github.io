@@ -3,9 +3,43 @@ layout: default
 ---
 
 <article class="post">
-  
+
+  {% assign pv = site.data.previews[page.slug] %}
+
   <div class="post-content">
-    {{ content }}
+    {% if pv %}
+      {{ content | remove: pv.url }}
+    {% else %}
+      {{ content }}
+    {% endif %}
   </div>
+
+  {% if pv %}
+    {% if pv.video_id %}
+      <div class="video-wrapper">
+        <iframe src="https://www.youtube.com/embed/{{ pv.video_id }}?rel=0&modestbranding=1" title="{{ pv.title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      </div>
+    {% else %}
+      <a href="{{ pv.url }}" target="_blank" rel="noopener noreferrer" 
+         class="link-card {% unless pv.image %}no-image{% endunless %}">
+        
+        {% if pv.image %}
+          <img src="{{ pv.image }}" 
+               alt="{{ pv.title | escape }}" 
+               class="lc-img" 
+               onerror="this.style.display='none';this.closest('.link-card').classList.add('no-image');" />
+        {% endif %}
+        
+        <div class="lc-meta">
+          <div class="lc-host">{{ pv.title }}</div>
+          {% if pv.description %}<div class="lc-desc">{{ pv.description }}</div>{% endif %}
+          
+          <div class="lc-site">
+            {{ pv.url | replace: 'https://', '' | replace: 'http://', '' | split: '/' | first }}
+          </div>
+        </div>
+      </a>
+    {% endif %}
+  {% endif %}
 
 </article>
