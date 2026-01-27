@@ -13,7 +13,7 @@
             {%- if page.url == my_page.url -%}
               <span class="menu-active">{{ link_label | escape }}</span>
             {%- else -%}
-              <a href="https://fxlip.com{{ my_page.url }}">{{ link_label | escape }}</a>
+              <a href="{{ my_page.url }}">{{ link_label | escape }}</a>
             {%- endif -%}
           </li>
         {%- endif -%}
