@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
     'proc', 'root', 'run', 'sbin', 'srv', 'sys', 'tmp', 'usr', 'var', 'snap', 
     'lost+found', 'assets', 'img', 'css', 'js', 'node_modules', '_posts', 
     '_site', '_includes', '_layouts', 'files', 'linux', 'feed', 'about', 
-    'setup', 'shop', 'curadoria', 'lpi1', 'script'
+    'setup', 'shop', 'curadoria', 'lpi1', 'www', 'script'
   ]);
   
   // Links simbólicos e arquivos de sistema (Roxo/Cinza)

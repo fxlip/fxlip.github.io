@@ -368,15 +368,19 @@ main img:hover {
 }
 .win-btn:hover { background: transparent !important; opacity: 1; }
 
-/* Ajuste geométrico do underscore (_) para alinhar com o (x) */
-.btn-min { 
-  transform: none; 
-  font-weight: 900; 
-  display: flex !important; /* Força flex */
+.btn-min {
+  /* Alinhamento estrutural */
+  display: flex !important;
   align-items: center;
   justify-content: center;
-  line-height: normal; /* Reseta altura de linha */
-  padding-bottom: 2px; /* Micro-ajuste ótico para a fonte JetBrains */
+  height: 100%;
+  
+  /* Ajuste visual Fino: Desce 3 pixels */
+  transform: translateY(3px) !important;
+  
+  font-weight: 900;
+  padding: 0 !important;
+  line-height: normal;
 }
 .btn-min:hover { color: #f1fa8c; }   /* Amarelo ao minimizar */
 .btn-close:hover { color: #ff5555; } /* Vermelho ao fechar */

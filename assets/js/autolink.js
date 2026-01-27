@@ -5,23 +5,17 @@ document.addEventListener("DOMContentLoaded", function() {
   // ==========================================================================
   const styleSheet = document.createElement("style");
   styleSheet.innerText = `
-    /* --- FOOTER ELEMENTS (Metadados do Post) --- */
+    /* --- FOOTER ELEMENTS --- */
     .post-footer {
       display: flex; justify-content: space-between; align-items: center; 
       width: 100%; 
       font-family: 'JetBrains Mono', monospace; font-size: 12px;
     }
-
-    /* DATA */
-    .sys-date {
-      color: var(--base-color); 
-      opacity: 0.9;
-    }
-
-    /* HASH LINK: Estilo Ghost Clicável */
+    .sys-date { color: var(--base-color); opacity: 0.9; }
+    
     .sys-hash-link {
       font-family: 'JetBrains Mono', monospace;
-      color: var(--placeholder-color) !important; /* #5c5f77 */
+      color: var(--placeholder-color) !important;
       opacity: 0.4;
       text-decoration: none !important;
       border-bottom: none !important;
@@ -29,8 +23,6 @@ document.addEventListener("DOMContentLoaded", function() {
       cursor: pointer !important;
       pointer-events: auto !important; 
     }
-
-    /* HASH HOVER: Ciano Neon */
     .sys-hash-link:hover {
       color: var(--accent-cyan-bright) !important; 
       text-shadow: 0 0 8px rgba(139, 233, 253, 0.6); 
@@ -38,32 +30,28 @@ document.addEventListener("DOMContentLoaded", function() {
       background: transparent !important;
     }
 
-    /* --- WINDOW CONTROLS (FLEXBOX PURIST) --- */
+    /* --- WINDOW CONTROLS (POSICIONAMENTO FINO) --- */
     .btn-min {
-      transform: none !important;
+      /* [UPDATE] Movemos visualmente 3px para baixo para sair do centro absoluto */
+      transform: translateY(3px) !important; 
+      
       font-weight: 900;
       display: inline-flex !important;
       align-items: center;
       justify-content: center;
       height: 100%;
       padding: 0 !important;
-      padding-bottom: 2px !important; /* Micro-ajuste ótico */
       line-height: normal !important;
     }
 
-    /* --- CARDS INTERNOS (RT CLEAN) --- */
+    /* --- CARDS INTERNOS --- */
     .internal-ref {
       text-decoration: none !important;
       margin-bottom: 0 !important;
       display: block;
     }
     .internal-ref .lc-meta { padding-top: 4px; }
-    
-    /* [CRÍTICO] Título do Snippet OCULTO */
-    .internal-ref .lc-host { 
-      display: none !important; 
-    }
-    
+    .internal-ref .lc-host { display: none !important; }
     .internal-ref .lc-desc {
       font-size: 0.95em; line-height: 1.5;
       color: #f8f8f2; margin-top: 0;
@@ -93,13 +81,23 @@ document.addEventListener("DOMContentLoaded", function() {
   document.head.appendChild(styleSheet);
 
   // ==========================================================================
-  // 2. UTILS
+  // 2. MÓDULO: AUTOTERM (Parsing de Terminais Estáticos)
+  // ==========================================================================
+  window.processAutoTerm = function() {
+    // Nota: O processamento pesado agora está no autoterm.js dedicado.
+    // Esta função fica aqui apenas como fallback ou para terminais simples do feed
+    // que não usam a estrutura completa do autoterm.js
+    // Se o autoterm.js estiver carregado, ele assumirá o controle.
+  };
+
+  // ==========================================================================
+  // 3. UTILS
   // ==========================================================================
   const isImage = (path) => /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(path);
   const isCode = (path) => /\.(txt|md|sh|js|css|py|rb|html|json|conf|yml|yaml)$/i.test(path);
 
   // ==========================================================================
-  // 3. LINKIFY
+  // 4. LINKIFY
   // ==========================================================================
   window.linkifyInternalUrls = function(context = document) {
     const walker = document.createTreeWalker(context.body || context, NodeFilter.SHOW_TEXT, null, false);
@@ -107,6 +105,9 @@ document.addEventListener("DOMContentLoaded", function() {
     while(walker.nextNode()) {
       const node = walker.currentNode;
       if (['A', 'SCRIPT', 'STYLE', 'TEXTAREA', 'PRE', 'CODE'].includes(node.parentElement.tagName)) continue;
+      // Pula se estiver dentro do terminal que acabamos de processar
+      if (node.parentElement.closest('.auto-term') || node.parentElement.closest('.t-cmd')) continue;
+
       const regex = /(https?:\/\/(?:www\.)?felip\.com\.br\/[a-zA-Z0-9\-\.]+\.html)/g;
       if (regex.test(node.nodeValue)) nodesToReplace.push({ node, text: node.nodeValue });
     }
@@ -124,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   // ==========================================================================
-  // 4. CARDS
+  // 5. CARDS (RT)
   // ==========================================================================
   window.processInternalEmbeds = function(context = document) {
     const links = context.querySelectorAll('.post-content a, .t-out a'); 
@@ -166,7 +167,6 @@ document.addEventListener("DOMContentLoaded", function() {
           
           const urlObj = new URL(link.href);
           const filename = urlObj.pathname.split('/').filter(p => p).pop() || urlObj.hostname;
-          
           const displayHash = filename.replace('.html', '');
 
           const contentDiv = doc.querySelector('.post-content');
@@ -186,7 +186,6 @@ document.addEventListener("DOMContentLoaded", function() {
           const card = document.createElement('a');
           card.href = link.href;
           card.className = 'link-card no-image internal-ref';
-          
           card.title = `./${filename}`;
           
           card.innerHTML = `
@@ -206,35 +205,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   };
 
-  // ==========================================================================
-  // 5. BOOT
-  // ==========================================================================
-  window.applyMentions = function(context = document) {
-    const contentAreas = context.querySelectorAll('.post-content, .terminal-window p, .terminal-window div, .post-item, article, main');
-    contentAreas.forEach(area => {
-      if (area.dataset.mentionsProcessed) return;
-      const regex = /@([a-zA-Z0-9_\-\/\.]+)/g;
-      if (regex.test(area.innerHTML)) {
-          area.innerHTML = area.innerHTML.replace(regex, function(match, path) {
-            const url = `/${path}`;
-            if (isImage(path)) return `<span class="embed-image-wrapper"><img src="${url}" class="embed-image" alt="${path}" onerror="this.style.display='none'"><span class="embed-caption">./${path}</span></span>`;
-            if (isCode(path)) return `<div class="terminal-box embedded-terminal" data-src="${url}"><div class="terminal-header"><div class="terminal-controls"><span style="font-size:12px; color:#bd93f9; margin-right:10px;">./${path}</span></div></div><div class="terminal-body"><div class="embedded-loading"><span class="cursor-blink">█</span> loading...</div></div></div>`;
-            return `<a href="${url}" class="mention-link" title="./${path}">${match}</a>`;
-          });
-      }
-      area.dataset.mentionsProcessed = "true";
-    });
-    context.querySelectorAll('.embedded-terminal[data-src]').forEach(terminal => {
-       const url = terminal.dataset.src;
-       const body = terminal.querySelector('.terminal-body');
-       terminal.removeAttribute('data-src');
-       fetch(url).then(r => r.ok?r.text():Promise.reject("404")).then(text => {
-           const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-           body.innerHTML = `<pre>${safeText}</pre>`;
-       }).catch(err => { body.innerHTML = `<div class="t-out" style="color:#ff5555">Erro: ${err}</div>`; });
-    });
-  };
-
+  // ORDEM DE EXECUÇÃO
   window.applyMentions();
   window.linkifyInternalUrls();
   window.processInternalEmbeds();
