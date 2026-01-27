@@ -38,16 +38,15 @@ document.addEventListener("DOMContentLoaded", function() {
       background: transparent !important;
     }
 
-    /* --- WINDOW CONTROLS (FIX FINAL) --- */
-    /* Removemos o translateY para que o caractere '−' centralize naturalmente pelo Flexbox */
+    /* --- WINDOW CONTROLS (FIX ALINHAMENTO) --- */
     .btn-min {
-      transform: none !important; 
-      font-weight: 900;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       height: 100%;
-      padding-top: 1px; /* Ajuste micro visual se necessário */
+      font-weight: 900;
+      line-height: 0;        /* [FIX] Mata a altura de linha para centralizar */
+      padding-bottom: 3px;   /* [FIX] Empurra levemente para cima visualmente */
     }
 
     /* --- CARDS INTERNOS (RT CLEAN) --- */
@@ -58,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     .internal-ref .lc-meta { padding-top: 4px; }
     
-    /* [FIX] Título Oculto Novamente */
+    /* [CRÍTICO] Título do Snippet OCULTO */
     .internal-ref .lc-host { 
       display: none !important; 
     }
@@ -165,6 +164,8 @@ document.addEventListener("DOMContentLoaded", function() {
           
           const urlObj = new URL(link.href);
           const filename = urlObj.pathname.split('/').filter(p => p).pop() || urlObj.hostname;
+          
+          const displayHash = filename.replace('.html', '');
 
           const contentDiv = doc.querySelector('.post-content');
           let rawText = "";
@@ -184,12 +185,11 @@ document.addEventListener("DOMContentLoaded", function() {
           card.href = link.href;
           card.className = 'link-card no-image internal-ref';
           
-          // Tooltip: ./filename.html
           card.title = `./${filename}`;
           
           card.innerHTML = `
             <div class="lc-meta">
-              <div class="lc-host">fxlip/${filename}</div>
+              <div class="lc-host">fxlip/${displayHash}</div>
               <div class="lc-desc">${desc}</div>
               <div class="lc-site">felip.com.br</div>
             </div>

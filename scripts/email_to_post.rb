@@ -144,9 +144,10 @@ begin
           case command
           when 'quick_post'
             slug = SecureRandom.hex(8)
-            # [UPDATE] O título agora é o próprio arquivo (ex: a1b2c3d4.html)
-            # Isso garante consistência total entre Backend e Frontend
-            title_text = "#{slug}.html"
+            
+            # [FIX] Título limpo (apenas o hash), sem extensão.
+            # O permalink abaixo cuida da URL ser .html
+            title_text = slug 
             
             date = DateTime.now
             filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
