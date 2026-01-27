@@ -45,46 +45,47 @@ document.addEventListener("DOMContentLoaded", function() {
   const isCode = (path) => /\.(txt|md|sh|js|css|py|rb|html|json|conf|yml|yaml)$/i.test(path);
 
   // ==========================================================================
-  // 3. MÓDULO: INTERNAL RT (QUOTE TWEET)
+  // 3. MÓDULO: INTERNAL RT (QUOTE TWEET) - V3 (Localhost Aware)
   // ==========================================================================
   window.processInternalEmbeds = function(context = document) {
-    // [UPDATE] Amplia a busca para qualquer link dentro de posts ou output do terminal
     const links = context.querySelectorAll('.post-content a, .t-out a'); 
     const currentHost = window.location.hostname;
+    const prodHost = 'felip.com.br';
 
     links.forEach(link => {
-      // 1. Evita processamento duplo
       if (link.dataset.processed) return;
       
-      // 2. [CORREÇÃO CRÍTICA] Lista Branca de Domínios
-      // Permite felip.com.br mesmo se estiver rodando no localhost
-      const allowedHosts = [currentHost, 'localhost', '127.0.0.1', 'felip.com.br', 'www.felip.com.br'];
+      // Lista de domínios permitidos
+      const allowedHosts = [currentHost, 'localhost', '127.0.0.1', prodHost, 'www.' + prodHost];
       if (!allowedHosts.includes(link.hostname)) return;
 
-      // 3. Filtro "Naked Link" (Texto == URL)
-      // Remove barra final para comparação justa
+      // Filtro Naked Link
       const linkText = link.innerText.trim().replace(/\/$/, '');
       const linkHref = link.href.trim().replace(/\/$/, '');
-      
-      // Se o usuário escreveu "Clique [aqui](url)", ignoramos. Só queremos links crus.
       if (linkText !== linkHref && linkText !== link.href) return;
 
-      // Marca como processado para não entrar em loop
       link.dataset.processed = "true"; 
       
-      // Cria o Loading
       const loader = document.createElement('div');
       loader.className = 'rt-loading';
       loader.innerHTML = '<span class="cursor-blink">█</span> resolving ref...';
       
-      // Insere Loading e oculta link original
       link.style.display = 'none';
       link.parentNode.insertBefore(loader, link.nextSibling);
 
-      // Tenta buscar o conteúdo
-      // NOTA: Se rodar no localhost buscando felip.com.br, pode dar erro de CORS dependendo do browser.
-      // Se der erro, o .catch restaura o link normal.
-      fetch(link.href)
+      // [FIX CRÍTICO] Roteamento Inteligente
+      // Se o link aponta para felip.com.br mas estou no localhost, uso caminho relativo.
+      // Isso permite que o fetch funcione em posts novos que ainda não subiram.
+      let fetchUrl = link.href;
+      if (currentHost.includes('localhost') || currentHost.includes('127.0.0.1')) {
+        if (link.hostname.includes(prodHost)) {
+           // Transforma https://felip.com.br/foo.html em /foo.html
+           const urlObj = new URL(link.href);
+           fetchUrl = urlObj.pathname;
+        }
+      }
+
+      fetch(fetchUrl)
         .then(response => {
           if (!response.ok) throw new Error("Post não encontrado (404)");
           return response.text();
@@ -93,36 +94,32 @@ document.addEventListener("DOMContentLoaded", function() {
           const parser = new DOMParser();
           const doc = parser.parseFromString(html, 'text/html');
 
-          // A. EXTRAÇÃO DO NOME DO ARQUIVO (URL limpa)
+          // Extração
           const urlObj = new URL(link.href);
           const filename = urlObj.pathname.split('/').filter(p => p).pop() || urlObj.hostname;
 
-          // B. EXTRAÇÃO DA DESCRIÇÃO (Conteúdo do Post)
           const contentDiv = doc.querySelector('.post-content');
           let rawText = "";
 
           if (contentDiv) {
-            // Clona para limpar sujeira (scripts, terminais, styles) sem afetar o DOM original
             const clone = contentDiv.cloneNode(true);
             const garbages = clone.querySelectorAll('script, style, .terminal-box, .terminal-controls');
             garbages.forEach(g => g.remove());
             rawText = clone.innerText || "";
           } else {
-            // Fallback agressivo se não achar a classe
             rawText = doc.body.innerText;
           }
 
-          // Limpa quebras de linha múltiplas e trunca
           rawText = rawText.replace(/\s+/g, ' ').trim();
           const maxLength = 150;
           const desc = rawText.length > maxLength 
             ? rawText.substring(0, maxLength) + "..." 
             : rawText;
 
-          // C. MONTAGEM DO CARD (Usando classes nativas .link-card)
+          // Criação do Card
           const card = document.createElement('a');
           card.href = link.href;
-          card.className = 'link-card no-image internal-ref'; // Adicionei classe extra para debug se precisar
+          card.className = 'link-card no-image internal-ref';
           
           card.innerHTML = `
             <div class="lc-meta">
@@ -132,12 +129,10 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
           `;
 
-          // Substitui o loading pelo card real
           loader.replaceWith(card);
         })
         .catch(err => {
           console.warn("AutoLink RT Falhou:", err);
-          // Em caso de erro (CORS, 404, Offline), volta a ser um link texto rosa
           loader.remove();
           link.style.display = 'inline';
           link.classList.add('mention-link');
