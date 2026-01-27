@@ -63,9 +63,16 @@ layout: default
               {% endif %}
             {% endif %}
 
-            <time class="post-date" datetime="{{ post.date | date: "%Y-%m-%d %H:%M" }}">
-              {{ post.date | date: "%H:%M" }} · {{ post.date | date: "%-d de %b de %Y" | downcase }}
-            </time>
+            <div class="post-footer" style="margin-top: 15px;">
+              
+              <a href="{{ post.url }}" class="sys-hash-link" title="Permalink">
+                {{ post.url | split: '/' | last }}
+              </a>
+
+              <time class="sys-date" datetime="{{ post.date | date: "%Y-%m-%d %H:%M" }}">
+                {{ post.date | date: "%H:%M" }} · {{ post.date | date: "%-d de %b de %Y" | downcase }}
+              </time>
+            </div>
 
             <hr class="post-list__divider">
           </article>
