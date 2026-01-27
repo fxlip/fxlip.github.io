@@ -38,15 +38,17 @@ document.addEventListener("DOMContentLoaded", function() {
       background: transparent !important;
     }
 
-    /* --- WINDOW CONTROLS (FIX ALINHAMENTO) --- */
+    /* --- WINDOW CONTROLS (FLEXBOX PURIST) --- */
     .btn-min {
-      display: inline-flex;
+      transform: none !important;
+      font-weight: 900;
+      display: inline-flex !important;
       align-items: center;
       justify-content: center;
       height: 100%;
-      font-weight: 900;
-      line-height: 0;        /* [FIX] Mata a altura de linha para centralizar */
-      padding-bottom: 3px;   /* [FIX] Empurra levemente para cima visualmente */
+      padding: 0 !important;
+      padding-bottom: 2px !important; /* Micro-ajuste ótico */
+      line-height: normal !important;
     }
 
     /* --- CARDS INTERNOS (RT CLEAN) --- */
