@@ -162,12 +162,16 @@ begin
             filepath = File.join(POSTS_ROOT, filename)
             body = extract_body(email)
             
+            # [SYSTEM UPDATE]
+            # - Category: feed (Mantido para organização interna do Jekyll)
+            # - Permalink: Raiz ( /HASH/ )
             front_matter = <<~HEREDOC
             ---
             layout: post
             title: "#{title_text}"
             date: #{date.to_s}
-            categories: [cotidiano]
+            permalink: /#{slug}/
+            categories: [feed]
             tags: [quicklog]
             ---
             HEREDOC

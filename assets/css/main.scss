@@ -279,20 +279,26 @@ main img:hover {
 }
 
 /* ==========================================================================
-   5. COMPONENT: TERMINAL WINDOW (UNIFIED)
+   5. COMPONENT: TERMINAL WINDOW (UNIFIED SYSTEM)
    ========================================================================== */
+
+/* --- 5.1. CONTAINER & STRUCTURE --- */
 .terminal-box {
   background-color: var(--code-bg);
+  border: 1px solid #333545;
   border-radius: 6px;
   box-shadow: var(--terminal-shadow);
   margin: 30px 0;
-  border: 1px solid #333545;
   overflow: hidden;
-  font-family: inherit; font-size: 14px;
-  text-align: left; width: 100%;
+  font-family: inherit; 
+  font-size: 14px;
+  text-align: left; 
+  width: 100%;
 }
 
-/* [FIX] Link Killer (Lista de Exceções) */
+/* --- 5.2. INTERACTION LAYER (LINK LOGIC) --- */
+
+/* [DEFAULT] Link Killer: Mata links padrão dentro do terminal para evitar cliques acidentais */
 .terminal-box a:not(.mention-link):not(.link-card) {
   color: inherit !important;
   text-decoration: none !important;
@@ -301,101 +307,122 @@ main img:hover {
   border-bottom: none !important;
 }
 
-/* Interatividade para Mentions */
+/* [EXCEPTION 1] Mentions Internas (@file) */
 .terminal-box a.mention-link {
   pointer-events: auto !important;
   cursor: pointer !important;
 }
 
-/* [FIX CRÍTICO] Interatividade para Link Cards */
-/* REMOVIDO: border-bottom !important (Isso estava travando o visual) */
-/* MANTIDO: pointer-events auto (Para garantir o clique) */
+/* [EXCEPTION 2] Link Cards (Previews Externos) */
 .terminal-box a.link-card {
   pointer-events: auto !important;
   cursor: pointer !important;
 }
 
-/* Barra de Título */
+/* [EXCEPTION 3] Post Links (Ressurreição de links em posts rápidos/feed) */
+.terminal-box .post-content a:not(.mention-link):not(.link-card) {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  color: var(--link-color) !important;
+  border-bottom: 1px solid transparent !important;
+}
+.terminal-box .post-content a:not(.mention-link):not(.link-card):hover {
+  color: var(--link-hover-color) !important;
+  border-bottom-color: var(--link-hover-color) !important;
+}
+
+/* --- 5.3. HEADER & CONTROLS --- */
 .terminal-header {
   background-color: #1a1b24; 
-  padding: 0 10px; height: 32px;
-  display: flex; align-items: center; justify-content: flex-end;
+  padding: 0 10px; 
+  height: 32px;
+  display: flex; 
+  align-items: center; 
+  justify-content: flex-end;
   border-bottom: 1px solid #2d2b3b;
 }
 
 .terminal-controls {
-  display: flex; gap: 4px; height: 100%; align-items: center;
+  display: flex; 
+  gap: 4px; 
+  height: 100%; 
+  align-items: center;
 }
 
-/* Botões da Janela */
 .win-btn {
-  color: #6272a4; opacity: 0.6; cursor: pointer;
-  font-family: sans-serif; font-size: 13px; font-weight: bold;
-  display: flex; align-items: center; justify-content: center;
-  line-height: 1; width: 20px; height: 20px; border-radius: 2px;
+  color: #6272a4; 
+  opacity: 0.6; 
+  cursor: pointer;
+  font-family: sans-serif; 
+  font-size: 13px; 
+  font-weight: bold;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  line-height: 1; 
+  width: 20px; 
+  height: 20px; 
+  border-radius: 2px;
   transition: opacity 0.2s, color 0.2s;
   background: transparent !important;
 }
 .win-btn:hover { background: transparent !important; opacity: 1; }
 
-/* [FIX] Alinhamento Vertical do Underscore 
-   O translateY(-4px) sobe o caractere para alinhar visualmente com o meio do 'x' */
-.btn-min { 
-  transform: translateY(-4px); 
-  font-weight: 900; /* Um pouco mais grosso para igualar o peso do X */
-}
+/* Ajuste geométrico do underscore (_) para alinhar com o (x) */
+.btn-min { transform: translateY(-4px); font-weight: 900; }
+.btn-min:hover { color: #f1fa8c; }   /* Amarelo ao minimizar */
+.btn-close:hover { color: #ff5555; } /* Vermelho ao fechar */
 
-.btn-min:hover { color: #f1fa8c; }
-.btn-close:hover { color: #ff5555; }
-
-/* Corpo */
+/* --- 5.4. BODY & CONTENT --- */
 .terminal-body {
-  padding: 10px 15px; color: #f8f8f2; overflow-x: auto; line-height: 1.5; 
+  padding: 10px 15px; 
+  color: #f8f8f2; 
+  overflow-x: auto; 
+  line-height: 1.5; 
 }
 .terminal-body div { margin: 0; padding: 0; }
 
 .terminal-body hr, .terminal-body .post-list__divider {
-  border: 0; border-bottom: var(--border); 
-  margin: 3em 0; width: 100%; display: block; opacity: 0.6;                 
+  border: 0; 
+  border-bottom: var(--border); 
+  margin: 3em 0; 
+  width: 100%; 
+  display: block; 
+  opacity: 0.6;                 
 }
 
-/* Sintaxe */
-.t-user { color: var(--link-color); font-weight: bold; }
-.t-host { color: var(--link-hover-color); font-weight: bold; }
-.t-path { color: #D8B4FE; font-style: italic; }
-/* [FIX] Ajuste de Kerning do Prompt ($) */
-.t-path + .t-gray {
-  margin-left: 5px;  /* Afasta do ~/feed */
-  margin-right: 2px; /* Dá um leve respiro antes do comando */
-  display: inline-block; /* Garante que a margem seja renderizada corretamente */
+/* Preserva quebras de linha para o parser JS */
+.auto-term {
+  white-space: pre-wrap;
+  font-family: 'JetBrains Mono', monospace;
+  display: block;
 }
+
+/* --- 5.5. SYNTAX HIGHLIGHTING (THEME) --- */
+.t-user { color: var(--link-color); font-weight: bold; }       /* Rosa */
+.t-host { color: var(--link-hover-color); font-weight: bold; } /* Roxo */
+.t-path { color: #D8B4FE; font-style: italic; }                /* Lilás */
+.t-dim  { color: #6272a4; }                                    /* Comentário */
 .t-gray, .t-cmd { color: var(--base-color); font-weight: normal; }
+
+/* Kerning do Prompt ($): Respiro visual */
+.t-path + .t-gray {
+  margin-left: 5px; 
+  margin-right: 2px; 
+  display: inline-block; 
+}
+
+/* Output Genérico */
 .t-out { 
   color: #bfbfbf; 
   display: block; 
   white-space: pre-wrap; 
   line-height: 1.5;
 }
-.t-out:empty {
-  display: none;
-  margin: 0;
-  padding: 0;
-}
-.t-dim { color: #6272a4; }
+.t-out:empty { display: none; }
 
-/* Feed & Loader */
-.feed-terminal { 
-  margin-top: 55px; 
-  margin-bottom: 60px; 
-  width: 100%; 
-  font-size: 14px; 
-}
-.terminal-loader { display: inline; margin: 0; padding: 0; font-family: inherit; font-size: inherit; color: var(--text-color); background: transparent; border: none; }
-.cursor-blink { display: inline-block; color: #ffffff; animation: blink 1.5s infinite; margin-left: 3px; vertical-align: baseline; transform: translateY(-2px); line-height: 1; }
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-.t-eof { margin-top: 2px; margin-bottom: 60px; color: inherit; display: block; }
-
-/* [NEW] LS Command System (Linux Logic: Vertical Flow) */
+/* --- 5.6. FILE SYSTEM DISPLAY (LS OUTPUT) --- */
+/* Layout em Colunas Verticais (Estilo Linux real) */
 .t-ls {
   column-width: 100px; 
   column-gap: 15px;
@@ -408,35 +435,22 @@ main img:hover {
 .t-ls span {
   display: block;
   break-inside: avoid; 
-  page-break-inside: avoid;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: default;
-  line-height: 1.4; /* Espaçamento leve para leitura */
+  line-height: 1.4;
 }
 
-/* [NEW] LS Colors (Sober & Semantic) */
+/* Semântica de Arquivos (LS Colors) */
+.d { color: #8be9fd; font-weight: bold; }   /* Diretórios: Ciano */
+.x { color: #f1fa8c; font-weight: bold; }   /* Executáveis: Verde/Amarelo */
+.f { color: #f8f8f2; font-weight: normal; } /* Arquivos: Branco */
+.l { color: #bd93f9; font-weight: normal; } /* Symlinks: Roxo */
+.z { color: #ffb86c; font-weight: bold; }   /* Zip/Tar: Laranja */
+.h { color: #6272a4; }                      /* Ocultos: Cinza Azulado */
 
-/* Diretórios: Ciano Vibrante (Mantido) */
-.d { color: #8be9fd; font-weight: bold; } 
-
-/* Executáveis: Verde (Mantido) */
-.x { color: #f1fa8c; font-weight: bold; }
-
-/* [NEW] Arquivos Comuns (.f): Branco Gelo (Sóbrio e limpo) */
-.f { color: #f8f8f2; font-weight: normal; }
-
-/* [UPDATE] Symlinks (.l): Roxo Suave (Sem itálico, mais elegante) */
-.l { color: #bd93f9; font-weight: normal; } 
-
-/* Arquivos Compactados: Laranja (Dracula Orange - Melhor que vermelho) */
-.z { color: #ffb86c; font-weight: bold; } 
-
-/* Ocultos/Dotfiles: Comentário (Mantido) */
-.h { color: #6272a4; }
-
-/* Sticky Bit (Aquele ajuste do tmp que fizemos) */
+/* Sticky Bit (tmp) */
 .st { 
   color: #50fa7b; 
   background-color: rgba(80, 250, 123, 0.1); 
@@ -447,59 +461,64 @@ main img:hover {
   margin-right: auto;
 }
 
-/* [FIX] Auto-Term Raw State 
-   Garante que o texto bruto mantenha as quebras de linha ANTES do Javascript processar.
-   Sem isso, o JS recebe uma linha única e o parser de prompt falha. */
-.auto-term {
-  white-space: pre-wrap;       /* [CRÍTICO] Respeita o ENTER do seu código */
-  font-family: 'JetBrains Mono', monospace; /* Garante a fonte mono desde o início */
-  display: block;
+/* --- 5.7. FEED LOADER & ANIMATIONS --- */
+.feed-terminal { 
+  margin-top: 55px; 
+  margin-bottom: 60px; 
+  width: 100%; 
+  font-size: 14px; 
 }
+.terminal-loader { 
+  display: inline; 
+  color: var(--text-color); 
+  background: transparent; 
+  border: none; 
+}
+.t-eof { 
+  margin-top: 2px; 
+  margin-bottom: 60px; 
+  color: inherit; 
+  display: block; 
+}
+.cursor-blink { 
+  display: inline-block; 
+  color: #ffffff; 
+  animation: blink 1.5s infinite; 
+  margin-left: 3px; 
+  vertical-align: baseline; 
+  transform: translateY(-2px); 
+  line-height: 1; 
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-/* ==========================================================================
-   TAGS: GHOST PROTOCOL (ULTRA DISCREET)
-   ========================================================================== */
+/* --- 5.8. TAGS: GHOST PROTOCOL (SYNTAX SYSTEM) --- */
 code.tag {
   display: inline-block;
   color: #e2e4e9;
-  /* FUNDO: Quase inexistente (3% de branco). 
-     Apenas o suficiente para separar visualmente do fundo preto, 
-     sem criar uma "caixa" pesada. */
-  background-color: rgba(255, 255, 255, 0.03); 
-  
-  /* BORDA: Removida completamente no estado natural */
+  background-color: rgba(255, 255, 255, 0.03); /* Fundo fantasma (3%) */
   border: 1px solid transparent; 
   border-radius: 4px;
-  
-  padding: 1px 6px; /* Padding reduzido para ficar mais compacto */
+  padding: 1px 6px; 
   margin: 0 3px;
-  
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.85em;
-  font-weight: 500; /* Peso médio para leitura limpa */
-  
-  /* Transição lenta para não assustar no hover */
+  font-weight: 500;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: default;
 }
 
-/* CORES (Mantendo a semântica, mas sem o peso das bordas) */
-code.tag.x { color: #f1fa8c; } /* Executável: Amarelo Pálido */
+/* Cores Semânticas (Sem bordas pesadas) */
+code.tag.x { color: #f1fa8c; } /* Executável: Amarelo */
 code.tag.d { color: #8be9fd; } /* Diretório: Ciano */
 code.tag.f { color: #bd93f9; } /* Arquivo: Roxo */
-code.tag.m { color: #ffb86c; } /* Arquivo: Laranja Dracula */
-code.tag.k { color: #ff79c6; } /* Comando Interno: Pink Dracula */
+code.tag.m { color: #ffb86c; } /* Manual/Conceito: Laranja */
+code.tag.k { color: #ff79c6; } /* Keystroke/Vim: Rosa */
 
-/* HOVER STATE (A interface "acorda") */
+/* Hover State: "Acorda" a interface */
 code.tag:hover {
-  /* O fundo escurece levemente para destacar o texto (Deep Chip logic) */
-  background-color: #0b0a10;
-  
-  /* A borda aparece suavemente usando a cor do próprio texto */
+  background-color: #0b0a10; /* Deep Chip Logic */
   border-color: rgba(255, 255, 255, 0.1); 
-  
-  /* Feedback sutil */
-  transform: translateY(0); /* Sem pulo físico, apenas luz */
+  transform: translateY(0);
   box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 

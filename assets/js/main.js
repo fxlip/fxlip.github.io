@@ -5,8 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // --- [NEW] HEADER ADAPTATIVO (SMART TRIGGER) ---
   const header = document.querySelector('header');
   // Alvo: O terminal do feed (Home) OU Janelas de terminal genéricas (Outras páginas)
-  const targetTerminal = document.querySelector('.feed-terminal') || document.querySelector('.terminal-window');
-
+  const targetTerminal = document.querySelector('.feed-terminal') || document.querySelector('.terminal-window') || document.querySelector('.terminal-box');
   if (header && targetTerminal) {
     let ticking = false;
 

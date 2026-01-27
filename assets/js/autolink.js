@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
   styleSheet.innerText = `
     /* --- BASE MENTION (Interativo) --- */
     .mention-link {
-      color: var(--link-color); /* ERA #FF79C6 */
+      color: var(--link-color);
       text-decoration: none;
       transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       border-radius: 4px;
@@ -15,24 +15,47 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     .mention-link:hover {
       color: var(--link-color); 
-      background-color: rgba(189, 147, 249, 0.1); /* Mantive RGB para alpha, mas idealmente use var se possível ou deixe fixo por opacidade */
+      background-color: rgba(189, 147, 249, 0.1); 
       border-color: rgba(189, 147, 249, 0.5);
       box-shadow: 0 0 15px rgba(189, 147, 249, 0.15);
       cursor: pointer;
     }
-    /* ... (restante do código) ... */
+    .embed-image-wrapper {
+      display: block;
+      margin: 10px 0;
+      border: 1px solid #44475a;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #282a36;
+    }
+    .embed-image {
+      max-width: 100%;
+      display: block;
+    }
     .embed-caption {
-      /* ... */
-      color: var(--base-color); /* ERA #6272a4 */
+      display: block;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--base-color);
       background-color: var(--card-bg); 
+      border-top: 1px solid #44475a;
+    }
+    .embedded-terminal {
+      margin: 15px 0 !important;
+      border: 1px solid #bd93f9 !important; /* Borda Roxa para destacar Embed */
     }
     .embedded-terminal pre {
-      /* ... */
-      color: var(--text-color); /* ERA #f8f8f2 */
+      margin: 0;
+      white-space: pre-wrap;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text-color);
     }
     .embedded-loading {
-      color: var(--base-color); /* ERA #6272a4 */
-      /* ... */
+      color: var(--base-color);
+      font-family: monospace;
+      padding: 10px;
     }
   `;
   document.head.appendChild(styleSheet);
@@ -43,14 +66,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // 3. FUNÇÃO GLOBAL
   window.applyMentions = function(context = document) {
-    const contentAreas = context.querySelectorAll('.post-content, .terminal-window p, .terminal-window div, .post-item');
+    // [UPDATE] Adicionado 'article' e 'main' para garantir funcionamento em páginas sem wrapper específico
+    const contentAreas = context.querySelectorAll('.post-content, .terminal-window p, .terminal-window div, .post-item, article, main');
 
     contentAreas.forEach(area => {
+      // Evita processar o mesmo elemento duas vezes ou processar containers pais depois dos filhos
       if (area.dataset.mentionsProcessed) return;
       
+      // Regex para capturar @caminho/arquivo
       const regex = /@([a-zA-Z0-9_\-\/\.]+)/g;
 
-      if (area.innerHTML.match(regex)) {
+      // Só toca no HTML se houver match, para economizar processamento
+      if (regex.test(area.innerHTML)) {
           area.innerHTML = area.innerHTML.replace(regex, function(match, path) {
             const url = `/${path}`;
 
@@ -63,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 </span>`;
             }
 
-            // B. CASO CÓDIGO
+            // B. CASO CÓDIGO (Embed Terminal)
             if (isCode(path)) {
               return `
                 <div class="terminal-box embedded-terminal" data-src="${url}">
@@ -80,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 </div>`;
             }
 
-            // C. CASO PADRÃO
+            // C. CASO PADRÃO (Link Simples)
             return `<a href="${url}" class="mention-link" title="./${path}">${match}</a>`;
           });
       }
@@ -88,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function() {
       area.dataset.mentionsProcessed = "true";
     });
     
-    // 4. FETCH LOGIC
+    // 4. FETCH LOGIC (Carrega o conteúdo dos embeds de código)
     const pendingEmbeds = context.querySelectorAll('.embedded-terminal[data-src]');
     pendingEmbeds.forEach(terminal => {
        const url = terminal.dataset.src;
@@ -98,6 +125,7 @@ document.addEventListener("DOMContentLoaded", function() {
        fetch(url)
          .then(r => r.ok ? r.text() : Promise.reject("404"))
          .then(text => {
+           // Sanitização básica para evitar injeção de HTML do arquivo alvo
            const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
            body.innerHTML = `<pre>${safeText}</pre>`;
          })
