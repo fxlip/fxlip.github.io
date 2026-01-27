@@ -149,6 +149,8 @@ TARGET_DIRS.each do |dir_name|
 
     next unless link
 
+    next if link.include?('felip.com.br') || link.include?('localhost') || link.include?('127.0.0.1')
+
     current_data = previews[slug]
     is_youtube = link =~ /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/
     video_id = $1 if is_youtube
