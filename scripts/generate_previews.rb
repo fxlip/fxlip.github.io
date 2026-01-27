@@ -137,12 +137,15 @@ TARGET_DIRS.each do |dir_name|
     slug = filename.sub(/^\d{4}-\d{2}-\d{2}-/, '').sub(/\.[^.]+$/, '')
     content = File.read(post_path)
     
-    link = nil
+    # [FIX] Regex blindada contra caracteres de fechamento como > ) ]
     if content =~ /^link_url:\s*"?([^"\n]+)"?/
       link = $1
-    elsif content =~ /https?:\/\/[^\s"']+/
+    elsif content =~ /https?:\/\/[^\s"'>\])]+/
       link = $&
     end
+    
+    # [SAFETY] Limpeza final de pontuação arrastada
+    link = link.gsub(/[>\]).,]+$/, '') if link
 
     next unless link
 
