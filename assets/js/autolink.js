@@ -40,9 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     /* --- WINDOW CONTROLS (POSICIONAMENTO +3px) --- */
     .btn-min {
-      /* [UPDATE] Desce 3px para alinhamento visual no rodapé do header */
       transform: translateY(3px) !important;
-      
       font-weight: 900;
       display: inline-flex !important;
       align-items: center;
@@ -94,13 +92,18 @@ document.addEventListener("DOMContentLoaded", function() {
   document.head.appendChild(styleSheet);
 
   // ==========================================================================
-  // 2. UTILS
+  // 2. MÓDULO: AUTOTERM (Dummy/Fallback)
+  // ==========================================================================
+  window.processAutoTerm = function() {};
+
+  // ==========================================================================
+  // 3. UTILS
   // ==========================================================================
   const isImage = (path) => /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(path);
   const isCode = (path) => /\.(txt|md|sh|js|css|py|rb|html|json|conf|yml|yaml)$/i.test(path);
 
   // ==========================================================================
-  // 3. LINKIFY
+  // 4. LINKIFY
   // ==========================================================================
   window.linkifyInternalUrls = function(context = document) {
     const walker = document.createTreeWalker(context.body || context, NodeFilter.SHOW_TEXT, null, false);
@@ -108,6 +111,9 @@ document.addEventListener("DOMContentLoaded", function() {
     while(walker.nextNode()) {
       const node = walker.currentNode;
       if (['A', 'SCRIPT', 'STYLE', 'TEXTAREA', 'PRE', 'CODE'].includes(node.parentElement.tagName)) continue;
+      // Evita conflito com terminal
+      if (node.parentElement.closest('.auto-term') || node.parentElement.closest('.t-cmd')) continue;
+
       const regex = /(https?:\/\/(?:www\.)?felip\.com\.br\/[a-zA-Z0-9\-\.]+\.html)/g;
       if (regex.test(node.nodeValue)) nodesToReplace.push({ node, text: node.nodeValue });
     }
@@ -125,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   // ==========================================================================
-  // 4. CARDS
+  // 5. CARDS (RT)
   // ==========================================================================
   window.processInternalEmbeds = function(context = document) {
     const links = context.querySelectorAll('.post-content a, .t-out a'); 
@@ -148,13 +154,12 @@ document.addEventListener("DOMContentLoaded", function() {
       link.style.display = 'none';
       link.parentNode.insertBefore(loader, link.nextSibling);
 
-      let fetchUrl = link.href;
-      if (currentHost.includes('localhost') || currentHost.includes('127.0.0.1')) {
-        if (link.hostname.includes(prodHost)) {
-           const urlObj = new URL(link.href);
-           fetchUrl = urlObj.pathname;
-        }
-      }
+      // [CORREÇÃO CORS/MIXED CONTENT]
+      // Forçamos o uso do pathname relativo. Isso faz com que o navegador
+      // busque o arquivo na mesma origem atual, evitando erros de "www" vs "não-www"
+      // ou "http" vs "https".
+      const urlObj = new URL(link.href);
+      let fetchUrl = urlObj.pathname; 
 
       fetch(fetchUrl)
         .then(response => {
@@ -187,7 +192,6 @@ document.addEventListener("DOMContentLoaded", function() {
           const card = document.createElement('a');
           card.href = link.href;
           card.className = 'link-card no-image internal-ref';
-          
           card.title = `./${filename}`;
           
           card.innerHTML = `
@@ -200,6 +204,7 @@ document.addEventListener("DOMContentLoaded", function() {
           loader.replaceWith(card);
         })
         .catch(err => {
+          console.error("Link Card Failed:", err); // Log para debug se necessário
           loader.remove();
           link.style.display = 'inline';
           link.classList.add('mention-link');
@@ -207,9 +212,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   };
 
-  // ==========================================================================
-  // 5. BOOT
-  // ==========================================================================
+  // ORDEM DE EXECUÇÃO
   window.applyMentions = function(context = document) {
     const contentAreas = context.querySelectorAll('.post-content, .terminal-window p, .terminal-window div, .post-item, article, main');
     contentAreas.forEach(area => {
