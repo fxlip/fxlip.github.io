@@ -154,7 +154,7 @@ begin
           end
 
           case command
-          when 'quick_post'
+        when 'quick_post'
             slug = SecureRandom.hex(8)
             title_text = "Nota Rápida #{Time.now.strftime('%d/%m %H:%M')}"
             date = DateTime.now
@@ -163,14 +163,14 @@ begin
             body = extract_body(email)
             
             # [SYSTEM UPDATE]
-            # - Category: feed (Mantido para organização interna do Jekyll)
-            # - Permalink: Raiz ( /HASH/ )
+            # - Category: feed
+            # - Permalink: Root File (.html) -> Ex: https://felip.com.br/a1b2c3d4.html
             front_matter = <<~HEREDOC
             ---
             layout: post
             title: "#{title_text}"
             date: #{date.to_s}
-            permalink: /#{slug}/
+            permalink: /#{slug}.html
             categories: [feed]
             tags: [quicklog]
             ---
