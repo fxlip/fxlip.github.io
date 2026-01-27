@@ -144,13 +144,15 @@ begin
           case command
           when 'quick_post'
             slug = SecureRandom.hex(8)
-            title_text = "Nota Rápida #{Time.now.strftime('%d/%m %H:%M')}"
+            # [UPDATE] O título agora é o próprio arquivo (ex: a1b2c3d4.html)
+            # Isso garante consistência total entre Backend e Frontend
+            title_text = "#{slug}.html"
+            
             date = DateTime.now
             filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
             filepath = File.join(POSTS_ROOT, filename)
             body = extract_body(email)
             
-            # CONFIGURAÇÃO DE POST RÁPIDO
             front_matter = <<~HEREDOC
             ---
             layout: post

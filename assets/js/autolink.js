@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
       opacity: 0.9;
     }
 
-    /* HASH LINK: Override Total */
+    /* HASH LINK: Estilo Ghost Clicável */
     .sys-hash-link {
       font-family: 'JetBrains Mono', monospace;
       color: var(--placeholder-color) !important; /* #5c5f77 */
@@ -26,8 +26,6 @@ document.addEventListener("DOMContentLoaded", function() {
       text-decoration: none !important;
       border-bottom: none !important;
       transition: all 0.3s ease;
-      
-      /* [CRÍTICO] Força o cursor e o clique sobrepondo o main.scss */
       cursor: pointer !important;
       pointer-events: auto !important; 
     }
@@ -40,14 +38,16 @@ document.addEventListener("DOMContentLoaded", function() {
       background: transparent !important;
     }
 
-    /* --- WINDOW CONTROLS --- */
+    /* --- WINDOW CONTROLS (FIX FINAL) --- */
+    /* Removemos o translateY para que o caractere '−' centralize naturalmente pelo Flexbox */
     .btn-min {
-      transform: translateY(-5px) !important; 
+      transform: none !important; 
       font-weight: 900;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       height: 100%;
+      padding-top: 1px; /* Ajuste micro visual se necessário */
     }
 
     /* --- CARDS INTERNOS (RT CLEAN) --- */
@@ -57,7 +57,12 @@ document.addEventListener("DOMContentLoaded", function() {
       display: block;
     }
     .internal-ref .lc-meta { padding-top: 4px; }
-    .internal-ref .lc-host { display: none; }
+    
+    /* [FIX] Título Oculto Novamente */
+    .internal-ref .lc-host { 
+      display: none !important; 
+    }
+    
     .internal-ref .lc-desc {
       font-size: 0.95em; line-height: 1.5;
       color: #f8f8f2; margin-top: 0;
@@ -178,9 +183,13 @@ document.addEventListener("DOMContentLoaded", function() {
           const card = document.createElement('a');
           card.href = link.href;
           card.className = 'link-card no-image internal-ref';
+          
+          // Tooltip: ./filename.html
+          card.title = `./${filename}`;
+          
           card.innerHTML = `
             <div class="lc-meta">
-              <div class="lc-host">${filename}</div>
+              <div class="lc-host">fxlip/${filename}</div>
               <div class="lc-desc">${desc}</div>
               <div class="lc-site">felip.com.br</div>
             </div>

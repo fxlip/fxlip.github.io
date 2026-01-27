@@ -65,7 +65,7 @@ layout: default
 
             <div class="post-footer" style="margin-top: 15px;">
               
-              <a href="{{ post.url }}" class="sys-hash-link" title="Permalink">
+              <a href="{{ post.url }}" class="sys-hash-link" title="./{{ post.url | split: '/' | last }}">
                 {{ post.url | split: '/' | last }}
               </a>
 
