@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-  
+
   // 1. INJEÇÃO DE ESTILOS (PALETA DRACULA REFINADA)
   const styleSheet = document.createElement("style");
   styleSheet.innerText = `
@@ -28,55 +28,28 @@ document.addEventListener("DOMContentLoaded", function() {
       flex-direction: column; 
       width: fit-content; 
       max-width: 100%;
-      
       background-color: transparent;
       border: none;
-      
-      /* Arredondamento consistente com os Link Cards */
       border-radius: 6px;
       overflow: hidden;
-      
-      /* Sombra do Terminal (var(--terminal-shadow) aproximada) */
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      
       line-height: 0; 
     }
     
     .embed-image {
-      display: block;
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-      opacity: 0.95;
-      transition: opacity 0.4s ease;
-      
-      /* Hard Reset de Estilos Globais */
-      padding: 0 !important;
-      margin: 0 !important;
-      background: none !important;
-      border: none !important; 
-      border-radius: 0 !important; 
-      box-shadow: none !important;
-      
-      /* [PALETTE FIX] Usando a mesma borda sutil dos Cards */
+      display: block; width: 100%; height: auto; object-fit: cover;
+      opacity: 0.95; transition: opacity 0.4s ease;
+      padding: 0 !important; margin: 0 !important;
+      background: none !important; border: none !important; 
+      border-radius: 0 !important; box-shadow: none !important;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
     }
     
     .embed-image:hover { opacity: 1; }
     
     .embed-caption {
-      line-height: 1.5; 
-      width: 100%;
-      box-sizing: border-box;
-      padding: 8px 12px;
-      
-      font-size: 0.85em;
-      
-      /* [PALETTE FIX] Dracula Comment (Metadados) */
-      color: #6272a4; 
-      font-family: 'JetBrains Mono', monospace;
-      
-      /* [PALETTE FIX] Mesmo fundo dos Link Cards (#1c1a26) */
+      line-height: 1.5; width: 100%; box-sizing: border-box; padding: 8px 12px;
+      font-size: 0.85em; color: #6272a4; font-family: 'JetBrains Mono', monospace;
       background-color: var(--card-bg, #1c1a26); 
     }
 
@@ -108,9 +81,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
       if (area.innerHTML.match(regex)) {
           area.innerHTML = area.innerHTML.replace(regex, function(match, path) {
-            const url = `https://fxlip.com/${path}`;
+            const url = `https://felip.com.br/${path}`;
 
-            // A. CASO IMAGEM (ESTÁTICA & SPAN)
+            // A. CASO IMAGEM
             if (isImage(path)) {
               return `
                 <span class="embed-image-wrapper">
