@@ -97,6 +97,55 @@ document.addEventListener("DOMContentLoaded", function() {
   window.processAutoTerm = function() {};
 
   // ==========================================================================
+  // [MODULE] SYSTEM LOADER v2 (STEALTH MODE)
+  // Gatilho: [3/83] ou [3/83 Descrição Customizada]
+  // ==========================================================================
+  window.processProgressBars = function(context = document) {
+    const contentAreas = context.querySelectorAll('.post-content, .terminal-window p, .terminal-window div, .post-item, article, main');
+    
+    // Regex Simplificada: Captura [NUM/NUM (Texto Opcional)]
+    // Ex: [3/83] ou [10/20 LPI-1 Studies]
+    const regex = /\[\s*(\d+)\/(\d+)(?:\s+(.*?))?\s*\]/g;
+
+    contentAreas.forEach(area => {
+      // Proteção contra falsos positivos em código
+      if (area.tagName === 'PRE' || area.tagName === 'CODE') return;
+
+      if (regex.test(area.innerHTML)) {
+        area.innerHTML = area.innerHTML.replace(regex, (match, current, total, label) => {
+          const cur = parseInt(current);
+          const tot = parseInt(total);
+          
+          // Prevenção de divisão por zero
+          if (tot === 0) return match;
+
+          const pct = Math.round((cur / tot) * 100);
+          
+          // Lógica Stealth: Se tem texto, usa. Se não, usa "loading..."
+          const displayText = label ? label.trim() : `${pct}% COMPLETO`;
+          
+          return `
+            <div class="sys-load-wrapper" title="${cur}/${tot} Completed">
+              <div class="sys-load-bar" style="width: 0%" data-width="${pct}%"></div>
+              <div class="sys-load-data">
+                <span style="opacity: 0.9;">${displayText}</span>
+                <span class="sys-load-meta"></span>
+              </div>
+            </div>
+          `;
+        });
+      }
+    });
+
+    // Animação
+    setTimeout(() => {
+      document.querySelectorAll('.sys-load-bar').forEach(bar => {
+        if (bar.dataset.width) bar.style.width = bar.dataset.width;
+      });
+    }, 100);
+  };
+
+  // ==========================================================================
   // [UPDATE] MÓDULO: SYNTAX GHOST v7 (Rouge Override + Badges)
   // ==========================================================================
   window.highlightInlineCode = function(context = document) {
@@ -308,6 +357,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   };
 
+  window.processProgressBars();
   window.highlightInlineCode();
   window.applyMentions();
   window.linkifyInternalUrls();

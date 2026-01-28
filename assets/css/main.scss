@@ -825,3 +825,53 @@ code.c-path:hover {
   cursor: help;
   box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
+
+/* ==========================================================================
+   10. SYSTEM LOADER (PROGRESS BAR MODULE)
+   ========================================================================== */
+
+.sys-load-wrapper {
+  background-color: rgba(68, 71, 90, 0.3);
+  border: 1px solid #44475a;
+  border-radius: 4px;
+  height: 24px;
+  width: 100%;
+  
+  /* [UPDATE] Aumentado de 15px para 30px (Igual ao Terminal) */
+  margin: 30px 0; 
+  
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.sys-load-bar {
+  background: linear-gradient(90deg, var(--link-color), var(--link-hover-color));
+  height: 100%;
+  width: 0; 
+  transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 0 10px rgba(189, 147, 249, 0.4);
+}
+
+/* Texto sobreposto (Dentro da barra) */
+.sys-load-data {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 12px;
+  
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;      
+  text-transform: uppercase; 
+  letter-spacing: 1px;
+  
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  z-index: 2;
+  pointer-events: none; 
+}
+
+.sys-load-meta {
+  opacity: 0.8;
+  font-size: 10px;
+}
