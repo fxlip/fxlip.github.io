@@ -25,6 +25,8 @@ Página de exemplo para mostrar que sou capaz de manter a integralidade dos sist
 `xfs_fsr`
 `xfs_db`
 
+Começando com df e du [1/3]
+
 <div class="terminal-box">
   <div class="terminal-header">
     <div class="terminal-controls">

@@ -25,6 +25,8 @@ Página de exemplo para mostrar que sou capaz de configurar partições de disco
 `mkfs`
 `mkswap`
 
+Começando com fdisk [1/6]
+
 <div class="terminal-box">
   <div class="terminal-header">
     <div class="terminal-controls">
