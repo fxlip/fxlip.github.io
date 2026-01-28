@@ -97,6 +97,77 @@ document.addEventListener("DOMContentLoaded", function() {
   window.processAutoTerm = function() {};
 
   // ==========================================================================
+  // [UPDATE] MÓDULO: SYNTAX GHOST v4 (Robustez + JSON)
+  // ==========================================================================
+  window.highlightInlineCode = function(context = document) {
+    const codes = context.querySelectorAll('.post-content code');
+    const DATA_URL = '/assets/data/knowledge.json';
+
+    // 1. Processamento Imediato (Regras que não dependem de dados externos)
+    // Isso garante que Variáveis, Operadores e Arquivos funcionem instantaneamente.
+    
+    // Operadores Lógicos
+    const ops = new Set(['&&', '||', ';', '|', '>', '>>', '<', '2>', '&', '!=', '==', '>=', '<=']);
+    
+    // Arquivos de Sistema Comuns (Hardcoded para velocidade)
+    const files = new Set([
+      '.bash_history', '.bashrc', '.profile', '.zshrc', '/dev/null', 
+      '/etc/passwd', '/etc/shadow', '/etc/group', '/etc/fstab', '/proc/cpuinfo', '/proc/meminfo'
+    ]);
+
+    codes.forEach(code => {
+      if (code.parentElement.tagName === 'PRE' || code.className) return;
+      
+      const text = code.innerText.trim();
+
+      // Regra A: Variáveis ($VAR ou ENV_VAR_NAME)
+      // Uppercase puro com pelo menos 3 letras (ex: HOME, PATH, HISTSIZE)
+      // OU começa com $
+      if (text.startsWith('$') || /^[A-Z][A-Z0-9_]{2,}$/.test(text)) {
+         // Evita falsos positivos comuns que podem ser comandos (ex: MAN, TOP se escritos em caps)
+         // Mas como a convenção é comando minúsculo, isso é seguro na maioria dos casos.
+         code.classList.add('c-var');
+         return;
+      }
+
+      // Regra B: Operadores
+      if (ops.has(text)) {
+         code.classList.add('c-op');
+         return;
+      }
+
+      // Regra C: Caminhos e Arquivos
+      if (text.startsWith('/') || text.startsWith('./') || text.startsWith('~/') || files.has(text)) {
+         code.classList.add('c-path');
+         return;
+      }
+    });
+
+    // 2. Processamento Assíncrono (Comandos e Arquitetura via JSON)
+    fetch(DATA_URL)
+      .then(r => r.ok ? r.json() : Promise.reject("404"))
+      .then(data => {
+        const knownCmds = new Set([
+          ...(data.commands || []),
+          ...(data.architecture || [])
+        ]);
+
+        codes.forEach(code => {
+          // Se já tem classe (ex: c-var), não mexe.
+          // Isso impede que HOME vire comando se estiver no JSON por engano.
+          if (code.className) return; 
+
+          const text = code.innerText.trim();
+          
+          if (knownCmds.has(text)) {
+             code.classList.add('c-cmd');
+          }
+        });
+      })
+      .catch(e => console.log("Ghost Syntax: Modo Offline (JSON não carregado)"));
+  };
+
+  // ==========================================================================
   // 3. UTILS
   // ==========================================================================
   const isImage = (path) => /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(path);
@@ -239,6 +310,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   };
 
+  window.highlightInlineCode();
   window.applyMentions();
   window.linkifyInternalUrls();
   window.processInternalEmbeds();

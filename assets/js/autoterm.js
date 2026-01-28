@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function() {
   // 1. CONSTANTES & HEURÍSTICAS
   // ==========================================================================
   
-  // Diretórios conhecidos (Azul/Ciano)
   const KNOWN_DIRS = new Set([
     'bin', 'boot', 'dev', 'etc', 'home', 'lib', 'lib64', 'media', 'mnt', 'opt', 
     'proc', 'root', 'run', 'sbin', 'srv', 'sys', 'tmp', 'usr', 'var', 'snap', 
@@ -13,14 +12,10 @@ document.addEventListener("DOMContentLoaded", function() {
     'setup', 'shop', 'curadoria', 'lpi1', 'www', 'script'
   ]);
   
-  // Arquivos de sistema e Links (Roxo/Cinza)
   const KNOWN_LINKS = new Set([
     'vmlinuz', 'initrd.img', 'vmlinuz.old', 'initrd.img.old', 'core'
   ]);
   
-  const SENTENCE_INDICATORS = /(?:^|\s)(é|eh|est[áa]|tem|s[ãa]o|um|uma|do|da|de|em|na|no|com|para|por|como|is|are|the|an|of|for|to|with|alias|shell|hash|builtin)(?=\s|$)/i;
-  const DATE_INDICATORS = /\b(seg|ter|qua|qui|sex|s[áa]b|dom|mon|tue|wed|thu|fri|sat|sun|jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez|feb|apr|may|aug|sep|oct|dec)\b|\d{1,2}:\d{2}/i;
-
   // ==========================================================================
   // 2. HELPER FUNCTIONS
   // ==========================================================================
@@ -45,24 +40,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
   const classifyFile = (token) => {
     let clean = token.replace(/[*\/=>@|]$/, ''); 
-    
     if (clean === 'tmp') return `<span class="st">${clean}</span>`;
-    
     if (clean.startsWith('.')) { 
        if (clean === '.' || clean === '..') return `<span class="d">${clean}</span>`;
        return `<span class="h">${clean}</span>`;
     }
-    
     if (KNOWN_DIRS.has(clean) || token.endsWith('/')) return `<span class="d">${clean}</span>`;
     if (/\.(zip|tar|gz|bz2|xz|7z|rar|jar)$/.test(clean)) return `<span class="z">${clean}</span>`;
     if (/\.(sh|bash|py|rb|pl|run|bin|appimage)$/.test(clean) || token.endsWith('*')) return `<span class="x">${clean}</span>`;
     if (KNOWN_LINKS.has(clean) || token.includes('->') || token.endsWith('@')) return `<span class="l">${clean}</span>`;
-
     return `<span class="f">${clean}</span>`;
   };
 
   // ==========================================================================
-  // 3. CORE LOGIC
+  // 3. CORE LOGIC: STATE-AWARE PARSER
   // ==========================================================================
   
   window.renderTerminalWindows = () => {
@@ -85,48 +76,67 @@ document.addEventListener("DOMContentLoaded", function() {
       }
 
       let htmlBuffer = '';
+      let lastCmd = ''; // [NEW] Rastreador de Estado do Comando
 
       rawLines.forEach(line => {
         if (line.trim() === '' && htmlBuffer === '') return; 
 
-        // DETECTA PROMPT
+        // --- DETECÇÃO DE PROMPT ---
         const promptMatch = line.match(/^([a-zA-Z0-9_.-]+)@([a-zA-Z0-9_.-]+):([^#$]+)([#$])\s*(.*)/);
 
         if (promptMatch) {
           const [_, user, host, path, symbol, cmd] = promptMatch;
+          
+          // Atualiza o estado para a próxima linha de output saber o que fazer
+          lastCmd = cmd.trim();
+
           htmlBuffer += `
             <div>
               <span class="t-user">${user}</span><span class="t-gray">@</span><span class="t-host">${host}</span><span class="t-gray">:</span><span class="t-path">${path.trim()}</span><span class="t-gray">${symbol}</span>
               <span class="t-cmd">${escapeHtml(cmd)}</span>
             </div>`;
         } else {
-          // PROCESSA OUTPUT
-          const tokens = line.trim().split(/\s+/);
-          const shortAvg = (tokens.reduce((a,b) => a + b.length, 0) / tokens.length) < 20;
-          const multiple = tokens.length > 1;
-          const notSentence = !SENTENCE_INDICATORS.test(line);
-          const notDate = !DATE_INDICATORS.test(line);
-          const hasCodeChars = /['"=`]/.test(line) || line.trim().startsWith('#!');
+          // --- PROCESSAMENTO DE OUTPUT (BASEADO NO COMANDO ANTERIOR) ---
           
-          // [FIX] Permite item único se estiver na lista de pastas conhecidas (ex: 'ls' retornando só 'www')
-          const isSingleKnown = tokens.length === 1 && KNOWN_DIRS.has(tokens[0].replace(/[*\/=>@|]$/, ''));
-
-          // CASO A: Grid de Arquivos
-          if (line.trim() !== '' && (multiple || isSingleKnown) && shortAvg && notSentence && notDate && !hasCodeChars) {
-            let fileSpans = tokens.map(t => classifyFile(escapeHtml(t))).join('\n'); 
-            htmlBuffer += `<div class="t-out t-ls">${fileSpans}</div>`;
-          } else {
-            // CASO B: Texto Genérico
-            let safeContent = line === '' || line.trim() === '' ? '&nbsp;' : escapeHtml(line);
-            
-            // Highlight de executáveis no meio do texto
-            safeContent = safeContent.replace(
-                /\b([\w.-]+\.(sh|bash|py|rb|pl|run|bin|appimage))\b/g, 
-                '<span class="x">$1</span>'
-            );
-
-            htmlBuffer += `<div class="t-out">${safeContent}</div>`;
+          // ESTADO 1: COMANDO HISTORY
+          // Formato esperado: "  123  comando"
+          if (lastCmd.startsWith('history')) {
+            const histMatch = line.match(/^\s*(\d+)(\s+)(.*)/);
+            if (histMatch) {
+              const [_, id, space, cmdContent] = histMatch;
+              // Pinta o ID de cinza (.t-gray) e mantém o espaçamento original
+              htmlBuffer += `<div class="t-out"><span class="t-gray">${id}</span>${space.replace(/ /g, '&nbsp;')}${escapeHtml(cmdContent)}</div>`;
+              return;
+            }
           }
+
+          // ESTADO 2: COMANDO LS (Grid View)
+          // Só ativa o grid se o comando for explicitamente 'ls'
+          const tokens = line.trim().split(/\s+/);
+          if (lastCmd.startsWith('ls') && tokens.length > 0) {
+             // Verificações de segurança para não gridar erros ou frases
+             const shortAvg = (tokens.reduce((a,b) => a + b.length, 0) / tokens.length) < 20;
+             const hasCodeChars = /['"=`]/.test(line); // Aspas indicam texto, não arquivo
+             
+             // Se passou no filtro, renderiza como Grid de Arquivos
+             if (shortAvg && !hasCodeChars) {
+                let fileSpans = tokens.map(t => classifyFile(escapeHtml(t))).join('\n'); 
+                htmlBuffer += `<div class="t-out t-ls">${fileSpans}</div>`;
+                return;
+             }
+          }
+
+          // ESTADO 3: TEXTO GENÉRICO (Padrão / cat / man / echo)
+          // Mantém o comportamento original, mas sem tentar forçar grid
+          let safeContent = line === '' || line.trim() === '' ? '&nbsp;' : escapeHtml(line);
+          
+          // Highlight de executáveis no meio do texto
+          safeContent = safeContent.replace(
+              /\b([\w.-]+\.(sh|bash|py|rb|pl|run|bin|appimage))\b/g, 
+              '<span class="x">$1</span>'
+          );
+
+          htmlBuffer += `<div class="t-out">${safeContent}</div>`;
         }
       });
 
@@ -140,9 +150,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   };
 
-  // ==========================================================================
-  // 4. INIT
-  // ==========================================================================
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', window.renderTerminalWindows);
   } else {
