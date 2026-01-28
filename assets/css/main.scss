@@ -858,7 +858,9 @@ code.c-path:hover {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   display: flex; justify-content: space-between; align-items: center;
-  padding: 0 12px;
+  
+  /* [UPDATE] Aumentado de 12px para 16px para dar mais ar */
+  padding: 0 16px;
   
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;      

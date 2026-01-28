@@ -97,18 +97,13 @@ document.addEventListener("DOMContentLoaded", function() {
   window.processAutoTerm = function() {};
 
   // ==========================================================================
-  // [MODULE] SYSTEM LOADER v2 (STEALTH MODE)
-  // Gatilho: [3/83] ou [3/83 Descrição Customizada]
+  // [MODULE] SYSTEM LOADER v3 (Zero Padding + Layout Fix)
   // ==========================================================================
   window.processProgressBars = function(context = document) {
     const contentAreas = context.querySelectorAll('.post-content, .terminal-window p, .terminal-window div, .post-item, article, main');
-    
-    // Regex Simplificada: Captura [NUM/NUM (Texto Opcional)]
-    // Ex: [3/83] ou [10/20 LPI-1 Studies]
     const regex = /\[\s*(\d+)\/(\d+)(?:\s+(.*?))?\s*\]/g;
 
     contentAreas.forEach(area => {
-      // Proteção contra falsos positivos em código
       if (area.tagName === 'PRE' || area.tagName === 'CODE') return;
 
       if (regex.test(area.innerHTML)) {
@@ -116,20 +111,24 @@ document.addEventListener("DOMContentLoaded", function() {
           const cur = parseInt(current);
           const tot = parseInt(total);
           
-          // Prevenção de divisão por zero
           if (tot === 0) return match;
 
           const pct = Math.round((cur / tot) * 100);
           
-          // Lógica Stealth: Se tem texto, usa. Se não, usa "loading..."
-          const displayText = label ? label.trim() : `${pct}% COMPLETO`;
+          // [NOVO] Adiciona Zero à Esquerda (Pad Start)
+          // Transforma 4 em "04", 9 em "09", 10 mantém "10"
+          const fmtPct = pct < 10 ? `0${pct}` : pct;
+          
+          // Se tiver rótulo personalizado, usa. Se não, usa o padrão "INSTALLING..."
+          // Se você usava a lógica dinâmica (COMPLETO), agora ficará "04% COMPLETO"
+          let displayText = label ? label.trim() : "INSTALLING...";
           
           return `
             <div class="sys-load-wrapper" title="${cur}/${tot} Completed">
               <div class="sys-load-bar" style="width: 0%" data-width="${pct}%"></div>
               <div class="sys-load-data">
                 <span style="opacity: 0.9;">${displayText}</span>
-                <span class="sys-load-meta"></span>
+                <span class="sys-load-meta">${fmtPct}%</span>
               </div>
             </div>
           `;
@@ -137,7 +136,6 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
 
-    // Animação
     setTimeout(() => {
       document.querySelectorAll('.sys-load-bar').forEach(bar => {
         if (bar.dataset.width) bar.style.width = bar.dataset.width;
