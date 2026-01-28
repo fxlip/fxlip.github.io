@@ -1,0 +1,30 @@
+Languages: English, German, Italian, Portuguese (Brazilian), Spanish (Modern), Chinese (Simplified), Chinese (Traditional) and Japanese
+
+To become LPIC-1 certified the candidate must be able to:
+
+    understand the architecture of a Linux system;
+    install and maintain a Linux workstation, including X11 and setup it up as a network client;
+    work at the Linux command line, including common GNU and Unix commands;
+    handle files and access permissions as well as system security; and
+    perform easy maintenance tasks: help users, add users to a larger system, backup and restore, shutdown and reboot.
+
+
+LPIC-2: Linux Engineer
+
+LPIC-2 is the second certification in LPI’s multi-level professional certification program. The LPIC-2 will validate the candidate's ability to administer small to medium–sized mixed networks. The candidate must have an active LPIC-1 certification to receive LPIC-2 certification, but the LPIC-1 and LPIC-2 exams may be taken in any order.
+
+Current Version: 4.5 (Exam codes 201-450 and 202-450). Note: the exams with the v4.0 objectives (201-400 and 202-400) will remain available until August 2017. You may write any version of the exams and they will count toward your LPIC-2 equally.
+
+Prerequisites: The candidate must have an active LPIC-1 certification to receive LPIC-2 certification, but the LPIC-1 and LPIC-2 exams may be taken in any order
+
+Requirements: Passing exams 201 and 202
+
+Validity Period: 5 years
+
+Languages: English, German, Portuguese (Brazilian), Japanese
+
+To become LPIC-2 certified the candidate must be able to:
+
+    perform advanced system administration, including common tasks regarding the Linux kernel, system startup and maintenance;
+    perform advanced Management of block storage and file systems as well as advanced networking and authentication and system security, including firewall and VPN;
+    install and configure fundamental network services, including DHCP, DNS,  SSH, Web servers, file servers using FTP, NFS and Samba, email delivery; and
