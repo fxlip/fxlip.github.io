@@ -15,18 +15,18 @@ Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez
 
 ---
 
-### // o que me move
+### // interesse em
 
 **Segurança** azul e vermelho,
 
 **Kernels** controlando hardware,
 
-e **Aesthetic**, sempre bem elegante.
+e **Aesthetic** com scripts elegantes.
 
 ---
 
 ### // status
 
-Atualmente focado na certificação **LPIC-1** e no desenvolvimento de automações com Python/Shell.
+Atualmente focado na certificação **LPIC-1** e no desenvolvimento de automações com Ruby e Shell.
 
 ---
