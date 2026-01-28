@@ -97,12 +97,13 @@ document.addEventListener("DOMContentLoaded", function() {
   window.processAutoTerm = function() {};
 
   // ==========================================================================
-  // [UPDATE] MÓDULO: SYNTAX GHOST v6 (History Expansion Support)
+  // [UPDATE] MÓDULO: SYNTAX GHOST v7 (Rouge Override + Badges)
   // ==========================================================================
   window.highlightInlineCode = function(context = document) {
     const codes = context.querySelectorAll('.post-content code');
     const DATA_URL = '/assets/data/knowledge.json';
 
+    // Definições Estáticas
     const ops = new Set(['&&', '||', ';', '|', '>', '>>', '<', '2>', '&', '!=', '==', '>=', '<=']);
     const fileExtRegex = /\.(conf|cfg|ini|txt|md|yml|yaml|xml|html|css|js|json|sh|py|rb|lock|log)$/i;
     const sysFiles = new Set([
@@ -111,8 +112,16 @@ document.addEventListener("DOMContentLoaded", function() {
     ]);
 
     codes.forEach(code => {
-      if (code.parentElement.tagName === 'PRE' || code.className) return;
+      // Ignora apenas se for bloco de código (PRE)
+      if (code.parentElement.tagName === 'PRE') return;
+
       const text = code.innerText.trim();
+
+      // [AÇÃO] History Expansion (!!, !123)
+      if (/^!(!|\d+|[a-zA-Z]+)$/.test(text)) {
+         code.classList.add('c-cmd');
+         return;
+      }
 
       // [DADOS] Variáveis ($VAR ou ENV_VAR)
       if (text.startsWith('$') || /^[A-Z][A-Z0-9_]{2,}$/.test(text)) {
@@ -126,13 +135,6 @@ document.addEventListener("DOMContentLoaded", function() {
          return;
       }
 
-      // [AÇÃO] Expansão de Histórico (!!, !1998, !ls) -> Ciano
-      // Regex: Começa com !, seguido de outro !, números ou letras
-      if (/^!(!|\d+|[a-zA-Z]+)$/.test(text)) {
-         code.classList.add('c-cmd'); 
-         return;
-      }
-
       // [ALVO] Caminhos e Arquivos
       if (text.startsWith('/') || text.startsWith('./') || text.startsWith('~/') || sysFiles.has(text) || fileExtRegex.test(text)) {
          code.classList.add('c-path');
@@ -140,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
 
-    // [AÇÃO] Comandos do Banco de Dados
+    // [AÇÃO] Comandos do Banco de Dados (Async)
     fetch(DATA_URL)
       .then(r => r.ok ? r.json() : Promise.reject("404"))
       .then(data => {
@@ -150,9 +152,12 @@ document.addEventListener("DOMContentLoaded", function() {
         ]);
 
         codes.forEach(code => {
-          if (code.className) return; 
+          // Nota: Removemos a trava de className aqui também para forçar a cor
+          // mesmo se o Jekyll tiver classificado errado.
           const text = code.innerText.trim();
           if (knownCmds.has(text)) {
+             // Remove cores conflitantes se houver
+             code.classList.remove('c-var', 'c-path', 'c-op');
              code.classList.add('c-cmd');
           }
         });

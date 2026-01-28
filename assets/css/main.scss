@@ -767,25 +767,34 @@ footer a[href^="mailto"]:hover {
 }
 
 /* ==========================================================================
-   9. INLINE SYNTAX HIGHLIGHTING (GHOST PROTOCOL v5)
+   9. INLINE SYNTAX HIGHLIGHTING (BADGE PROTOCOL)
    ========================================================================== */
 
-/* 9.0 Base: Ghost (Invisível até ser identificado) */
+/* 9.0 Base: O visual de "Badge" Original */
 .post-content code {
   font-family: 'JetBrains Mono', monospace;
-  background-color: transparent; /* Limpo */
-  color: #e2e4e9;                /* Texto padrão (Branco Gelo) */
-  padding: 1px 4px;
-  border-radius: 3px;
+  
+  /* Restaura o fundo escuro original */
+  background-color: var(--code-bg) !important; 
+  
+  /* Restaura a borda sutil */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  /* Cor padrão (se não for identificado) */
+  color: #e2e4e9; 
+  
+  padding: 2px 6px;
+  border-radius: 4px;
   font-size: 0.9em;
   transition: all 0.2s ease;
-  border: 1px solid transparent; /* Reserva espaço para não pular no hover */
+  vertical-align: middle;
 }
 
 /* 9.1. AÇÃO (Comandos) -> Ciano */
 code.c-cmd {
   color: var(--accent-cyan) !important; /* #8be9fd */
   font-weight: 700;
+  border-color: rgba(139, 233, 253, 0.3); /* Borda Ciano Sutil */
 }
 
 /* 9.2. DADOS (Variáveis) -> Laranja */
@@ -806,13 +815,13 @@ code.c-path {
   font-style: italic;
 }
 
-/* 9.5. Interação: Feedback Tátil Unificado */
+/* 9.5. Interação: Hover com Glow */
 code.c-cmd:hover, 
 code.c-var:hover, 
 code.c-op:hover, 
 code.c-path:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
-  cursor: help;
+  background-color: rgba(255, 255, 255, 0.1) !important;
   transform: translateY(-1px);
+  cursor: help;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
