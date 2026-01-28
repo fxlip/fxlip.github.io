@@ -97,53 +97,50 @@ document.addEventListener("DOMContentLoaded", function() {
   window.processAutoTerm = function() {};
 
   // ==========================================================================
-  // [UPDATE] MÓDULO: SYNTAX GHOST v4 (Robustez + JSON)
+  // [UPDATE] MÓDULO: SYNTAX GHOST v6 (History Expansion Support)
   // ==========================================================================
   window.highlightInlineCode = function(context = document) {
     const codes = context.querySelectorAll('.post-content code');
     const DATA_URL = '/assets/data/knowledge.json';
 
-    // 1. Processamento Imediato (Regras que não dependem de dados externos)
-    // Isso garante que Variáveis, Operadores e Arquivos funcionem instantaneamente.
-    
-    // Operadores Lógicos
     const ops = new Set(['&&', '||', ';', '|', '>', '>>', '<', '2>', '&', '!=', '==', '>=', '<=']);
-    
-    // Arquivos de Sistema Comuns (Hardcoded para velocidade)
-    const files = new Set([
+    const fileExtRegex = /\.(conf|cfg|ini|txt|md|yml|yaml|xml|html|css|js|json|sh|py|rb|lock|log)$/i;
+    const sysFiles = new Set([
       '.bash_history', '.bashrc', '.profile', '.zshrc', '/dev/null', 
-      '/etc/passwd', '/etc/shadow', '/etc/group', '/etc/fstab', '/proc/cpuinfo', '/proc/meminfo'
+      '/etc/passwd', '/etc/shadow', '/etc/group', '/etc/fstab'
     ]);
 
     codes.forEach(code => {
       if (code.parentElement.tagName === 'PRE' || code.className) return;
-      
       const text = code.innerText.trim();
 
-      // Regra A: Variáveis ($VAR ou ENV_VAR_NAME)
-      // Uppercase puro com pelo menos 3 letras (ex: HOME, PATH, HISTSIZE)
-      // OU começa com $
+      // [DADOS] Variáveis ($VAR ou ENV_VAR)
       if (text.startsWith('$') || /^[A-Z][A-Z0-9_]{2,}$/.test(text)) {
-         // Evita falsos positivos comuns que podem ser comandos (ex: MAN, TOP se escritos em caps)
-         // Mas como a convenção é comando minúsculo, isso é seguro na maioria dos casos.
          code.classList.add('c-var');
          return;
       }
 
-      // Regra B: Operadores
+      // [LÓGICA] Operadores
       if (ops.has(text)) {
          code.classList.add('c-op');
          return;
       }
 
-      // Regra C: Caminhos e Arquivos
-      if (text.startsWith('/') || text.startsWith('./') || text.startsWith('~/') || files.has(text)) {
+      // [AÇÃO] Expansão de Histórico (!!, !1998, !ls) -> Ciano
+      // Regex: Começa com !, seguido de outro !, números ou letras
+      if (/^!(!|\d+|[a-zA-Z]+)$/.test(text)) {
+         code.classList.add('c-cmd'); 
+         return;
+      }
+
+      // [ALVO] Caminhos e Arquivos
+      if (text.startsWith('/') || text.startsWith('./') || text.startsWith('~/') || sysFiles.has(text) || fileExtRegex.test(text)) {
          code.classList.add('c-path');
          return;
       }
     });
 
-    // 2. Processamento Assíncrono (Comandos e Arquitetura via JSON)
+    // [AÇÃO] Comandos do Banco de Dados
     fetch(DATA_URL)
       .then(r => r.ok ? r.json() : Promise.reject("404"))
       .then(data => {
@@ -153,18 +150,14 @@ document.addEventListener("DOMContentLoaded", function() {
         ]);
 
         codes.forEach(code => {
-          // Se já tem classe (ex: c-var), não mexe.
-          // Isso impede que HOME vire comando se estiver no JSON por engano.
           if (code.className) return; 
-
           const text = code.innerText.trim();
-          
           if (knownCmds.has(text)) {
              code.classList.add('c-cmd');
           }
         });
       })
-      .catch(e => console.log("Ghost Syntax: Modo Offline (JSON não carregado)"));
+      .catch(e => console.log("Ghost Syntax: Offline"));
   };
 
   // ==========================================================================

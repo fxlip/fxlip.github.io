@@ -63,12 +63,10 @@ document.addEventListener("DOMContentLoaded", function() {
     rawTerminals.forEach(term => {
       const rawLines = term.innerText.split('\n');
       
-      // Limpeza de fim de arquivo
       while (rawLines.length > 0 && rawLines[rawLines.length - 1].trim() === '') {
         rawLines.pop();
       }
 
-      // Fix Botão Minimizar
       const parentBox = term.closest('.terminal-box');
       if (parentBox) {
         const minBtn = parentBox.querySelector('.btn-min');
@@ -76,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
 
       let htmlBuffer = '';
-      let lastCmd = ''; // [NEW] Rastreador de Estado do Comando
+      let lastCmd = ''; 
 
       rawLines.forEach(line => {
         if (line.trim() === '' && htmlBuffer === '') return; 
@@ -87,7 +85,6 @@ document.addEventListener("DOMContentLoaded", function() {
         if (promptMatch) {
           const [_, user, host, path, symbol, cmd] = promptMatch;
           
-          // Atualiza o estado para a próxima linha de output saber o que fazer
           lastCmd = cmd.trim();
 
           htmlBuffer += `
@@ -96,38 +93,46 @@ document.addEventListener("DOMContentLoaded", function() {
               <span class="t-cmd">${escapeHtml(cmd)}</span>
             </div>`;
         } else {
-          // --- PROCESSAMENTO DE OUTPUT (BASEADO NO COMANDO ANTERIOR) ---
+          // --- PROCESSAMENTO DE OUTPUT ---
           
-          // ESTADO 1: COMANDO HISTORY
-          // Formato esperado: "  123  comando"
+          // ESTADO 1: COMANDO HISTORY (Lista Numerada)
           if (lastCmd.startsWith('history')) {
             const histMatch = line.match(/^\s*(\d+)(\s+)(.*)/);
             if (histMatch) {
               const [_, id, space, cmdContent] = histMatch;
-              // Pinta o ID de cinza (.t-gray) e mantém o espaçamento original
               htmlBuffer += `<div class="t-out"><span class="t-gray">${id}</span>${space.replace(/ /g, '&nbsp;')}${escapeHtml(cmdContent)}</div>`;
               return;
             }
           }
 
-          // ESTADO 2: COMANDO LS (Grid View)
-          // Só ativa o grid se o comando for explicitamente 'ls'
+          // ESTADO 2: TENTATIVA DE GRID (LS Simples ou Expansão)
           const tokens = line.trim().split(/\s+/);
-          if (lastCmd.startsWith('ls') && tokens.length > 0) {
-             // Verificações de segurança para não gridar erros ou frases
+          const isListTrigger = lastCmd.startsWith('!') || /(^|[;&|]\s*)ls\b/.test(lastCmd);
+          
+          if (isListTrigger && tokens.length > 0) {
              const shortAvg = (tokens.reduce((a,b) => a + b.length, 0) / tokens.length) < 20;
-             const hasCodeChars = /['"=`]/.test(line); // Aspas indicam texto, não arquivo
+             const hasCodeChars = /['"=`]/.test(line); 
+             const isTime = /\d{2}:\d{2}:\d{2}/.test(line); 
              
-             // Se passou no filtro, renderiza como Grid de Arquivos
-             if (shortAvg && !hasCodeChars) {
+             // Detecta se é listagem longa (-l) pelo padrão de permissões (ex: drwxr-xr-x)
+             const isLongList = /^[-dcbpsl][-rwxst]{9}/.test(line);
+
+             // Só aplica grid se NÃO for listagem longa
+             if (shortAvg && !hasCodeChars && !isTime && !isLongList) {
                 let fileSpans = tokens.map(t => classifyFile(escapeHtml(t))).join('\n'); 
                 htmlBuffer += `<div class="t-out t-ls">${fileSpans}</div>`;
                 return;
              }
           }
 
-          // ESTADO 3: TEXTO GENÉRICO (Padrão / cat / man / echo)
-          // Mantém o comportamento original, mas sem tentar forçar grid
+          // ESTADO 3: TEXTO GENÉRICO
+          
+          // [FIX] Compactação Inteligente: Reduz múltiplos espaços para 2 espaços
+          // Isso preserva o alinhamento visual (colunas) mas economiza largura.
+          if (/^[-dcbpsl][-rwxst]{9}/.test(line) || /^total \d+/.test(line)) {
+              line = line.replace(/[ \t]{4,}/g, '  ');
+          }
+
           let safeContent = line === '' || line.trim() === '' ? '&nbsp;' : escapeHtml(line);
           
           // Highlight de executáveis no meio do texto
