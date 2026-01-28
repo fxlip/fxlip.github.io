@@ -836,10 +836,7 @@ code.c-path:hover {
   border-radius: 4px;
   height: 24px;
   width: 100%;
-  
-  /* [UPDATE] Aumentado de 15px para 30px (Igual ao Terminal) */
-  margin: 30px 0; 
-  
+  margin: 30px 0; /* Margem igual à do Terminal */
   position: relative;
   overflow: hidden;
   box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
@@ -853,27 +850,22 @@ code.c-path:hover {
   box-shadow: 0 0 10px rgba(189, 147, 249, 0.4);
 }
 
-/* Texto sobreposto (Dentro da barra) */
 .sys-load-data {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   display: flex; justify-content: space-between; align-items: center;
   
-  /* [UPDATE] Aumentado de 12px para 16px para dar mais ar */
-  padding: 0 16px;
+  /* [ALVO] Padding de 12px: Equilibra Home e Posts */
+  padding: 0 12px;
   
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;      
   text-transform: uppercase; 
   letter-spacing: 1px;
-  
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 1px 2px rgba(0,0,0,0.8);
   z-index: 2;
   pointer-events: none; 
 }
 
-.sys-load-meta {
-  opacity: 0.8;
-  font-size: 10px;
-}
+.sys-load-meta { opacity: 0.8; font-size: 10px; }

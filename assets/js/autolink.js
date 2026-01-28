@@ -97,10 +97,12 @@ document.addEventListener("DOMContentLoaded", function() {
   window.processAutoTerm = function() {};
 
   // ==========================================================================
-  // [MODULE] SYSTEM LOADER v3 (Zero Padding + Layout Fix)
+  // [MODULE] SYSTEM LOADER v3.1 (Zero Padding + Home Feed Fix)
   // ==========================================================================
   window.processProgressBars = function(context = document) {
-    const contentAreas = context.querySelectorAll('.post-content, .terminal-window p, .terminal-window div, .post-item, article, main');
+    // [UPDATE] Adicionei seletores genéricos (.post-excerpt, .entry) para garantir a Home
+    const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .entry-content, .terminal-window p, .terminal-window div, .post-item, article, main');
+    
     const regex = /\[\s*(\d+)\/(\d+)(?:\s+(.*?))?\s*\]/g;
 
     contentAreas.forEach(area => {
@@ -115,12 +117,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
           const pct = Math.round((cur / tot) * 100);
           
-          // [NOVO] Adiciona Zero à Esquerda (Pad Start)
-          // Transforma 4 em "04", 9 em "09", 10 mantém "10"
+          // Zero Padding: 4 -> 04
           const fmtPct = pct < 10 ? `0${pct}` : pct;
           
-          // Se tiver rótulo personalizado, usa. Se não, usa o padrão "INSTALLING..."
-          // Se você usava a lógica dinâmica (COMPLETO), agora ficará "04% COMPLETO"
           let displayText = label ? label.trim() : "INSTALLING...";
           
           return `
