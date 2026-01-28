@@ -855,13 +855,14 @@ code.c-path:hover {
   top: 0; left: 0; right: 0; bottom: 0;
   display: flex; justify-content: space-between; align-items: center;
   
-  /* [ALVO] Padding de 12px: Equilibra Home e Posts */
-  padding: 0 12px;
+  /* [CORREÇÃO] Adicionado !important para vencer o reset do .terminal-body div */
+  padding: 0 12px !important;
   
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;      
   text-transform: uppercase; 
   letter-spacing: 1px;
+  
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 1px 2px rgba(0,0,0,0.8);
   z-index: 2;

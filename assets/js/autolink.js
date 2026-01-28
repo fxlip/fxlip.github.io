@@ -120,14 +120,14 @@ document.addEventListener("DOMContentLoaded", function() {
           // Zero Padding: 4 -> 04
           const fmtPct = pct < 10 ? `0${pct}` : pct;
           
-          let displayText = label ? label.trim() : "INSTALLING...";
+          let displayText = label ? label.trim() : `${fmtPct}% CONCLUÍDO`;
           
           return `
             <div class="sys-load-wrapper" title="${cur}/${tot} Completed">
               <div class="sys-load-bar" style="width: 0%" data-width="${pct}%"></div>
               <div class="sys-load-data">
                 <span style="opacity: 0.9;">${displayText}</span>
-                <span class="sys-load-meta">${fmtPct}%</span>
+                <span class="sys-load-meta"</span>
               </div>
             </div>
           `;
