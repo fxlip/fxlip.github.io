@@ -4,7 +4,7 @@
     "pwd", "set", "unset", "uname", "history", "clear", "exit", "alias", "unalias",
     "sudo", "su", "time", "watch", "nohup", "screen", "tmux",
     "ps", "top", "htop", "atop", "jobs", "bg", "fg", 
-    "kill", "killall", "pkill", "pgrep", "xkill",
+    "kill", "killall", "pkill", "pgrep", "xkill", "info", "apropos",
     "free", "uptime", "vmstat", "iostat", "nice", "renice",
     "systemctl", "service", "journalctl", "shutdown", "reboot", "halt", "poweroff",
     "init", "telinit", "runlevel", "wall", "mesg",
