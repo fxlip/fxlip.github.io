@@ -1,13 +1,14 @@
 ---
-title: about
+title: sobre
 layout: page
-permalink: /about
+permalink: /sobre
 ---
 
-# Felip Barbosa de Medeiros
+<div style="text-align: center;">
+  <h1>Felip Barbosa de Medeiros</h1>
+   <h4>Desenvolvedor, entusiasta de SI e defensor da privacidade.</h4>
+</div>
 
-
-Desenvolvedor, entusiasta de SI e defensor da privacidade.
 
 ![fxlip](https://felip.com.br/files/img/avatar/profile.jpeg)
 
@@ -15,17 +16,17 @@ Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez
 
 ---
 
-### // interesse em
+### interesses >>
 
 **Segurança** azul e vermelho,
 
-**Kernels** controlando hardware,
+**Kernels** controlando hardwares,
 
 e **Aesthetic** com scripts elegantes.
 
 ---
 
-### // status
+### status >>
 
 Atualmente focado na certificação **LPIC-1** e no desenvolvimento de automações com Ruby e Shell.
 

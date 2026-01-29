@@ -147,11 +147,7 @@ code a, a code {
   display: inline-block;
   font-size: 0.9em;
 }
-code a:hover, a code:hover {
-  background: rgba(255, 121, 198, 0.1);
-  border-color: var(--link-color); 
-  color: var(--link-color);
-}
+
 
 /* Links da Árvore (.file-link) */
 .file-link {
@@ -341,9 +337,23 @@ main img:hover {
 }
 
 /* Garante que os File Links tenham cursor de ação */
+/* Links da Árvore (.file-link) */
 .terminal-box a.file-link {
   pointer-events: auto !important;
   cursor: pointer !important;
+  /* Mantém a transição suave existente */
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+/* [HOVER] Ciano Neon (Igual ao Menu Superior) */
+.terminal-box a.file-link:hover {
+  color: var(--accent-cyan-bright) !important; /* #ddf8ff */
+  text-shadow: 0 0 10px rgba(139, 233, 253, 0.8), /* Glow principal */
+               0 0 20px rgba(139, 233, 253, 0.4); /* Aura difusa */
+  
+  background: none !important; 
+  border: none !important;
+  text-decoration: none !important;
 }
 
 /* [EXCEPTION 1] Mentions Internas (@file) */

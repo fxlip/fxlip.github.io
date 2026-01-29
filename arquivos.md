@@ -1,7 +1,7 @@
 ---
 layout: page
-title: files
-permalink: /files
+title: arquivos
+permalink: /aquivos
 hide_footer: true
 ---
 
