@@ -1,6 +1,17 @@
 ---
 # Front Matter
 ---
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Micro+5&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Wallpoet&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tektur:wght@600&display=swap');
 
 /* ==========================================================================
    1. CORE VARIABLES & PALETTE
@@ -63,14 +74,21 @@ body::before {
 }
 
 /* --- HEADERS --- */
-h1 { 
-  font-size: 1.5em; 
-  color: var(--link-hover-color); 
-  text-align: center; 
+h1 {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 2.2em; /* Reduzido para elegância (era 3em) */
+  text-transform: uppercase;
+  color: var(--link-hover-color);
+  
+  /* Espaçamento técnico */
+  letter-spacing: 0.05em; 
+  font-weight: 400;
+  
+  /* Glow Estático: Luz suave e constante, sem piscar */
+  text-shadow: 0 0 15px rgba(189, 147, 249, 0.25); 
+  
   margin-top: 40px;    
-  margin-bottom: 20px; 
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  margin-bottom: 20px;
 }
 
 h2, h4, h5, h6 {
@@ -222,14 +240,28 @@ header.header-terminal-mode {
   text-shadow: 0 0 8px rgba(189, 147, 249, 0.6); 
 }
 
+/* Estado Ativo: Subtle Neon (Calibrado) */
 .menu-active { 
-  display: block; padding: 6px 12px; 
-  color: var(--nav-link-active); 
-  border: 1px solid transparent; border-radius: 2px;
+  display: block; 
+  padding: 6px 12px; 
+  
+  /* Núcleo Branco (Mantém a sensação de "aceso") */
+  color: #FFFFFF; 
+  
+  border: 1px solid transparent; 
+  border-radius: 2px;
   background-color: transparent !important; 
-  text-shadow: 0 0 10px rgba(255, 121, 198, 0.6); 
-  font-weight: 500; text-decoration: none; 
-  cursor: default; line-height: 1.2; 
+  
+  /* Stack Reduzido: Mais foco, menos "nuvem" */
+  text-shadow: 
+    0 0 2px #fff,                       /* Definição Borda */
+    0 0 6px rgba(255, 121, 198, 0.8),   /* Corpo Rosa (Suave) */
+    0 0 12px rgba(255, 121, 198, 0.5);  /* Aura Curta */
+  
+  font-weight: 700; 
+  text-decoration: none; 
+  cursor: default; 
+  line-height: 1.2; 
 }
 
 /* ==========================================================================
@@ -1235,3 +1267,13 @@ header a.active {
 }
 
 body.dock-active { padding-bottom: 80px; }
+
+@keyframes voltage-flicker {
+  0%   { opacity: 1; text-shadow: 0 0 10px rgba(189, 147, 249, 0.4); }
+  3%   { opacity: 0.8; text-shadow: none; }
+  6%   { opacity: 1; text-shadow: 0 0 10px rgba(189, 147, 249, 0.4); }
+  7%   { opacity: 1; text-shadow: 0 0 10px rgba(189, 147, 249, 0.4); }
+  8%   { opacity: 0.9; text-shadow: none; }
+  9%   { opacity: 1; text-shadow: 0 0 10px rgba(189, 147, 249, 0.4); }
+  100% { opacity: 1; text-shadow: 0 0 10px rgba(189, 147, 249, 0.4); }
+}

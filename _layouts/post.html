@@ -42,4 +42,17 @@ layout: default
     {% endif %}
   {% endif %}
 
+  <div class="post-footer" style="margin-top: 30px;">
+    
+    <a href="{{ page.url }}" class="sys-hash-link" title="./{{ page.url | split: '/' | last }}">
+      
+    </a>
+
+    <time class="sys-date" datetime="{{ page.date | date: "%Y-%m-%d %H:%M" }}">
+      {{ page.date | date: "%H:%M" }} · {{ page.date | date: "%-d de %b de %Y" | downcase }}
+    </time>
+  </div>
+
 </article>
+
+<hr class="post-list__divider">
