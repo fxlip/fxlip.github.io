@@ -1,3 +1,16 @@
+{% assign t = site.time | date: "%s" %}
+
+{% assign master_hash = t | replace: '0', 'a' | replace: '1', 'b' | replace: '2', 'c' | replace: '3', 'd' | replace: '4', 'e' | replace: '5', 'f' | replace: '6', '7' | replace: '7', '8' | replace: '8', '9' | replace: '9', '0' | append: 'f' %}
+
+{% assign sig_css = master_hash %}
+
+{% assign sig_lnk = master_hash | replace: 'a', 'x' | replace: 'b', 'y' | replace: 'c', 'z' %}
+
+{% assign sig_trm = master_hash | replace: '7', '1' | replace: '8', '2' | append: 't' %}
+
+{% assign sig_syn = master_hash | remove: 'f' | append: 's9' %}
+
+{% assign sig_main = master_hash | replace: 'd', 'k' | replace: 'e', 'm' | prepend: 'v8-' %}
 <!DOCTYPE html>
 <html lang="{{ page.lang | default: site.lang | default: 'en' }}">
 {%- comment -%}
@@ -65,7 +78,7 @@ script-src 'self' 'unsafe-inline';
 
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | relative_url }}">
   <link rel="icon" type="image/svg+xml" href="{{ "/assets/img/favicon.svg" | relative_url }}">
-  <link rel="stylesheet" href="{{ "/assets/css/main.css?v=8.0" | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?x={{ sig_css }}">
 
   <style>
     ::-webkit-scrollbar { display: none; }
@@ -88,9 +101,10 @@ script-src 'self' 'unsafe-inline';
 
     </div>
     
-    <script src="{{ "/assets/js/autolink.js?v=8.0" | relative_url }}"></script>
-    <script src="{{ "/assets/js/autoterm.js?v=8.0" | relative_url }}"></script>
-    <script src="{{ "/assets/js/syntax.js?v=8.0" | relative_url }}"></script>
-    <script src="{{ "/assets/js/main.js?v=8.0" | relative_url }}"></script>
+    <script src="{{ '/assets/js/autolink.js' | relative_url }}?x={{ sig_lnk }}"></script>
+    <script src="{{ '/assets/js/autoterm.js' | relative_url }}?x={{ sig_trm }}"></script>
+    <script src="{{ '/assets/js/syntax.js' | relative_url }}?x={{ sig_syn }}"></script>
+    <script src="{{ '/assets/js/main.js' | relative_url }}?x={{ sig_main }}"></script>
+
   </body>
 </html>
