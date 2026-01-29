@@ -299,12 +299,19 @@ main img:hover {
 /* --- 5.2. INTERACTION LAYER (LINK LOGIC) --- */
 
 /* [DEFAULT] Link Killer: Mata links padrão para evitar cliques acidentais */
-.terminal-box a:not(.mention-link):not(.link-card) {
+/* ADICIONEI :not(.file-link) NA LISTA DE EXCEÇÕES */
+.terminal-box a:not(.mention-link):not(.link-card):not(.file-link) {
   color: inherit !important;
   text-decoration: none !important;
   pointer-events: none;
   cursor: text;
   border-bottom: none !important;
+}
+
+/* Garante que os File Links tenham cursor de ação */
+.terminal-box a.file-link {
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
 /* [EXCEPTION 1] Mentions Internas (@file) */
@@ -542,6 +549,35 @@ code.tag:hover {
   border-color: rgba(255, 255, 255, 0.1); 
   transform: translateY(0);
   box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* [KERNEL] Tree View Graphics Engine */
+.t-tree {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace; /* Fontes com ligaduras de caixa */
+  white-space: pre;       /* Obriga o navegador a respeitar espaços exatos */
+  line-height: 1.2;       /* Altura calibrada para as linhas verticais se tocarem */
+  letter-spacing: 0px;    /* Impede "respiração" da fonte */
+  color: #6272a4;         /* Cor das linhas (Dracula Comment) */
+  
+  display: inline-block;
+  vertical-align: baseline;
+  margin: 0;
+  padding: 0;
+}
+
+/* Garante que a linha inteira seja um bloco sólido */
+.t-row {
+  display: flex;          /* Alinhamento flex para colar os elementos */
+  align-items: flex-start; /* Alinha no topo */
+  margin: 0;
+  padding: 0;
+  line-height: 1.3;       /* Altura da linha de texto (pode ser maior que a árvore) */
+}
+
+/* O link do arquivo */
+.t-row a.file-link {
+  margin-left: 0px;       /* Zero margem, o espaço já vem da árvore */
+  text-decoration: none;
 }
 
 /* ==========================================================================
@@ -1019,16 +1055,16 @@ code.c-path:hover {
 }
 
 /* ==========================================================================
-   13. UNIVERSAL NEON INTERACTION (MENU & TERMINAL)
+   13. UNIVERSAL NEON INTERACTION (MENU & TERMINAL) - FIX v2
    ========================================================================== */
 
 /* 1. O Menu Principal (Header) */
-/* Força o brilho em todos os links do cabeçalho */
 header a:hover,
 .site-nav .page-link:hover,
 .trigger a:hover {
   color: var(--accent-cyan-bright) !important; 
-  text-shadow: 0 0 10px rgba(139, 233, 253, 0.9); /* Glow forte */
+  /* [CORREÇÃO] Adicionado !important para vencer a sombra roxa da Seção 3 */
+  text-shadow: 0 0 10px rgba(139, 233, 253, 0.9) !important; 
   opacity: 1 !important;
   text-decoration: none !important;
   background: transparent !important;
@@ -1036,8 +1072,7 @@ header a:hover,
 }
 
 /* 2. Itens da Árvore de Arquivos (Páginas Linux/Files) */
-/* Faz os arquivos e pastas "acenderem" quando você passa o mouse */
-/* Alvo: spans gerados pelo autoterm.js (.f=file, .d=dir, .x=exe) */
+/* Agora funcionará quando atualizarmos o JS para suportar o comando 'tree' */
 .t-out span.f:hover, 
 .t-out span.d:hover, 
 .t-out span.x:hover, 
@@ -1045,16 +1080,16 @@ header a:hover,
 .t-out span.z:hover {
   color: var(--accent-cyan-bright) !important;
   text-shadow: 0 0 8px rgba(139, 233, 253, 0.7);
-  
-  /* Transforma o cursor para indicar interatividade, mesmo se não for clicável */
   cursor: crosshair; 
-  
   position: relative;
   z-index: 10;
+  
+  /* Garante que o span capture o mouse */
+  pointer-events: auto !important; 
+  display: inline-block; /* Melhora a área de clique */
 }
 
-/* 3. Ajuste para o Menu Ativo (Active State) */
-/* Se você quiser que a página atual (ex: About) brilhe em Rosa em vez de cinza */
+/* 3. Ajuste para o Menu Ativo */
 .site-nav .page-link.active,
 header a.active {
   color: var(--link-color) !important;
