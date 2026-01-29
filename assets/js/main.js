@@ -92,6 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
               if (window.applyMentions) window.applyMentions(post);
               if (window.highlightInlineCode) window.highlightInlineCode(post);
               if (window.processProgressBars) window.processProgressBars(post); // <--- O Loader estava faltando aqui!
+              if (window.processNeonPipes) window.processNeonPipes(post);
               
               postsContainer.appendChild(post);
             });

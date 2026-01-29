@@ -354,9 +354,35 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   };
 
+  // ==========================================================================
+  // [MODULE] NEON PIPE v2 (ENTITY AWARE)
+  // Transforma ">>", "»" ou "&gt;&gt;" em operador estilizado
+  // ==========================================================================
+  window.processNeonPipes = function(context = document) {
+    console.log("Neon Pipes: Scanning active..."); // Log de confirmação
+
+    const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .terminal-window p, .terminal-window div, .post-item, article');
+    
+    // [FIX] Regex expandida para pegar Entidades HTML (&gt;)
+    // Captura: (Espaço/Início) + (>> OU » OU &gt;&gt;) + (Espaço/Fim)
+    const regex = /(\s|^|&nbsp;)(>>|»|&gt;&gt;)(\s|$|&nbsp;)/g;
+
+    contentAreas.forEach(area => {
+      // Ignora código fonte (PRE/CODE)
+      if (area.closest('pre') || area.tagName === 'CODE') return;
+
+      if (regex.test(area.innerHTML)) {
+        // Substitui mantendo os espaços em volta ($1 e $3)
+        // O span agora contém o texto visual ">>" limpo
+        area.innerHTML = area.innerHTML.replace(regex, '$1<span class="sys-pipe">>></span>$3');
+      }
+    });
+  };
+  
   window.processProgressBars();
   window.highlightInlineCode();
   window.applyMentions();
   window.linkifyInternalUrls();
   window.processInternalEmbeds();
+  window.processNeonPipes();
 });
