@@ -827,49 +827,117 @@ code.c-path:hover {
 }
 
 /* ==========================================================================
-   10. SYSTEM LOADER (PROGRESS BAR MODULE)
+   10. SYSTEM LOADER - v8 ACTIVE BLOCK (No Cursor)
    ========================================================================== */
 
 .sys-load-wrapper {
-  background-color: rgba(68, 71, 90, 0.3);
-  border: 1px solid #44475a;
-  border-radius: 4px;
-  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  margin: 30px 0; /* Margem igual à do Terminal */
+  margin: 25px 0;
+  height: 20px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* O TRILHO (Vazio) */
+.sys-load-track {
+  flex-grow: 1;
+  background-color: rgba(40, 42, 54, 0.4);
+  height: 14px;
+  border: 1px solid #44475a;
+  border-radius: 2px;
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+  margin-right: 15px;
+  
+  /* Padrão de blocos vazios (Slots) */
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 2px,     /* Largura do Slot */
+    rgba(68, 71, 90, 0.3) 2px,
+    rgba(68, 71, 90, 0.3) 4px /* Espaço entre slots */
+  );
 }
 
+/* O PREENCHIMENTO (Cheio) */
 .sys-load-bar {
-  background: linear-gradient(90deg, var(--link-color), var(--link-hover-color));
   height: 100%;
-  width: 0; 
-  transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
-  box-shadow: 0 0 10px rgba(189, 147, 249, 0.4);
+  background-color: var(--link-color); 
+  position: relative;
+  transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+  
+  /* Padrão de blocos cheios */
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--link-color),        
+    var(--link-color) 2px,    /* Largura do Bloco: 2px (Bem fino/tech) */
+    rgba(0,0,0,0.6) 2px,      /* Espaço Escuro */
+    rgba(0,0,0,0.6) 4px
+  );
+  
+  box-shadow: 0 0 10px var(--link-color);
 }
 
-.sys-load-data {
+/* [O BLOCO PISCANTE] A Cabeça Ativa */
+.sys-load-head {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  display: flex; justify-content: space-between; align-items: center;
+  right: 0;
+  top: 0;
+  bottom: 0;
   
-  /* [CORREÇÃO] Adicionado !important para vencer o reset do .terminal-body div */
-  padding: 0 12px !important;
+  width: 4px; 
   
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;      
-  text-transform: uppercase; 
-  letter-spacing: 1px;
+  /* [CORREÇÃO] Removemos o branco puro. Usamos a cor do tema. */
+  background-color: var(--link-color); 
   
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
   z-index: 2;
-  pointer-events: none; 
+  
+  /* [AJUSTE VELOCIDADE] 1.5s (Mais rápido que 2.5s, mas ainda suave) */
+  animation: sys-head-breathe 1.5s ease-in-out infinite alternate;
 }
 
-.sys-load-meta { opacity: 0.8; font-size: 10px; }
+/* Se 100%, fixa em Ciano sólido sem animação */
+.sys-load-bar[data-width="100%"] .sys-load-head {
+  background-color: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan); /* Glow reduzido */
+  filter: brightness(1);
+  animation: none;
+  opacity: 1;
+}
+
+/* O NÚMERO (Limpo) */
+.sys-load-data {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-cyan); /* Ciano para destaque */
+  min-width: 35px;
+  justify-content: flex-end;
+}
+
+.sys-load-pct {
+  /* Sem cursor, apenas o dado puro */
+  text-shadow: 0 0 5px rgba(139, 233, 253, 0.4);
+}
+
+@keyframes sys-head-breathe {
+  0% { 
+    opacity: 0.5; 
+    /* Brilho normal (cor original) e glow mínimo */
+    filter: brightness(1);
+    box-shadow: 0 0 2px var(--link-color); 
+  }
+  100% { 
+    opacity: 1;   
+    /* Aumenta o brilho da cor sem virar branco (1.5x) */
+    filter: brightness(1.5); 
+    /* Glow difuso, mas na cor rosa */
+    box-shadow: 0 0 12px var(--link-color); 
+  }
+}
 
 /* ==========================================================================
    11. NEON PIPE (CUSTOM OPERATOR) - v2 Tuned
@@ -948,4 +1016,47 @@ code.c-path:hover {
 .post-content ol li:hover::before {
   color: var(--link-color); /* Muda para Rosa */
   text-shadow: 0 0 8px rgba(255, 121, 198, 0.4);
+}
+
+/* ==========================================================================
+   13. UNIVERSAL NEON INTERACTION (MENU & TERMINAL)
+   ========================================================================== */
+
+/* 1. O Menu Principal (Header) */
+/* Força o brilho em todos os links do cabeçalho */
+header a:hover,
+.site-nav .page-link:hover,
+.trigger a:hover {
+  color: var(--accent-cyan-bright) !important; 
+  text-shadow: 0 0 10px rgba(139, 233, 253, 0.9); /* Glow forte */
+  opacity: 1 !important;
+  text-decoration: none !important;
+  background: transparent !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 2. Itens da Árvore de Arquivos (Páginas Linux/Files) */
+/* Faz os arquivos e pastas "acenderem" quando você passa o mouse */
+/* Alvo: spans gerados pelo autoterm.js (.f=file, .d=dir, .x=exe) */
+.t-out span.f:hover, 
+.t-out span.d:hover, 
+.t-out span.x:hover, 
+.t-out span.l:hover,
+.t-out span.z:hover {
+  color: var(--accent-cyan-bright) !important;
+  text-shadow: 0 0 8px rgba(139, 233, 253, 0.7);
+  
+  /* Transforma o cursor para indicar interatividade, mesmo se não for clicável */
+  cursor: crosshair; 
+  
+  position: relative;
+  z-index: 10;
+}
+
+/* 3. Ajuste para o Menu Ativo (Active State) */
+/* Se você quiser que a página atual (ex: About) brilhe em Rosa em vez de cinza */
+.site-nav .page-link.active,
+header a.active {
+  color: var(--link-color) !important;
+  text-shadow: 0 0 5px var(--link-color);
 }

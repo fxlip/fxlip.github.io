@@ -100,46 +100,41 @@ document.addEventListener("DOMContentLoaded", function() {
   // [MODULE] SYSTEM LOADER v3.1 (Zero Padding + Home Feed Fix)
   // ==========================================================================
   window.processProgressBars = function(context = document) {
-    // [UPDATE] Adicionei seletores genéricos (.post-excerpt, .entry) para garantir a Home
-    const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .entry-content, .terminal-window p, .terminal-window div, .post-item, article, main');
-    
-    const regex = /\[\s*(\d+)\/(\d+)(?:\s+(.*?))?\s*\]/g;
+  const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .entry-content, .terminal-window p, .terminal-window div, .post-item, article, main');
+  const regex = /\[\s*(\d+)\/(\d+)(?:\s+(.*?))?\s*\]/g;
 
-    contentAreas.forEach(area => {
-      if (area.tagName === 'PRE' || area.tagName === 'CODE') return;
-
-      if (regex.test(area.innerHTML)) {
-        area.innerHTML = area.innerHTML.replace(regex, (match, current, total, label) => {
-          const cur = parseInt(current);
-          const tot = parseInt(total);
-          
-          if (tot === 0) return match;
-
-          const pct = Math.round((cur / tot) * 100);
-          
-          // Zero Padding: 4 -> 04
-          const fmtPct = pct < 10 ? `0${pct}` : pct;
-          
-          let displayText = label ? label.trim() : `${fmtPct}% CONCLUÍDO`;
-          
-          return `
-            <div class="sys-load-wrapper" title="${cur}/${tot} Completed">
-              <div class="sys-load-bar" style="width: 0%" data-width="${pct}%"></div>
-              <div class="sys-load-data">
-                <span style="opacity: 0.9;">${displayText}</span>
-                <span class="sys-load-meta"</span>
-              </div>
+  contentAreas.forEach(area => {
+    if (area.tagName === 'PRE' || area.tagName === 'CODE') return;
+    if (regex.test(area.innerHTML)) {
+      area.innerHTML = area.innerHTML.replace(regex, (match, current, total, label) => {
+        const cur = parseInt(current);
+        const tot = parseInt(total);
+        if (tot === 0) return match;
+        
+        const pct = Math.round((cur / tot) * 100);
+        const fmtPct = pct < 10 ? `0${pct}` : pct;
+        
+        return `
+          <div class="sys-load-wrapper" title="${cur}/${tot} Completed">
+            <div class="sys-load-track">
+                <div class="sys-load-bar" style="width: 0%" data-width="${pct}%">
+                    <div class="sys-load-head"></div>
+                </div>
             </div>
-          `;
-        });
-      }
-    });
-
-    setTimeout(() => {
-      document.querySelectorAll('.sys-load-bar').forEach(bar => {
-        if (bar.dataset.width) bar.style.width = bar.dataset.width;
+            <div class="sys-load-data">
+              <span class="sys-load-pct">${fmtPct}%</span>
+            </div>
+          </div>
+        `;
       });
-    }, 100);
+    }
+  });
+  
+  setTimeout(() => {
+    document.querySelectorAll('.sys-load-bar').forEach(bar => {
+      if (bar.dataset.width) bar.style.width = bar.dataset.width;
+    });
+  }, 100);
   };
 
   // ==========================================================================
