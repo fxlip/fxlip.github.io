@@ -5,10 +5,9 @@ url: "https://fxlip.com"
 
 header_pages:
   - sobre.md
-  - index.html
   - linux.md
+  - index.html
   - arquivos.md
-  - setup.md
 
 footer: 'me manda um <a href="mailto:fxlip@tuta.io">e-mail</a> ツ'
 
