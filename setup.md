@@ -20,7 +20,7 @@ Depois de assistir uma palestra da **Free Software Foundation** em 2017 e ter um
 
 ---
 
-### Laboratório >>
+### Pesquisa >>
 
 * **Hardware:** Lenovo T400s RYF.
 * **Libreboot:** Sem BIOS/UEFI.
