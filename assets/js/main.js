@@ -74,9 +74,9 @@ document.addEventListener("DOMContentLoaded", function() {
               if (window.applyMentions) window.applyMentions(post);
               if (window.processProgressBars) window.processProgressBars(post);
               if (window.processNeonPipes) window.processNeonPipes(post);
+              if (window.processTimeAgo) window.processTimeAgo(post); // [NEW] Datas Relativas
               
               // 2. Syntax Engine (syntax.js - Usa o JSON Central)
-              // Priorizamos renderBadges, fallback para o alias antigo
               if (window.renderBadges) {
                   window.renderBadges(post);
               } else if (window.highlightInlineCode) {
@@ -87,7 +87,6 @@ document.addEventListener("DOMContentLoaded", function() {
             });
             
             // 3. Processamento Global (Terminais e Janelas)
-            // Chama o autoterm.js para processar qualquer nova janela de terminal (.auto-term)
             if (window.renderTerminalWindows) window.renderTerminalWindows();
           }
 

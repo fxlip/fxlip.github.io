@@ -1,15 +1,59 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-  // [CLEANUP] Highlight removido. Agora é responsabilidade exclusiva do syntax.js
-  // [CLEANUP] Estilos removidos. Agora é responsabilidade do CSS.
+  // ==========================================================================
+  // 0. SHARED UTILS (TIMEAGO ENGINE)
+  // Lógica centralizada para cálculo de datas relativas
+  // ==========================================================================
+  const getRelativeTime = (dateString) => {
+    if (!dateString) return null;
+
+    const months = {
+      'jan': 0, 'fev': 1, 'mar': 2, 'abr': 3, 'mai': 4, 'jun': 5,
+      'jul': 6, 'ago': 7, 'set': 8, 'out': 9, 'nov': 10, 'dez': 11
+    };
+
+    // Regex para: "14:21 · 27 de jan de 2026"
+    const match = dateString.match(/(\d{2}):(\d{2})\s*[·\-\|]\s*(\d{1,2})\s*de\s*([a-zç]{3})\s*de\s*(\d{4})/i);
+
+    if (!match) return dateString; // Retorna original se falhar o parse
+
+    const hour = parseInt(match[1]);
+    const min = parseInt(match[2]);
+    const day = parseInt(match[3]);
+    const monthStr = match[4].toLowerCase().substring(0, 3);
+    const year = parseInt(match[5]);
+
+    if (months[monthStr] === undefined) return dateString;
+
+    const postDate = new Date(year, months[monthStr], day, hour, min);
+    const now = new Date();
+    
+    const diffMs = now - postDate;
+    const diffHours = diffMs / (1000 * 60 * 60);
+    const diffDays = diffHours / 24;
+
+    // Regras de Formatação
+    if (diffDays < 7) {
+      if (diffDays < 1 && now.getDate() === postDate.getDate()) {
+         return diffHours < 1 ? "há alguns minutos" : "há algumas horas";
+      } else if (diffDays < 2) {
+         return "ontem";
+      } else {
+         return `há ${Math.floor(diffDays)} dias`;
+      }
+    }
+    
+    // Se for antigo (> 7 dias), retorna a data original
+    return dateString;
+  };
 
   // ==========================================================================
-  // 1. MÓDULO: AUTOTERM DUMMY (Prevenção de erro)
+  // 1. MÓDULO: AUTOTERM DUMMY
   // ==========================================================================
   window.processAutoTerm = function() {};
 
   // ==========================================================================
-  // 2. MÓDULO: SYSTEM LOADER (Barras de Progresso [10/100])
+  // 2. MÓDULO: SYSTEM LOADER
   // ==========================================================================
   window.processProgressBars = function(context = document) {
     const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .entry-content, .terminal-window p, .terminal-window div, .post-item, article, main');
@@ -42,7 +86,6 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
     
-    // Animação atrasada para dar efeito de carregamento
     setTimeout(() => {
       document.querySelectorAll('.sys-load-bar').forEach(bar => {
         if (bar.dataset.width) bar.style.width = bar.dataset.width;
@@ -51,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   // ==========================================================================
-  // 3. UTILS & LINKIFY (Links internos automáticos)
+  // 3. UTILS & LINKIFY
   // ==========================================================================
   const isImage = (path) => /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(path);
   const isCode = (path) => /\.(txt|md|sh|js|css|py|rb|html|json|conf|yml|yaml)$/i.test(path);
@@ -62,7 +105,6 @@ document.addEventListener("DOMContentLoaded", function() {
     
     while(walker.nextNode()) {
       const node = walker.currentNode;
-      // Ignora áreas onde não queremos links automáticos
       if (['A', 'SCRIPT', 'STYLE', 'TEXTAREA', 'PRE', 'CODE'].includes(node.parentElement.tagName)) continue;
       if (node.parentElement.closest('.auto-term') || node.parentElement.closest('.t-cmd')) continue;
       
@@ -84,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   // ==========================================================================
-  // 4. CARDS & MENTIONS
+  // 4. CARDS & MENTIONS (UPDATED WITH DATES)
   // ==========================================================================
   window.processInternalEmbeds = function(context = document) {
     const links = context.querySelectorAll('.post-content a, .t-out a'); 
@@ -97,14 +139,12 @@ document.addEventListener("DOMContentLoaded", function() {
       const allowedHosts = [currentHost, 'localhost', '127.0.0.1', prodHost, 'www.' + prodHost];
       if (!allowedHosts.includes(link.hostname)) return;
 
-      // Só transforma se o texto do link for igual a URL (link cru)
       const linkText = link.innerText.trim().replace(/\/$/, '');
       const linkHref = link.href.trim().replace(/\/$/, '');
       if (linkText !== linkHref && linkText !== link.href) return;
 
       link.dataset.processed = "true"; 
       
-      // Placeholder de loading
       const loader = document.createElement('div');
       loader.className = 'rt-loading';
       loader.innerHTML = '<span class="cursor-blink">█</span> resolving ref...';
@@ -122,15 +162,22 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(html => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(html, 'text/html');
+          
+          // --- Extração de Dados ---
           const filename = urlObj.pathname.split('/').filter(p => p).pop() || urlObj.hostname;
           const displayHash = filename.replace('.html', '');
           
-          // Extrai o conteúdo para a descrição
+          // Extração da Data do Post Remoto
+          const remoteDateEl = doc.querySelector('.sys-date');
+          const remoteDateRaw = remoteDateEl ? remoteDateEl.innerText.trim() : null;
+          // Usa a lógica unificada para calcular "há X dias"
+          const displayDate = getRelativeTime(remoteDateRaw) || "fxlip.com"; 
+
+          // Extração do Conteúdo/Descrição
           const contentDiv = doc.querySelector('.post-content');
           let rawText = "";
           if (contentDiv) {
             const clone = contentDiv.cloneNode(true);
-            // Remove lixo para o resumo ficar limpo
             const garbages = clone.querySelectorAll('script, style, .terminal-box');
             garbages.forEach(g => g.remove());
             rawText = clone.innerText || "";
@@ -142,22 +189,23 @@ document.addEventListener("DOMContentLoaded", function() {
           const maxLength = 160;
           const desc = rawText.length > maxLength ? rawText.substring(0, maxLength) + "..." : rawText;
 
-          // Cria o Card
+          // --- Construção do Card ---
           const card = document.createElement('a');
           card.href = link.href;
           card.className = 'link-card no-image internal-ref';
           card.title = `./${filename}`;
+          
+          // HTML com a data processada no rodapé (.lc-site)
           card.innerHTML = `
             <div class="lc-meta">
               <div class="lc-host">fxlip/${displayHash}</div>
               <div class="lc-desc">${desc}</div>
-              <div class="lc-site">fxlip.com</div>
+              <div class="lc-site">${displayDate}</div>
             </div>
           `;
           loader.replaceWith(card);
         })
         .catch(err => {
-          // Em caso de erro, volta a ser link, mas estilizado como mention
           loader.remove();
           link.style.display = 'inline';
           link.classList.add('mention-link');
@@ -175,18 +223,14 @@ document.addEventListener("DOMContentLoaded", function() {
       if (regex.test(area.innerHTML)) {
           area.innerHTML = area.innerHTML.replace(regex, function(match, path) {
             const url = `/${path}`;
-            // @imagem.png -> Vira Embed de Imagem
             if (isImage(path)) return `<span class="embed-image-wrapper"><img src="${url}" class="embed-image" alt="${path}" onerror="this.style.display='none'"><span class="embed-caption">./${path}</span></span>`;
-            // @script.sh -> Vira Terminal Embutido
             if (isCode(path)) return `<div class="terminal-box embedded-terminal" data-src="${url}"><div class="terminal-header"><div class="terminal-controls"><span style="font-size:12px; color:#bd93f9; margin-right:10px;">./${path}</span></div></div><div class="terminal-body"><div class="embedded-loading"><span class="cursor-blink">█</span> loading...</div></div></div>`;
-            // @path -> Vira Link Simples
             return `<a href="${url}" class="mention-link" title="./${path}">${match}</a>`;
           });
       }
       area.dataset.mentionsProcessed = "true";
     });
 
-    // Carrega o conteúdo dos terminais embutidos
     context.querySelectorAll('.embedded-terminal[data-src]').forEach(terminal => {
        const url = terminal.dataset.src;
        const body = terminal.querySelector('.terminal-body');
@@ -213,6 +257,33 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   };
+
+  // ==========================================================================
+  // 6. TIMEAGO PROTOCOL (PAGE DATES)
+  // Processa as datas da página principal usando a lógica compartilhada
+  // ==========================================================================
+  window.processTimeAgo = function(context = document) {
+    const dateElements = context.querySelectorAll('.sys-date');
+    
+    dateElements.forEach(el => {
+      if (el.dataset.timeagoProcessed) return;
+
+      const originalText = el.innerText.trim();
+      // Chama a função auxiliar da Seção 0
+      const newText = getRelativeTime(originalText);
+
+      if (newText && newText !== originalText) {
+          el.innerText = newText;
+          el.title = originalText; 
+          // Estilo visual para datas relativas
+          el.style.opacity = "1"; 
+          el.style.color = "var(--placeholder-color)"; 
+          el.style.fontWeight = "400";
+      }
+      
+      el.dataset.timeagoProcessed = "true";
+    });
+  };
   
   // Execução Inicial
   window.processProgressBars();
@@ -220,4 +291,5 @@ document.addEventListener("DOMContentLoaded", function() {
   window.linkifyInternalUrls();
   window.processInternalEmbeds();
   window.processNeonPipes();
+  window.processTimeAgo();
 });

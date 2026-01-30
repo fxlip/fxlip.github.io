@@ -4,8 +4,8 @@ description: "Diário de estudos focado em Linux e Tecnologia. Documentações t
 url: "https://fxlip.com"
 
 header_pages:
-  - index.html
   - sobre.md
+  - index.html
   - linux.md
   - arquivos.md
   - setup.md

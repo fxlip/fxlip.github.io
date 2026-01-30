@@ -26,13 +26,28 @@ a.link-card {
   color: var(--text-color) !important;      
   
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+/* --- [CORREÇÃO DE BLUR v2.0] --- */
+  /* Removemos o 'transform' picado e usamos apenas translate3d */
+  transform: translate3d(0, 0, 0); 
+  
+  /* Mantém a nitidez da fonte */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  
+  /* Removemos o will-change pois ele pode causar rasterização prematura */
+  /* will-change: transform;  <-- REMOVIDO */
+  
+  /* Evita flicker no 3D */
+  backface-visibility: hidden;
+
 }
 
 a.link-card.no-image { padding: 15px !important; min-height: auto; }
 
 /* [HOVER STATE - BLINDADO] */
 a.link-card:hover {
-  transform: translateY(-2px); 
+  /* [CORREÇÃO] Mantemos o contexto 3D ao mover apenas o Y */
+  transform: translate3d(0, -2px, 0); 
   
   /* Borda Rosa Suave */
   border-color: rgba(255, 121, 198, 0.5); 
@@ -40,17 +55,13 @@ a.link-card:hover {
   /* Fundo muito sutil */
   background-color: rgba(255, 121, 198, 0.03); 
   
-  /* Glow externo apenas na CAIXA (não no texto) */
+  /* Glow externo */
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 
               0 0 0 1px rgba(255, 121, 198, 0.05);
   
   cursor: pointer;
 
-  /* --- A CORREÇÃO REAL --- */
-  /* Anula o brilho de texto global */
   text-shadow: none !important; 
-  
-  /* Garante que o texto descritivo continue cinza, não ciano */
   color: var(--text-color) !important;
 }
 
@@ -118,7 +129,6 @@ a.link-card:hover .lc-host {
 /* Hover: Metadata acende em Ciano (Contraste) */
 a.link-card:hover .lc-site {
   color: var(--accent-cyan); 
-  text-shadow: 0 0 5px rgba(139, 233, 253, 0.4); 
 }
 
 
@@ -395,6 +405,30 @@ a.link-card:hover .lc-site {
   font-size: 0.95em; line-height: 1.5;
   color: var(--base-color) !important; margin-top: 0;
 }
+
+/* === [NOVO] AJUSTES DO RODAPÉ (DATA) === */
+
+/* 1. Cor e Estilo da Data */
+.internal-ref .lc-site {
+  /* Sincroniza com a cor do hash/data da página principal (#5c5f77) */
+  color: var(--placeholder-color) !important;
+  
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; /* Levemente menor para ser discreto */
+  font-weight: 400;
+  opacity: 0.8; /* Remove transparência excessiva se houver */
+  margin-top: 8px; /* Um pouco de respiro do texto */
+}
+
+/* 2. Remover o ícone de seta (↗) */
+/* O seletor genérico de cards adiciona uma seta via ::before. 
+   Aqui nós a removemos especificamente para os cards internos. */
+.internal-ref .lc-site::before {
+  content: none !important;
+  margin-right: 0 !important;
+  display: none !important;
+}
+
 
 /* --- UTILS: IMAGENS E TERMINAIS EMBUTIDOS --- */
 .embedded-terminal {

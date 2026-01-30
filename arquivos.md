@@ -5,7 +5,7 @@ permalink: /aquivos
 hide_footer: true
 ---
 
-<div class="terminal-box" style="margin-top: 30px;">
+<div class="terminal-box">
   <div class="terminal-header">
     <div class="terminal-controls">
       <div class="win-btn btn-min" title="Minimize">−</div>
