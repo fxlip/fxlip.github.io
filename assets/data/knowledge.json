@@ -42,6 +42,18 @@
     "BIOS", "UEFI", "bootloader", "kernel", "initramfs", 
     "sysfs", "procfs", "devtmpfs", "mbr", "gpt", "GRUB", "LILO",
     "SysVinit", "systemd", "Upstart", "OpenRC",
-    "EFI", "swap", "LVM", "LD_LIBRARY_PATH"
+    "EFI", "swap", "LVM", "LD_LIBRARY_PATH", "PATH", "SHELL", "USER", "HOME", "PWD"
+  ],
+  "directories": [
+    "bin", "boot", "dev", "etc", "home", "lib", "lib64", "media", "mnt", "opt", 
+    "proc", "root", "run", "sbin", "srv", "sys", "tmp", "usr", "var", "snap", 
+    "lost+found", "assets", "img", "css", "js", "node_modules", "_posts", 
+    "_site", "_includes", "_layouts", "files", "linux", "feed", "about", 
+    "setup", "shop", "curadoria", "lpi1", "www", "script"
+  ],
+  "system_files": [
+    ".bash_history", ".bashrc", ".profile", ".zshrc", 
+    "/dev/null", "/etc/passwd", "/etc/shadow", "/etc/group", "/etc/fstab",
+    "vmlinuz", "initrd.img", "vmlinuz.old", "initrd.img.old", "core"
   ]
 }

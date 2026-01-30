@@ -1,36 +1,139 @@
 /* ==========================================================================
-   8. MOBILE OPTIMIZATION
+   8. MOBILE OPTIMIZATION (THE ADAPTIVE LAYER) v2.2
    ========================================================================== */
-@media only screen and (max-width: 600px) { 
-  .container { width: 94%; } 
 
-  /* [MOBILE] Visual Semi-Ativo Padrão */
-  a.link-card {
-    /* Borda Roxo Discreta (Identidade visual clara) */
-    border-color: rgba(189, 147, 249, 0.4); 
-    background-color: rgba(189, 147, 249, 0.03);
-    transform: none; box-shadow: none;
+@media only screen and (max-width: 600px) { 
+  
+  /* 1. CONTAINER FLUIDO */
+  .container { 
+    width: 94%; 
+    max-width: 100%;
+  } 
+
+  /* 2. HEADER & MENU COMPACTO (SINGLE LINE FORCE) */
+  header { padding: 5px 0; margin-top: 10px; }
+  
+  .menu ul { 
+    /* [CORREÇÃO] Força linha única conforme solicitado */
+    flex-wrap: nowrap !important; 
+    justify-content: center; 
+    
+    /* Distância mínima para caber tudo */
+    gap: 2px !important; 
+    width: 100%; 
   }
   
-  /* Feedback de toque */
+  .menu a, .menu-active { 
+    /* Redução drástica de padding e fonte para encaixar na horizontal */
+    padding: 6px 6px !important; 
+    font-size: 12px !important; 
+    letter-spacing: -0.5px; /* Kerning negativo ganha pixels preciosos */
+  }
+
+  /* 3. TERMINAL ADAPTATIVO */
+  .terminal-box {
+    margin: 20px 0;
+    font-size: 12.5px !important; 
+  }
+
+  .terminal-body { padding: 10px; }
+
+  /* Grid Calibrado para Mobile */
+  .t-ls {
+    column-width: 80px !important; 
+    column-gap: 10px !important;
+  }
+  
+  .t-out { 
+    white-space: pre-wrap !important; 
+    word-break: break-all;
+  }
+
+  /* 4. LINK CARDS (MOBILE LOGIC) */
+  a.link-card {
+    box-shadow: none !important;
+    transform: none !important;
+    border-color: rgba(189, 147, 249, 0.4); 
+    background-color: rgba(189, 147, 249, 0.03);
+  }
+  
   a.link-card:active {
     background-color: rgba(189, 147, 249, 0.1);
     border-color: var(--link-color);
   }
-  
-  .link-card .lc-host { text-shadow: none; }
 
-  /* Layout */
-  .link-card:not(.no-image) { padding-left: 10px; padding-top: 130px; } 
-  .link-card .lc-img { width: calc(100% - 20px); height: 110px; filter: none; }
+  .link-card:not(.no-image) { 
+    padding-left: 15px !important; 
+    padding-top: 140px !important; 
+    padding-bottom: 15px !important;
+  } 
   
-  hr, .post-list__divider {
-    display: block; width: 100%; margin: 3em 0; opacity: 1;        
-    clear: both; border: 0; border-bottom: var(--border); 
+  .link-card .lc-img { 
+    width: calc(100% - 20px); 
+    height: 120px; 
+    filter: none; 
+    opacity: 1;
+  }
+  
+  .link-card.no-image, .internal-ref {
+    padding: 15px !important;
+    min-height: auto !important;
   }
 
-  footer { flex-direction: column-reverse; align-items: center; gap: 15px; text-align: center; }
-  header { padding: 10px 0; }
-  .menu ul { flex-wrap: wrap; justify-content: center; white-space: normal; overflow-x: visible; gap: 2px; width: 100%; }
-  .menu a, .menu-active { padding: 6px 8px; font-size: 0.85em; }
+  /* 5. TYPOGRAPHY SCALING */
+  h1 { font-size: 1.8em; margin-top: 30px; }
+  
+  /* 6. POST FOOTER (DATA MENOR PARA NÃO QUEBRAR) */
+  .post-footer {
+    /* Garante alinhamento e evita quebra prematura */
+    align-items: baseline;
+    gap: 5px; 
+  }
+
+  .sys-date {
+    /* [CORREÇÃO] Fonte reduzida para caber ao lado do link */
+    font-size: 10px !important; 
+    text-align: right;
+    white-space: nowrap; /* Impede que a data quebre em duas linhas */
+    flex-shrink: 0; /* Garante que a data não seja esmagada */
+  }
+
+  .sys-hash-link {
+    /* Se o link for muito longo, ele retrai com "..." */
+    font-size: 11px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 65%; 
+  }
+
+/* 7. UTILITIES & FOOTER PATCH */
+  hr, .post-list__divider { width: 100%; margin: 2em 0; }
+
+  footer { 
+    /* [LAYOUT] Pilha vertical invertida (Email em cima, Build embaixo) */
+    flex-direction: column-reverse; 
+    
+    /* [ALINHAMENTO] Força bruta para o centro (vence o flex-end do desktop) */
+    align-items: center !important; 
+    justify-content: center !important;
+    text-align: center !important;
+    
+    gap: 15px; 
+    width: 100%;
+    
+    /* [ESPAÇAMENTO] Restaurado para margem normal (sem o Dock de 80px) */
+    margin-bottom: 40px; 
+    padding-bottom: 20px; /* Respiro extra para garantir que não cole na borda */
+  }
+  
+  /* [SEGURANÇA] Garante que os containers de texto ocupem a largura total */
+  .footer-left, .footer-right {
+    width: 100%;
+    text-align: center !important;
+  }
+  
+  /* Remove referências ao Dock antigo se sobraram */
+  .sys-dock { display: none !important; }
+  
 }

@@ -1,27 +1,21 @@
 /* ==========================================================================
-   KERNEL SYNTAX ENGINE [v2.0 - Unified Neon Protocol]
+   KERNEL SYNTAX ENGINE [v2.2 - Size Restored & Selectors Relaxed]
    ========================================================================== */
 
-/* ==========================================================================
-   1. CODE HYPERLINKS (Links dentro de blocos de código)
-   Estiliza links como @linux, @manifesto ou URLs dentro de texto técnico.
-   ========================================================================== */
+/* 1. CODE HYPERLINKS */
 code a, a code {
   display: inline-block;
   border: 1px solid rgba(139, 233, 253, 0.2);
   border-radius: 4px;
   padding: 0 4px;
-  
   background: rgba(139, 233, 253, 0.05);
   color: var(--accent-cyan) !important;
-  
   font-size: 0.9em;
   text-decoration: none !important;
   border-bottom: none !important;
   transition: all 0.2s ease;
 }
 
-/* Hover: Efeito de Luz (Sem caixa, só brilho) */
 code a:hover, a code:hover {
   background: transparent !important;
   border-color: transparent !important;
@@ -30,34 +24,17 @@ code a:hover, a code:hover {
   transform: translateY(-1px); 
 }
 
-/* ==========================================================================
-   2. BASE INLINE CODE (Markdown Padrão)
-   A aparência padrão de qualquer `código` no meio do texto.
-   ========================================================================== */
+/* 2. BASE INLINE CODE */
 .post-content code {
-  /* [CRÍTICO] Força a família exata para evitar fallbacks de sistema */
   font-family: 'JetBrains Mono', monospace !important;
   
-  /* [CALIBRAÇÃO DE TAMANHO] 
-     Fixado em 13px para garantir a nitidez (crispness) da referência.
-     0.85em pode variar dependendo do pai, 13px é absoluto.
-  */
-  font-size: 13px !important; 
+  /* [RESTAURADO] Voltamos para 14px (padrão legível) */
+  font-size: 14px !important; 
   
-  /* [CORREÇÃO DE PESO] 
-     Voltamos para 400 (Regular). 
-     500 estava causando o efeito "borrado" (faux bold).
-  */
   font-weight: 400 !important; 
-  
-  /* [RENDERIZAÇÃO] */
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em; 
   
-  /* [DENSIDADE] Aperta levemente para ficar compacto */
-  letter-spacing: -0.3px; 
-  
-  /* Visual "Chip" */
   background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 4px;
@@ -65,98 +42,68 @@ code a:hover, a code:hover {
   padding: 1px 5px;
   vertical-align: middle;
   transition: all 0.2s ease;
-  cursor: text;
 }
 
-.post-content code:hover {
-  background-color: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-/* ==========================================================================
-   3. SEMANTIC HIGHLIGHTING (Syntax & Badges)
-   ========================================================================== */
-
-/* [AÇÃO] Comandos & Executáveis -> Ciano */
+/* 3. SEMANTIC HIGHLIGHTING */
 code.c-cmd, code.tag.x, code.tag.d {
   color: var(--accent-cyan) !important;
-  font-weight: 700 !important; /* Bold real (carregado no import) */
+  font-weight: 700 !important;
   border-color: rgba(139, 233, 253, 0.2);
   background-color: rgba(139, 233, 253, 0.05);
 }
+code.c-var, code.tag.m { color: #ffb86c !important; font-weight: 700 !important; }
+code.c-op, code.tag.k { color: var(--link-color) !important; font-weight: 700 !important; }
+code.c-path, code.tag.f { color: var(--link-hover-color) !important; font-style: italic; font-weight: 400 !important; }
 
-/* [DADOS] Variáveis & Strings -> Laranja */
-code.c-var, code.tag.m {
-  color: #ffb86c !important; 
-  font-weight: 700 !important;
-}
-
-/* [LÓGICA] Operadores & Keybinds -> Rosa */
-code.c-op, code.tag.k {
-  color: var(--link-color) !important;
-  font-weight: 700 !important;
-}
-
-/* [RECURSO] Caminhos & Arquivos -> Roxo */
-code.c-path, code.tag.f {
-  color: var(--link-hover-color) !important;
-  font-style: italic;
-  font-weight: 400 !important;
-}
-
-/* Hover Unificado */
 code[class*="c-"]:hover, code.tag:hover {
   background-color: rgba(255, 255, 255, 0.1) !important;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
   transform: translateY(-1px);
-  z-index: 2;
 }
 
-/* ==========================================================================
-   4. TERMINAL OUTPUT SIMULATION (A Janela Principal)
-   ========================================================================== */
-
-/* Prompt Colors */
+/* 4. TERMINAL OUTPUT SIMULATION */
 .t-user { color: var(--link-color); font-weight: 700 !important; }
 .t-host { color: var(--link-hover-color); font-weight: 700 !important; }
 .t-path { color: #D8B4FE; font-style: italic; }
 .t-gray { color: var(--base-color); }
 
-/* Comando Digitado */
 .t-cmd  { 
   color: #787c97 !important; 
   font-weight: 400 !important; 
+  white-space: pre-wrap; 
 }
 
 .t-path + .t-gray { margin: 0 4px; display: inline-block; }
 
-/* Standard Output Blocks */
 .t-out { 
   color: #bfbfbf; 
   display: block; 
   white-space: pre-wrap; 
   
-  /* [GEOMETRIA EXATA DA REFERÊNCIA] */
+  /* [RESTAURADO] 14px aqui também para alinhar */
   font-family: 'JetBrains Mono', monospace !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   line-height: 1.5 !important;
-  font-weight: 400 !important;
-  letter-spacing: -0.3px !important;
   
+  font-weight: 400 !important;
   margin-top: 0;
-  -webkit-font-smoothing: antialiased;
 }
-
 .t-out:empty { display: none; }
-
 
 /* ==========================================================================
    5. LS / FILE SYSTEM GRID
    Simula o output do comando 'ls' em colunas.
    ========================================================================== */
 .t-ls {
-  column-width: 100px; 
-  column-gap: 15px;
+  /* [CALIBRAÇÃO FINAL] 
+     95px é o "Magic Number".
+     - Grande demais para caber 6 colunas.
+     - Pequeno o suficiente para caber 5.
+  */
+  column-width: 95px; 
+  
+  column-gap: 15px; /* Restaurado para 15px para melhor respiro */
+  
   width: 100%;
   display: block; 
   white-space: normal !important;
@@ -169,51 +116,29 @@ code[class*="c-"]:hover, code.tag:hover {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-size: 14px; 
   line-height: 1.5;
-  
-  /* Reset de peso para garantir que o negrito destaque */
   font-weight: normal;
 }
 
-/* Cores de Arquivos (Ls Colors) - COM REFORÇO DE NEGRITO */
-/* O uso de !important aqui é tático para garantir que a fonte engrosse */
+/* Cores de Arquivos */
+.d, .t-ls .d { color: var(--accent-cyan) !important; font-weight: 700 !important; }
+.x, .t-ls .x { color: #f1fa8c !important; font-weight: 700 !important; }
+.z, .t-ls .z { color: #ffb86c !important; font-weight: 700 !important; }
+.f, .t-ls .f { color: #f8f8f2 !important; font-weight: 400 !important; }
+.l, .t-ls .l { color: var(--link-hover-color) !important; font-weight: 400 !important; }
+.h, .t-ls .h { color: var(--base-color) !important; opacity: 0.7; }
 
-.t-ls .d { color: var(--accent-cyan); font-weight: 700 !important; }  /* Folder: BOLD */
-.t-ls .x { color: #f1fa8c; font-weight: 700 !important; }             /* Executable: BOLD */
-.t-ls .z { color: #ffb86c; font-weight: 700 !important; }             /* Zip: BOLD */
-
-.t-ls .f { color: #f8f8f2; font-weight: 400 !important; }             /* File: Normal */
-.t-ls .l { color: var(--link-hover-color); font-weight: 400 !important; } /* Symlink: Normal */
-.t-ls .h { color: var(--base-color); opacity: 0.7; }                  /* Hidden: Normal */
-
-/* ==========================================================================
-   6. KERNEL TREE VIEW ENGINE
-   ========================================================================== */
+/* 6. KERNEL TREE VIEW ENGINE */
 .t-tree {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   white-space: pre;       
   line-height: 1.2;       
   letter-spacing: 0px;    
-  color: #6272a4;         /* Cor dos galhos ├── */
+  color: #6272a4;
   display: inline-block;
 }
-
-.t-row {
-  display: flex;          
-  align-items: flex-start; 
-  line-height: 1.3;
-}
-
-.t-row a.file-link {
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.t-row a.file-link:hover {
-  color: var(--accent-cyan-bright) !important;
-  text-shadow: 0 0 8px rgba(139, 233, 253, 0.7);
-}
+.t-row { display: flex; align-items: flex-start; line-height: 1.3; }
+.t-row a.file-link { text-decoration: none; cursor: pointer; transition: all 0.2s ease; }
+.t-row a.file-link:hover { color: var(--accent-cyan-bright) !important; text-shadow: 0 0 8px rgba(139, 233, 253, 0.7); }

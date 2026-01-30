@@ -314,3 +314,122 @@ a.link-card:hover .lc-site {
   text-shadow: 0 0 8px rgba(255, 121, 198, 0.4);
 }
 
+/* ==========================================================================
+   15. MENTION LINKS (@linux, @files) - FORÇAR CIANO
+   ========================================================================== */
+.mention-link {
+  /* [CORREÇÃO 4] !important vence a injeção JS que colocava Rosa */
+  color: var(--accent-cyan) !important; 
+  background-color: transparent !important;
+  border: none !important;
+  
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 400; 
+  padding: 0 2px;
+  display: inline-block;
+  text-decoration: none !important;
+  transition: all 0.3s ease;
+}
+
+.mention-link:hover {
+  color: var(--accent-cyan-bright) !important;
+  text-shadow: 0 0 5px rgba(139, 233, 253, 0.7);
+}
+
+/* ==========================================================================
+   16. MIGRATED MODULES (RESGATE DO JAVASCRIPT)
+   Estilos essenciais para Cards Internos, Footer e Mentions.
+   ========================================================================== */
+
+/* --- HASH LINKS (.html links) --- */
+.sys-hash-link {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--placeholder-color) !important; /* #5c5f77 */
+  opacity: 0.4;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  transition: all 0.3s ease;
+  cursor: pointer !important;
+  pointer-events: auto !important; 
+}
+
+.sys-hash-link:hover {
+  color: var(--accent-cyan-bright) !important; 
+  text-shadow: 0 0 8px rgba(139, 233, 253, 0.6); 
+  opacity: 1;
+  background: transparent !important;
+}
+
+/* --- POST METADATA (Footer do Post) --- */
+.post-footer {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  width: 100%; 
+  font-family: 'JetBrains Mono', monospace; 
+  font-size: 12px;
+  margin-top: 15px;
+}
+
+.sys-date {
+  color: var(--base-color); 
+  opacity: 0.9;
+}
+
+/* --- CARDS INTERNOS (INTERNAL REFS) --- */
+/* Estilo específico para links do próprio site (sem imagem, layout compacto) */
+.internal-ref {
+  text-decoration: none !important;
+  margin-bottom: 0 !important;
+  display: block;
+}
+
+.internal-ref .lc-meta { padding-top: 4px; }
+
+/* [CRÍTICO] Oculta o título (ex: fxlip/hash) conforme solicitado */
+.internal-ref .lc-host { 
+  display: none !important; 
+}
+
+.internal-ref .lc-desc {
+  font-size: 0.95em; line-height: 1.5;
+  color: var(--base-color) !important; margin-top: 0;
+}
+
+/* --- UTILS: IMAGENS E TERMINAIS EMBUTIDOS --- */
+.embedded-terminal {
+  margin: 20px 0 !important;
+  border: 1px solid #bd93f9 !important; /* Roxo */
+  background-color: var(--code-bg);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.embedded-terminal pre {
+  margin: 0; padding: 10px;
+  white-space: pre-wrap; 
+  font-family: 'JetBrains Mono', monospace; 
+  font-size: 13px; 
+  color: var(--text-color);
+  background: transparent !important;
+  border: none !important;
+}
+
+.embed-image-wrapper {
+  display: block; margin: 15px 0; 
+  border: 1px solid #44475a; border-radius: 6px; 
+  overflow: hidden; background: #282a36;
+}
+.embed-image { max-width: 100%; display: block; }
+.embed-caption { 
+  display: block; padding: 6px 12px; font-size: 12px; 
+  font-family: 'JetBrains Mono', monospace; color: var(--base-color); 
+  background-color: var(--card-bg); border-top: 1px solid #44475a; 
+}
+
+.rt-loading {
+  display: block; margin: 15px 0; padding: 12px;
+  color: #6272a4; background: rgba(40, 42, 54, 0.3);
+  border: 1px dashed #44475a; border-radius: 6px;
+  font-family: monospace; font-size: 13px;
+}

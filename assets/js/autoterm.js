@@ -1,21 +1,61 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+  // CONFIG: Conexão com o Cérebro Central
+  const KNOWLEDGE_URL = '/assets/data/knowledge.json';
+  const CACHE_KEY = 'term_knowledge_v2'; // Mesma chave do syntax.js para compartilhar cache
+
+  // ESTADO INTERNO (Sets vazios aguardando dados)
+  let KNOWN_DIRS = new Set();
+  let SYS_FILES = new Set();
+  let COMMANDS = new Set(); // Para identificar executáveis sem extensão
+
   // ==========================================================================
-  // 1. CONSTANTES & HEURÍSTICAS
+  // 1. DATA LOADER (SWR Pattern)
   // ==========================================================================
-  
-  const KNOWN_DIRS = new Set([
-    'bin', 'boot', 'dev', 'etc', 'home', 'lib', 'lib64', 'media', 'mnt', 'opt', 
-    'proc', 'root', 'run', 'sbin', 'srv', 'sys', 'tmp', 'usr', 'var', 'snap', 
-    'lost+found', 'assets', 'img', 'css', 'js', 'node_modules', '_posts', 
-    '_site', '_includes', '_layouts', 'files', 'linux', 'feed', 'about', 
-    'setup', 'shop', 'curadoria', 'lpi1', 'www', 'script'
-  ]);
-  
-  const KNOWN_LINKS = new Set([
-    'vmlinuz', 'initrd.img', 'vmlinuz.old', 'initrd.img.old', 'core'
-  ]);
-  
+  const loadKnowledge = async () => {
+    // 1. Renderização Rápida via Cache (Instantâneo)
+    const cachedString = localStorage.getItem(CACHE_KEY);
+    
+    if (cachedString) {
+      try {
+        const data = JSON.parse(cachedString);
+        applyData(data);
+        console.log("AutoTerm: Cache carregado. Renderizando...");
+      } catch (e) {
+        console.warn("AutoTerm: Cache inválido.");
+      }
+    }
+
+    // 2. Atualização em Background (Network)
+    try {
+      const response = await fetch(KNOWLEDGE_URL);
+      if (!response.ok) throw new Error("Network response was not ok");
+      const newData = await response.json();
+      
+      // Se houve mudança, atualiza e repinta
+      if (JSON.stringify(newData) !== cachedString) {
+        applyData(newData);
+        console.log("AutoTerm: Dados atualizados. Re-renderizando...");
+      }
+    } catch (err) {
+      console.error("AutoTerm: Falha ao buscar knowledge.json", err);
+      // Fallback de emergência se não houver nada
+      if (KNOWN_DIRS.size === 0) {
+        KNOWN_DIRS = new Set(['bin', 'etc', 'home', 'var', 'usr', 'tmp']);
+        window.renderTerminalWindows();
+      }
+    }
+  };
+
+  const applyData = (data) => {
+    if (data.directories) KNOWN_DIRS = new Set(data.directories);
+    if (data.system_files) SYS_FILES = new Set(data.system_files);
+    if (data.commands) COMMANDS = new Set(data.commands);
+    
+    // Dispara a renderização assim que tiver dados
+    window.renderTerminalWindows();
+  };
+
   // ==========================================================================
   // 2. HELPER FUNCTIONS
   // ==========================================================================
@@ -38,17 +78,27 @@ document.addEventListener("DOMContentLoaded", function() {
       .replace(/'/g, "&#039;");
   };
 
+  // CLASSIFICADOR INTELIGENTE (Usa os Sets populados pelo JSON)
   const classifyFile = (token) => {
     let clean = token.replace(/[*\/=>@|]$/, ''); 
-    if (clean === 'tmp') return `<span class="st">${clean}</span>`;
+    
+    // Regras Hardcoded (Prioridade Máxima)
+    if (clean === 'tmp') return `<span class="st">${clean}</span>`; // Sticky Bit
     if (clean.startsWith('.')) { 
        if (clean === '.' || clean === '..') return `<span class="d">${clean}</span>`;
-       return `<span class="h">${clean}</span>`;
+       return `<span class="h">${clean}</span>`; // Ocultos
     }
-    if (KNOWN_DIRS.has(clean) || token.endsWith('/')) return `<span class="d">${clean}</span>`;
-    if (/\.(zip|tar|gz|bz2|xz|7z|rar|jar)$/.test(clean)) return `<span class="z">${clean}</span>`;
-    if (/\.(sh|bash|py|rb|pl|run|bin|appimage)$/.test(clean) || token.endsWith('*')) return `<span class="x">${clean}</span>`;
-    if (KNOWN_LINKS.has(clean) || token.includes('->') || token.endsWith('@')) return `<span class="l">${clean}</span>`;
+
+    // Regras Dinâmicas (Vindas do JSON)
+    if (KNOWN_DIRS.has(clean) || token.endsWith('/')) return `<span class="d">${clean}</span>`; // Diretório
+    if (SYS_FILES.has(clean)) return `<span class="f">${clean}</span>`; // Arquivo Sistema
+
+    // Regras de Extensão/Padrão
+    if (/\.(zip|tar|gz|bz2|xz|7z|rar|jar)$/.test(clean)) return `<span class="z">${clean}</span>`; // Comprimido
+    if (/\.(sh|bash|py|rb|pl|run|bin|appimage)$/.test(clean) || token.endsWith('*') || COMMANDS.has(clean)) return `<span class="x">${clean}</span>`; // Executável
+    if (token.includes('->') || token.endsWith('@')) return `<span class="l">${clean}</span>`; // Link Simbólico
+    
+    // Default: Arquivo Comum
     return `<span class="f">${clean}</span>`;
   };
 
@@ -57,16 +107,20 @@ document.addEventListener("DOMContentLoaded", function() {
   // ==========================================================================
   
   window.renderTerminalWindows = () => {
+    // Evita rodar antes de ter dados (opcional, mas evita FOUC)
+    // Mas permitimos rodar se for re-chamada
     trimOutput();
+    
     const rawTerminals = document.querySelectorAll('.auto-term');
 
     rawTerminals.forEach(term => {
+      // Prepara as linhas
       const rawLines = term.innerText.split('\n');
-      
       while (rawLines.length > 0 && rawLines[rawLines.length - 1].trim() === '') {
         rawLines.pop();
       }
 
+      // Configura botões da janela
       const parentBox = term.closest('.terminal-box');
       if (parentBox) {
         const minBtn = parentBox.querySelector('.btn-min');
@@ -84,7 +138,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (promptMatch) {
           const [_, user, host, path, symbol, cmd] = promptMatch;
-          
           lastCmd = cmd.trim();
 
           htmlBuffer += `
@@ -95,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
           // --- PROCESSAMENTO DE OUTPUT ---
           
-          // ESTADO 1: COMANDO HISTORY (Lista Numerada)
+          // ESTADO 1: COMANDO HISTORY
           if (lastCmd.startsWith('history')) {
             const histMatch = line.match(/^\s*(\d+)(\s+)(.*)/);
             if (histMatch) {
@@ -105,19 +158,18 @@ document.addEventListener("DOMContentLoaded", function() {
             }
           }
 
-          // ESTADO 2: TENTATIVA DE GRID (LS Simples ou Expansão)
+          // ESTADO 2: GRID INTELIGENTE (LS)
           const tokens = line.trim().split(/\s+/);
-          const isListTrigger = lastCmd.startsWith('!') || /(^|[;&|]\s*)ls\b/.test(lastCmd);
-          
+          // [UPDATE] Adicionado 'lshome' (e preparados para outros como 'll' ou 'la')
+          const isListTrigger = lastCmd.startsWith('!') || /(^|[;&|]\s*)(ls|lshome|ll|la)\b/.test(lastCmd);
+              
           if (isListTrigger && tokens.length > 0) {
              const shortAvg = (tokens.reduce((a,b) => a + b.length, 0) / tokens.length) < 20;
              const hasCodeChars = /['"=`]/.test(line); 
              const isTime = /\d{2}:\d{2}:\d{2}/.test(line); 
-             
-             // Detecta se é listagem longa (-l) pelo padrão de permissões (ex: drwxr-xr-x)
-             const isLongList = /^[-dcbpsl][-rwxst]{9}/.test(line);
+             const isLongList = /^[-dcbpsl][-rwxst]{9}/.test(line); // Permissões rwx
 
-             // Só aplica grid se NÃO for listagem longa
+             // Só aplica grid se parecer uma lista de nomes curtos
              if (shortAvg && !hasCodeChars && !isTime && !isLongList) {
                 let fileSpans = tokens.map(t => classifyFile(escapeHtml(t))).join('\n'); 
                 htmlBuffer += `<div class="t-out t-ls">${fileSpans}</div>`;
@@ -127,15 +179,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
           // ESTADO 3: TEXTO GENÉRICO
           
-          // [FIX] Compactação Inteligente: Reduz múltiplos espaços para 2 espaços
-          // Isso preserva o alinhamento visual (colunas) mas economiza largura.
+          // Compactação de espaços (ex: ls -l) para alinhar visualmente
           if (/^[-dcbpsl][-rwxst]{9}/.test(line) || /^total \d+/.test(line)) {
               line = line.replace(/[ \t]{4,}/g, '  ');
           }
 
           let safeContent = line === '' || line.trim() === '' ? '&nbsp;' : escapeHtml(line);
           
-          // Highlight de executáveis no meio do texto
+          // Highlight de executáveis conhecidos no meio do texto
           safeContent = safeContent.replace(
               /\b([\w.-]+\.(sh|bash|py|rb|pl|run|bin|appimage))\b/g, 
               '<span class="x">$1</span>'
@@ -145,19 +196,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       });
 
+      // Aplica o HTML gerado e marca como processado
       if (!term.classList.contains('terminal-body')) {
          term.innerHTML = htmlBuffer;
          term.classList.add('terminal-body'); 
          term.classList.remove('auto-term');
       } else {
+         // Se já foi processado, só atualiza o conteúdo (re-render)
          term.innerHTML = htmlBuffer;
       }
     });
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', window.renderTerminalWindows);
-  } else {
-    window.renderTerminalWindows();
-  }
+  // Inicializa
+  loadKnowledge();
 });

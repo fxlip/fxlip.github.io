@@ -2,13 +2,9 @@
 # Front Matter
 ---
 
-/* 1. FONT IMPORTS */
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;700&display=swap');
-
-/* 2. MODULAR ARCHITECTURE */
+@import "fonts";
 @import "base";
 @import "components";
-@import "dock";
 @import "navigation";
 @import "responsive";
 @import "syntax";

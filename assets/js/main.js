@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
   
   // ==========================================================================
-  // 1. INFINITE SCROLL & FEED LOADER
+  // 1. INFINITE SCROLL & FEED ORCHESTRATOR
   // ==========================================================================
   const loader = document.getElementById("infinite-loader");
   const postsContainer = document.querySelector(".posts-list");
@@ -68,18 +68,30 @@ document.addEventListener("DOMContentLoaded", function() {
             newPosts.forEach(post => {
               post.style.animation = "fadeIn 0.8s ease forwards";
               
-              // RE-APLICAÇÃO DE MÓDULOS NOS NOVOS POSTS
+              // === ORQUESTRAÇÃO DE MÓDULOS (KERNEL EXECUTION) ===
+              
+              // 1. Parser de Links e Estrutura (autolink.js)
               if (window.applyMentions) window.applyMentions(post);
-              if (window.highlightInlineCode) window.highlightInlineCode(post);
               if (window.processProgressBars) window.processProgressBars(post);
               if (window.processNeonPipes) window.processNeonPipes(post);
+              
+              // 2. Syntax Engine (syntax.js - Usa o JSON Central)
+              // Priorizamos renderBadges, fallback para o alias antigo
+              if (window.renderBadges) {
+                  window.renderBadges(post);
+              } else if (window.highlightInlineCode) {
+                  window.highlightInlineCode(post);
+              }
               
               postsContainer.appendChild(post);
             });
             
-            if (window.reprocessTerminal) window.reprocessTerminal();
+            // 3. Processamento Global (Terminais e Janelas)
+            // Chama o autoterm.js para processar qualquer nova janela de terminal (.auto-term)
+            if (window.renderTerminalWindows) window.renderTerminalWindows();
           }
 
+          // Atualiza o link da próxima página
           if (nextData) {
             const newNextUrl = nextData.getAttribute("data-next-url");
             if (newNextUrl) {
@@ -153,80 +165,4 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   }
-
-  // ==========================================================================
-  // 3. SYSTEM HUD (READING DOCK) - v13 AUTO-DISMISS
-  // ==========================================================================
-  const dock = document.getElementById('sys-reading-dock');
-  
-  if (dock) {
-    const bar = dock.querySelector('.sys-dock-bar');
-    const body = document.body;
-    
-    // Configuração: Só ativa se a página for 1.5x maior que a janela
-    const MIN_HEIGHT_THRESHOLD = 1.5; 
-    let tickingDock = false;
-    
-    function updateProgress() {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const docHeight = document.documentElement.scrollHeight;
-      const winHeight = window.innerHeight;
-      
-      // 1. Verifica se a página é longa o suficiente
-      if (docHeight <= winHeight * MIN_HEIGHT_THRESHOLD) {
-        if (dock.classList.contains('active')) {
-           dock.classList.remove('active');
-           body.classList.remove('dock-active');
-        }
-        return;
-      }
-
-      // 2. Calcula porcentagem
-      const scrollPercent = (scrollTop / (docHeight - winHeight)) * 100;
-      const cleanPct = Math.min(100, Math.max(0, scrollPercent)); 
-      
-      // 3. Renderiza a largura
-      bar.style.width = cleanPct + "%";
-
-      // 4. PROTOCOLO DE AUTO-DESTRUIÇÃO (>= 99.5%)
-      if (cleanPct >= 99.5) {
-        // Tarefa completa: Oculta o Dock
-        if (!dock.classList.contains('finished')) {
-          dock.classList.add('finished');
-          
-          // Remove o padding do body para o footer encostar no chão
-          body.classList.remove('dock-active'); 
-        }
-      } else {
-        // Usuário subiu: Traz o Dock de volta
-        if (dock.classList.contains('finished')) {
-          dock.classList.remove('finished');
-          body.classList.add('dock-active');
-        }
-        
-        // Garante que está ativo se não estiver finalizado
-        if (!dock.classList.contains('active')) {
-           dock.classList.add('active');
-           body.classList.add('dock-active');
-        }
-      }
-      
-      tickingDock = false;
-    }
-
-    // Scroll Listener Otimizado
-    window.addEventListener('scroll', () => {
-      if (!tickingDock) {
-        window.requestAnimationFrame(updateProgress);
-        tickingDock = true;
-      }
-    }, { passive: true });
-    
-    window.addEventListener('resize', updateProgress);
-    
-    // Check inicial
-    updateProgress();
-  }
-
-
 });

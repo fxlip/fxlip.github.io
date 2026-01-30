@@ -1,0 +1,40 @@
+/* ==========================================================================
+   KERNEL FONTS (LOCAL HOSTING)
+   ========================================================================== */
+
+/* 1. JETBRAINS MONO (Regular - 400) */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/jetbrains-mono-v24-latin-regular.woff2') format('woff2');
+}
+
+/* 2. JETBRAINS MONO (Bold - 700) */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/assets/fonts/jetbrains-mono-v24-latin-700.woff2') format('woff2');
+}
+
+/* 3. JETBRAINS MONO (Thin Italic - 100i) [NOVO] */
+/* Ótimo para datas, metadados discretos ou comentários de código */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: italic;
+  font-weight: 100; 
+  font-display: swap;
+  src: url('/assets/fonts/jetbrains-mono-v24-latin-100.woff2') format('woff2');
+}
+
+/* 4. SHARE TECH MONO (Headers) */
+@font-face {
+  font-family: 'Share Tech Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/share-tech-mono-v16-latin-regular.woff2') format('woff2');
+}

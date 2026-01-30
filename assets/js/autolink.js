@@ -1,236 +1,79 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-  // ==========================================================================
-  // 1. INJEÇÃO DE ESTILOS (DRACULA SYSTEM)
-  // ==========================================================================
-  const styleSheet = document.createElement("style");
-  styleSheet.innerText = `
-    /* --- FOOTER ELEMENTS (Metadados do Post) --- */
-    .post-footer {
-      display: flex; justify-content: space-between; align-items: center; 
-      width: 100%; 
-      font-family: 'JetBrains Mono', monospace; font-size: 12px;
-    }
-
-    /* DATA */
-    .sys-date {
-      color: var(--base-color); 
-      opacity: 0.9;
-    }
-
-    /* HASH LINK: Estilo Ghost Clicável */
-    .sys-hash-link {
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--placeholder-color) !important; /* #5c5f77 */
-      opacity: 0.4;
-      text-decoration: none !important;
-      border-bottom: none !important;
-      transition: all 0.3s ease;
-      cursor: pointer !important;
-      pointer-events: auto !important; 
-    }
-
-    /* HASH HOVER: Ciano Neon */
-    .sys-hash-link:hover {
-      color: var(--accent-cyan-bright) !important; 
-      text-shadow: 0 0 8px rgba(139, 233, 253, 0.6); 
-      opacity: 1;
-      background: transparent !important;
-    }
-
-    /* --- WINDOW CONTROLS (POSICIONAMENTO +3px) --- */
-    .btn-min {
-      transform: translateY(3px) !important;
-      font-weight: 900;
-      display: inline-flex !important;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      padding: 0 !important;
-      line-height: normal !important;
-    }
-
-    /* --- CARDS INTERNOS (RT CLEAN) --- */
-    .internal-ref {
-      text-decoration: none !important;
-      margin-bottom: 0 !important;
-      display: block;
-    }
-    .internal-ref .lc-meta { padding-top: 4px; }
-    
-    /* [CRÍTICO] Título do Snippet OCULTO (Design Preferido) */
-    .internal-ref .lc-host { 
-      display: none !important; 
-    }
-    
-    .internal-ref .lc-desc {
-      font-size: 0.95em; line-height: 1.5;
-      color: #f8f8f2; margin-top: 0;
-    }
-    
-    /* --- LOADING & EMBEDS --- */
-    .rt-loading {
-      display: block; margin: 15px 0; padding: 12px;
-      color: #6272a4; background: rgba(40, 42, 54, 0.3);
-      border: 1px dashed #44475a; border-radius: 6px;
-      font-family: monospace; font-size: 13px;
-    }
-    .mention-link {
-      color: var(--link-color); text-decoration: none;
-      border-radius: 4px; padding: 0 4px; transition: all 0.3s ease;
-    }
-    .mention-link:hover {
-      background-color: rgba(189, 147, 249, 0.1); cursor: pointer;
-    }
-    .embedded-terminal { margin: 20px 0 !important; border: 1px solid #bd93f9 !important; }
-    .embedded-terminal pre { margin: 0; white-space: pre-wrap; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-color); }
-    .embedded-loading { color: var(--base-color); font-family: monospace; padding: 10px; }
-    .embed-image-wrapper { display: block; margin: 15px 0; border: 1px solid #44475a; border-radius: 6px; overflow: hidden; background: #282a36; }
-    .embed-image { max-width: 100%; display: block; }
-    .embed-caption { display: block; padding: 6px 12px; font-size: 12px; font-family: 'JetBrains Mono', monospace; color: var(--base-color); background-color: var(--card-bg); border-top: 1px solid #44475a; }
-  `;
-  document.head.appendChild(styleSheet);
+  // [CLEANUP] Highlight removido. Agora é responsabilidade exclusiva do syntax.js
+  // [CLEANUP] Estilos removidos. Agora é responsabilidade do CSS.
 
   // ==========================================================================
-  // 2. MÓDULO: AUTOTERM (Dummy/Fallback)
+  // 1. MÓDULO: AUTOTERM DUMMY (Prevenção de erro)
   // ==========================================================================
   window.processAutoTerm = function() {};
 
   // ==========================================================================
-  // [MODULE] SYSTEM LOADER v3.1 (Zero Padding + Home Feed Fix)
+  // 2. MÓDULO: SYSTEM LOADER (Barras de Progresso [10/100])
   // ==========================================================================
   window.processProgressBars = function(context = document) {
-  const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .entry-content, .terminal-window p, .terminal-window div, .post-item, article, main');
-  const regex = /\[\s*(\d+)\/(\d+)(?:\s+(.*?))?\s*\]/g;
+    const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .entry-content, .terminal-window p, .terminal-window div, .post-item, article, main');
+    const regex = /\[\s*(\d+)\/(\d+)(?:\s+(.*?))?\s*\]/g;
 
-  contentAreas.forEach(area => {
-    if (area.tagName === 'PRE' || area.tagName === 'CODE') return;
-    if (regex.test(area.innerHTML)) {
-      area.innerHTML = area.innerHTML.replace(regex, (match, current, total, label) => {
-        const cur = parseInt(current);
-        const tot = parseInt(total);
-        if (tot === 0) return match;
-        
-        const pct = Math.round((cur / tot) * 100);
-        const fmtPct = pct < 10 ? `0${pct}` : pct;
-        
-        return `
-          <div class="sys-load-wrapper" title="${cur}/${tot} Completed">
-            <div class="sys-load-track">
-                <div class="sys-load-bar" style="width: 0%" data-width="${pct}%">
-                    <div class="sys-load-head"></div>
-                </div>
+    contentAreas.forEach(area => {
+      if (area.tagName === 'PRE' || area.tagName === 'CODE') return;
+      if (regex.test(area.innerHTML)) {
+        area.innerHTML = area.innerHTML.replace(regex, (match, current, total, label) => {
+          const cur = parseInt(current);
+          const tot = parseInt(total);
+          if (tot === 0) return match;
+          
+          const pct = Math.round((cur / tot) * 100);
+          const fmtPct = pct < 10 ? `0${pct}` : pct;
+          
+          return `
+            <div class="sys-load-wrapper" title="${cur}/${tot} Completed">
+              <div class="sys-load-track">
+                  <div class="sys-load-bar" style="width: 0%" data-width="${pct}%">
+                      <div class="sys-load-head"></div>
+                  </div>
+              </div>
+              <div class="sys-load-data">
+                <span class="sys-load-pct">${fmtPct}%</span>
+              </div>
             </div>
-            <div class="sys-load-data">
-              <span class="sys-load-pct">${fmtPct}%</span>
-            </div>
-          </div>
-        `;
-      });
-    }
-  });
-  
-  setTimeout(() => {
-    document.querySelectorAll('.sys-load-bar').forEach(bar => {
-      if (bar.dataset.width) bar.style.width = bar.dataset.width;
-    });
-  }, 100);
-  };
-
-  // ==========================================================================
-  // [UPDATE] MÓDULO: SYNTAX GHOST v7 (Rouge Override + Badges)
-  // ==========================================================================
-  window.highlightInlineCode = function(context = document) {
-    const codes = context.querySelectorAll('.post-content code');
-    const DATA_URL = '/assets/data/knowledge.json';
-
-    // Definições Estáticas
-    const ops = new Set(['&&', '||', ';', '|', '>', '>>', '<', '2>', '&', '!=', '==', '>=', '<=']);
-    const fileExtRegex = /\.(conf|cfg|ini|txt|md|yml|yaml|xml|html|css|js|json|sh|py|rb|lock|log)$/i;
-    const sysFiles = new Set([
-      '.bash_history', '.bashrc', '.profile', '.zshrc', '/dev/null', 
-      '/etc/passwd', '/etc/shadow', '/etc/group', '/etc/fstab'
-    ]);
-
-    codes.forEach(code => {
-      // Ignora apenas se for bloco de código (PRE)
-      if (code.parentElement.tagName === 'PRE') return;
-
-      const text = code.innerText.trim();
-
-      // [AÇÃO] History Expansion (!!, !123)
-      if (/^!(!|\d+|[a-zA-Z]+)$/.test(text)) {
-         code.classList.add('c-cmd');
-         return;
-      }
-
-      // [DADOS] Variáveis ($VAR ou ENV_VAR)
-      if (text.startsWith('$') || /^[A-Z][A-Z0-9_]{2,}$/.test(text)) {
-         code.classList.add('c-var');
-         return;
-      }
-
-      // [LÓGICA] Operadores
-      if (ops.has(text)) {
-         code.classList.add('c-op');
-         return;
-      }
-
-      // [ALVO] Caminhos e Arquivos
-      if (text.startsWith('/') || text.startsWith('./') || text.startsWith('~/') || sysFiles.has(text) || fileExtRegex.test(text)) {
-         code.classList.add('c-path');
-         return;
-      }
-    });
-
-    // [AÇÃO] Comandos do Banco de Dados (Async)
-    fetch(DATA_URL)
-      .then(r => r.ok ? r.json() : Promise.reject("404"))
-      .then(data => {
-        const knownCmds = new Set([
-          ...(data.commands || []),
-          ...(data.architecture || [])
-        ]);
-
-        codes.forEach(code => {
-          // Nota: Removemos a trava de className aqui também para forçar a cor
-          // mesmo se o Jekyll tiver classificado errado.
-          const text = code.innerText.trim();
-          if (knownCmds.has(text)) {
-             // Remove cores conflitantes se houver
-             code.classList.remove('c-var', 'c-path', 'c-op');
-             code.classList.add('c-cmd');
-          }
+          `;
         });
-      })
-      .catch(e => console.log("Ghost Syntax: Offline"));
+      }
+    });
+    
+    // Animação atrasada para dar efeito de carregamento
+    setTimeout(() => {
+      document.querySelectorAll('.sys-load-bar').forEach(bar => {
+        if (bar.dataset.width) bar.style.width = bar.dataset.width;
+      });
+    }, 100);
   };
 
   // ==========================================================================
-  // 3. UTILS
+  // 3. UTILS & LINKIFY (Links internos automáticos)
   // ==========================================================================
   const isImage = (path) => /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(path);
   const isCode = (path) => /\.(txt|md|sh|js|css|py|rb|html|json|conf|yml|yaml)$/i.test(path);
 
-  // ==========================================================================
-  // 4. LINKIFY
-  // ==========================================================================
   window.linkifyInternalUrls = function(context = document) {
     const walker = document.createTreeWalker(context.body || context, NodeFilter.SHOW_TEXT, null, false);
     const nodesToReplace = [];
+    
     while(walker.nextNode()) {
       const node = walker.currentNode;
+      // Ignora áreas onde não queremos links automáticos
       if (['A', 'SCRIPT', 'STYLE', 'TEXTAREA', 'PRE', 'CODE'].includes(node.parentElement.tagName)) continue;
-      // Evita conflito com terminal
       if (node.parentElement.closest('.auto-term') || node.parentElement.closest('.t-cmd')) continue;
-
-      const regex = /(https?:\/\/(?:www\.)?felip\.com\.br\/[a-zA-Z0-9\-\.]+\.html)/g;
+      
+      const regex = /(https?:\/\/(?:www\.)?fxlip\.com\/[a-zA-Z0-9\-\.]+\.html)/g;
       if (regex.test(node.nodeValue)) nodesToReplace.push({ node, text: node.nodeValue });
     }
+
     nodesToReplace.forEach(({ node, text }) => {
       const wrapper = document.createElement('span');
       wrapper.innerHTML = text.replace(
-        /(https?:\/\/(?:www\.)?felip\.com\.br\/[a-zA-Z0-9\-\.]+\.html)/g, 
+        /(https?:\/\/(?:www\.)?fxlip\.com\/[a-zA-Z0-9\-\.]+\.html)/g, 
         '<a href="$1">$1</a>'
       );
       if (node.parentNode) {
@@ -241,33 +84,33 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   // ==========================================================================
-  // 5. CARDS (RT)
+  // 4. CARDS & MENTIONS
   // ==========================================================================
   window.processInternalEmbeds = function(context = document) {
     const links = context.querySelectorAll('.post-content a, .t-out a'); 
     const currentHost = window.location.hostname;
-    const prodHost = 'felip.com.br';
+    const prodHost = 'fxlip.com';
 
     links.forEach(link => {
       if (link.dataset.processed) return;
+      
       const allowedHosts = [currentHost, 'localhost', '127.0.0.1', prodHost, 'www.' + prodHost];
       if (!allowedHosts.includes(link.hostname)) return;
 
+      // Só transforma se o texto do link for igual a URL (link cru)
       const linkText = link.innerText.trim().replace(/\/$/, '');
       const linkHref = link.href.trim().replace(/\/$/, '');
       if (linkText !== linkHref && linkText !== link.href) return;
 
       link.dataset.processed = "true"; 
+      
+      // Placeholder de loading
       const loader = document.createElement('div');
       loader.className = 'rt-loading';
       loader.innerHTML = '<span class="cursor-blink">█</span> resolving ref...';
       link.style.display = 'none';
       link.parentNode.insertBefore(loader, link.nextSibling);
 
-      // [CORREÇÃO CORS/MIXED CONTENT]
-      // Forçamos o uso do pathname relativo. Isso faz com que o navegador
-      // busque o arquivo na mesma origem atual, evitando erros de "www" vs "não-www"
-      // ou "http" vs "https".
       const urlObj = new URL(link.href);
       let fetchUrl = urlObj.pathname; 
 
@@ -279,42 +122,42 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(html => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(html, 'text/html');
-          
-          const urlObj = new URL(link.href);
           const filename = urlObj.pathname.split('/').filter(p => p).pop() || urlObj.hostname;
-          
           const displayHash = filename.replace('.html', '');
-
+          
+          // Extrai o conteúdo para a descrição
           const contentDiv = doc.querySelector('.post-content');
           let rawText = "";
           if (contentDiv) {
             const clone = contentDiv.cloneNode(true);
+            // Remove lixo para o resumo ficar limpo
             const garbages = clone.querySelectorAll('script, style, .terminal-box');
             garbages.forEach(g => g.remove());
             rawText = clone.innerText || "";
           } else {
             rawText = doc.body.innerText;
           }
+          
           rawText = rawText.replace(/\s+/g, ' ').trim();
           const maxLength = 160;
           const desc = rawText.length > maxLength ? rawText.substring(0, maxLength) + "..." : rawText;
 
+          // Cria o Card
           const card = document.createElement('a');
           card.href = link.href;
           card.className = 'link-card no-image internal-ref';
           card.title = `./${filename}`;
-          
           card.innerHTML = `
             <div class="lc-meta">
               <div class="lc-host">fxlip/${displayHash}</div>
               <div class="lc-desc">${desc}</div>
-              <div class="lc-site">felip.com.br</div>
+              <div class="lc-site">fxlip.com</div>
             </div>
           `;
           loader.replaceWith(card);
         })
         .catch(err => {
-          console.error("Link Card Failed:", err); // Log para debug se necessário
+          // Em caso de erro, volta a ser link, mas estilizado como mention
           loader.remove();
           link.style.display = 'inline';
           link.classList.add('mention-link');
@@ -322,26 +165,33 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   };
 
-  // ORDEM DE EXECUÇÃO
   window.applyMentions = function(context = document) {
     const contentAreas = context.querySelectorAll('.post-content, .terminal-window p, .terminal-window div, .post-item, article, main');
+    
     contentAreas.forEach(area => {
       if (area.dataset.mentionsProcessed) return;
       const regex = /@([a-zA-Z0-9_\-\/\.]+)/g;
+      
       if (regex.test(area.innerHTML)) {
           area.innerHTML = area.innerHTML.replace(regex, function(match, path) {
             const url = `/${path}`;
+            // @imagem.png -> Vira Embed de Imagem
             if (isImage(path)) return `<span class="embed-image-wrapper"><img src="${url}" class="embed-image" alt="${path}" onerror="this.style.display='none'"><span class="embed-caption">./${path}</span></span>`;
+            // @script.sh -> Vira Terminal Embutido
             if (isCode(path)) return `<div class="terminal-box embedded-terminal" data-src="${url}"><div class="terminal-header"><div class="terminal-controls"><span style="font-size:12px; color:#bd93f9; margin-right:10px;">./${path}</span></div></div><div class="terminal-body"><div class="embedded-loading"><span class="cursor-blink">█</span> loading...</div></div></div>`;
+            // @path -> Vira Link Simples
             return `<a href="${url}" class="mention-link" title="./${path}">${match}</a>`;
           });
       }
       area.dataset.mentionsProcessed = "true";
     });
+
+    // Carrega o conteúdo dos terminais embutidos
     context.querySelectorAll('.embedded-terminal[data-src]').forEach(terminal => {
        const url = terminal.dataset.src;
        const body = terminal.querySelector('.terminal-body');
        terminal.removeAttribute('data-src');
+       
        fetch(url).then(r => r.ok?r.text():Promise.reject("404")).then(text => {
            const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
            body.innerHTML = `<pre>${safeText}</pre>`;
@@ -350,32 +200,22 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   // ==========================================================================
-  // [MODULE] NEON PIPE v2 (ENTITY AWARE)
-  // Transforma ">>", "»" ou "&gt;&gt;" em operador estilizado
+  // 5. NEON PIPE
   // ==========================================================================
   window.processNeonPipes = function(context = document) {
-    console.log("Neon Pipes: Scanning active..."); // Log de confirmação
-
     const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .terminal-window p, .terminal-window div, .post-item, article');
-    
-    // [FIX] Regex expandida para pegar Entidades HTML (&gt;)
-    // Captura: (Espaço/Início) + (>> OU » OU &gt;&gt;) + (Espaço/Fim)
     const regex = /(\s|^|&nbsp;)(>>|»|&gt;&gt;)(\s|$|&nbsp;)/g;
 
     contentAreas.forEach(area => {
-      // Ignora código fonte (PRE/CODE)
       if (area.closest('pre') || area.tagName === 'CODE') return;
-
       if (regex.test(area.innerHTML)) {
-        // Substitui mantendo os espaços em volta ($1 e $3)
-        // O span agora contém o texto visual ">>" limpo
         area.innerHTML = area.innerHTML.replace(regex, '$1<span class="sys-pipe">>></span>$3');
       }
     });
   };
   
+  // Execução Inicial
   window.processProgressBars();
-  window.highlightInlineCode();
   window.applyMentions();
   window.linkifyInternalUrls();
   window.processInternalEmbeds();
