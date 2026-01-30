@@ -1,0 +1,222 @@
+/* ==========================================================================
+   5. COMPONENT: TERMINAL WINDOW (UNIFIED SYSTEM)
+   ========================================================================== */
+
+/* --- 5.1. CONTAINER & STRUCTURE --- */
+.terminal-box {
+  background-color: var(--code-bg);
+  border: 1px solid #333545;
+  border-radius: 6px;
+  box-shadow: var(--terminal-shadow);
+  margin: 30px 0;
+  overflow: hidden;
+  font-family: inherit; 
+  font-size: 14px;
+  text-align: left; 
+  width: 100%;
+}
+
+/* --- 5.2. INTERACTION LAYER (LINK LOGIC) --- */
+
+/* [DEFAULT] Link Killer: Mata links padrão para evitar cliques acidentais */
+/* ADICIONEI :not(.file-link) NA LISTA DE EXCEÇÕES */
+.terminal-box a:not(.mention-link):not(.link-card):not(.file-link) {
+  color: inherit !important;
+  text-decoration: none !important;
+  pointer-events: none;
+  cursor: text;
+  border-bottom: none !important;
+}
+
+/* Garante que os File Links tenham cursor de ação */
+/* Links da Árvore (.file-link) */
+.terminal-box a.file-link {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  /* Mantém a transição suave existente */
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+/* [HOVER] Ciano Neon (Igual ao Menu Superior) */
+.terminal-box a.file-link:hover {
+  color: var(--accent-cyan-bright) !important; /* #ddf8ff */
+  text-shadow: 0 0 10px rgba(139, 233, 253, 0.8), /* Glow principal */
+               0 0 20px rgba(139, 233, 253, 0.4); /* Aura difusa */
+  
+  background: none !important; 
+  border: none !important;
+  text-decoration: none !important;
+}
+
+/* [EXCEPTION 1] Mentions Internas (@file) */
+.terminal-box a.mention-link {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* ==========================================================================
+   MENTION LINKS (@manifesto, @linux) - v6 (Light & Clean)
+   ========================================================================== */
+.mention-link {
+  background-color: transparent !important;
+  border: none !important;
+  color: var(--accent-cyan) !important; 
+  
+  /* [MUDANÇA] Peso normal para fluidez total (era 700) */
+  font-weight: 400; 
+  
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1em; 
+  letter-spacing: -0.02em; 
+  padding: 0 2px;
+  display: inline-block;
+  text-decoration: none !important;
+  
+  /* Fade sutil preservado */
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.mention-link:hover {
+  color: var(--accent-cyan-bright) !important;
+  text-shadow: 0 0 5px rgba(139, 233, 253, 0.7);
+  transform: none;
+}
+
+/* [EXCEPTION 2] Link Cards (Previews Externos) */
+.terminal-box a.link-card {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* [EXCEPTION 3] Post Links (Ressurreição de links em posts rápidos/feed) */
+.terminal-box .post-content a:not(.mention-link):not(.link-card) {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  color: var(--link-color) !important;
+  border-bottom: 1px solid transparent !important;
+}
+.terminal-box .post-content a:not(.mention-link):not(.link-card):hover {
+  color: var(--link-hover-color) !important;
+  border-bottom-color: var(--link-hover-color) !important;
+}
+
+/* --- 5.3. HEADER & CONTROLS --- */
+.terminal-header {
+  background-color: #1a1b24; 
+  padding: 0 10px; 
+  height: 32px;
+  display: flex; 
+  align-items: center; 
+  justify-content: flex-end;
+  border-bottom: 1px solid #2d2b3b;
+}
+
+.terminal-controls {
+  display: flex; 
+  gap: 4px; 
+  height: 100%; 
+  align-items: center;
+}
+
+.win-btn {
+  color: #6272a4; 
+  opacity: 0.6; 
+  cursor: pointer;
+  font-family: sans-serif; 
+  font-size: 13px; 
+  font-weight: bold;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  line-height: 1; 
+  width: 20px; 
+  height: 20px; 
+  border-radius: 2px;
+  transition: opacity 0.2s, color 0.2s;
+  background: transparent !important;
+}
+.win-btn:hover { background: transparent !important; opacity: 1; }
+
+.btn-min {
+  /* Alinhamento estrutural (Flexbox Puro) */
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  
+  /* Ajuste visual Fino: Desce 3 pixels */
+  transform: translateY(3px) !important;
+  
+  font-weight: 900;
+  padding: 0 !important;
+  line-height: normal;
+}
+.btn-min:hover { color: #f1fa8c; }   /* Amarelo Neon (Feedback UI) */
+.btn-close:hover { color: #ff5555; } /* Vermelho (Feedback UI) */
+
+/* --- 5.4. BODY & CONTENT --- */
+.terminal-body {
+  padding: 10px 15px; 
+  color: #f8f8f2; 
+  overflow-x: auto; 
+  line-height: 1.5; 
+}
+.terminal-body div { margin: 0; padding: 0; }
+
+.terminal-body hr, .terminal-body .post-list__divider {
+  border: 0; 
+  border-bottom: var(--border); 
+  margin: 3em 0; 
+  width: 100%; 
+  display: block; 
+  opacity: 0.6;                 
+}
+
+/* [NEW] Limpeza de Listas Markdown (Sem bolinhas) */
+.post-content ul {
+  list-style: none;
+  padding-left: 0;
+}
+.post-content li {
+  position: relative;
+  padding-left: 5px; /* Leve respiro */
+}
+
+/* Preserva quebras de linha para o parser JS */
+.auto-term {
+  white-space: pre-wrap;
+  font-family: 'JetBrains Mono', monospace;
+  display: block;
+}
+
+
+/* --- 5.7. FEED LOADER & ANIMATIONS --- */
+.feed-terminal { 
+  margin-top: 55px; 
+  margin-bottom: 60px; 
+  width: 100%; 
+  font-size: 14px; 
+}
+.terminal-loader { 
+  display: inline; 
+  color: var(--text-color); 
+  background: transparent; 
+  border: none; 
+}
+.t-eof { 
+  margin-top: 2px; 
+  margin-bottom: 60px; 
+  color: inherit; 
+  display: block; 
+}
+.cursor-blink { 
+  display: inline-block; 
+  color: #ffffff; 
+  animation: blink 1.5s infinite; 
+  margin-left: 3px; 
+  vertical-align: baseline; 
+  transform: translateY(-2px); 
+  line-height: 1; 
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+

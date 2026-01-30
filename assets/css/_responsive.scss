@@ -1,0 +1,36 @@
+/* ==========================================================================
+   8. MOBILE OPTIMIZATION
+   ========================================================================== */
+@media only screen and (max-width: 600px) { 
+  .container { width: 94%; } 
+
+  /* [MOBILE] Visual Semi-Ativo Padrão */
+  a.link-card {
+    /* Borda Roxo Discreta (Identidade visual clara) */
+    border-color: rgba(189, 147, 249, 0.4); 
+    background-color: rgba(189, 147, 249, 0.03);
+    transform: none; box-shadow: none;
+  }
+  
+  /* Feedback de toque */
+  a.link-card:active {
+    background-color: rgba(189, 147, 249, 0.1);
+    border-color: var(--link-color);
+  }
+  
+  .link-card .lc-host { text-shadow: none; }
+
+  /* Layout */
+  .link-card:not(.no-image) { padding-left: 10px; padding-top: 130px; } 
+  .link-card .lc-img { width: calc(100% - 20px); height: 110px; filter: none; }
+  
+  hr, .post-list__divider {
+    display: block; width: 100%; margin: 3em 0; opacity: 1;        
+    clear: both; border: 0; border-bottom: var(--border); 
+  }
+
+  footer { flex-direction: column-reverse; align-items: center; gap: 15px; text-align: center; }
+  header { padding: 10px 0; }
+  .menu ul { flex-wrap: wrap; justify-content: center; white-space: normal; overflow-x: visible; gap: 2px; width: 100%; }
+  .menu a, .menu-active { padding: 6px 8px; font-size: 0.85em; }
+}

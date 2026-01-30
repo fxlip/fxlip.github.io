@@ -1,0 +1,338 @@
+/* Tags Especiais no Texto (@files, @linux) */
+/* Tags Especiais no Texto (@files, @linux, @manifesto) */
+code a, a code {
+  /* Estado Idle (Normal): Uma caixinha discreta ciano */
+  border: 1px solid rgba(139, 233, 253, 0.2);
+  padding: 1px 6px; /* Padding levemente reduzido para elegância */
+  border-radius: 4px;
+  background: rgba(139, 233, 253, 0.05);
+  color: var(--accent-cyan) !important; /* Força Ciano */
+  
+  border-bottom: none !important;
+  text-decoration: none !important;
+  display: inline-block;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+}
+
+/* Hover: O Efeito "Menu" (Sem caixa, só luz) */
+code a:hover, a code:hover {
+  background: transparent !important;    /* Remove Fundo */
+  border-color: transparent !important;  /* Remove Borda */
+  
+  color: var(--accent-cyan-bright) !important;
+  
+  /* O mesmo Glow do Menu */
+  text-shadow: 0 0 8px rgba(139, 233, 253, 0.9);
+  
+  /* Pequeno movimento para cima para indicar flutuação */
+  transform: translateY(-1px); 
+}
+
+
+/* ==========================================================================
+   5. INLINE SYNTAX HIGHLIGHTING (GHOST PROTOCOL)
+   ========================================================================== */
+
+/* Base para todo code inline (já deve existir, mas reforçando) */
+.post-content code {
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #f8f8f2;
+  transition: all 0.3s ease;
+}
+
+/* 5.1. Comandos (.c-cmd) -> Cyan (Ação) */
+code.c-cmd {
+  color: #8be9fd !important;
+  font-weight: 600;
+  text-shadow: 0 0 5px rgba(139, 233, 253, 0.2);
+}
+
+/* 5.2. Variáveis (.c-var) -> Laranja/Pêssego (Dados) */
+code.c-var {
+  color: #ffb86c !important;
+  font-style: normal;
+}
+
+/* 5.3. Operadores (.c-op) -> Rosa (Lógica/Controle) */
+code.c-op {
+  color: #ff79c6 !important;
+  font-weight: bold;
+}
+
+/* 5.4. Caminhos/Arquivos (.c-path) -> Amarelo Suave (Recurso) */
+code.c-path {
+  color: #e4e4a8 !important; /* Mesmo tom do terminal v5 */
+  font-style: italic;
+}
+
+/* Hover Effect: Unifica a experiência */
+code.c-cmd:hover, code.c-var:hover, code.c-path:hover {
+  background: rgba(255, 255, 255, 0.1);
+  cursor: text;
+}
+
+/* ==========================================================================
+   9. INLINE SYNTAX HIGHLIGHTING (BADGE PROTOCOL)
+   ========================================================================== */
+
+/* 9.0 Base: O visual de "Badge" Original */
+.post-content code {
+  font-family: 'JetBrains Mono', monospace;
+  
+  /* Restaura o fundo escuro original */
+  background-color: var(--code-bg) !important; 
+  
+  /* Restaura a borda sutil */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  /* Cor padrão (se não for identificado) */
+  color: #e2e4e9; 
+  
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+  vertical-align: middle;
+}
+
+/* 9.1. AÇÃO (Comandos) -> Ciano */
+code.c-cmd {
+  color: var(--accent-cyan) !important; /* #8be9fd */
+  font-weight: 700;
+  border-color: rgba(139, 233, 253, 0.3); /* Borda Ciano Sutil */
+}
+
+/* 9.2. DADOS (Variáveis) -> Laranja */
+code.c-var {
+  color: #ffb86c !important; /* Dracula Orange */
+  font-weight: 600;
+}
+
+/* 9.3. LÓGICA (Operadores) -> Rosa */
+code.c-op {
+  color: var(--link-color) !important; /* #ff79c6 */
+  font-weight: bold;
+}
+
+/* 9.4. ALVO (Arquivos/Caminhos) -> Amarelo */
+code.c-path {
+  color: #bd93f9 !important; /* Dracula Purple */
+  font-style: italic;
+}
+
+/* 9.5. Interação: Hover com Glow */
+code.c-cmd:hover, 
+code.c-var:hover, 
+code.c-op:hover, 
+code.c-path:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(-1px);
+  cursor: help;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* ==========================================================================
+   9. INLINE SYNTAX HIGHLIGHTING (BADGE PROTOCOL)
+   ========================================================================== */
+
+/* 9.0 Base: O visual de "Badge" Original */
+.post-content code {
+  font-family: 'JetBrains Mono', monospace;
+  
+  /* Restaura o fundo escuro original */
+  background-color: var(--code-bg) !important; 
+  
+  /* Restaura a borda sutil */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  /* Cor padrão (se não for identificado) */
+  color: #e2e4e9; 
+  
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+  vertical-align: middle;
+}
+
+/* 9.1. AÇÃO (Comandos) -> Ciano */
+code.c-cmd {
+  color: var(--accent-cyan) !important; /* #8be9fd */
+  font-weight: 700;
+  border-color: rgba(139, 233, 253, 0.3); /* Borda Ciano Sutil */
+}
+
+/* 9.2. DADOS (Variáveis) -> Laranja */
+code.c-var {
+  color: #ffb86c !important; /* Dracula Orange */
+  font-weight: 600;
+}
+
+/* 9.3. LÓGICA (Operadores) -> Rosa */
+code.c-op {
+  color: var(--link-color) !important; /* #ff79c6 */
+  font-weight: bold;
+}
+
+/* 9.4. ALVO (Arquivos/Caminhos) -> Amarelo */
+code.c-path {
+  color: #bd93f9 !important; /* Dracula Purple */
+  font-style: italic;
+}
+
+/* 9.5. Interação: Hover com Glow */
+code.c-cmd:hover, 
+code.c-var:hover, 
+code.c-op:hover, 
+code.c-path:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(-1px);
+  cursor: help;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* --- 5.5. SYNTAX HIGHLIGHTING (THEME) --- */
+.t-user { color: var(--link-color); font-weight: bold; }       /* Rosa */
+.t-host { color: var(--link-hover-color); font-weight: bold; } /* Roxo */
+.t-path { color: #D8B4FE; font-style: italic; }                /* Lilás */
+.t-dim  { color: #6272a4; }                                    /* Comentário */
+.t-gray, .t-cmd { color: var(--base-color); font-weight: normal; }
+
+/* Kerning do Prompt ($): Respiro visual */
+.t-path + .t-gray {
+  margin-left: 5px; 
+  margin-right: 2px; 
+  display: inline-block; 
+}
+
+/* Output Genérico */
+.t-out { 
+  color: #bfbfbf; 
+  display: block; 
+  white-space: pre-wrap; 
+  line-height: 1.5;
+}
+.t-out:empty { display: none; }
+
+/* --- 5.6. FILE SYSTEM DISPLAY (LS OUTPUT) --- */
+/* Layout em Colunas Verticais (Estilo Linux real) */
+.t-ls {
+  column-width: 100px; 
+  column-gap: 15px;
+  width: 100%;
+  margin-bottom: 5px;
+  display: block; 
+  white-space: normal !important;
+}
+
+.t-ls span {
+  display: block;
+  break-inside: avoid; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: default;
+  line-height: 1.4;
+}
+
+/* Semântica de Arquivos (LS Colors) */
+.d { color: #8be9fd; font-weight: bold; }   /* Diretórios: Ciano */
+.x { color: #e4e4a8; font-weight: bold; }   /* Executáveis: Amarelo Pastel (Suave) */
+.f { color: #f8f8f2; font-weight: normal; } /* Arquivos: Branco */
+.l { color: #bd93f9; font-weight: normal; } /* Symlinks: Roxo */
+.z { color: #ffb86c; font-weight: bold; }   /* Zip/Tar: Laranja */
+.h { color: #6272a4; }                      /* Ocultos: Cinza Azulado */
+
+/* Sticky Bit (tmp) */
+.st { 
+  color: #50fa7b; 
+  background-color: rgba(80, 250, 123, 0.1); 
+  box-shadow: 0 0 0 1px rgba(80, 250, 123, 0.2); 
+  width: fit-content; 
+  padding: 0 3px; 
+  border-radius: 3px;
+  margin-right: auto;
+}
+
+/* --- 5.8. TAGS: GHOST PROTOCOL (SYNTAX SYSTEM) --- */
+code.tag {
+  display: inline-block;
+  color: #e2e4e9;
+  background-color: rgba(255, 255, 255, 0.03); /* Fundo fantasma (3%) */
+  border: 1px solid transparent; 
+  border-radius: 4px;
+  padding: 1px 6px; 
+  margin: 0 3px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85em;
+  font-weight: 500;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: default;
+}
+
+/* Cores Semânticas (Sem bordas pesadas) */
+code.tag.x { color: #e4e4a8; } /* Executável: Amarelo Pastel */
+code.tag.d { color: #8be9fd; } /* Diretório: Ciano */
+code.tag.f { color: #bd93f9; } /* Arquivo: Roxo */
+code.tag.m { color: #ffb86c; } /* Manual/Conceito: Laranja */
+code.tag.k { color: #ff79c6; } /* Keystroke/Vim: Rosa */
+
+/* Hover State: "Acorda" a interface */
+code.tag:hover {
+  background-color: #0b0a10; /* Deep Chip Logic */
+  border-color: rgba(255, 255, 255, 0.1); 
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* [KERNEL] Tree View Graphics Engine */
+.t-tree {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace; /* Fontes com ligaduras de caixa */
+  white-space: pre;       /* Obriga o navegador a respeitar espaços exatos */
+  line-height: 1.2;       /* Altura calibrada para as linhas verticais se tocarem */
+  letter-spacing: 0px;    /* Impede "respiração" da fonte */
+  color: #6272a4;         /* Cor das linhas (Dracula Comment) */
+  
+  display: inline-block;
+  vertical-align: baseline;
+  margin: 0;
+  padding: 0;
+}
+
+/* Garante que a linha inteira seja um bloco sólido */
+.t-row {
+  display: flex;          /* Alinhamento flex para colar os elementos */
+  align-items: flex-start; /* Alinha no topo */
+  margin: 0;
+  padding: 0;
+  line-height: 1.3;       /* Altura da linha de texto (pode ser maior que a árvore) */
+}
+
+/* O link do arquivo */
+.t-row a.file-link {
+  margin-left: 0px;       /* Zero margem, o espaço já vem da árvore */
+  text-decoration: none;
+}
+
+/* 2. Itens da Árvore de Arquivos (Páginas Linux/Files) */
+/* Agora funcionará quando atualizarmos o JS para suportar o comando 'tree' */
+.t-out span.f:hover, 
+.t-out span.d:hover, 
+.t-out span.x:hover, 
+.t-out span.l:hover,
+.t-out span.z:hover {
+  color: var(--accent-cyan-bright) !important;
+  text-shadow: 0 0 8px rgba(139, 233, 253, 0.7);
+  cursor: crosshair; 
+  position: relative;
+  z-index: 10;
+  
+  /* Garante que o span capture o mouse */
+  pointer-events: auto !important; 
+  display: inline-block; /* Melhora a área de clique */
+}

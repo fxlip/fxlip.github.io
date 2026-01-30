@@ -1,0 +1,100 @@
+/* ==========================================================================
+   1. CORE VARIABLES & PALETTE
+   ========================================================================== */
+:root {
+  /* --- BACKGROUNDS --- */
+  --background-color: #13121d; 
+  --card-bg: #1c1a26;          
+  --code-bg: #0f0e14;          
+  
+  /* --- TYPOGRAPHY --- */
+  --text-color: #c5c6d0;       
+  --base-color: #7a7e99;       
+  --placeholder-color: #5c5f77;
+  
+  /* --- ACCENTS --- */
+  --link-color: #ff79c6;       /* ROSA */
+  --link-hover-color: #bd93f9; /* ROXO */
+  --accent-cyan: #8be9fd;      /* CIANO */
+  --accent-cyan-bright: #ddf8ff; 
+
+  /* --- MENU SPECIFIC --- */
+  --nav-link-idle: #9ca5d6;    
+  --nav-link-active: #ff79c6;  
+  
+  /* --- STRUCTURAL --- */
+  --border: dashed 1px rgba(189, 147, 249, 0.2); 
+  --card-border: 1px solid rgba(255, 255, 255, 0.05);
+  --terminal-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   3. CONTENT LAYOUT & IMAGES
+   ========================================================================== */
+.container { 
+  width: 90%; 
+  max-width: 640px;
+  margin: 0 auto; 
+}
+
+hr, .post-list__divider {
+  border: 0; 
+  border-bottom: var(--border);
+  margin: 3em 0;
+  display: block;
+}
+
+.post-date {
+  display: block; text-align: right;
+  margin-top: 8px; font-size: 0.85em; color: var(--base-color);
+}
+
+pre, code {
+  font-family: 'JetBrains Mono', monospace;
+  background-color: var(--code-bg); border-radius: 4px;
+}
+pre { padding: 15px; overflow-x: auto; border: 1px solid #2d2b3b; }
+
+main img {
+  box-sizing: border-box;
+  max-width: 100%; height: auto;
+  display: block; 
+  margin: 30px auto;
+  padding: 10px; 
+  background-color: var(--card-bg);
+  border: var(--card-border);
+  border-radius: 6px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3); 
+  opacity: 1;
+  image-rendering: -webkit-optimize-contrast;
+  object-fit: cover;
+  transition: opacity 0.3s, border-color 0.3s;
+}
+main img:hover { 
+  border-color: rgba(189, 147, 249, 0.3); 
+}
+
+/* ==========================================================================
+   7. FOOTER
+   ========================================================================== */
+footer { 
+  width: 100%; margin-top: 50px; margin-bottom: 40px; 
+  display: flex; justify-content: space-between; align-items: flex-end; 
+  color: var(--base-color); font-size: 0.85em; opacity: 0.9; 
+}
+
+footer .build-info {
+  font-family: monospace; opacity: 0.5; color: var(--placeholder-color);
+}
+
+footer a[href^="mailto"] {
+  color: var(--accent-cyan); font-weight: bold; font-size: inherit; 
+  border: none !important; text-decoration: none !important;
+  transition: all 0.3s ease;
+}
+
+footer a[href^="mailto"]:hover {
+  color: var(--accent-cyan-bright);
+  text-shadow: 0 0 8px rgba(139, 233, 253, 0.6); 
+  background: transparent !important;
+}

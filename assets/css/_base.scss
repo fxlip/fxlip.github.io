@@ -1,0 +1,132 @@
+/* ==========================================================================
+   2. RESET & GLOBAL TYPOGRAPHY
+   ========================================================================== */
+* { box-sizing: border-box; }
+
+body {
+  background-color: var(--background-color);
+  margin: 0 auto; padding: 0;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 14px;
+  color: var(--text-color);
+  line-height: 1.7;        
+  letter-spacing: -0.01em; 
+  overflow-x: hidden;      
+}
+
+/* Scanline Effect */
+body::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+  background-size: 100% 4px;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+}
+
+/* --- HEADERS --- */
+h1 {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 2.2em; /* Reduzido para elegância (era 3em) */
+  text-transform: uppercase;
+  color: var(--link-hover-color);
+  
+  /* Espaçamento técnico */
+  letter-spacing: 0.05em; 
+  font-weight: 400;
+  
+  /* Glow Estático: Luz suave e constante, sem piscar */
+  text-shadow: 0 0 15px rgba(189, 147, 249, 0.25); 
+  
+  margin-top: 40px;    
+  margin-bottom: 20px;
+}
+
+h2, h4, h5, h6 {
+  color: #ffffff;
+  margin-top: 30px;
+  font-weight: 700;
+}
+
+h3 {
+  color: var(--link-hover-color); 
+  margin-top: 30px;
+  font-weight: 700;
+}
+
+/* Lead Paragraph */
+h1 + p {
+  text-align: center;
+  color: var(--base-color); 
+  font-style: italic;
+  font-size: 1em;
+  margin-bottom: 40px;
+  max-width: 90%;
+  margin-left: auto; margin-right: auto;
+}
+
+/* Blockquotes */
+blockquote {
+  margin: 30px auto;
+  padding: 0; border: none;            
+  text-align: center; font-style: italic;      
+  color: var(--accent-cyan); 
+  opacity: 0.9; max-width: 85%;          
+  line-height: 1.6;
+}
+
+/* --- LINKS GLOBAIS (UPDATED: CYAN PROTOCOL) --- */
+/* --- LINKS GLOBAIS (UPDATED: CYAN SIGNAL) --- */
+/* ==========================================================================
+   LINKS GLOBAIS (CORRIGIDO: CIANO PARA TUDO)
+   ========================================================================== */
+/* ==========================================================================
+   LINKS GLOBAIS (UPDATED: DISCREET PRECISION)
+   ========================================================================== */
+a {
+  color: var(--accent-cyan); 
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease; /* Fade suave mantido */
+}
+
+a:hover {
+  /* Ciano Brilhante, mas contido */
+  color: var(--accent-cyan-bright); 
+  border-bottom-color: transparent; 
+  
+  /* GLOW DISCRETO: Menor raio (5px) e menos intenso (0.7) */
+  text-shadow: 0 0 5px rgba(139, 233, 253, 0.7);
+  
+  text-decoration: none;
+}
+
+
+
+/* Links da Árvore (.file-link) - Forçando consistência */
+.file-link {
+  display: inline; font-family: inherit;
+  color: var(--text-color) !important; 
+  text-decoration: none !important;
+  border: none !important; background: none !important; 
+  padding: 0 !important;
+  transition: all 0.2s ease;
+}
+
+.file-link:hover {
+  /* Ciano Neon */
+  color: var(--accent-cyan-bright) !important; 
+  text-shadow: 0 0 8px rgba(139, 233, 253, 0.9); 
+  background: none !important; border: none !important;
+}
+
+input, textarea {
+  background-color: var(--code-bg); color: var(--text-color);
+  border: 1px solid rgba(135, 139, 166, 0.3);
+  width: 100%; padding: 10px; margin-bottom: 10px;
+  border-radius: 4px; font-family: inherit;
+}
