@@ -8,7 +8,7 @@ Depois de assistir uma palestra da **Free Software Foundation** em 2017 e ter um
 
 ---
 
-### Estação de Trabalho [default]
+### Estação de Trabalho >>
 
 * **Hardware:** Razer Blade Stealth Late 2019.
 * **Wi-Fi:** Downgrade Intel AX201 para Broadcom DW1560 ativando AirDrop.
@@ -20,7 +20,7 @@ Depois de assistir uma palestra da **Free Software Foundation** em 2017 e ter um
 
 ---
 
-### Laboratório [researchs]
+### Laboratório >>
 
 * **Hardware:** Lenovo T400s RYF.
 * **Libreboot:** Sem BIOS/UEFI.
@@ -29,7 +29,7 @@ Depois de assistir uma palestra da **Free Software Foundation** em 2017 e ter um
 
 ---
 
-### Servidor [data]
+### Servidor >>
 
 * **Hardware:** Zen 4 + Ada Lovelace 5nm.
 * **Função:** LLMs, NAS e SAAS.
