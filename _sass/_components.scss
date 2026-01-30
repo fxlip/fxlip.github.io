@@ -1,4 +1,3 @@
-
 /* ==========================================================================
    6. LINK CARDS (ISOLATED SYSTEM)
    ========================================================================== */
@@ -19,27 +18,23 @@ a.link-card {
   
   /* Resets Críticos (Blindagem) */
   box-shadow: none; 
-  transform: translateY(0);
   text-decoration: none !important;
   
   /* Força a cor padrão do texto para não herdar o Ciano dos links globais */
   color: var(--text-color) !important;      
   
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-/* --- [CORREÇÃO DE BLUR v2.0] --- */
-  /* Removemos o 'transform' picado e usamos apenas translate3d */
+
+  /* --- [CORREÇÃO DE BLUR v3.0 - GPU LOCK] --- */
+  /* Mantém o contexto 3D ativo o tempo todo para evitar rasterização */
   transform: translate3d(0, 0, 0); 
   
   /* Mantém a nitidez da fonte */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   
-  /* Removemos o will-change pois ele pode causar rasterização prematura */
-  /* will-change: transform;  <-- REMOVIDO */
-  
   /* Evita flicker no 3D */
   backface-visibility: hidden;
-
 }
 
 a.link-card.no-image { padding: 15px !important; min-height: auto; }
@@ -386,47 +381,41 @@ a.link-card:hover .lc-site {
   opacity: 0.9;
 }
 
-/* --- CARDS INTERNOS (INTERNAL REFS) --- */
-/* Estilo específico para links do próprio site (sem imagem, layout compacto) */
-.internal-ref {
-  text-decoration: none !important;
-  margin-bottom: 0 !important;
-  display: block;
+/* --- CARDS INTERNOS (INTERNAL REFS) - BLINDAGEM v2 --- */
+a.link-card.internal-ref {
+    padding: 12px !important;
+    min-height: auto !important;
+
+    .lc-meta { padding: 0 !important; }
+
+    .lc-desc {
+        color: var(--text-color) !important; /* Força cor do texto normal */
+        font-size: 0.9em;
+        margin-bottom: 8px;
+        display: block !important;
+    }
+
+    .lc-site {
+        color: var(--accent-cyan) !important; /* A data fica em destaque ciano */
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        text-transform: uppercase;
+        
+        // Mata a seta ↗ e o ícone original
+        &::before, &::after { content: "" !important; display: none !important; }
+    }
+
+    // Garante que o título antigo não apareça nem como fantasma
+    .lc-host { display: none !important; visibility: hidden; }
 }
 
-.internal-ref .lc-meta { padding-top: 4px; }
-
-/* [CRÍTICO] Oculta o título (ex: fxlip/hash) conforme solicitado */
-.internal-ref .lc-host { 
-  display: none !important; 
-}
-
-.internal-ref .lc-desc {
-  font-size: 0.95em; line-height: 1.5;
-  color: var(--base-color) !important; margin-top: 0;
-}
-
-/* === [NOVO] AJUSTES DO RODAPÉ (DATA) === */
-
-/* 1. Cor e Estilo da Data */
-.internal-ref .lc-site {
-  /* Sincroniza com a cor do hash/data da página principal (#5c5f77) */
-  color: var(--placeholder-color) !important;
-  
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px; /* Levemente menor para ser discreto */
-  font-weight: 400;
-  opacity: 0.8; /* Remove transparência excessiva se houver */
-  margin-top: 8px; /* Um pouco de respiro do texto */
-}
-
-/* 2. Remover o ícone de seta (↗) */
-/* O seletor genérico de cards adiciona uma seta via ::before. 
-   Aqui nós a removemos especificamente para os cards internos. */
-.internal-ref .lc-site::before {
-  content: none !important;
+/* [EXTERMINADOR DE SETA] Remove o ícone ↗ */
+a.link-card.internal-ref .lc-site::before,
+a.link-card.internal-ref .lc-site:before {
+  content: "" !important;
   margin-right: 0 !important;
   display: none !important;
+  width: 0 !important;
 }
 
 

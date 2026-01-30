@@ -126,7 +126,8 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   // ==========================================================================
-  // 4. CARDS & MENTIONS (UPDATED WITH DATES)
+  // 4. CARDS & MENTIONS (V3 - CONTENT PROBE ENGINE)
+  // Extrai data e conteúdo real para gerar cards minimalistas
   // ==========================================================================
   window.processInternalEmbeds = function(context = document) {
     const links = context.querySelectorAll('.post-content a, .t-out a'); 
@@ -139,22 +140,21 @@ document.addEventListener("DOMContentLoaded", function() {
       const allowedHosts = [currentHost, 'localhost', '127.0.0.1', prodHost, 'www.' + prodHost];
       if (!allowedHosts.includes(link.hostname)) return;
 
+      // Só processa links que são a URL pura (evita estragar links em palavras)
       const linkText = link.innerText.trim().replace(/\/$/, '');
       const linkHref = link.href.trim().replace(/\/$/, '');
       if (linkText !== linkHref && linkText !== link.href) return;
 
       link.dataset.processed = "true"; 
       
+      // Placeholder de resolução
       const loader = document.createElement('div');
       loader.className = 'rt-loading';
-      loader.innerHTML = '<span class="cursor-blink">█</span> resolving ref...';
+      loader.innerHTML = '<span class="cursor-blink">█</span> resolving internal_ref...';
       link.style.display = 'none';
       link.parentNode.insertBefore(loader, link.nextSibling);
 
-      const urlObj = new URL(link.href);
-      let fetchUrl = urlObj.pathname; 
-
-      fetch(fetchUrl)
+      fetch(new URL(link.href).pathname)
         .then(response => {
           if (!response.ok) throw new Error("404");
           return response.text();
@@ -162,49 +162,33 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(html => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(html, 'text/html');
-          
-          // --- Extração de Dados ---
-          const filename = urlObj.pathname.split('/').filter(p => p).pop() || urlObj.hostname;
-          const displayHash = filename.replace('.html', '');
-          
-          // Extração da Data do Post Remoto
+
+          // 1. Captura a data real do post remoto
           const remoteDateEl = doc.querySelector('.sys-date');
-          const remoteDateRaw = remoteDateEl ? remoteDateEl.innerText.trim() : null;
-          // Usa a lógica unificada para calcular "há X dias"
-          const displayDate = getRelativeTime(remoteDateRaw) || "fxlip.com"; 
+          const displayDate = getRelativeTime(remoteDateEl?.innerText.trim()) || "fxlip.com"; 
 
-          // Extração do Conteúdo/Descrição
+          // 2. Captura e limpa o conteúdo (a "leitura" que você pediu)
           const contentDiv = doc.querySelector('.post-content');
-          let rawText = "";
+          let cleanDesc = "Conteúdo não indexado.";
           if (contentDiv) {
-            const clone = contentDiv.cloneNode(true);
-            const garbages = clone.querySelectorAll('script, style, .terminal-box');
-            garbages.forEach(g => g.remove());
-            rawText = clone.innerText || "";
-          } else {
-            rawText = doc.body.innerText;
+              const clone = contentDiv.cloneNode(true);
+              // Remove lixo visual para o resumo não ficar quebrado
+              clone.querySelectorAll('script, style, .link-card, .terminal-box').forEach(el => el.remove());
+              cleanDesc = clone.innerText.replace(/\s+/g, ' ').trim().substring(0, 160) + "...";
           }
-          
-          rawText = rawText.replace(/\s+/g, ' ').trim();
-          const maxLength = 160;
-          const desc = rawText.length > maxLength ? rawText.substring(0, maxLength) + "..." : rawText;
 
-          // --- Construção do Card ---
+          // 3. Injeção Minimalista (Sem .lc-host)
           const card = document.createElement('a');
           card.href = link.href;
           card.className = 'link-card no-image internal-ref';
-          card.title = `./${filename}`;
-          
-          // HTML com a data processada no rodapé (.lc-site)
           card.innerHTML = `
-            <div class="lc-meta">
-              <div class="lc-host">fxlip/${displayHash}</div>
-              <div class="lc-desc">${desc}</div>
-              <div class="lc-site">${displayDate}</div>
-            </div>
+              <div class="lc-meta">
+                  <div class="lc-desc">${cleanDesc}</div>
+                  <div class="lc-site">${displayDate}</div>
+              </div>
           `;
           loader.replaceWith(card);
-        })
+        })     
         .catch(err => {
           loader.remove();
           link.style.display = 'inline';
