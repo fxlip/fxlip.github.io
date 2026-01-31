@@ -83,7 +83,12 @@ hide_footer: true
               {%- assign c3 = "├── " -%}
             {%- endif -%}
             
-            <div class="t-row"><span class="t-tree">{{ p1 }}{{ p2 }}{{ c3 }}</span><a href="{{ item.url }}" class="f file-link">{{ item.title | downcase }}</a></div>
+  <div class="t-row">
+    <span class="t-tree">{{ p1 }}{{ p2 }}{{ c3 }}</span>
+    <a href="{{ item.url }}" class="f file-link {% if item.title contains '.exercicios' %}file-link-muted{% endif %}">
+      {{ item.title | downcase }}
+    </a>
+  </div>
          {%- endfor -%}
 
       {%- endfor -%}
@@ -98,7 +103,12 @@ hide_footer: true
                  {%- else -%}
                     {%- assign c2b = "├── " -%}
                  {%- endif -%}
-                 <div class="t-row"><span class="t-tree">{{ p1 }}{{ c2b }}</span><a href="{{ item.url }}" class="f file-link">{{ item.title | downcase }}</a></div>
+  <div class="t-row">
+    <span class="t-tree">{{ p1 }}{{ c2b }}</span>
+    <a href="{{ item.url }}" class="f file-link {% if item.title contains '.exercicios' %}file-link-muted{% endif %}">
+      {{ item.title | downcase }}
+    </a>
+  </div>
              {%- endif -%}
           {%- endunless -%}
         {%- endif -%}
@@ -110,4 +120,4 @@ hide_footer: true
   </div>
 </div>
 
-[9/83]
+[13/83]

@@ -37,6 +37,20 @@
   transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
+/* --- EXCEÇÃO VISUAL: ARQUIVOS MUDOS (.exercicios) --- */
+.terminal-box a.file-link-muted {
+  /* Estado Normal: Cinza Escuro (#57596d) */
+  color: #57596d !important; 
+  transition: all 0.2s ease;
+}
+
+/* Estado Hover: Ressuscita o Neon (Override no Cinza) */
+.terminal-box a.file-link-muted:hover {
+  color: var(--accent-cyan-bright) !important;
+  text-shadow: 0 0 10px rgba(139, 233, 253, 0.8), 
+               0 0 20px rgba(139, 233, 253, 0.4);
+}
+
 /* [HOVER] Ciano Neon (Igual ao Menu Superior) */
 .terminal-box a.file-link:hover {
   color: var(--accent-cyan-bright) !important; /* #ddf8ff */
