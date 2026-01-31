@@ -1,26 +1,22 @@
 ---
 layout: default
 ---
+{{ content }}<main>
+        <div class="terminal-box feed-terminal" data-nosnippet>
+          <div class="terminal-header">
+            <div class="terminal-controls">
+              <div class="win-btn btn-min" title="Minimize">−</div>
+              <div class="win-btn btn-close" title="Close">✕</div>
+            </div>
+          </div>
 
-{{ content }}
-
-<div class="terminal-box feed-terminal" data-nosnippet>
-  
-  <div class="terminal-header">
-    <div class="terminal-controls">
-      <div class="win-btn btn-min" title="Minimize">−</div>
-      <div class="win-btn btn-close" title="Close">✕</div>
-    </div>
-  </div>
-
-  <div class="terminal-body">
-    <div>
-      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span class="t-cmd">cat dog.txt</span>
-    </div>
-    <div class="t-out">
-Site pessoal feito com bloco de notas.
-Um diário de estudos focado em @linux
-Também falo de infosec e os rumos da IA
+          <div class="terminal-body">
+            <div>
+              <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span class="t-cmd">cat dog.txt</span>
+            </div>
+            <div class="t-out">
+Site pessoal feito no bloco de notas.
+Um diário de estudos focado no @linux
 
 @sobre @manifesto @setup 
 ⡟⠛⠛⠛⠛⢛⣛⣛⣛⣿⣿⣿⣛⣛⣛⡛⠛⠛⠛⠛⢛
@@ -38,98 +34,74 @@ Também falo de infosec e os rumos da IA
 ⡇⠄⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⠄⢸
 ⡇⠄⠄⠄⠈⠛⢿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠄⠄⠄⢨
 ⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄
-    </div>
-    <div>
-      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span class="t-cmd">./nvdd.sh</span>
-    </div>
-    <div class="t-out">
-
-    </div>
-    <hr class="post-list__divider" style="margin: 10px 0 35px 0;">
-    {%- if site.posts.size > 0 -%}
-      <div class="posts-list">
-        {%- for post in paginator.posts -%}
-          {% assign pv = site.data.previews[post.slug] %}
-          
-          <article class="post-item">
-            <div class="post-content">
-              {% if pv %}
-                {{ post.content | remove: pv.url | markdownify }}
-              {% else %}
-                {{ post.content | markdownify }}
-              {% endif %}
             </div>
-
-            {% if pv %}
-              {% if pv.video_id %}
-                <div class="video-wrapper">
-                  <iframe src="https://www.youtube.com/embed/{{ pv.video_id }}?rel=0&modestbranding=1" title="{{ pv.title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            <div>
+              <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span class="t-cmd">./nvdd.sh</span>
+            </div>
+            <div class="t-out">
+            </div>
+            <hr class="post-list__divider" style="margin: 10px 0 35px 0;">
+            {%- if site.posts.size > 0 -%}
+              <div class="posts-list">
+                {%- for post in paginator.posts -%}
+                  {% assign pv = site.data.previews[post.slug] %}
+                  <article class="post-item">
+                    <div class="post-content">
+                      {% if pv %}
+                        {{ post.content | remove: pv.url | markdownify }}
+                      {% else %}
+                        {{ post.content | markdownify }}
+                      {% endif %}
+                    </div>
+                    {% if pv %}
+                      {% if pv.video_id %}
+                        <div class="video-wrapper">
+                          <iframe src="https://www.youtube.com/embed/{{ pv.video_id }}?rel=0&modestbranding=1" title="{{ pv.title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                        </div>
+                      {% else %}
+                        <a href="{{ pv.url }}" target="_blank" rel="noopener noreferrer" 
+                          class="link-card {% unless pv.image %}no-image{% endunless %}">
+                          {% if pv.image %}
+                            <img src="{{ pv.image }}" 
+                                alt="{{ pv.title | escape }}" 
+                                class="lc-img" 
+                                onerror="this.style.display='none';this.closest('.link-card').classList.add('no-image');" />
+                          {% endif %}
+                          <div class="lc-meta">
+                            <div class="lc-host">{{ pv.title }}</div>
+                            {% if pv.description %}<div class="lc-desc">{{ pv.description }}</div>{% endif %}
+                            <div class="lc-site">
+                              {{ pv.url | replace: 'https://', '' | replace: 'http://', '' | split: '/' | first }}
+                            </div>
+                          </div>
+                        </a>
+                      {% endif %}
+                    {% endif %}<div class="post-footer" style="margin-top: 15px;">{% assign post_hash = post.url | replace: '.html', '' | replace: '/', ' ' | split: ' ' | last %}
+                      {% assign post_share_link = site.url | append: post.url | remove: '.html' %}<div class="sys-meta-group">
+                        <a href="mailto:fxlip%40tuta.io?subject={{ post_hash }}" class="action-btn reply-btn" title="Responder via Email">
+                          <svg viewBox="0 0 24 24"><polyline points="9 14 4 9 9 4"></polyline><path d="M20 20v-7a4 4 0 0 0-4-4H4"></path></svg>
+                        </a>
+                        <a href="#" class="action-btn share-btn" data-link="{{ post_share_link }}" title="Copiar Link" onclick="return false;">
+                          <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </a>
+                        <a href="{{ post.url | remove: '.html' }}" class="sys-hash-link" title="./{{ post_hash }}">
+                          {{ post_hash }}
+                        </a>
+                      </div>
+                      <time class="sys-date" datetime="{{ post.date | date: "%Y-%m-%d %H:%M" }}">
+                        {{ post.date | date: "%H:%M" }} · {{ post.date | date: "%-d de %b de %Y" | downcase }}
+                      </time>
+                    </div>
+                    <hr class="post-list__divider">
+                  </article>
+                {%- endfor -%}
+              </div>
+                {% if paginator.next_page %}<div style="margin-top: 10px;">
+                  <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span id="infinite-loader" class="terminal-loader" data-next-url="{{ paginator.next_page_path | relative_url }}"></span><span class="cursor-blink">█</span>
                 </div>
               {% else %}
-                <a href="{{ pv.url }}" target="_blank" rel="noopener noreferrer" 
-                   class="link-card {% unless pv.image %}no-image{% endunless %}">
-                  
-                  {% if pv.image %}
-                    <img src="{{ pv.image }}" 
-                         alt="{{ pv.title | escape }}" 
-                         class="lc-img" 
-                         onerror="this.style.display='none';this.closest('.link-card').classList.add('no-image');" />
-                  {% endif %}
-                  
-                  <div class="lc-meta">
-                    <div class="lc-host">{{ pv.title }}</div>
-                    {% if pv.description %}<div class="lc-desc">{{ pv.description }}</div>{% endif %}
-                    
-                    <div class="lc-site">
-                      {{ pv.url | replace: 'https://', '' | replace: 'http://', '' | split: '/' | first }}
-                    </div>
-                  </div>
-                </a>
-              {% endif %}
-            {% endif %}
-
-            <div class="post-footer" style="margin-top: 15px;">
-              
-              {% assign post_hash = post.url | replace: '.html', '' | replace: '/', ' ' | split: ' ' | last %}
-              
-              {% assign post_share_link = site.url | append: post.url | remove: '.html' %}
-
-              <div class="sys-meta-group">
-                
-                <a href="mailto:fxlip%40tuta.io?subject={{ post_hash }}" class="action-btn reply-btn" title="Responder via Email">
-                  <svg viewBox="0 0 24 24"><polyline points="9 14 4 9 9 4"></polyline><path d="M20 20v-7a4 4 0 0 0-4-4H4"></path></svg>
-                </a>
-
-                <a href="#" class="action-btn share-btn" data-link="{{ post_share_link }}" title="Copiar Link" onclick="return false;">
-                  <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-                </a>
-
-                <a href="{{ post.url | remove: '.html' }}" class="sys-hash-link" title="./{{ post_hash }}">
-                  {{ post_hash }}
-                </a>
-
-              </div>
-
-              <time class="sys-date" datetime="{{ post.date | date: "%Y-%m-%d %H:%M" }}">
-                {{ post.date | date: "%H:%M" }} · {{ post.date | date: "%-d de %b de %Y" | downcase }}
-              </time>
-            </div>
-
-            <hr class="post-list__divider">
-          </article>
-        {%- endfor -%}
-      </div>
-
-      {% if paginator.next_page %}
-        <div style="margin-top: 10px;">
-          <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span id="infinite-loader" class="terminal-loader" data-next-url="{{ paginator.next_page_path | relative_url }}"></span><span class="cursor-blink">█</span>
-        </div>
-      {% else %}
-        <div style="margin-top: 10px;">
-          <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span class="cursor-blink">█</span>
-        </div>
-      {% endif %}
-    {%- endif -%}
-
-  </div> 
-</div>
+                      <div style="margin-top: 10px;">
+                        <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span class="cursor-blink">█</span>
+                      </div>
+              {% endif %}</div>
+        {%- endif -%}</div> 

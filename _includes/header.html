@@ -1,28 +1,26 @@
-<header>
-  <div class="menu">
-    <ul>
-      {%- assign default_paths = site.header_pages | default: site.pages | map: "path" -%}
-      {%- assign page_paths = site.header_pages | default: default_paths -%}
-      
-      {%- for path in page_paths -%}
-        {%- assign my_page = site.pages | where: "path", path | first -%}
-        {%- if my_page.title -%}
-          <li>
-            {%- assign link_label = my_page.menu_title | default: my_page.title -%}
+    
+      <header>
+        <div class="menu">
+          <ul>
+            {%- assign default_paths = site.header_pages | default: site.pages | map: "path" -%}
+            {%- assign page_paths = site.header_pages | default: default_paths -%}
             
-            {%- if page.url == my_page.url -%}
-              <span class="menu-active">{{ link_label | escape }}</span>
-            {%- else -%}
-              <a href="{{ my_page.url }}">{{ link_label | escape }}</a>
-            {%- endif -%}
-          </li>
-        {%- endif -%}
-      {%- endfor -%}
+            {%- for path in page_paths -%}
+              {%- assign my_page = site.pages | where: "path", path | first -%}
+              {%- if my_page.title -%}
 
-      <li>
-<!--        <a href="https://sr.robo.net.br" target="_blank" rel="noopener noreferrer">shop</a>-->
-      </li>
-
-    </ul>
-  </div>
-</header>
+                <li>
+                  {%- assign link_label = my_page.menu_title | default: my_page.title -%}
+                  
+                  {%- if page.url == my_page.url -%}
+                    <span class="menu-active">{{ link_label | escape }}</span>
+                  {%- else -%}
+                    <a href="{{ my_page.url }}">{{ link_label | escape }}</a>
+                  {%- endif -%}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+            <!--<li><a href="https://sr.robo.net.br" target="_blank" rel="noopener noreferrer">shop</a></li>-->
+          </ul>
+        </div>
+      </header>

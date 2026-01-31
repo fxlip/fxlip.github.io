@@ -1,115 +1,91 @@
-{% assign t = site.time | date: "%s" %}
-
-{% assign master_hash = t | replace: '0', 'a' | replace: '1', 'b' | replace: '2', 'c' | replace: '3', 'd' | replace: '4', 'e' | replace: '5', 'f' | replace: '6', '7' | replace: '7', '8' | replace: '8', '9' | replace: '9', '0' | append: 'f' %}
-
-{% assign sig_css = master_hash %}
-
-{% assign sig_lnk = master_hash | replace: 'a', 'x' | replace: 'b', 'y' | replace: 'c', 'z' %}
-
-{% assign sig_trm = master_hash | replace: '7', '1' | replace: '8', '2' | append: 't' %}
-
-{% assign sig_syn = master_hash | remove: 'f' | append: 's9' %}
-
-{% assign sig_main = master_hash | replace: 'd', 'k' | replace: 'e', 'm' | prepend: 'v8-' %}
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
+<html lang="{{ page.lang | default: site.lang | default: 'pt-br' }}">
 {%- comment -%}
   CSP Configuration
 {%- endcomment -%}
 {%- capture csp -%}
-default-src 'none';
-connect-src 'self';
-base-uri 'self';
-form-action 'none';
-img-src 'self' https: data: https://img.youtube.com https://i.ytimg.com;
-style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;  
-font-src 'self' https://fonts.gstatic.com data:;
-media-src 'self';
-object-src 'none';
-child-src 'self' https://www.youtube.com https://www.youtube-nocookie.com;
-script-src 'self' 'unsafe-inline';
+    default-src 'none';
+    connect-src 'self';
+    base-uri 'self';
+    form-action 'none';
+    img-src 'self' https: data: https://img.youtube.com https://i.ytimg.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;  
+    font-src 'self' https://fonts.gstatic.com data:;
+    media-src 'self';
+    object-src 'none';
+    child-src 'self' https://www.youtube.com https://www.youtube-nocookie.com;
+    script-src 'self' 'unsafe-inline';
 {%- endcapture -%}
 {%- capture csp_final -%}{{ csp | strip | replace: '\n', ' ' }} {%- if site.csp_extra %} {{ site.csp_extra }}{%- endif -%}{%- endcapture -%}
-
-<{{ "head" }}>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="index, follow">
-  <meta http-equiv="Content-Security-Policy" content="{{ csp_final | strip }}" />
-  <meta http-equiv="X-XSS-Protection"  content="1;mode=block" always>
-  <meta http-equiv="Referrer-Policy" content="no-referrer, strict-origin-when-cross-origin">
-
-  <title>
-    {%- if page.url == "/" -%}
-      fxlip
+{% assign t = site.time | date: "%s" %} {% assign master_hash = t | replace: '0', 'a' | replace: '1', 'b' | replace: '2', 'c' | replace: '3', 'd' | replace: '4', 'e' | replace: '5', 'f' | replace: '6', '7' | replace: '7', '8' | replace: '8', '9' | replace: '9', '0' | append: 'f' %} {% assign sig_css = master_hash %} {% assign sig_lnk = master_hash | replace: 'a', 'x' | replace: 'b', 'y' | replace: 'c', 'z' %} {% assign sig_trm = master_hash | replace: '7', '1' | replace: '8', '2' | append: 't' %} {% assign sig_syn = master_hash | remove: 'f' | append: 's9' %} {% assign sig_main = master_hash | replace: 'd', 'k' | replace: 'e', 'm' | prepend: 'v8-' %}
+  <{{ "head" }}>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Referrer-Policy" content="no-referrer, strict-origin-when-cross-origin">
+    <meta http-equiv="X-XSS-Protection"  content="1;mode=block" always>
+    <meta> 
+    {%- assign current_hash = page.url | split: '/' | last | remove: '.html' -%}
+    {%- if page.url == "/" or page.layout == "post" -%}
+      <meta name="robots" content="index, follow">
     {%- else -%}
-      fxlip/{{ page.title | downcase }}
+      <meta name="robots" content="noindex, nofollow">
     {%- endif -%}
-  </title>
-
-  {%- assign page_desc = page.description | default: site.description -%}
-  <meta name="description" content="{{ page_desc }}">
-  <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
-
-  <meta property="og:site_name" content="{{ site.title }}">
-  <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
-  <meta property="og:title" content="{% if page.url == '/' %}{{ site.title }}{% else %}{{ page.title }} | {{ site.title }}{% endif %}"> 
-  <meta property="og:description" content="{{ page_desc }}">
-  <meta property="og:url" content="{{ page.url | absolute_url }}">
-  <meta property="og:locale" content="{{ site.lang | default: 'en_US' }}">
-  {%- if page.image -%}<meta property="og:image" content="{{ page.image | absolute_url }}">{%- endif -%}
-
-  {%- if page.image -%}<meta property="og:image" content="{{ page.image | absolute_url }}">{%- else -%}<meta property="og:image" content="https://felip.com.br/files/img/avatar/profile.jpeg">
-  {%- endif -%}
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="{{ page.title | default: site.title }}">
-  <meta name="twitter:description" content="{{ page_desc }}">
-  
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "{{ site.title }}",
-    "url": "{{ site.url }}{{ site.baseurl }}",
-    "description": "{{ site.description }}"
-  }
-  </script>
-
-  <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | relative_url }}">
-  <link rel="icon" type="image/svg+xml" href="{{ "/assets/img/favicon.svg" | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?x={{ sig_css }}">
-
-  <style>
-    ::-webkit-scrollbar { display: none; }
-    body { scrollbar-width: none; }
-  </style>
-</{{ "head" }}>
-
+    <meta http-equiv="Content-Security-Policy" content="{{ csp_final }}">
+    {%- if page.url == "/" -%}
+      <title>Felip Barbosa de Medeiros</title>
+    {%- elsif page.layout == "post" -%}
+      <title>Felip Barbosa de Medeiros [{{ current_hash }}]</title>
+    {%- else -%}
+      <title>fxlip/{{ page.title | downcase }}</title>
+    {%- endif -%}
+    {%- if page.layout == "post" -%}
+      {%- assign page_desc = page.content | strip_html | strip_newlines | truncate: 160 -%}
+    {%- else -%}
+      {%- assign page_desc = "Site pessoal feito no bloco de notas. Um diário de estudos focado em Linux, Infosec e os rumos da IA." -%}
+    {%- endif -%}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="{{ page_desc }}">
+    <meta property="og:title" content="{% if page.layout == 'post' %}Felip Barbosa de Medeiros [{{ current_hash }}]{% else %}{{ page.title }}{% endif %}">
+    <meta property="og:description" content="{{ page_desc }}">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    <meta property="og:site_name" content="Felip Barbosa de Medeiros">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "{% if page.layout == 'post' %}BlogPosting{% else %}WebSite{% endif %}",
+      "headline": "{% if page.layout == 'post' %}Felip Barbosa de Medeiros [{{ current_hash }}]{% else %}Felip Barbosa de Medeiros{% endif %}",
+      "description": "{{ page_desc }}",
+      "url": "{{ site.url }}{{ page.url }}",
+      "author": {
+        "@type": "Person",
+        "name": "Felip Barbosa de Medeiros"
+      }
+    }
+    </script>
+    <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+    <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | relative_url }}">
+    <link rel="icon" type="image/svg+xml" href="{{ "/assets/img/favicon.svg" | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?x={{ sig_css }}">
+    <style>
+      ::-webkit-scrollbar { display: none; }
+      body { scrollbar-width: none; }
+    </style>
+  </{{ "head" }}>
   <body>
     <div class="container">
-
       {%- include header.html -%}
-
-    <main>
       {{ content }}
-    </main>
-
-    {% unless page.collection == 'root' or page.hide_footer %}
-        {%- include footer.html -%}
-    {% endunless %}
-
+      </main>{% unless page.collection == 'root' or page.hide_footer %}
+        {%- include footer.html -%}  
+        {% endunless %}
     </div>
-
     <div id="sys-toast" class="sys-toast-hidden">
       <span class="sys-icon">✔</span>
       <span class="sys-msg">LINK COPIADO</span>
     </div>
-
     <script src="{{ '/assets/js/autolink.js' | relative_url }}?x={{ sig_lnk }}"></script>
     <script src="{{ '/assets/js/autoterm.js' | relative_url }}?x={{ sig_trm }}"></script>
     <script src="{{ '/assets/js/syntax.js' | relative_url }}?x={{ sig_syn }}"></script>
     <script src="{{ '/assets/js/main.js' | relative_url }}?x={{ sig_main }}"></script>
-
   </body>
 </html>
