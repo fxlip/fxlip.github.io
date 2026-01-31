@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Menções (@usuario)
   window.applyMentions = function(context = document) {
-    const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .terminal-window p, .terminal-window div');
+    const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .terminal-window p, .terminal-window div, .t-out');
     contentAreas.forEach(area => {
       if (area.dataset.mentionsProcessed) return;
       const regex = /@([a-zA-Z0-9_\-\/\.]+)/g;
