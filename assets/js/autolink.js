@@ -269,8 +269,42 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   };
   
+  // ==========================================================================
+  // 7. ACTION BUTTONS (EVENT DELEGATION - ROBUST)
+  // Escuta cliques no documento inteiro e filtra se foi num .share-btn
+  // ==========================================================================
+  document.addEventListener('click', function(e) {
+    // Procura se o clique foi num .share-btn ou num filho dele (ícone)
+    const btn = e.target.closest('.share-btn');
+
+    // Se não foi num botão de share, o Kernel ignora
+    if (!btn) return;
+
+    // Se foi, executa a lógica
+    e.preventDefault();
+    e.stopPropagation();
+
+    console.log("Kernel: Clique de Share Detectado!", btn);
+
+    const link = btn.dataset.link;
+    const feedback = btn.querySelector('.copy-feedback');
+
+    if (link) {
+      navigator.clipboard.writeText(link).then(() => {
+        if (feedback) {
+           feedback.classList.add('active');
+           setTimeout(() => feedback.classList.remove('active'), 2000);
+        }
+      }).catch(err => console.error("Clipboard Error:", err));
+    }
+  });
+
+  // Mantemos a função vazia apenas para não quebrar chamadas antigas no main.js
+  window.processShareButtons = function() {};
+
   // Execução Inicial
   window.processProgressBars();
+  window.processShareButtons();
   window.applyMentions();
   window.linkifyInternalUrls();
   window.processInternalEmbeds();

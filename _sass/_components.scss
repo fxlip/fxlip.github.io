@@ -456,3 +456,82 @@ a.link-card.internal-ref .lc-site:before {
   border: 1px dashed #44475a; border-radius: 6px;
   font-family: monospace; font-size: 13px;
 }
+
+/* ==========================================================================
+   17. POST ACTIONS (REPLY & SHARE)
+   ========================================================================== */
+
+/* Container que agrupa Hash + Ícones */
+.sys-meta-group {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espaço entre o hash e os ícones */
+}
+
+/* O Botão de Ação (Reset Visual) */
+.action-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--placeholder-color); /* Cinza padrão (#5c5f77) */
+  transition: all 0.2s ease;
+  position: relative; /* Para posicionar o tooltip */
+}
+
+/* Ícones SVG */
+.action-btn svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Hover: Reply vira Verde, Share vira Amarelo (ou Roxo) */
+.reply-btn:hover { color: #50fa7b; transform: translateY(-1px); }
+.share-btn:hover { color: #f1fa8c; transform: translateY(-1px); }
+
+/* --- TOOLTIP DE FEEDBACK ("Copiado!") --- */
+.copy-feedback {
+  position: absolute;
+  bottom: 140%; /* Aparece acima do ícone */
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+  background-color: var(--code-bg);
+  border: 1px solid #f1fa8c;
+  color: #f1fa8c;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  z-index: 10;
+}
+
+/* Estado Ativo (Quando o JS adiciona a classe) */
+.copy-feedback.active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* --- EXCEÇÃO: HASH ESTÁTICO (PAGE) --- */
+/* Garante que o span com esta classe não reaja ao mouse */
+.sys-hash-link.static-mode {
+  color: var(--placeholder-color) !important;
+  cursor: default !important;
+  pointer-events: none; /* A ARMA SECRETA: O mouse "atravessa" o texto, ignorando qualquer hover */
+  text-shadow: none !important;
+  transform: none !important;
+  text-decoration: none !important;
+  opacity: 1 !important;
+}

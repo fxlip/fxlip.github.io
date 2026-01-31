@@ -20,9 +20,9 @@ layout: default
     <div class="t-out">
 Site pessoal feito no bloco de notas
 Um diário de estudos focado em @linux
-+ infosec e os rumos da IA
-.
-@setup @manifesto @sobre
++ sobre infosec e os rumos da IA
+
+@sobre @manifesto @setup 
 ⡟⠛⠛⠛⠛⢛⣛⣛⣛⣿⣿⣿⣛⣛⣛⡛⠛⠛⠛⠛⢛
 ⡇⢀⣠⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣄⡀⢐
 ⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶
@@ -90,9 +90,26 @@ Um diário de estudos focado em @linux
 
             <div class="post-footer" style="margin-top: 15px;">
               
-              <a href="{{ post.url }}" class="sys-hash-link" title="./{{ post.url | split: '/' | last }}">
-                {{ post.url | split: '/' | last }}
-              </a>
+              {% assign post_hash = post.url | replace: '.html', '' | replace: '/', ' ' | split: ' ' | last %}
+              
+              {% assign post_share_link = site.url | append: post.url | remove: '.html' %}
+
+              <div class="sys-meta-group">
+                
+                <a href="mailto:fxlip%40tuta.io?subject={{ post_hash }}" class="action-btn reply-btn" title="Responder via Email">
+                  <svg viewBox="0 0 24 24"><polyline points="9 14 4 9 9 4"></polyline><path d="M20 20v-7a4 4 0 0 0-4-4H4"></path></svg>
+                </a>
+
+                <a href="#" class="action-btn share-btn" data-link="{{ post_share_link }}" title="Copiar Link" onclick="return false;">
+                  <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                  <div class="copy-feedback">copiado!</div>
+                </a>
+
+                <a href="{{ post.url | remove: '.html' }}" class="sys-hash-link" title="./{{ post_hash }}">
+                  {{ post_hash }}
+                </a>
+
+              </div>
 
               <time class="sys-date" datetime="{{ post.date | date: "%Y-%m-%d %H:%M" }}">
                 {{ post.date | date: "%H:%M" }} · {{ post.date | date: "%-d de %b de %Y" | downcase }}

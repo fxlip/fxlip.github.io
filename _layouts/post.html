@@ -44,9 +44,25 @@ layout: default
 
   <div class="post-footer" style="margin-top: 30px;">
     
-    <a href="{{ page.url }}" class="sys-hash-link" title="./{{ page.url | split: '/' | last }}">
+    {% assign page_hash = page.url | replace: '.html', '' | replace: '/', ' ' | split: ' ' | last %}
+    {% assign page_share_link = site.url | append: page.url | remove: '.html' %}
+
+    <div class="sys-meta-group">
       
-    </a>
+      <a href="mailto:fxlip%40tuta.io?subject={{ page_hash }}" class="action-btn reply-btn" title="Responder via Email">
+        <svg viewBox="0 0 24 24"><polyline points="9 14 4 9 9 4"></polyline><path d="M20 20v-7a4 4 0 0 0-4-4H4"></path></svg>
+      </a>
+
+      <a href="#" class="action-btn share-btn" data-link="{{ page_share_link }}" title="Copiar Link" onclick="return false;">
+        <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+        <div class="copy-feedback">copiado!</div>
+      </a>
+
+      <span class="sys-hash-link static-mode" title="./{{ page_hash }}">
+        {{ page_hash }}
+      </span>
+      
+    </div>
 
     <time class="sys-date" datetime="{{ page.date | date: "%Y-%m-%d %H:%M" }}">
       {{ page.date | date: "%H:%M" }} · {{ page.date | date: "%-d de %b de %Y" | downcase }}

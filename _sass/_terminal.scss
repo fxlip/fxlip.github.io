@@ -19,13 +19,21 @@
 /* --- 5.2. INTERACTION LAYER (LINK LOGIC) --- */
 
 /* [DEFAULT] Link Killer: Mata links padrão para evitar cliques acidentais */
-/* ADICIONEI :not(.file-link) NA LISTA DE EXCEÇÕES */
-.terminal-box a:not(.mention-link):not(.link-card):not(.file-link) {
+/* ADICIONEI: .sys-hash-link e .action-btn na lista de exceções (Whitelist) */
+.terminal-box a:not(.mention-link):not(.link-card):not(.file-link):not(.sys-hash-link):not(.action-btn) {
   color: inherit !important;
   text-decoration: none !important;
-  pointer-events: none;
+  pointer-events: none; /* <--- Isso que estava bloqueando o clique */
   cursor: text;
   border-bottom: none !important;
+}
+
+/* [FORÇAR INTERATIVIDADE] Garante que botões e hash links funcionem */
+.terminal-box .sys-hash-link,
+.terminal-box .action-btn {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  z-index: 10; /* Garante que fiquem acima de qualquer camada do terminal */
 }
 
 /* Garante que os File Links tenham cursor de ação */
@@ -235,3 +243,13 @@
 }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
+/* --- [CORREÇÃO FINAL] FORÇAR BOTÕES NA HOME --- */
+/* Isso garante que, mesmo dentro do bloqueio do terminal, os botões funcionem */
+.terminal-box .sys-meta-group a,
+.terminal-box .sys-meta-group button,
+.terminal-box .action-btn {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  position: relative;
+  z-index: 99; /* Garante que está acima de tudo */
+}
