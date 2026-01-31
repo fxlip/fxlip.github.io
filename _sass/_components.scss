@@ -593,3 +593,44 @@ a.link-card.internal-ref .lc-site:before {
     justify-content: center;
   }
 }
+
+/* ==========================================================================
+   19. CONTENT LAYOUT PATCH (ALIGNMENT & IMAGES)
+   ========================================================================== */
+
+.post-content {
+  /* 1. Alinhamento Lateral: Dá um respiro das bordas */
+  padding: 0 5px; 
+  
+  /* 2. Fluxo de Leitura: Texto alinhado à esquerda */
+  text-align: left;
+  
+  /* 3. Ritmo Vertical */
+  line-height: 1.6;
+}
+
+.post-content p {
+  margin-bottom: 1.2em; /* Espaço entre parágrafos */
+}
+
+/* --- CORREÇÃO DE IMAGENS (CENTRALIZADAS) --- */
+.post-content img,
+.post-content video,
+.post-content iframe {
+  max-width: 100%; /* Nunca estoura a largura */
+  height: auto;
+  display: block; /* Comporta-se como bloco */
+  
+  /* [O SEGREDO] 'auto' nas laterais centraliza a imagem */
+  margin: 20px auto; 
+  
+  border-radius: 4px; /* Opcional: borda leve */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Sombra elegante */
+}
+
+/* Ajuste para Mobile */
+@media (max-width: 768px) {
+  .post-content {
+    padding: 0 2px; 
+  }
+}
