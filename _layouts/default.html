@@ -100,7 +100,12 @@ script-src 'self' 'unsafe-inline';
     {% endunless %}
 
     </div>
-    
+
+    <div id="sys-toast" class="sys-toast-hidden">
+      <span class="sys-icon">✔</span>
+      <span class="sys-msg">LINK COPIADO</span>
+    </div>
+
     <script src="{{ '/assets/js/autolink.js' | relative_url }}?x={{ sig_lnk }}"></script>
     <script src="{{ '/assets/js/autoterm.js' | relative_url }}?x={{ sig_trm }}"></script>
     <script src="{{ '/assets/js/syntax.js' | relative_url }}?x={{ sig_syn }}"></script>

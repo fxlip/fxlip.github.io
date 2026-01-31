@@ -535,3 +535,61 @@ a.link-card.internal-ref .lc-site:before {
   text-decoration: none !important;
   opacity: 1 !important;
 }
+
+/* ==========================================================================
+   18. SYSTEM NOTIFICATION (TOAST)
+   ========================================================================== */
+#sys-toast {
+  position: fixed;
+  bottom: 30px; /* Ou 'top: 30px' se preferir no topo */
+  left: 50%;
+  transform: translateX(-50%) translateY(20px); /* Começa levemente deslocado */
+  
+  /* Visual Hacker */
+  background-color: rgba(15, 14, 20, 0.95); /* Fundo quase preto sólido */
+  border: 1px solid #50fa7b; /* Borda Verde Neon */
+  color: #50fa7b;
+  
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  
+  /* Efeitos de Luz */
+  box-shadow: 0 0 15px rgba(80, 250, 123, 0.2);
+  backdrop-filter: blur(4px);
+  
+  z-index: 9999; /* Acima de tudo, inclusive header */
+  
+  /* Estado Inicial: Invisível */
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Estado Ativo (JS adiciona esta classe) */
+#sys-toast.active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0); /* Sobe para a posição final */
+}
+
+/* O Ícone de Check */
+#sys-toast .sys-icon {
+  font-size: 16px;
+  color: #50fa7b;
+}
+
+/* Responsividade Mobile */
+@media (max-width: 600px) {
+  #sys-toast {
+    width: 90%;
+    text-align: center;
+    justify-content: center;
+  }
+}

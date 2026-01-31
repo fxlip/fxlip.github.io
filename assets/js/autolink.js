@@ -270,31 +270,37 @@ document.addEventListener("DOMContentLoaded", function() {
   };
   
   // ==========================================================================
-  // 7. ACTION BUTTONS (EVENT DELEGATION - ROBUST)
-  // Escuta cliques no documento inteiro e filtra se foi num .share-btn
+  // 7. ACTION BUTTONS (GLOBAL SYSTEM TOAST)
   // ==========================================================================
   document.addEventListener('click', function(e) {
-    // Procura se o clique foi num .share-btn ou num filho dele (ícone)
     const btn = e.target.closest('.share-btn');
-
-    // Se não foi num botão de share, o Kernel ignora
     if (!btn) return;
 
-    // Se foi, executa a lógica
     e.preventDefault();
     e.stopPropagation();
 
-    console.log("Kernel: Clique de Share Detectado!", btn);
-
     const link = btn.dataset.link;
-    const feedback = btn.querySelector('.copy-feedback');
+    
+    // Elemento Global de Notificação
+    const toast = document.getElementById('sys-toast');
+    const toastMsg = toast ? toast.querySelector('.sys-msg') : null;
 
     if (link) {
       navigator.clipboard.writeText(link).then(() => {
-        if (feedback) {
-           feedback.classList.add('active');
-           setTimeout(() => feedback.classList.remove('active'), 2000);
+        
+        // 1. Feedback Visual Global
+        if (toast) {
+           // Opcional: Personalizar mensagem (ex: "POST_ID: HASH COPIED")
+           // toastMsg.innerText = `LINK_SECURED: ${link.split('/').pop()}`;
+           
+           toast.classList.add('active');
+           
+           // Remove após 2.5 segundos
+           setTimeout(() => {
+             toast.classList.remove('active');
+           }, 2500);
         }
+
       }).catch(err => console.error("Clipboard Error:", err));
     }
   });
