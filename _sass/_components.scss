@@ -634,3 +634,24 @@ a.link-card.internal-ref .lc-site:before {
     padding: 0 2px; 
   }
 }
+
+/* ==========================================================================
+   22. NO-HEADER MODE (RESTORATION PATCH)
+   ========================================================================== */
+
+/* Quando o corpo tem esta classe (ativada pelo Front Matter), consertamos a caixa */
+.no-header-mode .terminal-box {
+  /* Devolve a borda superior que o header roubou */
+  border-top: 1px solid #44475a; 
+  
+  /* Devolve o arredondamento completo */
+  border-radius: 6px; 
+  
+  /* Adiciona um respiro do topo (já que não tem header) */
+  margin-top: 30px; 
+}
+
+/* Ajuste Opcional: Se quiser que nessas páginas a caixa ocupe menos espaço */
+.no-header-mode .container {
+  padding-top: 20px;
+}

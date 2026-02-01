@@ -9,14 +9,12 @@ header {
   /* Geometria Full Width (Herda do Container) */
   width: 100%;          
   max-width: 100%;    
-  margin: 30px auto 40px auto; 
   padding: 15px 0;
   
   box-sizing: border-box; 
   background-color: var(--background-color); 
   
   /* Bordas Default */
-  border-top: var(--border);
   border-bottom: var(--border);
   border-left: none;  
   border-right: none; 

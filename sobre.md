@@ -2,6 +2,7 @@
 title: sobre
 layout: page
 permalink: /sobre
+hide_header: true
 ---
 
 <div style="text-align: center;">
@@ -29,3 +30,21 @@ e **Kernel** controlando o hardware
 Atualmente focado na certificação **LPIC-1** e no desenvolvimento de automações com Ruby e Shell.
 
 ---
+
+  <div class="terminal-box">
+    <div class="terminal-header">
+      <div class="terminal-controls">
+        <div class="win-btn btn-min" title="Minimize">−</div>
+        <div class="win-btn btn-close" title="Close">✕</div>
+      </div>
+    </div>
+    <div class="terminal-body">
+      <div>
+        <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">cat dog.txt</span>
+      </div>
+      <div class="t-out">
+Todo material em @linux
+Comentários no @feed
+      </div>
+    </div>
+  </div>

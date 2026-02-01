@@ -15,6 +15,13 @@ hide_footer: true
 
   <div class="terminal-body">
     <div>
+      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/linux</span><span class="t-gray">$</span> <span class="t-cmd">cat dog.txt</span>
+    </div>
+    <div class="t-out">
+Todos os arquivos usados.
+Comentários no @feed
+    </div>
+    <div>
       <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/files</span><span class="t-gray">$</span> <span class="t-cmd">tree -L 3</span>
     </div>
     <div class="t-out">.</div>

@@ -71,9 +71,11 @@
       body { scrollbar-width: none; }
     </style>
   </{{ "head" }}>
-  <body>
+  <body class="{% if page.hide_header or layout.hide_header %}no-header-mode{% endif %}">
     <div class="container">
-      {%- include header.html -%}
+      {% unless page.hide_header or layout.hide_header %}
+        {%- include header.html -%}
+      {% endunless %}
       {{ content }}
       </main>{% unless page.collection == 'root' or page.hide_footer %}
         {%- include footer.html -%}  

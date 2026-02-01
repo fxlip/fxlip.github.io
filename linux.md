@@ -2,6 +2,7 @@
 layout: page
 title: linux
 permalink: /linux
+hide_header: true
 hide_footer: true
 ---
 
@@ -14,6 +15,13 @@ hide_footer: true
   </div>
 
   <div class="terminal-body">
+    <div>
+      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/linux</span><span class="t-gray">$</span> <span class="t-cmd">cat dog.txt</span>
+    </div>
+    <div class="t-out">
+Roadmap da certificação LPI-1
+Comentários no @feed
+    </div>
     <div>
       <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/linux</span><span class="t-gray">$</span> <span class="t-cmd">tree -L 3</span>
     </div>
