@@ -1,8 +1,10 @@
 name: email-listener-protocol
 
 on:
+  repository_dispatch:
+    types: [incoming-email] 
   schedule:
-    - cron: '*/5 * * * *' # Checagem a cada 5 minutos
+    - cron: '0 * * * *' # Checagem a cada 5 minutos
   workflow_dispatch: # Gatilho manual
 
 jobs:
