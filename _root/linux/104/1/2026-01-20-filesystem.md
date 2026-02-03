@@ -2,7 +2,7 @@
 layout: page
 title: "filesystem"
 date: 2026-01-20T14:44:57-03:00
-permalink: /linux/104/1/filesystem/
+permalink: /linux/104/1/filesystem
 categories: [linux]
 tags: [104, 1]
 hide_footer: true
