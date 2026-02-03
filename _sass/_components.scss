@@ -242,34 +242,33 @@ a.link-card:hover .lc-site {
 
 /* ==========================================================================
    11. NEON PIPE (CUSTOM OPERATOR) - v2 Tuned
-   ========================================================================== */
-.sys-pipe {
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 800;
-  color: var(--link-color);
-  text-shadow: 0 0 5px rgba(255, 121, 198, 0.6);
-  
-  /* [TUNING] Mais compacto e menor */
-  font-size: 0.8em;        /* Diminuí de 1em padrão para 0.8em */
-  letter-spacing: -4px;    /* Apertei de -3px para -4px (ficam colados) */
-  
-  margin-right: 6px;       /* Compensa o aperto */
-  margin-left: 2px;
-  
+
+========================================================================== */
+/* 1. O Clássico (Output) - Rosa/Roxo */
+.neon-pipe {
+  color: #bd93f9; /* Dracula Pink */
+  text-shadow: 0 0 5px rgba(255, 121, 198, 0.7);
+  font-weight: bold;
+  margin-right: 5px;
   display: inline-block;
-  vertical-align: middle;  /* Alinhamento melhor com texto minúsculo */
-  position: relative;
-  top: -1px;
-  
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  cursor: default;
-  user-select: none; 
 }
 
-.sys-pipe:hover {
-  transform: translateX(3px); /* Movimento mais sutil */
-  color: var(--accent-cyan);
-  text-shadow: 0 0 8px rgba(139, 233, 253, 0.8);
+/* 2. O Input (Retorno) - Ciano */
+.neon-in {
+  color: #bd93f9; /* Dracula Cyan */
+  text-shadow: 0 0 5px rgba(255, 121, 198, 0.7);
+  font-weight: bold;
+  margin-right: 5px;
+  display: inline-block;
+}
+
+/* 3. O Aditivo (Git Add / Plus) - Verde */
+.neon-plus {
+  color: #bd93f9; /* Dracula Green */
+  text-shadow: 0 0 5px rgba(255, 121, 198, 0.7);
+  font-weight: bold;
+  margin-right: 5px;
+  display: inline-block;
 }
 
 /* ==========================================================================

@@ -5,7 +5,6 @@ date: 2026-01-31T00:01:36-03:00
 permalink: /linux/103/2/exercicios
 categories: [linux]
 tags: [103, 2]
-hide_footer: true
 muted: true
 ---
 
@@ -171,3 +170,22 @@ fxlip@www:~$
 </div>
 
 ---
+
+
+<div class="terminal-box">
+  <div class="terminal-header">
+    <div class="terminal-controls">
+      <div class="win-btn btn-min" title="Minimize">−</div>
+      <div class="win-btn btn-close" title="Close">✕</div>
+    </div>
+  </div>
+  <div class="terminal-body">
+    <div>
+      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">./footer.sh</span>
+    </div>
+    <div class="t-out">
+>> @linux/103/2/grep
+<< @linux/103/1/bash
+    </div>
+  </div>
+</div>

@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function() {
   const COMMAND_TEXT = "./nvdd.sh";
   const MSG_LINE_1 = "Pronto.";
   const MSG_LINE_2 = "Você terminou de ler tudo que eu já publiquei. 🏆";
+  const MSG_LINE_3 = "A última build do site aconteceu em TIMESTAMP?:{{ site.time | date: \"%d%m%Y.%H%M\" }}";
+  const MSG_LINE_4 = "Para dúvidas, críticas e elogios, <a href=\"mailto:fxlip@tuta.io\">fala comigo</a> ツ";
   const TYPING_SPEED = 100;  
   const SUSPENSE_DELAY = 1500; 
 
@@ -133,9 +135,19 @@ document.addEventListener("DOMContentLoaded", function() {
         const line2 = document.createElement("div");
         line2.className = "t-eof"; 
         line2.innerText = MSG_LINE_2;
+
+        const line3 = document.createElement("div");
+        line3.className = "t-eof"; 
+        line3.innerText = MSG_LINE_3;
+
+        const line4 = document.createElement("div");
+        line4.className = "t-eof"; 
+        line4.innerText = MSG_LINE_4;
         
         loader.parentElement.insertAdjacentElement('afterend', line1);
         line1.insertAdjacentElement('afterend', line2);
+        line1.insertAdjacentElement('afterend', line3);
+        line1.insertAdjacentElement('afterend', line4);
 
         observer.disconnect();
     }

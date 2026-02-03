@@ -199,16 +199,68 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   };
 
-  // Neon Pipes (>>)
-  window.processNeonPipes = function(context = document) {
-    const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .terminal-window p, .terminal-window div, .post-item, article');
-    const regex = /(\s|^|&nbsp;)(>>|»|&gt;&gt;)(\s|$|&nbsp;)/g;
-    contentAreas.forEach(area => {
-      if (area.closest('pre') || area.tagName === 'CODE') return;
-      if (regex.test(area.innerHTML)) {
-        area.innerHTML = area.innerHTML.replace(regex, '$1<span class="sys-pipe">>></span>$3');
-      }
-    });
+// ==========================================================================
+  // 6. CUSTOM SYNTAX HIGHLIGHTER (>> / << / ++) - TREEWALKER ENGINE
+  // ==========================================================================
+  window.processSyntaxHighlighter = function() {
+    const contentDiv = document.querySelector('.post-content');
+    if (!contentDiv) return;
+
+    // Função interna que percorre apenas TEXTO (ignora tags e atributos)
+    const safeReplace = (regex, className, symbolToInsert) => {
+       // Cria um walker que só vê texto
+       const walk = document.createTreeWalker(contentDiv, NodeFilter.SHOW_TEXT, null, false);
+       let node;
+       const nodesToReplace = [];
+
+       // 1. Fase de Escaneamento
+       while(node = walk.nextNode()) {
+         // Ignora scripts ou estilos por segurança
+         if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') continue;
+         
+         // Testa se o texto contém o padrão
+         if (regex.test(node.nodeValue)) {
+           nodesToReplace.push(node);
+         }
+       }
+
+       // 2. Fase de Cirurgia (Substituição)
+       nodesToReplace.forEach(node => {
+         const fragment = document.createDocumentFragment();
+         // Split pelo regex. Ex: "Texto >> Texto" vira ["Texto ", " Texto"]
+         const parts = node.nodeValue.split(regex);
+         
+         parts.forEach((part, index) => {
+            // Reinsere a parte de texto normal
+            if (part) {
+               fragment.appendChild(document.createTextNode(part));
+            }
+            
+            // Se não for o último pedaço, significa que entre este e o próximo havia o símbolo
+            if (index < parts.length - 1) {
+                const span = document.createElement('span');
+                span.className = className;
+                span.textContent = symbolToInsert;
+                fragment.appendChild(span);
+            }
+         });
+         
+         node.parentNode.replaceChild(fragment, node);
+       });
+    };
+
+    // --- EXECUÇÃO DAS REGRAS (O que faltava no seu código) ---
+
+    // 1. Output (>>) 
+    // Nota: TreeWalker lê ">", não "&gt;". A regex deve buscar o símbolo real.
+    safeReplace(/>>/g, 'neon-pipe', '>>');
+
+    // 2. Input (<<)
+    safeReplace(/<</g, 'neon-in', '<<');
+
+    // 3. Add (++)
+    // Escapamos o + pois é caractere especial em Regex
+    safeReplace(/\+\+/g, 'neon-plus', '++');
   };
 
   // TimeAgo (Aplica o cálculo nas datas)
@@ -269,7 +321,7 @@ document.addEventListener("DOMContentLoaded", function() {
   window.applyMentions();
   window.linkifyInternalUrls();
   window.processInternalEmbeds();
-  window.processNeonPipes();
+  window.processSyntaxHighlighter();
   window.processTimeAgo();
 
 });
