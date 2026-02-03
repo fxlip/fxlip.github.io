@@ -43,3 +43,10 @@ exclude:
   - vendor/
   - README.md
   - LICENSE
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      hide_footer: true

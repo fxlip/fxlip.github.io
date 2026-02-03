@@ -1,8 +1,8 @@
 ---
 title: setup
-layout: page
 permalink: /feed
+layout: home
 ---
 <script>
     window.location.href = "/";
-  </script>
+</script>

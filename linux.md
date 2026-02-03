@@ -93,7 +93,7 @@ Comentários no @feed
             
   <div class="t-row">
     <span class="t-tree">{{ p1 }}{{ p2 }}{{ c3 }}</span>
-    <a href="{{ item.url }}" class="f file-link {% if item.title contains '.exercicios' %}file-link-muted{% endif %}">
+    <a href="{{ item.url }}" class="f file-link {% if item.muted %}file-link-muted{% endif %}">
       {{ item.title | downcase }}
     </a>
   </div>
@@ -113,7 +113,7 @@ Comentários no @feed
                  {%- endif -%}
   <div class="t-row">
     <span class="t-tree">{{ p1 }}{{ c2b }}</span>
-    <a href="{{ item.url }}" class="f file-link {% if item.title contains '.exercicios' %}file-link-muted{% endif %}">
+    <a href="{{ item.url }}" class="f file-link {% if item.muted %}file-link-muted{% endif %}">
       {{ item.title | downcase }}
     </a>
   </div>

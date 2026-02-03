@@ -6,6 +6,7 @@ permalink: /linux/103/1/exercicios
 categories: [linux]
 tags: [103, 1]
 hide_footer: true
+muted: true
 ---
 
 
