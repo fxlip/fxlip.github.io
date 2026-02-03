@@ -6,20 +6,6 @@ sitemap:
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
-  <url>
-    <loc>https://felip.com.br/</loc>
-    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://felip.com.br/about</loc>
-    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
   {% for post in site.posts %}
     {% unless post.published == false %}
     <url>
@@ -31,14 +17,11 @@ sitemap:
     {% endunless %}
   {% endfor %}
 
-  {% for page in site.pages %}
-    {% unless page.sitemap.exclude == "yes" or page.robots contains "noindex" or page.url == "/about" or page.url == "/" or page.url == "/index.html" %}
-    <url>
-      <loc>https://felip.com.br{{ page.url | remove: "index.html" }}</loc>
-      <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
-      <priority>0.5</priority>
-    </url>
-    {% endunless %}
-  {% endfor %}
+  <url>
+    <loc>https://felip.com.br/</loc>
+    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
 
 </urlset>
