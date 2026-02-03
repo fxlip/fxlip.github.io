@@ -25,16 +25,30 @@ Página de exemplo para mostrar que sou capaz de manter a integralidade dos sist
 `xfs_fsr`
 `xfs_db`
 
-Começando com df e du [1/3]
+Começando com df e du
+
+---
+
+> PROGRESSO ATÉ A 101-500
+
+[90/105]
 
 <div class="terminal-box">
   <div class="terminal-header">
     <div class="terminal-controls">
-      <span class="win-btn btn-min">_</span>
-      <span class="win-btn btn-close">x</span>
+      <div class="win-btn btn-min" title="Minimize">−</div>
+      <div class="win-btn btn-close" title="Close">✕</div>
     </div>
   </div>
-  
-  <div class="auto-term">
-fxlip@www:~/linux/104/2$
+  <div class="terminal-body">
+    <div>
+      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">./footer.sh</span>
+    </div>
+    <div class="t-out">
+>> @linux/104/3/mount
+++ @linux/104/2/exercicios
+++ @linux/104/2/revisao
+<< @linux/104/1/filesystem
+    </div>
+  </div>
 </div>

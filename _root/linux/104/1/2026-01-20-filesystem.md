@@ -25,16 +25,30 @@ Página de exemplo para mostrar que sou capaz de configurar partições de disco
 `mkfs`
 `mkswap`
 
-Começando com fdisk [1/6]
+Começando com fdisk
+
+---
+
+> PROGRESSO ATÉ A 101-500
+
+[86/105]
 
 <div class="terminal-box">
   <div class="terminal-header">
     <div class="terminal-controls">
-      <span class="win-btn btn-min">_</span>
-      <span class="win-btn btn-close">x</span>
+      <div class="win-btn btn-min" title="Minimize">−</div>
+      <div class="win-btn btn-close" title="Close">✕</div>
     </div>
   </div>
-  
-  <div class="auto-term">
-fxlip@www:~/linux/104/1$
+  <div class="terminal-body">
+    <div>
+      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">./footer.sh</span>
+    </div>
+    <div class="t-out">
+>> @linux/104/2/journaling
+++ @linux/104/1/exercicios
+++ @linux/104/1/revisao
+<< @linux/102/5/rpm
+    </div>
+  </div>
 </div>

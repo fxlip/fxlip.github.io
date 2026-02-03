@@ -184,8 +184,8 @@ fxlip@www:~$
       <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">./footer.sh</span>
     </div>
     <div class="t-out">
->> @linux/103/2/grep
-<< @linux/103/1/bash
+>> @linux/103/3/files
+<< @linux/103/2/grep
     </div>
   </div>
 </div>
