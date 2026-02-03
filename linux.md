@@ -20,6 +20,7 @@ hide_footer: true
     </div>
     <div class="t-out">
 Roadmap da certificação LPI-1
+Começa em @linux/103/1/bash
 Comentários no @feed
     </div>
     <div>

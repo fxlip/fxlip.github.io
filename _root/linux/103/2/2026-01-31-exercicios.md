@@ -2,7 +2,7 @@
 layout: page
 title: ".exercicios"
 date: 2026-01-31T00:01:36-03:00
-permalink: /linux/103/2/exercicios/
+permalink: /linux/103/2/exercicios
 categories: [linux]
 tags: [103, 2]
 hide_footer: true

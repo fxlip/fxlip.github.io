@@ -2,7 +2,7 @@
 layout: page
 title: "journaling"
 date: 2026-01-20T15:06:32-03:00
-permalink: /linux/104/2/journaling/
+permalink: /linux/104/2/journaling
 categories: [linux]
 tags: [104, 2]
 hide_footer: true
