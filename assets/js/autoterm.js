@@ -120,6 +120,18 @@ document.addEventListener("DOMContentLoaded", function() {
         rawLines.pop();
       }
 
+      // [FIX] LIMPEZA DE BORDAS DUPLA (Início e Fim)
+      
+      // 1. Remove linhas vazias do FINAL (Pop)
+      while (rawLines.length > 0 && rawLines[rawLines.length - 1].trim() === '') {
+        rawLines.pop();
+      }
+
+      // 2. Remove linhas vazias do INÍCIO (Shift) - AQUI ESTAVA FALTANDO
+      while (rawLines.length > 0 && rawLines[0].trim() === '') {
+        rawLines.shift();
+      }
+
       // Configura botões da janela
       const parentBox = term.closest('.terminal-box');
       if (parentBox) {
@@ -131,7 +143,12 @@ document.addEventListener("DOMContentLoaded", function() {
       let lastCmd = ''; 
 
       rawLines.forEach(line => {
-        if (line.trim() === '' && htmlBuffer === '') return; 
+        //if (line.trim() === '' && htmlBuffer === '') return; 
+        // Preserva linhas vazias no MEIO para espaçamento visual
+        if (line.trim() === '') {
+           htmlBuffer += `<div class="t-out">&nbsp;</div>`;
+           return;
+        }
 
         // --- DETECÇÃO DE PROMPT ---
         const promptMatch = line.match(/^([a-zA-Z0-9_.-]+)@([a-zA-Z0-9_.-]+):([^#$]+)([#$])\s*(.*)/);

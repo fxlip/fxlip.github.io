@@ -65,9 +65,10 @@ hide_header: true
       
     </div>
 
-    <time class="sys-date" datetime="{{ page.date | date: "%Y-%m-%d %H:%M" }}">
+    <time class="sys-date" datetime="{{ page.date | date_to_xmlschema }}">
       {{ page.date | date: "%H:%M" }} · {{ page.date | date: "%-d de %b de %Y" | downcase }}
     </time>
+
   </div>
 
 </article>

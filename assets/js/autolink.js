@@ -7,64 +7,69 @@ document.addEventListener("DOMContentLoaded", function() {
   const getRelativeTime = (dateString) => {
     if (!dateString) return null;
 
-    // Limpeza agressiva
     const cleanStr = dateString.replace(/\s+/g, ' ').trim();
-
+    
+    // Mapeamento bilíngue e abreviado para evitar "Invalid Date"
     const months = {
-      'jan': 0, 'fev': 1, 'mar': 2, 'abr': 3, 'mai': 4, 'jun': 5,
-      'jul': 6, 'ago': 7, 'set': 8, 'out': 9, 'nov': 10, 'dez': 11,
-      'january': 0, 'february': 1, 'march': 2, 'april': 3, 'may': 4, 'june': 5,
-      'july': 6, 'august': 7, 'september': 8, 'october': 9, 'november': 10, 'december': 11
+      'jan': 0, 'fev': 1, 'feb': 1, 'mar': 2, 'abr': 3, 'apr': 3, 'mai': 4, 'may': 4, 'jun': 5,
+      'jul': 6, 'ago': 7, 'aug': 7, 'set': 8, 'sep': 8, 'out': 9, 'oct': 9, 'nov': 10, 'dez': 11, 'dec': 11
     };
 
-    // Regex Flexível
     const match = cleanStr.match(/(\d{2}):(\d{2})\s*[·\-\|]\s*(\d{1,2})\s*de?\s*([a-zç]{3,})\s*de?\s*(\d{4})/i);
-
-    if (!match) return null; 
+    if (!match) return null;
 
     const hour = parseInt(match[1]);
     const min = parseInt(match[2]);
     const day = parseInt(match[3]);
-    const monthStr = match[4].toLowerCase().substring(0, 3); 
+    const monthStr = match[4].toLowerCase().substring(0, 3);
     const year = parseInt(match[5]);
 
     if (months[monthStr] === undefined) return null;
 
     const postDate = new Date(year, months[monthStr], day, hour, min);
     const now = new Date();
-    
     const diffMs = now - postDate;
 
-    // Cálculo das unidades
     const diffMinutes = Math.floor(diffMs / (1000 * 60));
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    const diffDays = Math.floor(diffHours / 24);
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-    // Se for data futura (relógio errado)
     if (diffMs < 0) return "agora mesmo";
 
-    // Lógica (< 7 dias)
+    // 1. Minutos (< 1h)
+    if (diffMinutes < 60) {
+      return diffMinutes <= 1 ? "há 1 minuto" : `há ${diffMinutes} minutos`;
+    }
+
+    // 2. Horas (< 24h)
+    if (diffHours < 24) {
+      return diffHours === 1 ? "há 1 hora" : `há ${diffHours} horas`;
+    }
+
+    // 3. Ontem (Entre 24h e 48h ou diff de 1 dia)
+    if (diffDays === 1 || (diffHours >= 24 && diffHours < 48)) {
+      return "ontem";
+    }
+
+    // 4. Dias (< 7d)
     if (diffDays < 7) {
-      // 1. Minutos
-      if (diffMinutes < 60) {
-         if (diffMinutes <= 1) return "agora mesmo";
-         return `há ${diffMinutes} minutos`;
-      }
-      // 2. Horas
-      if (diffHours < 24) {
-         const unit = diffHours === 1 ? "hora" : "horas";
-         return `há ${diffHours} ${unit}`;
-      }
-      // 3. Ontem (24h - 48h)
-      if (diffHours < 48) {
-         return "ontem";
-      }
-      // 4. Dias
       return `há ${diffDays} dias`;
     }
-    
-    // Antigo
-    return cleanStr;
+
+    // 5. Semanas (< 30d)
+    if (diffDays < 30) {
+      const weeks = Math.floor(diffDays / 7);
+      return weeks <= 1 ? "semana passada" : `há ${weeks} semanas`;
+    }
+
+    // Gap de 1 mês (30 a 60 dias)
+    if (diffDays < 60) {
+      return "mês passado";
+    }
+
+    // 6. Extenso (>= 60 dias)
+    const monthFull = postDate.toLocaleString('pt-BR', { month: 'long' });
+    return `em ${monthFull} de ${year}`;
   };
 
   // ==========================================================================

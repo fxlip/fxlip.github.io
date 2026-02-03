@@ -1,7 +1,7 @@
 ---
 layout: page
 title: linux
-permalink: /linux
+permalink: /linux/
 hide_header: true
 hide_footer: true
 ---
