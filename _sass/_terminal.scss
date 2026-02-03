@@ -7,13 +7,15 @@
   background-color: var(--code-bg);
   border: 1px solid #333545;
   border-radius: 6px;
-  box-shadow: var(--terminal-shadow);
-  margin: 30px 0;
+  //box-shadow: var(--terminal-shadow);
+  margin: 30px 0 0 0;
   overflow: hidden;
   font-family: inherit; 
   font-size: 14px;
   text-align: left; 
   width: 100%;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 
 /* --- 5.2. INTERACTION LAYER (LINK LOGIC) --- */

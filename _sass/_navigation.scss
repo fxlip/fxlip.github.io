@@ -9,7 +9,7 @@ header {
   /* Geometria Full Width (Herda do Container) */
   width: 100%;          
   max-width: 100%;    
-  padding: 15px 0;
+  padding: 15px 5px 0 5px;
   
   box-sizing: border-box; 
   background-color: var(--background-color); 
@@ -29,14 +29,14 @@ header {
 
 /* Estado: Terminal Mode (Fusão) */
 header.header-terminal-mode {
-  background-color: var(--code-bg); 
+  //background-color: var(--code-bg); 
   
   border-top-color: transparent; 
   border-left: none;
   border-right: none;
-  border-bottom: 1px solid #333545; 
+  border-bottom: none; 
   
-  box-shadow: var(--terminal-shadow);
+  //box-shadow: var(--terminal-shadow);
 }
 
 /* Itens do Menu */
