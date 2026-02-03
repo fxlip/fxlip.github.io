@@ -9,13 +9,12 @@ header {
   /* Geometria Full Width (Herda do Container) */
   width: 100%;          
   max-width: 100%;    
-  padding: 15px 5px 0 5px;
+  padding: 20px 5px 0 5px;
   
   box-sizing: border-box; 
   background-color: var(--background-color); 
   
   /* Bordas Default */
-  border-bottom: var(--border);
   border-left: none;  
   border-right: none; 
   box-shadow: none; 
@@ -107,4 +106,12 @@ header a:hover,
 header a.active {
   color: var(--link-color) !important;
   text-shadow: 0 0 5px var(--link-color);
+}
+
+header .terminal-box {
+    border-bottom: 1px solid #333545; 
+
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+
 }
