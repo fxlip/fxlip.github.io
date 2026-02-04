@@ -50,17 +50,31 @@
     <meta property="og:url" content="{{ site.url }}{{ page.url }}">
     <meta property="og:site_name" content="Felip Barbosa de Medeiros">
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "{% if page.layout == 'post' %}BlogPosting{% else %}WebSite{% endif %}",
-      "headline": "{% if page.layout == 'post' %}Felip Barbosa de Medeiros [{{ current_hash }}]{% else %}Felip Barbosa de Medeiros{% endif %}",
-      "description": "{{ page_desc }}",
-      "url": "{{ site.url }}{{ page.url }}",
-      "author": {
-        "@type": "Person",
-        "name": "Felip Barbosa de Medeiros"
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Felip Barbosa de Medeiros",
+        "url": "{{ site.url }}",
+        "alternateName": ["fxlip", "fxlip.com"]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "{% if page.layout == 'post' %}BlogPosting{% else %}WebProfile{% endif %}",
+        "headline": "{% if page.layout == 'post' %}Felip Barbosa de Medeiros [{{ current_hash }}]{% else %}Felip Barbosa de Medeiros{% endif %}",
+        "description": "{{ page_desc }}",
+        "url": "{{ site.url }}{{ page.url }}",
+        "author": {
+          "@type": "Person",
+          "name": "Felip Barbosa de Medeiros",
+          "url": "{{ site.url }}"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "{{ site.url }}{{ page.url }}"
+        }
       }
-    }
+    ]
     </script>
     <link rel="canonical" href="{{ site.url }}{{ page.url }}">
     <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | relative_url }}">
