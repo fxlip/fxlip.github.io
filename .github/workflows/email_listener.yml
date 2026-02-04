@@ -71,6 +71,6 @@ jobs:
             git push
 
             echo ">>> Disparando Pings..."
-            ruby scripts/ping_engines.rb
-            
+            ruby scripts/index_now.rb
+
           fi
