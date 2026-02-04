@@ -69,4 +69,8 @@ jobs:
             echo "Committing: $MSG"
             git commit -m "$MSG"
             git push
+
+            echo ">>> Disparando Pings..."
+            ruby scripts/ping_engines.rb
+            
           fi
