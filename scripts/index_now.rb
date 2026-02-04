@@ -3,9 +3,9 @@ require 'uri'
 require 'json'
 
 # --- CONFIGURAÇÃO ---
-HOST = "felip.com.br"
+HOST = "fxlip.com"
 KEY = "k8s9xL4zT0pQ2m1" # <--- COLOQUE SUA CHAVE AQUI
-KEY_LOCATION = "https://felip.com.br/#{KEY}.txt"
+KEY_LOCATION = "https://fxlip.com/#{KEY}.txt"
 
 # Endpoint oficial do IndexNow (O Bing replica para os outros)
 ENDPOINT = "https://api.indexnow.org/indexnow"
