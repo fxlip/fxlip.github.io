@@ -1,6 +1,21 @@
 /* ==========================================================================
    8. MOBILE OPTIMIZATION (THE ADAPTIVE LAYER) v2.2
    ========================================================================== */
+/* ==========================================================================
+   PATCH: TABLET HEADER BRIDGE (601px - 768px)
+   ========================================================================== */
+@media only screen and (max-width: 768px) {
+  header {
+    /* Estende o padding de 2px até 768px para cobrir a "faixa escura" */
+    padding: 10px 2px 0 2px !important; 
+    margin-top: 10px; 
+  }
+
+  /* Opcional: Garante que o menu também não quebre nessa transição */
+  .menu ul {
+    gap: 2px !important;
+  }
+}
 
 @media only screen and (max-width: 600px) { 
   
@@ -11,7 +26,7 @@
   } 
 
   /* 2. HEADER & MENU COMPACTO (SINGLE LINE FORCE) */
-  header { padding: 10px 2px 0 2px; margin-top: 10px; }
+  header { padding: 0px 2px 0 2px; margin-top: 10px; }
   
   .menu ul { 
     /* [CORREÇÃO] Força linha única conforme solicitado */
