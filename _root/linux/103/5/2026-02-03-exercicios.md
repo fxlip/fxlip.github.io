@@ -14,6 +14,25 @@ muted: true
 ---
 
 
+> [x]
+
+xxx
+
+<div class="terminal-box">
+  <div class="terminal-header">
+    <div class="terminal-controls">
+      <span class="win-btn btn-min">_</span>
+      <span class="win-btn btn-close">x</span>
+    </div>
+  </div>
+  
+  <div class="auto-term">
+  
+  </div>
+</div>
+
+---
+
 <div class="terminal-box">
   <div class="terminal-header">
     <div class="terminal-controls">
