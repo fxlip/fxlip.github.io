@@ -1,4 +1,4 @@
-name:  pages-build-deployment
+name: system-deploy
 
 on:
   # Roda sempre que houver um push na branch principal (incluindo commits dos seus bots)
