@@ -2,7 +2,10 @@
 title: manifesto
 layout: page
 permalink: /manifesto
+hide_header: true
+hide_footer: true
 ---
+
 
 > *Free Software é a fonte da liberdade e a coisa certa a usar.*
 
@@ -45,4 +48,3 @@ Quando é a notificação que diz a hora que você vai usar o celular, quem est�
 
 > *"Existem apenas duas indústrias que chamam seus clientes de usuários: a de drogas e a de software."* — Edward Tufte
 
----

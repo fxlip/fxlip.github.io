@@ -3,6 +3,7 @@ title: sobre
 layout: page
 permalink: /sobre
 hide_header: true
+hide_footer: true
 ---
 
 <div style="text-align: center;">
@@ -19,9 +20,9 @@ Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez
 
 ### interesses >>
 
-**Segurança** azul e vermelho
+**Segurança** azul e vermelho,
 
-e **Kernel** controlando o hardware
+**Kernel** e LP de **baixo** nível.
 
 ---
 
@@ -31,20 +32,10 @@ Atualmente focado na certificação **LPIC-1** e no desenvolvimento de automaç�
 
 ---
 
-  <div class="terminal-box">
-    <div class="terminal-header">
-      <div class="terminal-controls">
-        <div class="win-btn btn-min" title="Minimize">−</div>
-        <div class="win-btn btn-close" title="Close">✕</div>
-      </div>
-    </div>
-    <div class="terminal-body">
-      <div>
-        <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">cat dog.txt</span>
-      </div>
-      <div class="t-out">
-Todo material em @linux
-Comentários no @feed
-      </div>
-    </div>
-  </div>
+### contato >>
+
+Me manda um <a href="mailto:fxlip%40tuta.io?subject=Olar">e-mail</a> que respondo bem rápido ツ
+
+Às vezes entro no [github](https://github.com/fxlip), raramente no [bluesky](https://bsky.app/profile/fxlip.com)/[x](https://x.com/fxlip) e nunca no [instagram](https://instagram.com/bvrbosv).
+
+---

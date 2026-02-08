@@ -2,6 +2,12 @@
 title: setup
 layout: page
 permalink: /setup
+hide_header: true
+hide_footer: true
+---
+
+> SETUP
+
 ---
 
 Depois de assistir uma palestra da **Free Software Foundation** em 2017 e ter um *mindblowing* com o **Social Dilemma** em 2020, resetei meu mood de "consumidor de tecnologia" e incorporei o de "operador de sistemas". Hoje meu escritório ainda não é na praia, mas segue uma filosofia.
@@ -20,7 +26,7 @@ Depois de assistir uma palestra da **Free Software Foundation** em 2017 e ter um
 
 ---
 
-### Estudos >>
+### Pesquisa >>
 
 * **Hardware:** Lenovo T400s RYF.
 * **Libreboot:** Sem BIOS/UEFI.

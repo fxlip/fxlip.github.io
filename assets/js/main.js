@@ -8,10 +8,10 @@ document.addEventListener("DOMContentLoaded", function() {
   
   // CONFIGURAÇÃO
   const COMMAND_TEXT = "./nvdd.sh";
-  const MSG_LINE_1 = "Pronto.";
+  const MSG_LINE_1 = "Parabéns!";
   const MSG_LINE_2 = "⡟⠛⠛⠛⠛⢛⣛⣛⣛⣿⣿⣿⣛⣛⣛⡛⠛⠛⠛⠛⢛\n⡇⢀⣠⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣄⡀⢐\n⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶\n⡟⢿⣿⣿⡿⠿⠿⣿⣿⣿⣿⣿⣿⣿⠿⠿⢿⣿⣿⡿⢛\n⡗⠘⣫⣤⣶⣶⣤⡀⠙⠻⣿⡟⠋⢁⣠⣶⣶⣦⣽⢇⣰\n⣧⣾⣿⣿⡿⠛⠛⠻⣶⣾⣿⣷⣶⠟⠛⠛⢿⣿⣻⣷⣴\n⣿⣿⣿⣟⣥⣤⣤⣠⣾⣟⣿⡿⣷⣄⣤⣤⣤⣿⣿⣿⣿\n⣿⡿⢫⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⡝⢻⣿\n⣿⠄⠈⠛⠛⠛⠋⠁⠄⠙⠛⠋⠄⠈⠉⠛⠛⠛⠁⠄⣿\n⡿⣄⡀⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⢀⣴⢛\n⡇⠘⣿⣿⣿⣿⣯⡀⠉⠉⠉⠉⠉⢀⣼⣿⣿⣿⣿⠃⠰\n⡇⠄⢽⣿⣿⣿⣿⣿⣿⣶⣶⣶⣿⣿⣿⣿⣿⣿⡟⠄⠸\n⡇⠄⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⠄⢸\n⡇⠄⠄⠄⠈⠛⢿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠄⠄⠄⢨\n⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄";
-  const MSG_LINE_3 = "+ @sobre @manifesto @setup";
-  const MSG_LINE_4 = "Você terminou de ler tudo que eu já publiquei. 🏆";
+  const MSG_LINE_3 = '<a href="/sobre" class="mention-link" title="./sobre">@sobre</a> <a href="/manifesto" class="mention-link" title="./manifesto">@manifesto</a> <a href="/setup" class="mention-link" title="./setup">@setup</a>'; 
+  const MSG_LINE_4 = "Você leu tudo. 🏆";
   const TYPING_SPEED = 100;  
   const SUSPENSE_DELAY = 1500; 
 
@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const line3 = document.createElement("div");
         line3.className = "t-eof"; 
-        line3.innerText = MSG_LINE_3;
+        line3.innerHTML = MSG_LINE_3;
 
         const line4 = document.createElement("div");
         line4.className = "t-eof"; 
