@@ -20,7 +20,10 @@ hide_footer: true
     </div>
     <div class="t-out">
 Roadmap da pós-graduação em SI
-Começa em 23/02/2026
+Períodos: 
+01/04/2026-26/06/2026
+03/08/2026-09/12/2026
+01/02/2027-27/03/2027
 Comentários no @feed
     </div>
     <div>
