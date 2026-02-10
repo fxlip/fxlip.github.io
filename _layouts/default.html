@@ -82,8 +82,10 @@
     <link rel="preload" href="{{ '/assets/fonts/jetbrains-mono-v24-latin-regular.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?x={{ sig_css }}">
     <style>
-      ::-webkit-scrollbar { display: none; }
-      body { scrollbar-width: none; }
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: #13121d; }
+      ::-webkit-scrollbar-thumb { background: #333545; border-radius: 3px; }
+      body { scrollbar-width: thin; scrollbar-color: #333545 #13121d; }
     </style>
   </{{ "head" }}>
   <body class="{% if page.hide_header or layout.hide_header %}no-header-mode{% endif %}">

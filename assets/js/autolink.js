@@ -73,6 +73,13 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   // ==========================================================================
+  // UTILS
+  // ==========================================================================
+  const escapeHtml = (text) => {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  };
+
+  // ==========================================================================
   // 1. MÓDULOS DE PROCESSAMENTO (TEXTO E ESTRUTURA)
   // ==========================================================================
   
@@ -83,7 +90,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     contentAreas.forEach(area => {
       if (area.tagName === 'PRE' || area.tagName === 'CODE') return;
+      regex.lastIndex = 0;
       if (regex.test(area.innerHTML)) {
+        regex.lastIndex = 0;
         area.innerHTML = area.innerHTML.replace(regex, (match, current, total, label) => {
           const cur = parseInt(current);
           const tot = parseInt(total);
@@ -177,12 +186,15 @@ document.addEventListener("DOMContentLoaded", function() {
     contentAreas.forEach(area => {
       if (area.dataset.mentionsProcessed) return;
       const regex = /@([a-zA-Z0-9_\-\/\.]+)/g;
+      regex.lastIndex = 0;
       if (regex.test(area.innerHTML)) {
+          regex.lastIndex = 0;
           area.innerHTML = area.innerHTML.replace(regex, function(match, path) {
-            const url = `/${path}`;
-            if (path.match(/\.(jpg|jpeg|png|gif|svg)$/i)) return `<span class="embed-image-wrapper"><img src="${url}" class="embed-image" alt="${path}" onerror="this.style.display='none'"><span class="embed-caption">./${path}</span></span>`;
-            if (path.match(/\.(sh|js|py|rb|txt|md|yml|json)$/i)) return `<div class="terminal-box embedded-terminal" data-src="${url}"><div class="terminal-header"><div class="terminal-controls"><span style="font-size:12px; color:#bd93f9; margin-right:10px;">./${path}</span></div></div><div class="terminal-body"><div class="embedded-loading"><span class="cursor-blink">█</span> loading...</div></div></div>`;
-            return `<a href="${url}" class="mention-link" title="./${path}">${match}</a>`;
+            const safePath = escapeHtml(path);
+            const url = `/${safePath}`;
+            if (path.match(/\.(jpg|jpeg|png|gif|svg)$/i)) return `<span class="embed-image-wrapper"><img src="${url}" class="embed-image" alt="${safePath}" onerror="this.style.display='none'"><span class="embed-caption">./${safePath}</span></span>`;
+            if (path.match(/\.(sh|js|py|rb|txt|md|yml|json)$/i)) return `<div class="terminal-box embedded-terminal" data-src="${url}"><div class="terminal-header"><div class="terminal-controls"><span style="font-size:12px; color:#bd93f9; margin-right:10px;">./${safePath}</span></div></div><div class="terminal-body"><div class="embedded-loading"><span class="cursor-blink">█</span> loading...</div></div></div>`;
+            return `<a href="${url}" class="mention-link" title="./${safePath}">${escapeHtml(match)}</a>`;
           });
       }
       area.dataset.mentionsProcessed = "true";

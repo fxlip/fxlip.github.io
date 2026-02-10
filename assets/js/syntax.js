@@ -17,8 +17,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const CACHE_KEY = 'term_knowledge_v2'; 
 
     // 1. FAST RENDER: Tenta carregar cache local instantaneamente
-    const cachedString = localStorage.getItem(CACHE_KEY);
-    
+    let cachedString = null;
+    try {
+      cachedString = localStorage.getItem(CACHE_KEY);
+    } catch (e) {
+      console.warn("Syntax: localStorage indisponível.");
+    }
+
     if (cachedString) {
       try {
         const data = JSON.parse(cachedString);
@@ -26,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("Syntax: Cache v2 carregado. Validando integridade...");
       } catch (e) {
         console.warn("Syntax: Cache corrompido, resetando.");
-        localStorage.removeItem(CACHE_KEY);
+        try { localStorage.removeItem(CACHE_KEY); } catch (_) {}
       }
     }
 
@@ -42,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
       if (cachedString !== newDataString) {
         console.log("Syntax: Atualização detectada. Re-hidratando...");
         applyDataToState(newData);
-        localStorage.setItem(CACHE_KEY, newDataString);
+        try { localStorage.setItem(CACHE_KEY, newDataString); } catch (_) {}
       } else {
         console.log("Syntax: Sistema sincronizado.");
       }

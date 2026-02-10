@@ -244,6 +244,12 @@
 }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
+@media (prefers-reduced-motion: reduce) {
+  .cursor-blink { animation: none; opacity: 1; }
+  .sys-load-head { animation: none; }
+  .sys-load-bar { transition: none; }
+}
+
 /* --- [CORREÇÃO FINAL] FORÇAR BOTÕES NA HOME --- */
 /* Isso garante que, mesmo dentro do bloqueio do terminal, os botões funcionem */
 .terminal-box .sys-meta-group a,

@@ -110,7 +110,8 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .catch(err => {
           console.error(err);
-          isLoading = false; 
+          loader.innerText = "";
+          isLoading = false;
         });
     }
 

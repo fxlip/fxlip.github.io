@@ -14,8 +14,13 @@ document.addEventListener("DOMContentLoaded", function() {
   // ==========================================================================
   const loadKnowledge = async () => {
     // 1. Renderização Rápida via Cache (Instantâneo)
-    const cachedString = localStorage.getItem(CACHE_KEY);
-    
+    let cachedString = null;
+    try {
+      cachedString = localStorage.getItem(CACHE_KEY);
+    } catch (e) {
+      console.warn("AutoTerm: localStorage indisponível.");
+    }
+
     if (cachedString) {
       try {
         const data = JSON.parse(cachedString);
