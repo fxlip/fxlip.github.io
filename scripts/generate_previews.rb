@@ -9,6 +9,7 @@ require 'nokogiri'
 require 'yaml'
 require 'cgi'
 require 'openssl'
+require 'ipaddr'
 
 ROOT = File.expand_path(File.join(__dir__, '..'))
 DATA_DIR = File.join(ROOT, '_data')
@@ -20,11 +21,31 @@ UA_SOCIAL = 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatex
 
 puts "--- INICIANDO PROTOCOLO DE PREVIEWS ---"
 
+BLOCKED_RANGES = [
+  IPAddr.new('127.0.0.0/8'),
+  IPAddr.new('10.0.0.0/8'),
+  IPAddr.new('172.16.0.0/12'),
+  IPAddr.new('192.168.0.0/16'),
+  IPAddr.new('169.254.0.0/16'),
+  IPAddr.new('::1/128'),
+  IPAddr.new('fc00::/7')
+].freeze
+
+def internal_ip?(hostname)
+  begin
+    addrs = Addrinfo.getaddrinfo(hostname, nil, nil, :STREAM)
+    addrs.any? { |addr| BLOCKED_RANGES.any? { |range| range.include?(addr.ip_address) rescue false } }
+  rescue SocketError
+    true # Se não resolver, bloqueia por segurança
+  end
+end
+
 def fetch_url(url, limit = 5, use_social_ua = false)
   return nil if limit == 0
   begin
     uri = URI.parse(url)
     return nil unless uri.kind_of?(URI::HTTP)
+    return nil if internal_ip?(uri.host)
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = (uri.scheme == 'https')
     if http.use_ssl?
@@ -109,7 +130,7 @@ def apply_domain_rules(data, url)
   data
 end
 
-previews = File.exist?(PREVIEWS_FILE) ? YAML.load_file(PREVIEWS_FILE) : {}
+previews = File.exist?(PREVIEWS_FILE) ? YAML.safe_load_file(PREVIEWS_FILE, permitted_classes: [Symbol]) : {}
 previews ||= {}
 updated = false
 

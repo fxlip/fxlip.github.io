@@ -4,7 +4,7 @@ require 'json'
 
 # --- CONFIGURAÇÃO ---
 HOST = "fxlip.com"
-KEY = "k8s9xL4zT0pQ2m1" # <--- COLOQUE SUA CHAVE AQUI
+KEY = ENV['INDEXNOW_KEY'] || "k8s9xL4zT0pQ2m1"
 KEY_LOCATION = "https://fxlip.com/#{KEY}.txt"
 
 # Endpoint oficial do IndexNow (O Bing replica para os outros)
