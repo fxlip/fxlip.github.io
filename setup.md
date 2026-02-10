@@ -6,6 +6,8 @@ hide_header: true
 hide_footer: true
 ---
 
+---
+
 > SETUP
 
 ---
@@ -14,7 +16,17 @@ Depois de assistir uma palestra da **Free Software Foundation** em 2017 e ter um
 
 ---
 
-### Padrão >>
+
+### Pessoal >>
+
+* **Hardware:** Lenovo T400s RYF.
+* **Libreboot:** Sem BIOS/UEFI.
+* **OS:** Trisquel. Sem *blobs* binários.
+* **~~Intel ME~~.** Sem acesso remoto via hardware.
+
+---
+
+### Trabalho >>
 
 * **Hardware:** Razer Blade Stealth Late 2019.
 * **Wi-Fi:** Downgrade Intel AX201 para Broadcom DW1560 ativando AirDrop.
@@ -26,15 +38,6 @@ Depois de assistir uma palestra da **Free Software Foundation** em 2017 e ter um
 
 ---
 
-### Pesquisa >>
-
-* **Hardware:** Lenovo T400s RYF.
-* **Libreboot:** Sem BIOS/UEFI.
-* **OS:** Trisquel. Sem *blobs* binários.
-* **~~Intel ME~~.** Sem acesso remoto via hardware.
-
----
-
 ### Servidor >>
 
 * **Hardware:** Zen 4 + Ada Lovelace 5nm.
@@ -42,3 +45,22 @@ Depois de assistir uma palestra da **Free Software Foundation** em 2017 e ter um
 * **OS:** Pop!_OS.
 
 ---
+
+<div class="terminal-box">
+  <div class="terminal-header">
+    <div class="terminal-controls">
+      <div class="win-btn btn-min" title="Minimize">−</div>
+      <div class="win-btn btn-close" title="Close">✕</div>
+    </div>
+  </div>
+  <div class="terminal-body">
+    <div>
+      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">./footer.sh</span>
+    </div>
+    <div class="t-out">
+++ @manifesto
+++ @sobre
+<< @feed
+    </div>
+  </div>
+</div>

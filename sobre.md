@@ -6,17 +6,18 @@ hide_header: true
 hide_footer: true
 ---
 
+---
+
 <div style="text-align: center;">
   <h1>Felip de Medeiros</h1>
-   <h4>Desenvolvedor, entusiasta de SI e defensor da LGPD.</h4>
+   <h4>Desenvolvedor, entusiasta de SI e evangelista da LGPD.</h4>
 </div>
 
 
 ![fxlip](https://fxlip.com/files/img/avatar/default.jpg)
 
----
 
-Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez mais uma metrópoles de engajamento com algoritmos dopaminérgicos, eu fugi pras colinas e construí um espaço com hardware livre e self-hosted, focado nos meus estudos e experiências. Pra mim a tecnologia deveria ser isso, mais sobre emancipação e menos sobre controle.
+Enquanto a internet se torna cada vez mais uma metrópoles de engajamento com algoritmos dopaminérgicos eu decidi fugir pras colinas e construir um espaço self-hosted com hardware livre, focado nos meus estudos e experiências. 
 
 ---
 
@@ -36,12 +37,31 @@ Atualmente focado na certificação **LPIC-1** e no desenvolvimento de automaç�
 
 ### contato >>
 
-Me manda um <a href="mailto:fxlip%40tuta.io?subject=Olar">e-mail</a> ツ
+Sempre no [github](https://github.com/fxlip),
 
-Às vezes entro no [github](https://github.com/fxlip),
+às vezes no [bsky](https://bsky.app/profile/fxlip.com) ou no [x](https://x.com/fxlip)
 
-Raramente no [bsky](https://bsky.app/profile/fxlip.com) ou no [x](https://x.com/fxlip)
+e raramente no [instagram](https://instagram.com/bvrbosv).
 
-E nunca no [instagram](https://instagram.com/bvrbosv).
+Me manda um <a href="mailto:fxlip%40tuta.io?subject=Olar">e-mail</a>! ツ
 
 ---
+
+<div class="terminal-box">
+  <div class="terminal-header">
+    <div class="terminal-controls">
+      <div class="win-btn btn-min" title="Minimize">−</div>
+      <div class="win-btn btn-close" title="Close">✕</div>
+    </div>
+  </div>
+  <div class="terminal-body">
+    <div>
+      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">./footer.sh</span>
+    </div>
+    <div class="t-out">
+++ @manifesto
+++ @setup
+<< @feed
+    </div>
+  </div>
+</div>
