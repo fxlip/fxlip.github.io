@@ -7,7 +7,7 @@ hide_footer: true
 ---
 
 <div style="text-align: center;">
-  <h1>Felip Barbosa de Medeiros</h1>
+  <h1>Felip de Medeiros</h1>
    <h4>Desenvolvedor, entusiasta de SI e defensor da LGPD.</h4>
 </div>
 
@@ -24,7 +24,7 @@ Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez
 
 **Segurança** azul e vermelho,
 
-**Kernel** e LPs de **baixo** nível.
+**Kernel** e linguagem de **baixo** nível.
 
 ---
 
@@ -36,8 +36,12 @@ Atualmente focado na certificação **LPIC-1** e no desenvolvimento de automaç�
 
 ### contato >>
 
-Me manda um <a href="mailto:fxlip%40tuta.io?subject=Olar">e-mail</a> que respondo bem rápido ツ
+Me manda um <a href="mailto:fxlip%40tuta.io?subject=Olar">e-mail</a> ツ
 
-Às vezes entro no [github](https://github.com/fxlip), raramente no [bluesky](https://bsky.app/profile/fxlip.com)/[x](https://x.com/fxlip) e nunca no [instagram](https://instagram.com/bvrbosv).
+Às vezes entro no [github](https://github.com/fxlip),
+
+Raramente no [bsky](https://bsky.app/profile/fxlip.com) ou no [x](https://x.com/fxlip)
+
+E nunca no [instagram](https://instagram.com/bvrbosv).
 
 ---
