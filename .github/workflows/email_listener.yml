@@ -53,7 +53,7 @@ jobs:
       - name: Commit and Push
         run: |
           git config user.name "kernel-bot"
-          git config user.email "bot@felip.com.br"
+          git config user.email "bot@fxlip.com"
           
           # Adiciona arquivos novos (files, posts, paginas)
           git add _posts/ _root/ _data/previews.yml files/

@@ -1,12 +1,28 @@
-*.gem
-.bundle
-.sass-cache
-_site
-Gemfile.lock
-.DS_Store
+# Build
+_site/
+.sass-cache/
+.jekyll-cache/
+
+# Dependências
 vendor/
 .bundle/
+Gemfile.lock
+
+# Sistema
+.DS_Store
+*.swp
+*.log
+
+# Segredos
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Gems
+*.gem
+
+# Claude Code
 CLAUDE.md
 .claude/
-Gemfile
-Gemfile.lock

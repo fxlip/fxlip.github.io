@@ -26,6 +26,10 @@ header {
   transition: all 0.2s ease;
 }
 
+header nav {
+  width: 100%;
+}
+
 /* Estado: Terminal Mode (Fusão) */
 header.header-terminal-mode {
   //background-color: var(--code-bg); 

@@ -3,7 +3,7 @@ layout: default
 hide_header: true
 hide_footer: true
 ---
-{{ content }}<main>
+<main>{{ content }}
         <div class="terminal-box feed-terminal" data-nosnippet>
           <div class="terminal-header">
             <div class="terminal-controls">
@@ -57,7 +57,7 @@ Também dou meus 2kb de opnião
                     {% if pv %}
                       {% if pv.video_id %}
                         <div class="video-wrapper">
-                          <iframe src="https://www.youtube.com/embed/{{ pv.video_id }}?rel=0&modestbranding=1" title="{{ pv.title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                          <iframe src="https://www.youtube.com/embed/{{ pv.video_id | escape }}?rel=0&modestbranding=1" title="{{ pv.title | escape }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
                         </div>
                       {% else %}
                         <a href="{{ pv.url }}" target="_blank" rel="noopener noreferrer" 

@@ -4,7 +4,7 @@ hide_header: true
 hide_footer: true
 ---
 
-<article class="post" style="margin-top: 40px">
+<article class="post">
 
   {% assign pv = site.data.previews[page.slug] %}
 
@@ -19,7 +19,7 @@ hide_footer: true
   {% if pv %}
     {% if pv.video_id %}
       <div class="video-wrapper">
-        <iframe src="https://www.youtube.com/embed/{{ pv.video_id }}?rel=0&modestbranding=1" title="{{ pv.title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        <iframe src="https://www.youtube.com/embed/{{ pv.video_id | escape }}?rel=0&modestbranding=1" title="{{ pv.title | escape }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
       </div>
     {% else %}
       <a href="{{ pv.url }}" target="_blank" rel="noopener noreferrer" 

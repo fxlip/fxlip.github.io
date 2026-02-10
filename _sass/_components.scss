@@ -595,6 +595,10 @@ a.link-card.internal-ref .lc-site:before {
    19. CONTENT LAYOUT PATCH (ALIGNMENT & IMAGES)
    ========================================================================== */
 
+article.post {
+  margin-top: 40px;
+}
+
 .post-content {
   /* 1. Alinhamento Lateral: Dá um respiro das bordas */
   padding: 0 5px; 
