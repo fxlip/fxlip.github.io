@@ -19,7 +19,8 @@ hide_footer: true
       <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/infosec</span><span class="t-gray">$</span> <span class="t-cmd">cat dog.txt</span>
     </div>
     <div class="t-out">
-Roadmap da pós-graduação em Segurança da Informação
+Roadmap da pós-graduação em SI
+Começa em 23/02/2026
 Comentários no @feed
     </div>
     <div>
@@ -40,9 +41,19 @@ Comentários no @feed
     {%- endfor -%}
     {%- assign unique_l1 = l1_dirs | split: "|||" | uniq | sort -%}
 
+    {%- assign root_files = "" -%}
+    {%- for item in infosec_items -%}
+      {%- assign clean = item.url | replace_first: "/infosec/", "" -%}
+      {%- assign parts = clean | split: "/" -%}
+      {%- if parts.size == 1 and clean != "" and clean != "index.html" -%}
+            {%- assign root_files = root_files | append: item.url | append: "|||" -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- assign unique_root_files = root_files | split: "|||" | uniq | sort -%}
+
     {%- for dir1 in unique_l1 -%}
       
-      {%- if forloop.last -%}
+      {%- if forloop.last and unique_root_files.size == 0 -%}
         {%- assign c1 = "└── " -%}
         {%- assign p1 = "    " -%}
       {%- else -%}
@@ -122,6 +133,21 @@ Comentários no @feed
         {%- endif -%}
       {%- endfor -%}
 
+    {%- endfor -%}
+
+    {%- for file_url in unique_root_files -%}
+       {%- assign item = infosec_items | where: "url", file_url | first -%}
+       {%- if forloop.last -%}
+          {%- assign c_root = "└── " -%}
+       {%- else -%}
+          {%- assign c_root = "├── " -%}
+       {%- endif -%}
+       <div class="t-row">
+         <span class="t-tree">{{ c_root }}</span>
+         <a href="{{ item.url }}" class="f file-link {% if item.muted %}file-link-muted{% endif %}">
+           {{ item.title | downcase }}
+         </a>
+       </div>
     {%- endfor -%}
     
     <div class="t-out">&nbsp;</div>
