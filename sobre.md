@@ -14,7 +14,9 @@ hide_footer: true
 
 ![fxlip](https://fxlip.com/files/img/avatar/default.jpg)
 
-Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez mais uma metrópoles de engajamento com algoritmos duvidosos, decidi fugir para as colinas e construir um espaço com infraestrutura própria, focado nos meus estudos e experiências. Pra mim a tecnologia deveria ser isso, mais sobre emancipação e menos sobre controle.
+---
+
+Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez mais uma metrópoles de engajamento com algoritmos dopaminérgicos, eu fugi pras colinas e construí um espaço com hardware livre e self-hosted, focado nos meus estudos e experiências. Pra mim a tecnologia deveria ser isso, mais sobre emancipação e menos sobre controle.
 
 ---
 
@@ -22,7 +24,7 @@ Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez
 
 **Segurança** azul e vermelho,
 
-**Kernel** e LP de **baixo** nível.
+**Kernel** e LPs de **baixo** nível.
 
 ---
 
