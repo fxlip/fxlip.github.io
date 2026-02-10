@@ -7,5 +7,6 @@ Gemfile.lock
 vendor/
 .bundle/
 CLAUDE.md
+.claude/
 Gemfile
 Gemfile.lock

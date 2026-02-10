@@ -17,8 +17,13 @@ ALLOWED_SENDER = ENV['ALLOWED_SENDER']
 IMAP_SERVER = 'imap.gmail.com'
 PORT = 993
 
+MAX_POSTS_PER_RUN = 10
+MAX_RM_PER_RUN = 2
+MAX_ATTACHMENT_SIZE = 10 * 1024 * 1024 # 10MB
+ALLOWED_EXTENSIONS = %w[.jpg .jpeg .png .gif .webp .svg .pdf .txt .md .sh .py .rb .json .yml .yaml .csv .zip .tar .gz].freeze
+
 def slugify(text)
-  text.to_s.downcase.strip.gsub(' ', '_').gsub(/[^\w\-\/\.]/, '') 
+  text.to_s.downcase.strip.gsub(' ', '_').gsub(/[^\w\-\.]/, '')
 end
 
 def extract_body(mail)
@@ -67,47 +72,56 @@ begin
            next 
         end
 
-        success = false 
+        # Validação exata de sender
+        sender = email.from&.first.to_s.strip.downcase
+        if ALLOWED_SENDER && !ALLOWED_SENDER.empty? && sender != ALLOWED_SENDER.downcase
+          puts "   [BLOCKED] Sender não autorizado: #{sender}"
+          imap.uid_store(uid, "+FLAGS", [:Deleted])
+          next
+        end
+
+        success = false
 
         # --- LÓGICA DE DELEÇÃO (RM) ---
         if subject_str.upcase.start_with?('RM:')
+          rm_count = (rm_count || 0) + 1
+          if rm_count > MAX_RM_PER_RUN
+            puts "   [RATE LIMIT] Máximo de #{MAX_RM_PER_RUN} deleções por execução."
+            next
+          end
+
           target_raw = subject_str[3..-1].strip.sub(/^\//, '')
-          target = target_raw.gsub('..', '').gsub('./', '')
-          
+          target = slugify(target_raw.gsub('/', '_'))
+
           puts ">> [COMANDO RM] Solicitado para: '#{target}'"
 
           if target.empty? || target == '/' || target.include?('_config') || target.include?('.git')
              puts "   [SECURITY BLOCK] Alvo inválido."
-             imap.uid_store(uid, "+FLAGS", [:Deleted]) 
+             imap.uid_store(uid, "+FLAGS", [:Deleted])
              next
           end
 
           candidates = []
           allowed_roots = [POSTS_ROOT, POSTS_DIR, ASSETS_DIR]
-          
+
+          # Busca apenas em paths expandidos e validados (sem glob fallback)
           full_path_candidate = File.expand_path(target, Dir.pwd)
           is_safe = allowed_roots.any? { |r| full_path_candidate.start_with?(File.expand_path(r, Dir.pwd)) }
-          
-          if is_safe && File.exist?(full_path_candidate)
+
+          if is_safe && File.exist?(full_path_candidate) && !File.symlink?(full_path_candidate)
             candidates << full_path_candidate
           end
 
           if candidates.empty?
             allowed_roots.each do |root|
-              possible_path = File.join(Dir.pwd, root, target)
-              candidates << possible_path if File.exist?(possible_path)
+              possible_path = File.expand_path(File.join(root, target), Dir.pwd)
+              is_safe = allowed_roots.any? { |r| possible_path.start_with?(File.expand_path(r, Dir.pwd)) }
+              if is_safe && File.exist?(possible_path) && !File.symlink?(possible_path)
+                candidates << possible_path
+              end
             end
           end
 
-          if candidates.empty?
-             allowed_roots.each do |root|
-               filename_only = File.basename(target)
-               found = Dir.glob(File.join(root, "**", filename_only))
-               found.map! { |f| File.expand_path(f) }
-               candidates.concat(found)
-             end
-          end
-          
           candidates.uniq!
 
           if candidates.empty?
@@ -141,29 +155,31 @@ begin
             command = slugify(parts[0])
           end
 
+          post_count = (post_count || 0) + 1
+          if post_count > MAX_POSTS_PER_RUN
+            puts "   [RATE LIMIT] Máximo de #{MAX_POSTS_PER_RUN} posts por execução."
+            next
+          end
+
           case command
           when 'quick_post'
             slug = SecureRandom.hex(8)
-            
-            # [FIX] Título limpo (apenas o hash), sem extensão.
-            # O permalink abaixo cuida da URL ser .html
-            title_text = slug 
-            
+            title_text = slug
+
             date = DateTime.now
             filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
             filepath = File.join(POSTS_ROOT, filename)
             body = extract_body(email)
-            
-            front_matter = <<~HEREDOC
-            ---
-            layout: post
-            title: "#{title_text}"
-            date: #{date.to_s}
-            permalink: /#{slug}.html
-            categories: [feed]
-            tags: [quicklog]
-            ---
-            HEREDOC
+
+            fm_data = {
+              'layout' => 'post',
+              'title' => title_text,
+              'date' => date.to_s,
+              'permalink' => "/#{slug}.html",
+              'categories' => ['feed'],
+              'tags' => ['quicklog']
+            }
+            front_matter = "---\n#{YAML.dump(fm_data).sub(/^---\n/, '')}---\n"
             File.open(filepath, 'w') do |file| file.write(front_matter + "\n" + body) end
             puts "   [SUCESSO] Post criado: #{filepath}"
             success = true
@@ -173,10 +189,29 @@ begin
             custom_name = path_args.last && path_args.last.include?('.') ? path_args.pop : nil
             sub_path = path_args.map { |p| slugify(p) }.join('/')
             target_dir = File.join(ASSETS_DIR, sub_path)
+
+            # Validação de path traversal no diretório de destino
+            expanded_target = File.expand_path(target_dir, Dir.pwd)
+            unless expanded_target.start_with?(File.expand_path(ASSETS_DIR, Dir.pwd))
+              puts "   [SECURITY BLOCK] Path inválido: #{target_dir}"
+              next
+            end
+
             FileUtils.mkdir_p(target_dir)
-            
+
             email.attachments.each do |attachment|
                real_ext = File.extname(attachment.filename).downcase
+
+               unless ALLOWED_EXTENSIONS.include?(real_ext)
+                 puts "   [BLOCKED] Extensão não permitida: #{real_ext}"
+                 next
+               end
+
+               if attachment.body.decoded.bytesize > MAX_ATTACHMENT_SIZE
+                 puts "   [BLOCKED] Arquivo excede #{MAX_ATTACHMENT_SIZE / 1024 / 1024}MB"
+                 next
+               end
+
                base_filename = custom_name ? slugify(File.basename(custom_name, ".*")) : "file_#{SecureRandom.hex(4)}"
                final_path = File.join(target_dir, "#{base_filename}#{real_ext}")
                File.open(final_path, "wb") { |f| f.write(attachment.body.decoded) }
@@ -188,7 +223,7 @@ begin
              collection = command
              category = parts[1] ? slugify(parts[1]) : 'geral'
              tag = parts[2] ? slugify(parts[2]) : 'misc'
-             title_raw = parts.last
+             title_raw = parts.last.to_s
              slug = slugify(title_raw)
              dir_path = File.join(POSTS_DIR, collection, category, tag)
              FileUtils.mkdir_p(dir_path)
@@ -196,18 +231,17 @@ begin
              filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
              filepath = File.join(dir_path, filename)
              body = extract_body(email)
-             
-             front_matter = <<~HEREDOC
-             ---
-             layout: page
-             title: "#{title_raw.gsub('"', '\"')}"
-             date: #{date.to_s}
-             permalink: /#{collection}/#{category}/#{tag}/#{slug}/
-             categories: [#{collection}]
-             tags: [#{category}, #{tag}]
-             hide_footer: true
-             ---
-             HEREDOC
+
+             fm_data = {
+               'layout' => 'page',
+               'title' => title_raw,
+               'date' => date.to_s,
+               'permalink' => "/#{collection}/#{category}/#{tag}/#{slug}/",
+               'categories' => [collection],
+               'tags' => [category, tag],
+               'hide_footer' => true
+             }
+             front_matter = "---\n#{YAML.dump(fm_data).sub(/^---\n/, '')}---\n"
              File.open(filepath, 'w') do |file| file.write(front_matter + "\n" + body) end
              puts "   [SUCESSO] Post criado: #{filepath}"
              success = true
