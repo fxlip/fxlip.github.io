@@ -1,65 +1,45 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-  // CONFIG: Base de Conhecimento Unificada
-  const KNOWLEDGE_URL = '/assets/data/knowledge.json'; 
-
   // ESTADO INTERNO (Sets para busca O(1) ultra-rápida)
   let COMMAND_LIST = new Set();
   let ARCH_TERMS = new Set();
   let KNOWN_DIRS = new Set();
   let SYS_FILES = new Set();
-  
+
   let isKnowledgeLoaded = false;
 
-  // --- MODULE: KNOWLEDGE LOADER (Auto-Update / SWR Pattern) ---
+  // --- MODULE: KNOWLEDGE LOADER (Consome dados do autoterm.js — zero fetch extra) ---
   const loadKnowledge = async () => {
-    // [UPDATE] Chave nova para forçar recarga da estrutura JSON v2
-    const CACHE_KEY = 'term_knowledge_v2'; 
+    const CACHE_KEY = 'term_knowledge_v2';
 
-    // 1. FAST RENDER: Tenta carregar cache local instantaneamente
-    let cachedString = null;
+    // 1. FAST RENDER: Cache local para pintura instantânea
     try {
-      cachedString = localStorage.getItem(CACHE_KEY);
-    } catch (e) {
-      console.warn("Syntax: localStorage indisponível.");
-    }
-
-    if (cachedString) {
-      try {
+      const cachedString = localStorage.getItem(CACHE_KEY);
+      if (cachedString) {
         const data = JSON.parse(cachedString);
         applyDataToState(data);
-        console.log("Syntax: Cache v2 carregado. Validando integridade...");
-      } catch (e) {
-        console.warn("Syntax: Cache corrompido, resetando.");
-        try { localStorage.removeItem(CACHE_KEY); } catch (_) {}
+      }
+    } catch (e) {
+      // Cache indisponível ou corrompido — segue sem
+    }
+
+    // 2. NETWORK UPDATE: Aguarda o fetch único feito pelo autoterm.js
+    if (window.__knowledgePromise) {
+      try {
+        const newData = await window.__knowledgePromise;
+        if (newData) {
+          applyDataToState(newData);
+        }
+      } catch (err) {
+        // autoterm.js já logou o erro
       }
     }
 
-    // 2. NETWORK UPDATE: Busca a versão mais recente em background
-    try {
-      const response = await fetch(KNOWLEDGE_URL);
-      if (!response.ok) throw new Error(`Status: ${response.status}`);
-      
-      const newData = await response.json();
-      const newDataString = JSON.stringify(newData);
-
-      // Só atualiza e repinta se houver mudança real
-      if (cachedString !== newDataString) {
-        console.log("Syntax: Atualização detectada. Re-hidratando...");
-        applyDataToState(newData);
-        try { localStorage.setItem(CACHE_KEY, newDataString); } catch (_) {}
-      } else {
-        console.log("Syntax: Sistema sincronizado.");
-      }
-
-    } catch (err) {
-      console.error("Syntax Network Error:", err);
-      // Fallback mínimo se não houver cache nem rede
-      if (!isKnowledgeLoaded) {
-        COMMAND_LIST = new Set(['bash', 'ls', 'cd', 'sudo', 'grep', 'vi', 'nano']); 
-        isKnowledgeLoaded = true;
-        window.renderBadges();
-      }
+    // 3. Fallback se nada funcionou
+    if (!isKnowledgeLoaded) {
+      COMMAND_LIST = new Set(['bash', 'ls', 'cd', 'sudo', 'grep', 'vi', 'nano']);
+      isKnowledgeLoaded = true;
+      window.renderBadges();
     }
   };
 

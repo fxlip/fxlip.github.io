@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
   let COMMANDS = new Set(); // Para identificar executáveis sem extensão
 
   // ==========================================================================
-  // 1. DATA LOADER (SWR Pattern)
+  // 1. DATA LOADER (SWR Pattern — Fonte Única para todos os módulos)
   // ==========================================================================
   const loadKnowledge = async () => {
     // 1. Renderização Rápida via Cache (Instantâneo)
@@ -31,17 +31,20 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     }
 
-    // 2. Atualização em Background (Network)
+    // 2. Atualização em Background (Network) — fetch único compartilhado
     try {
       const response = await fetch(KNOWLEDGE_URL);
       if (!response.ok) throw new Error("Network response was not ok");
       const newData = await response.json();
-      
-      // Se houve mudança, atualiza e repinta
-      if (JSON.stringify(newData) !== cachedString) {
+      const newDataString = JSON.stringify(newData);
+
+      // Se houve mudança, atualiza cache e repinta
+      if (newDataString !== cachedString) {
         applyData(newData);
+        try { localStorage.setItem(CACHE_KEY, newDataString); } catch (_) {}
         console.log("AutoTerm: Dados atualizados. Re-renderizando...");
       }
+      return newData;
     } catch (err) {
       console.error("AutoTerm: Falha ao buscar knowledge.json", err);
       // Fallback de emergência se não houver nada
@@ -49,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
         KNOWN_DIRS = new Set(['bin', 'etc', 'home', 'var', 'usr', 'tmp']);
         window.renderTerminalWindows();
       }
+      return null;
     }
   };
 
@@ -230,6 +234,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   };
 
-  // Inicializa
-  loadKnowledge();
+  // Expõe a promise do fetch para outros módulos (syntax.js) consumirem
+  window.__knowledgePromise = loadKnowledge();
 });

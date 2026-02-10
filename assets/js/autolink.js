@@ -327,13 +327,25 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // ==========================================================================
-  // EXECUÇÃO INICIAL
+  // EXECUÇÃO INICIAL (Prioridade: visual crítico primeiro, secundário deferido)
   // ==========================================================================
+
+  // Fase 1: Processadores visuais críticos (afetam layout/conteúdo visível)
   window.processProgressBars();
   window.applyMentions();
-  window.linkifyInternalUrls();
-  window.processInternalEmbeds();
-  window.processSyntaxHighlighter();
   window.processTimeAgo();
+
+  // Fase 2: Processadores secundários (links, embeds, highlight) — deferidos
+  const deferredInit = () => {
+    window.linkifyInternalUrls();
+    window.processInternalEmbeds();
+    window.processSyntaxHighlighter();
+  };
+
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(deferredInit, { timeout: 2000 });
+  } else {
+    setTimeout(deferredInit, 100);
+  }
 
 });
