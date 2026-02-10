@@ -12,7 +12,7 @@ hide_footer: true
 </div>
 
 
-![fxlip](https://fxlip.com/files/img/avatar/profile.jpeg)
+![fxlip](https://fxlip.com/files/img/avatar/default.jpg)
 
 Aqui funciona como meu jardim digital 🪴 Enquanto a internet se torna cada vez mais uma metrópoles de engajamento com algoritmos duvidosos, decidi fugir para as colinas e construir um espaço com infraestrutura própria, focado nos meus estudos e experiências. Pra mim a tecnologia deveria ser isso, mais sobre emancipação e menos sobre controle.
 
