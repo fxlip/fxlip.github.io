@@ -26,7 +26,7 @@ Depois de assistir uma palestra da **Free Software Foundation** em 2017 e ter um
 
 ---
 
-### Trabalho >>
+### Comercial >>
 
 * **Hardware:** Razer Blade Stealth Late 2019.
 * **Wi-Fi:** Downgrade Intel AX201 para Broadcom DW1560 ativando AirDrop.
