@@ -55,9 +55,14 @@ header.header-terminal-mode {
   line-height: 1.2; 
 }
 
-.menu a:hover { 
-  color: var(--link-hover-color); border-color: transparent; 
-  text-shadow: 0 0 8px rgba(189, 147, 249, 0.6); 
+.menu a:hover {
+  color: var(--link-hover-color); border-color: transparent;
+  text-shadow: 0 0 8px rgba(189, 147, 249, 0.6);
+}
+
+.menu a:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
 }
 
 /* Estado Ativo: Subtle Neon (Calibrado) */

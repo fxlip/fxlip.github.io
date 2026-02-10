@@ -38,17 +38,16 @@
     width: 100%; 
   }
   
-  .menu a, .menu-active { 
-    /* Redução drástica de padding e fonte para encaixar na horizontal */
-    padding: 6px 6px !important; 
-    font-size: 12px !important; 
-    letter-spacing: -0.5px; /* Kerning negativo ganha pixels preciosos */
+  .menu a, .menu-active {
+    padding: 6px 6px !important;
+    font-size: 13px !important;
+    letter-spacing: -0.5px;
   }
 
   /* 3. TERMINAL ADAPTATIVO */
   .terminal-box {
     margin: 20px 0;
-    font-size: 12.5px !important; 
+    font-size: 13px !important;
   }
 
   .terminal-body { padding: 10px; }
