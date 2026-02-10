@@ -4,7 +4,7 @@ on:
   repository_dispatch:
     types: [incoming-email] 
   schedule:
-    - cron: '0 * * * *' # Checagem a cada 5 minutos
+    - cron: '0 * * * *' # Checagem a cada hora
   workflow_dispatch: # Gatilho manual
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
       - name: Setup Ruby with Cache
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.0'
+          ruby-version: '3.1'
           bundler-cache: true
 
       - name: Create Gemfile
