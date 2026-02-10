@@ -8,13 +8,14 @@
     connect-src 'self';
     base-uri 'self';
     form-action 'none';
-    img-src 'self' https: data: https://img.youtube.com https://i.ytimg.com;
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;  
+    img-src 'self' https: https://img.youtube.com https://i.ytimg.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src 'self' https://fonts.gstatic.com data:;
     media-src 'self';
     object-src 'none';
     child-src 'self' https://www.youtube.com https://www.youtube-nocookie.com;
     script-src 'self' 'unsafe-inline';
+    upgrade-insecure-requests;
 {%- endcapture -%}
 {%- capture csp_final -%}{{ csp | strip | replace: '\n', ' ' }} {%- if site.csp_extra %} {{ site.csp_extra }}{%- endif -%}{%- endcapture -%}
 {% assign t = site.time | date: "%s" %} {% assign master_hash = t | replace: '0', 'a' | replace: '1', 'b' | replace: '2', 'c' | replace: '3', 'd' | replace: '4', 'e' | replace: '5', 'f' | replace: '6', '7' | replace: '7', '8' | replace: '8', '9' | replace: '9', '0' | append: 'f' %} {% assign sig_css = master_hash %} {% assign sig_lnk = master_hash | replace: 'a', 'x' | replace: 'b', 'y' | replace: 'c', 'z' %} {% assign sig_trm = master_hash | replace: '7', '1' | replace: '8', '2' | append: 't' %} {% assign sig_syn = master_hash | remove: 'f' | append: 's9' %} {% assign sig_main = master_hash | replace: 'd', 'k' | replace: 'e', 'm' | prepend: 'v8-' %}
@@ -22,8 +23,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Referrer-Policy" content="no-referrer, strict-origin-when-cross-origin">
-    <meta http-equiv="X-XSS-Protection"  content="1;mode=block" always>
-    <meta> 
+    <meta http-equiv="X-XSS-Protection" content="1;mode=block">
+    <meta name="theme-color" content="#13121d">
     {%- assign current_hash = page.url | split: '/' | last | remove: '.html' -%}
     {%- if page.url == "/" or page.layout == "post" -%}
       <meta name="robots" content="index, follow">
@@ -43,7 +44,6 @@
     {%- else -%}
       {%- assign page_desc = "Meus dois kbytes de opnião sobre tecnologia. Um diário de estudos focado no Linux! Interesse por Hardware Livre e Segurança da Informação. Hater de IA." -%}
     {%- endif -%}
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="{{ page_desc }}">
     <meta property="og:title" content="{% if page.layout == 'post' %}Felip Barbosa de Medeiros [{{ current_hash }}]{% else %}{{ page.title }}{% endif %}">
     <meta property="og:description" content="{{ page_desc }}">
@@ -79,6 +79,7 @@
     <link rel="canonical" href="{{ site.url }}{{ page.url }}">
     <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | relative_url }}">
     <link rel="icon" type="image/svg+xml" href="{{ "/assets/img/favicon.svg" | relative_url }}">
+    <link rel="preload" href="{{ '/assets/fonts/jetbrains-mono-v24-latin-regular.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?x={{ sig_css }}">
     <style>
       ::-webkit-scrollbar { display: none; }
@@ -99,9 +100,9 @@
       <span class="sys-icon">✔</span>
       <span class="sys-msg">LINK COPIADO</span>
     </div>
-    <script src="{{ '/assets/js/autolink.js' | relative_url }}?x={{ sig_lnk }}"></script>
-    <script src="{{ '/assets/js/autoterm.js' | relative_url }}?x={{ sig_trm }}"></script>
-    <script src="{{ '/assets/js/syntax.js' | relative_url }}?x={{ sig_syn }}"></script>
-    <script src="{{ '/assets/js/main.js' | relative_url }}?x={{ sig_main }}"></script>
+    <script defer src="{{ '/assets/js/autolink.js' | relative_url }}?x={{ sig_lnk }}"></script>
+    <script defer src="{{ '/assets/js/autoterm.js' | relative_url }}?x={{ sig_trm }}"></script>
+    <script defer src="{{ '/assets/js/syntax.js' | relative_url }}?x={{ sig_syn }}"></script>
+    <script defer src="{{ '/assets/js/main.js' | relative_url }}?x={{ sig_main }}"></script>
   </body>
 </html>
