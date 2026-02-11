@@ -2,6 +2,9 @@ name = "fxlip-visitor-api"
 main = "worker.js"
 compatibility_date = "2024-01-01"
 
+[deployment]
+preview_urls = false # Desativa as URLs de preview automáticas
+
 [vars]
 ALLOWED_ORIGIN = "https://fxlip.com"
 
