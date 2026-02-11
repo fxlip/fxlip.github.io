@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // =======================================================================
   function renderNamePrompt() {
     greetingBlock.style.display = "block";
-    greetingOutput.textContent = "visitante n\u00e3o identificado";
+    greetingOutput.textContent = "É a sua primeira vez por aqui?";
 
     var inputLine = document.createElement("div");
     inputLine.innerHTML =
@@ -123,14 +123,6 @@ document.addEventListener("DOMContentLoaded", function() {
     greetingBlock.style.display = "block";
     greetingBlock.innerHTML =
       '<div>' +
-        '<span class="t-user">fxlip</span>' +
-        '<span class="t-gray">@</span>' +
-        '<span class="t-host">www</span>' +
-        '<span class="t-gray">:</span>' +
-        '<span class="t-path">~/feed</span>' +
-        '<span class="t-gray">$</span> ' +
-        '<span class="t-cmd">whoami</span>' +
-      '</div>' +
       '<div class="t-out">' + esc(text) + '</div>';
   }
 

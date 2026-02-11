@@ -142,12 +142,15 @@ document.addEventListener("DOMContentLoaded", function() {
               }
               
               postsContainer.appendChild(post);
+
+              // 4a. Observa post para registrar view quando visível
+              if (window.observePostViews) window.observePostViews(post);
             });
-            
+
             // 3. Processamento Global (Terminais e Janelas)
             if (window.renderTerminalWindows) window.renderTerminalWindows();
 
-            // 4. View Counts (Batch para novos posts)
+            // 4b. Busca contagens dos novos posts
             if (window.fetchViewCounts) window.fetchViewCounts(postsContainer);
           }
 
@@ -213,15 +216,43 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // ==========================================================================
-  // 2. VIEW COUNTER: INITIAL LOAD
+  // 2. VIEW COUNTER: INITIAL LOAD + VIEWPORT TRACKING
   // ==========================================================================
+  var viewObserver = null;
+
   if (WORKER_URL) {
+    // Post individual: registra view direto
     var postMeta = document.querySelector('article.post .view-counter[data-slug]');
     if (postMeta && !document.querySelector('.posts-list')) {
       window.registerView(postMeta.dataset.slug);
     }
+
+    // Timeline: observa posts ficando visíveis para registrar view
+    viewObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        var counter = entry.target.querySelector('.view-counter[data-slug]');
+        if (counter && !counter.dataset.viewRegistered) {
+          counter.dataset.viewRegistered = "true";
+          window.registerView(counter.dataset.slug);
+        }
+        viewObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.3 });
+
+    // Observa posts já na página
+    document.querySelectorAll('article.post-item').forEach(function(post) {
+      viewObserver.observe(post);
+    });
+
+    // Busca contagens iniciais
     window.fetchViewCounts();
   }
+
+  // Expõe para o infinite scroll observar novos posts
+  window.observePostViews = function(post) {
+    if (viewObserver) viewObserver.observe(post);
+  };
 
   // ==========================================================================
   // 3. HEADER ADAPTATIVO (TERMINAL MODE)
