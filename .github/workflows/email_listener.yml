@@ -31,7 +31,7 @@ jobs:
         run: |
           echo "source 'https://rubygems.org'" > Gemfile
           echo "gem 'mail'" >> Gemfile
-          echo "gem 'net-imap'" >> Gemfile
+          echo "gem 'net-imap', '~> 0.4.18'" >> Gemfile
           echo "gem 'nokogiri'" >> Gemfile
 
       - name: Install Dependencies
