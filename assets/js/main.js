@@ -1,5 +1,60 @@
 document.addEventListener("DOMContentLoaded", function() {
-  
+
+  // ==========================================================================
+  // 0. VIEW COUNTER SYSTEM
+  // ==========================================================================
+  const WORKER_URL = document.body.dataset.workerUrl;
+
+  window.fetchViewCounts = function(context) {
+    if (!WORKER_URL) return;
+    var counters = (context || document).querySelectorAll('.view-counter[data-slug]');
+    if (counters.length === 0) return;
+
+    var slugs = [];
+    var counterMap = {};
+
+    counters.forEach(function(c) {
+      var slug = c.dataset.slug;
+      if (slug && !c.dataset.viewLoaded) {
+        slugs.push(slug);
+        if (!counterMap[slug]) counterMap[slug] = [];
+        counterMap[slug].push(c);
+      }
+    });
+
+    if (slugs.length === 0) return;
+
+    fetch(WORKER_URL + "/api/views?slugs=" + slugs.join(","))
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        Object.keys(data).forEach(function(slug) {
+          if (counterMap[slug]) {
+            counterMap[slug].forEach(function(c) {
+              var el = c.querySelector('.view-count');
+              if (el) el.textContent = data[slug] || 0;
+              c.dataset.viewLoaded = "true";
+            });
+          }
+        });
+      })
+      .catch(function() {});
+  };
+
+  window.registerView = function(slug) {
+    if (!WORKER_URL || !slug) return;
+    fetch(WORKER_URL + "/api/view", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug: slug }),
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      document.querySelectorAll('.view-counter[data-slug="' + slug + '"] .view-count')
+        .forEach(function(el) { el.textContent = data.views || 0; });
+    })
+    .catch(function() {});
+  };
+
   // ==========================================================================
   // 1. INFINITE SCROLL & FEED ORCHESTRATOR
   // ==========================================================================
@@ -91,6 +146,9 @@ document.addEventListener("DOMContentLoaded", function() {
             
             // 3. Processamento Global (Terminais e Janelas)
             if (window.renderTerminalWindows) window.renderTerminalWindows();
+
+            // 4. View Counts (Batch para novos posts)
+            if (window.fetchViewCounts) window.fetchViewCounts(postsContainer);
           }
 
           // Atualiza o link da próxima página
@@ -155,7 +213,18 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // ==========================================================================
-  // 2. HEADER ADAPTATIVO (TERMINAL MODE)
+  // 2. VIEW COUNTER: INITIAL LOAD
+  // ==========================================================================
+  if (WORKER_URL) {
+    var postMeta = document.querySelector('article.post .view-counter[data-slug]');
+    if (postMeta && !document.querySelector('.posts-list')) {
+      window.registerView(postMeta.dataset.slug);
+    }
+    window.fetchViewCounts();
+  }
+
+  // ==========================================================================
+  // 3. HEADER ADAPTATIVO (TERMINAL MODE)
   // ==========================================================================
   const header = document.querySelector('header');
   const targetTerminal = document.querySelector('.feed-terminal') || document.querySelector('.terminal-window') || document.querySelector('.terminal-box');

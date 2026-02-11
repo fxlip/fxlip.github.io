@@ -44,6 +44,9 @@ exclude:
   - README.md
   - LICENSE
 
+# Visitor API (Cloudflare Worker)
+worker_url: "https://fxlip-visitor-api.fxlip.workers.dev"
+
 defaults:
   - scope:
       path: ""

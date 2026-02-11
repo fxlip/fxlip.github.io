@@ -5,7 +5,7 @@
 {%- endcomment -%}
 {%- capture csp -%}
     default-src 'none';
-    connect-src 'self';
+    connect-src 'self' {{ site.worker_url }};
     base-uri 'self';
     form-action 'none';
     img-src 'self' https: https://img.youtube.com https://i.ytimg.com;
@@ -88,7 +88,7 @@
       body { scrollbar-width: thin; scrollbar-color: #333545 #13121d; }
     </style>
   </{{ "head" }}>
-  <body class="{% if page.hide_header or layout.hide_header %}no-header-mode{% endif %}">
+  <body class="{% if page.hide_header or layout.hide_header %}no-header-mode{% endif %}" data-worker-url="{{ site.worker_url }}">
     <div class="container">
       {% unless page.hide_header or layout.hide_header %}
         {%- include header.html -%}
@@ -105,6 +105,7 @@
     <script defer src="{{ '/assets/js/autolink.js' | relative_url }}?x={{ sig_lnk }}"></script>
     <script defer src="{{ '/assets/js/autoterm.js' | relative_url }}?x={{ sig_trm }}"></script>
     <script defer src="{{ '/assets/js/syntax.js' | relative_url }}?x={{ sig_syn }}"></script>
+    <script defer src="{{ '/assets/js/greeting.js' | relative_url }}?x={{ sig_main }}"></script>
     <script defer src="{{ '/assets/js/main.js' | relative_url }}?x={{ sig_main }}"></script>
   </body>
 </html>

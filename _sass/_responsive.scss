@@ -113,12 +113,7 @@
   }
 
   .sys-hash-link {
-    /* Se o link for muito longo, ele retrai com "..." */
     font-size: 11px !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 65%; 
   }
 
 /* 7. UTILITIES & FOOTER PATCH */
