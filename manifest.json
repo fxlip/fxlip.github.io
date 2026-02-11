@@ -1,0 +1,22 @@
+{
+  "name": "Felip Barbosa de Medeiros",
+  "short_name": "fxlip",
+  "description": "Diário de estudos focado em Linux e Tecnologia.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#13121d",
+  "theme_color": "#13121d",
+  "icons": [
+    {
+      "src": "/assets/img/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/files/img/avatar/default.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    }
+  ]
+}

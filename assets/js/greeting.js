@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // =======================================================================
   function renderNamePrompt() {
     greetingBlock.style.display = "block";
-    greetingOutput.textContent = "É a sua primeira vez por aqui?";
+    greetingOutput.textContent = "Primeiro acesso detectado.";
 
     var inputLine = document.createElement("div");
     inputLine.innerHTML =
@@ -87,7 +87,13 @@ document.addEventListener("DOMContentLoaded", function() {
         'maxlength="30" autocomplete="off" spellcheck="false" ' +
         'placeholder="qual seu nome?">';
 
-    greetingBlock.appendChild(inputLine);
+    // Insere o input ABAIXO da descrição do site (próximo t-out irmão)
+    var siteDesc = greetingBlock.nextElementSibling;
+    if (siteDesc && siteDesc.classList.contains('t-out')) {
+      siteDesc.insertAdjacentElement('afterend', inputLine);
+    } else {
+      greetingBlock.appendChild(inputLine);
+    }
 
     var input = document.getElementById("greeting-input");
 

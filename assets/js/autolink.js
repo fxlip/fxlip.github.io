@@ -227,8 +227,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
        // 1. Fase de Escaneamento
        while(node = walk.nextNode()) {
-         // Ignora scripts ou estilos por segurança
+         // Ignora scripts, estilos e conteúdo de terminais
          if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') continue;
+         if (node.parentNode.closest('.terminal-box, .auto-term')) continue;
          
          // Testa se o texto contém o padrão
          if (regex.test(node.nodeValue)) {
