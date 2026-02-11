@@ -1,0 +1,12 @@
+name = "fxlip-visitor-api"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+ALLOWED_ORIGIN = "https://fxlip.com"
+
+# SALT must be set via: wrangler secret put SALT
+
+[[kv_namespaces]]
+binding = "VISITORS"
+id = "27924646fab64f9a82704b69d40d1568"
