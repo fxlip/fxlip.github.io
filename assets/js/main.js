@@ -79,22 +79,31 @@ document.addEventListener("DOMContentLoaded", function() {
       });
   };
 
-  window.registerView = function(slug) {
-    if (!WORKER_URL || !slug) return;
+  // Batch de views: acumula slugs e envia 1 POST a cada 2s
+  var viewQueue = [];
+  var viewTimer = null;
+
+  function flushViewQueue() {
+    if (!WORKER_URL || viewQueue.length === 0) return;
+    var slugs = viewQueue.splice(0);
     fetch(WORKER_URL + "/api/view", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ slug: slug }),
+      body: JSON.stringify({ slugs: slugs }),
     })
     .then(function(r) { return r.json(); })
     .then(function(data) {
-      var count = data.views || 0;
-      document.querySelectorAll('.view-counter[data-slug="' + slug + '"] .view-count')
-        .forEach(function(el) { el.textContent = count; });
-      var update = {}; update[slug] = count;
-      setViewsCache(update);
+      applyCountsToDOM(data);
+      setViewsCache(data);
     })
     .catch(function() {});
+  }
+
+  window.registerView = function(slug) {
+    if (!WORKER_URL || !slug) return;
+    if (viewQueue.indexOf(slug) === -1) viewQueue.push(slug);
+    clearTimeout(viewTimer);
+    viewTimer = setTimeout(flushViewQueue, 2000);
   };
 
   // ==========================================================================
