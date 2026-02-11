@@ -212,68 +212,61 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
 // ==========================================================================
-  // 6. CUSTOM SYNTAX HIGHLIGHTER (>> / << / ++) - TREEWALKER ENGINE
+  // 6. CUSTOM SYNTAX HIGHLIGHTER (>> / << / ++ / ^^) - TREEWALKER ENGINE
   // ==========================================================================
-  window.processSyntaxHighlighter = function() {
-    const contentDiv = document.querySelector('.post-content');
-    if (!contentDiv) return;
+  window.processSyntaxHighlighter = function(context) {
+    var containers = (context || document).querySelectorAll('.post-content');
+    if (containers.length === 0) return;
 
-    // Função interna que percorre apenas TEXTO (ignora tags e atributos)
-    const safeReplace = (regex, className, symbolToInsert) => {
-       // Cria um walker que só vê texto
-       const walk = document.createTreeWalker(contentDiv, NodeFilter.SHOW_TEXT, null, false);
-       let node;
-       const nodesToReplace = [];
+    containers.forEach(function(contentDiv) {
+      // Função interna que percorre apenas TEXTO (ignora tags e atributos)
+      const safeReplace = (regex, createEl, opts) => {
+         const skipTerminals = !opts || opts.skipTerminals !== false;
+         const walk = document.createTreeWalker(contentDiv, NodeFilter.SHOW_TEXT, null, false);
+         let node;
+         const nodesToReplace = [];
 
-       // 1. Fase de Escaneamento
-       while(node = walk.nextNode()) {
-         // Ignora scripts, estilos e conteúdo de terminais
-         if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') continue;
-         if (node.parentNode.closest('.terminal-box, .auto-term')) continue;
-         
-         // Testa se o texto contém o padrão
-         if (regex.test(node.nodeValue)) {
-           nodesToReplace.push(node);
+         while(node = walk.nextNode()) {
+           if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') continue;
+           if (skipTerminals && node.parentNode.closest('.terminal-box, .auto-term')) continue;
+           if (regex.test(node.nodeValue)) {
+             nodesToReplace.push(node);
+           }
          }
-       }
 
-       // 2. Fase de Cirurgia (Substituição)
-       nodesToReplace.forEach(node => {
-         const fragment = document.createDocumentFragment();
-         // Split pelo regex. Ex: "Texto >> Texto" vira ["Texto ", " Texto"]
-         const parts = node.nodeValue.split(regex);
-         
-         parts.forEach((part, index) => {
-            // Reinsere a parte de texto normal
-            if (part) {
-               fragment.appendChild(document.createTextNode(part));
-            }
-            
-            // Se não for o último pedaço, significa que entre este e o próximo havia o símbolo
-            if (index < parts.length - 1) {
-                const span = document.createElement('span');
-                span.className = className;
-                span.textContent = symbolToInsert;
-                fragment.appendChild(span);
-            }
+         nodesToReplace.forEach(node => {
+           const fragment = document.createDocumentFragment();
+           const parts = node.nodeValue.split(regex);
+
+           parts.forEach((part, index) => {
+              if (part) fragment.appendChild(document.createTextNode(part));
+              if (index < parts.length - 1) fragment.appendChild(createEl());
+           });
+
+           node.parentNode.replaceChild(fragment, node);
          });
-         
-         node.parentNode.replaceChild(fragment, node);
-       });
-    };
+      };
 
-    // --- EXECUÇÃO DAS REGRAS (O que faltava no seu código) ---
+      // Helpers para criar elementos simples
+      const simpleSpan = (cls, text) => () => {
+        const s = document.createElement('span');
+        s.className = cls;
+        s.textContent = text;
+        return s;
+      };
 
-    // 1. Output (>>) 
-    // Nota: TreeWalker lê ">", não "&gt;". A regex deve buscar o símbolo real.
-    safeReplace(/>>/g, 'neon-pipe', '>>');
+      // 1. Output (>>)
+      safeReplace(/>>/g, simpleSpan('neon-pipe', '>>'));
 
-    // 2. Input (<<)
-    safeReplace(/<</g, 'neon-in', '<<');
+      // 2. Input (<<)
+      safeReplace(/<</g, simpleSpan('neon-in', '<<'));
 
-    // 3. Add (++)
-    // Escapamos o + pois é caractere especial em Regex
-    safeReplace(/\+\+/g, 'neon-plus', '++');
+      // 3. Add (++)
+      safeReplace(/\+\+/g, simpleSpan('neon-plus', '++'));
+
+      // 4. Laugh (^^) — dois ombros animados (inclusive dentro de terminais)
+      safeReplace(/\^\^/g, simpleSpan('laugh-shrug', '^^'), { skipTerminals: false });
+    });
   };
 
   // TimeAgo (Aplica o cálculo nas datas)

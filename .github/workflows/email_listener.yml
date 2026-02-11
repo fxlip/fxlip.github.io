@@ -42,6 +42,8 @@ jobs:
           EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
           ALLOWED_SENDER: ${{ secrets.ALLOWED_SENDER }}
+          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+          WORKER_URL: "https://fxlip-visitor-api.fxlip.workers.dev"
           TZ: 'America/Sao_Paulo'
         run: |
           echo ">>> 1. Verificando E-mails..."
@@ -50,13 +52,16 @@ jobs:
           echo ">>> 2. Atualizando Link Cards..."
           bundle exec ruby scripts/generate_previews.rb
 
+          echo ">>> 3. Sincronizando Visitantes..."
+          ruby scripts/sync_visitors.rb
+
       - name: Commit and Push
         run: |
           git config user.name "kernel-bot"
           git config user.email "bot@fxlip.com"
           
           # Adiciona arquivos novos (files, posts, paginas)
-          git add _posts/ _root/ _data/previews.yml files/
+          git add _posts/ _root/ _data/previews.yml _data/visitors.yml files/
           
           if git diff --staged --quiet; then
             echo "Nenhuma alteração detectada. Encerrando."

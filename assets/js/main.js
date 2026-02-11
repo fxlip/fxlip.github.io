@@ -173,7 +173,8 @@ document.addEventListener("DOMContentLoaded", function() {
               if (window.applyMentions) window.applyMentions(post);
               if (window.processProgressBars) window.processProgressBars(post);
               if (window.processNeonPipes) window.processNeonPipes(post);
-              if (window.processTimeAgo) window.processTimeAgo(post); // [NEW] Datas Relativas
+              if (window.processSyntaxHighlighter) window.processSyntaxHighlighter(post);
+              if (window.processTimeAgo) window.processTimeAgo(post);
               if (window.processShareButtons) window.processShareButtons(post);
               
               // 2. Syntax Engine (syntax.js - Usa o JSON Central)

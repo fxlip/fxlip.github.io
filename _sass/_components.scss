@@ -261,6 +261,21 @@ a.link-card:hover .lc-site {
   display: inline-block;
 }
 
+/* Laugh Shrug (^^) */
+.laugh-shrug {
+  display: inline-block;
+  animation: shrug-bounce 0.4s ease-in-out 3;
+}
+
+@keyframes shrug-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .laugh-shrug { animation: none; }
+}
+
 /* ==========================================================================
    12. SYSTEM STEPS (CUSTOM ORDERED LISTS)
    Transforma "1." em "[01]" estilo index de array
