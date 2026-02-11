@@ -108,10 +108,11 @@ async function handleHello(request, env) {
 
 function buildGreeting(name, visits) {
   if (!name) return null;
-  if (visits >= 50) return `${name} \u2014 residente. #${visits} visitas.`;
-  if (visits >= 10) return `${name} \u2014 veterano. #${visits} visitas.`;
-  if (visits >= 6)  return `Ol\u00e1, ${name}. Visita #${visits}.`;
-  if (visits >= 3)  return `Bom te ver de novo, ${name}.`;
+  if (visits >= 50) return `Acabou minha criatividade para te saudar ${name}, essa é simplesmente a ${visits}º vez que você vem aqui!`;
+  if (visits >= 10) return `Essa é a ${visits}º vez que você vem aqui ${name}, curtiu né.`;
+  if (visits == 10) return `Obrigado pela sua décima visita!`;
+  if (visits >= 6)  return `Eai ${name}, ta curtindo?`;
+  if (visits >= 3)  return `${name}, né? Beleza`;
   return `Bem-vindo, ${name}!`;
 }
 

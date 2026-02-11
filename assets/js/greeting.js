@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // =======================================================================
   function renderNamePrompt() {
     greetingBlock.style.display = "block";
-    greetingOutput.textContent = "visitor: n\u00e3o identificado";
+    greetingOutput.textContent = "visitante n\u00e3o identificado";
 
     var inputLine = document.createElement("div");
     inputLine.innerHTML =
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
       '<span class="t-cmd">export USER=</span>' +
       '<input type="text" id="greeting-input" class="greeting-input" ' +
         'maxlength="30" autocomplete="off" spellcheck="false" ' +
-        'placeholder="seu nome">';
+        'placeholder="qual seu nome?">';
 
     greetingBlock.appendChild(inputLine);
 
