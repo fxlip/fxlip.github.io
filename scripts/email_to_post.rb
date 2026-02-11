@@ -275,4 +275,5 @@ begin
   imap.disconnect
 rescue => e
   puts "!! ERRO FATAL: #{e.message}"
+  exit 1
 end

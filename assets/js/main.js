@@ -1,9 +1,38 @@
 document.addEventListener("DOMContentLoaded", function() {
 
   // ==========================================================================
-  // 0. VIEW COUNTER SYSTEM
+  // 0. VIEW COUNTER SYSTEM (SWR: Stale-While-Revalidate)
   // ==========================================================================
   const WORKER_URL = document.body.dataset.workerUrl;
+  var VIEWS_CACHE_KEY = 'fxlip_views_cache';
+
+  function getViewsCache() {
+    try { return JSON.parse(localStorage.getItem(VIEWS_CACHE_KEY)) || {}; } catch (_) { return {}; }
+  }
+
+  function setViewsCache(updates) {
+    try {
+      var cache = getViewsCache();
+      Object.keys(updates).forEach(function(k) { cache[k] = updates[k]; });
+      localStorage.setItem(VIEWS_CACHE_KEY, JSON.stringify(cache));
+    } catch (_) {}
+  }
+
+  function applyCountsToDOM(data, counterMap) {
+    Object.keys(data).forEach(function(slug) {
+      var targets = counterMap ? counterMap[slug] : null;
+      if (!targets) {
+        targets = [];
+        document.querySelectorAll('.view-counter[data-slug="' + slug + '"]').forEach(function(c) { targets.push(c); });
+      }
+      if (targets) {
+        targets.forEach(function(c) {
+          var el = c.querySelector('.view-count');
+          if (el) el.textContent = data[slug] || 0;
+        });
+      }
+    });
+  }
 
   window.fetchViewCounts = function(context) {
     if (!WORKER_URL) return;
@@ -24,20 +53,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (slugs.length === 0) return;
 
+    // SWR: mostra cache imediato
+    var cache = getViewsCache();
+    var cached = {};
+    slugs.forEach(function(s) { if (cache[s] !== undefined) cached[s] = cache[s]; });
+    if (Object.keys(cached).length > 0) applyCountsToDOM(cached, counterMap);
+
+    // Revalida com dados frescos
     fetch(WORKER_URL + "/api/views?slugs=" + slugs.join(","))
       .then(function(r) { return r.json(); })
       .then(function(data) {
-        Object.keys(data).forEach(function(slug) {
-          if (counterMap[slug]) {
-            counterMap[slug].forEach(function(c) {
-              var el = c.querySelector('.view-count');
-              if (el) el.textContent = data[slug] || 0;
-              c.dataset.viewLoaded = "true";
-            });
-          }
+        applyCountsToDOM(data, counterMap);
+        setViewsCache(data);
+        slugs.forEach(function(s) {
+          if (counterMap[s]) counterMap[s].forEach(function(c) { c.dataset.viewLoaded = "true"; });
         });
       })
-      .catch(function() {});
+      .catch(function() {
+        // Worker offline: marca como loaded para não retentar
+        if (Object.keys(cached).length > 0) {
+          slugs.forEach(function(s) {
+            if (counterMap[s]) counterMap[s].forEach(function(c) { c.dataset.viewLoaded = "true"; });
+          });
+        }
+      });
   };
 
   window.registerView = function(slug) {
@@ -49,8 +88,11 @@ document.addEventListener("DOMContentLoaded", function() {
     })
     .then(function(r) { return r.json(); })
     .then(function(data) {
+      var count = data.views || 0;
       document.querySelectorAll('.view-counter[data-slug="' + slug + '"] .view-count')
-        .forEach(function(el) { el.textContent = data.views || 0; });
+        .forEach(function(el) { el.textContent = count; });
+      var update = {}; update[slug] = count;
+      setViewsCache(update);
     })
     .catch(function() {});
   };
