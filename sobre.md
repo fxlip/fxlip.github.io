@@ -37,13 +37,13 @@ Atualmente focado na certificação **LPIC-1** e no desenvolvimento de automaç�
 
 ### contato >>
 
-Sempre no [github](https://github.com/fxlip),
+Diáriamente no [github](https://github.com/fxlip),
 
-às vezes no [bsky](https://bsky.app/profile/fxlip.com) ou no [x](https://x.com/fxlip)
+Às vezes no [bsky](https://bsky.app/profile/fxlip.com) ou no [x](https://x.com/fxlip),
 
-e raramente no [instagram](https://instagram.com/bvrbosv).
+Raramente no [instagram](https://instagram.com/bvrbosv).
 
-Me manda um <a href="mailto:fxlip%40tuta.io?subject=Olar">e-mail</a>! ツ
+Sempre no <a href="mailto:fxlip%40tuta.io?subject=Olar">e-mail</a>! ツ
 
 ---
 
