@@ -44,7 +44,7 @@ hide_footer: true
     {% endif %}
   {% endif %}
 
-  <div class="post-footer" style="margin-top: 30px;">
+  <div class="post-footer" style="margin-top: 30px;" data-nosnippet>
     
     {% assign page_hash = page.url | replace: '.html', '' | replace: '/', ' ' | split: ' ' | last %}
     {% assign page_share_link = site.url | append: page.url | remove: '.html' %}

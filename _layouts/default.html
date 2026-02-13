@@ -42,7 +42,7 @@
     {%- if page.layout == "post" -%}
       {%- assign page_desc = page.content | strip_html | strip_newlines | truncate: 160 -%}
     {%- else -%}
-      {%- assign page_desc = "Meus dois kbytes de opnião sobre tecnologia. Um diário de estudos focado no Linux! Interesse por Hardware Livre e Segurança da Informação. Hater de IA." -%}
+      {%- assign page_desc = "Meus 2kb de opnião." -%}
     {%- endif -%}
     <meta name="description" content="{{ page_desc }}">
     <meta property="og:title" content="{% if page.layout == 'post' %}Felip Barbosa de Medeiros [{{ current_hash }}]{% else %}{{ page.title }}{% endif %}">
@@ -54,9 +54,9 @@
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "name": "Felip Barbosa de Medeiros",
+        "name": "Felip de Medeiros",
         "url": "{{ site.url }}",
-        "alternateName": ["fxlip", "fxlip.com"]
+        "alternateName": ["ㅤ"]
       },
       {
         "@context": "https://schema.org",
@@ -99,7 +99,7 @@
         {%- include footer.html -%}  
         {% endunless %}
     </div>
-    <div id="sys-toast" class="sys-toast-hidden">
+    <div id="sys-toast" class="sys-toast-hidden" data-nosnippet>
       <span class="sys-icon">✔</span>
       <span class="sys-msg">LINK COPIADO</span>
     </div>
