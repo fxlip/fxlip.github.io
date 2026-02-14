@@ -638,7 +638,7 @@ article.post {
   display: block; /* Comporta-se como bloco */
   
   /* [O SEGREDO] 'auto' nas laterais centraliza a imagem */
-  margin: 20px auto; 
+  margin: 20px auto 40px auto; 
   
   border-radius: 4px; /* Opcional: borda leve */
   //box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Sombra elegante */

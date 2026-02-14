@@ -175,7 +175,7 @@ begin
               'layout' => 'post',
               'title' => title_text,
               'date' => date.to_s,
-              'permalink' => "/#{slug}.html",
+              'permalink' => "/#{slug}",
               'categories' => ['feed'],
               'tags' => ['quicklog']
             }
