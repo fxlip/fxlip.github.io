@@ -9,7 +9,7 @@ muted: true
 ---
 
 
-> **103.5**
+> **103.6**
 
 ---
 
@@ -77,8 +77,8 @@ fxlip@www:~$
       <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">./footer.sh</span>
     </div>
     <div class="t-out">
->> @linux/103/6/niceness
-<< @linux/103/5/tasks
+>> @linux/103/7/regex
+<< @linux/103/6/necess
     </div>
   </div>
 </div>
