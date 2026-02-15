@@ -1,5 +1,5 @@
 ---
-title: setup
+title: feed
 permalink: /feed
 layout: home
 ---
