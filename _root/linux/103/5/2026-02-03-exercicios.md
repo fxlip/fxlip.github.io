@@ -14,9 +14,83 @@ muted: true
 ---
 
 
-> [x]
+> [1]
 
-xxx
+Faça a identificação das informações abaixo com os dados da instância Linux atual.
+
+- -> Total de Memória RAM utilizada (em MB)
+- -> Load Average (Média dos Últimos 5 minutos)
+- -> Quantidade de Processos em Execução
+- -> PID dos 3 processos que estão utilizando mais Memória (separe por vírgula)
+- -> PPID (Parent Process ID) dos 3 processos com maior tempo de Uso de CPU:
+
+Após isso crie um arquivo chamado relatorio.txt no Home de seu usuário contendo as informações citadas na ordem como foi pedido, o mesmo deve seguir o modelo:
+
+"Total de memória RAM 
+
+Load Average 
+
+Quantidade de processos (separados por vírgula) 
+
+.."
+
+<div class="terminal-box">
+  <div class="terminal-header">
+    <div class="terminal-controls">
+      <span class="win-btn btn-min">_</span>
+      <span class="win-btn btn-close">x</span>
+    </div>
+  </div>
+  
+  <div class="auto-term">
+  
+  </div>
+</div>
+
+---
+
+> [2]
+
+Atualmente existem 3 processos no sistema que estão usando bastante CPU, identifique e use os comandos necessários para encerrá-los.
+(Use o sudo quando necessitar de permissão)
+
+<div class="terminal-box">
+  <div class="terminal-header">
+    <div class="terminal-controls">
+      <span class="win-btn btn-min">_</span>
+      <span class="win-btn btn-close">x</span>
+    </div>
+  </div>
+  
+  <div class="auto-term">
+  
+  </div>
+</div>
+
+---
+
+> [3]
+
+Crie um comando, que gere um arquivo chamado /home/lpi/resultado-top.out , que contenha a saída do comando top , atualizado a cada 10 segundos, sendo executado indefinidamente até que o processo seja morto. O comando deve rodar em background.
+
+<div class="terminal-box">
+  <div class="terminal-header">
+    <div class="terminal-controls">
+      <span class="win-btn btn-min">_</span>
+      <span class="win-btn btn-close">x</span>
+    </div>
+  </div>
+  
+  <div class="auto-term">
+  
+  </div>
+</div>
+
+---
+
+> [4]
+
+Envie um sinal de SIGKILL para o processo iniciado no exercício anterior.
 
 <div class="terminal-box">
   <div class="terminal-header">
