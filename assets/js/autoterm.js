@@ -125,18 +125,11 @@ document.addEventListener("DOMContentLoaded", function() {
     rawTerminals.forEach(term => {
       // Prepara as linhas
       const rawLines = term.innerText.split('\n');
+
+      // Limpeza de bordas: remove linhas vazias do final e do início
       while (rawLines.length > 0 && rawLines[rawLines.length - 1].trim() === '') {
         rawLines.pop();
       }
-
-      // [FIX] LIMPEZA DE BORDAS DUPLA (Início e Fim)
-      
-      // 1. Remove linhas vazias do FINAL (Pop)
-      while (rawLines.length > 0 && rawLines[rawLines.length - 1].trim() === '') {
-        rawLines.pop();
-      }
-
-      // 2. Remove linhas vazias do INÍCIO (Shift) - AQUI ESTAVA FALTANDO
       while (rawLines.length > 0 && rawLines[0].trim() === '') {
         rawLines.shift();
       }
