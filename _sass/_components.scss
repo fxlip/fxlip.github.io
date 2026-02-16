@@ -442,6 +442,21 @@ a.link-card.internal-ref .lc-site:before {
   border: none !important;
 }
 
+/* --- VIDEO WRAPPER (16:9 responsivo) --- */
+.video-wrapper {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: black;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+.video-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 .embed-image-wrapper {
   display: block; margin: 15px 0; 
   border: 1px solid #44475a; border-radius: 6px; 

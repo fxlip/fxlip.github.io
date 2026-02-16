@@ -40,9 +40,9 @@ bc0bdcebae3b831b:
   video_id: APgfdlQYXoc
   image:
 fc31e673db143509:
-  title: HAQQIM BOR
-  description: "[ Children carry strange backpacks shaped like buildings &mdash; a
-    kindergarten, a school, a home. Inside each one, something is hidden &mdash; the
-    things adults&hellip;"
-  image:
+  title: Vídeo do Vimeo
+  description: Assista diretamente no terminal.
   url: https://vimeo.com/1089693714
+  video_id: '1089693714'
+  video_provider: vimeo
+  image:

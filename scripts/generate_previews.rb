@@ -91,6 +91,34 @@ def extract_og_data(html, url)
   { 'title' => title, 'description' => desc, 'image' => nil, 'url' => url }
 end
 
+def fetch_vimeo_data(url, vid_id)
+  begin
+    api_url = "https://vimeo.com/api/oembed.json?url=#{CGI.escape(url)}"
+    uri = URI.parse(api_url)
+    response = Net::HTTP.get(uri)
+    json = JSON.parse(response)
+    title = json['title'] || "Vídeo do Vimeo"
+    return {
+      'title' => title,
+      'description' => "Assista diretamente no terminal.",
+      'url' => url,
+      'video_id' => vid_id,
+      'video_provider' => 'vimeo',
+      'image' => nil
+    }
+  rescue => e
+    puts "   [ERRO] Vimeo API: #{e.message}"
+    return {
+      'title' => "Vídeo do Vimeo",
+      'description' => "Assista diretamente no terminal.",
+      'url' => url,
+      'video_id' => vid_id,
+      'video_provider' => 'vimeo',
+      'image' => nil
+    }
+  end
+end
+
 def fetch_youtube_data(url, vid_id)
   embed_url = "https://www.youtube-nocookie.com/embed/#{vid_id}"
   html = fetch_url(embed_url)
@@ -166,16 +194,21 @@ TARGET_DIRS.each do |dir_name|
 
     current_data = previews[slug]
     is_youtube = link =~ /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/
-    video_id = $1 if is_youtube
-    
+    yt_id = $1 if is_youtube
+    is_vimeo = !is_youtube && link =~ /vimeo\.com\/(\d+)/
+    vim_id = $1 if is_vimeo
+    is_video = is_youtube || is_vimeo
+
     has_image_garbage = current_data && current_data['image'] != nil
-    needs_fetch = !current_data || (is_youtube && !current_data['video_id'])
+    needs_fetch = !current_data || (is_video && !current_data['video_id'])
 
     if needs_fetch
       puts " [FETCH] #{slug} -> #{link}"
       data = nil
       if is_youtube
-        data = fetch_youtube_data(link, video_id)
+        data = fetch_youtube_data(link, yt_id)
+      elsif is_vimeo
+        data = fetch_vimeo_data(link, vim_id)
       elsif link =~ /https?:\/\/(www\.)?(twitter|x)\.com/
         proxy = link.gsub(%r{https?://(www\.)?(twitter|x)\.com}, 'https://fixupx.com')
         html = fetch_url(proxy)
