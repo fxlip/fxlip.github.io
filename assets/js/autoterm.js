@@ -7,7 +7,14 @@ document.addEventListener("DOMContentLoaded", function() {
   // ESTADO INTERNO (Sets vazios aguardando dados)
   let KNOWN_DIRS = new Set();
   let SYS_FILES = new Set();
-  let COMMANDS = new Set(); // Para identificar executáveis sem extensão
+  let COMMANDS = new Set();
+
+  // USER global: nome do visitante ou fallback
+  let VISITOR_NAME = 'fxlip';
+  try {
+    const stored = localStorage.getItem('fxlip_visitor_name');
+    if (stored && stored.trim()) VISITOR_NAME = stored.trim();
+  } catch (_) {}
 
   // ==========================================================================
   // 1. DATA LOADER (SWR Pattern — Fonte Única para todos os módulos)
@@ -158,10 +165,11 @@ document.addEventListener("DOMContentLoaded", function() {
         if (promptMatch) {
           const [_, user, host, path, symbol, cmd] = promptMatch;
           lastCmd = cmd.trim();
+          const displayUser = (user === 'fxlip') ? VISITOR_NAME : user;
 
           htmlBuffer += `
             <div>
-              <span class="t-user">${user}</span><span class="t-gray">@</span><span class="t-host">${host}</span><span class="t-gray">:</span><span class="t-path">${path.trim()}</span><span class="t-gray">${symbol}</span>
+              <span class="t-user">${escapeHtml(displayUser)}</span><span class="t-gray">@</span><span class="t-host">${host}</span><span class="t-gray">:</span><span class="t-path">${path.trim()}</span><span class="t-gray">${symbol}</span>
               <span class="t-cmd">${escapeHtml(cmd)}</span>
             </div>`;
         } else {
