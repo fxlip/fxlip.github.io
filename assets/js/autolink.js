@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
       }
     });
-    setTimeout(() => { document.querySelectorAll('.sys-load-bar').forEach(bar => { if (bar.dataset.width) bar.style.width = bar.dataset.width; }); }, 100);
+    requestAnimationFrame(() => { document.querySelectorAll('.sys-load-bar').forEach(bar => { if (bar.dataset.width) bar.style.width = bar.dataset.width; }); });
   };
 
   // Linkify Interno (fxlip.com/...)

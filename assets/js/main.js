@@ -80,12 +80,13 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   // Batch de views: acumula slugs e envia 1 POST a cada 2s
-  var viewQueue = [];
+  var viewQueue = new Set();
   var viewTimer = null;
 
   function flushViewQueue() {
-    if (!WORKER_URL || viewQueue.length === 0) return;
-    var slugs = viewQueue.splice(0);
+    if (!WORKER_URL || viewQueue.size === 0) return;
+    var slugs = Array.from(viewQueue);
+    viewQueue.clear();
     fetch(WORKER_URL + "/api/view", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -101,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   window.registerView = function(slug) {
     if (!WORKER_URL || !slug) return;
-    if (viewQueue.indexOf(slug) === -1) viewQueue.push(slug);
+    viewQueue.add(slug);
     clearTimeout(viewTimer);
     viewTimer = setTimeout(flushViewQueue, 2000);
   };
@@ -328,6 +329,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         ticking = true;
       }
-    });
+    }, { passive: true });
   }
 });

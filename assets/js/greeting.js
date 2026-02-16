@@ -67,6 +67,15 @@ document.addEventListener("DOMContentLoaded", function() {
     return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
+  function fetchWithTimeout(url, options, timeout) {
+    timeout = timeout || 5000;
+    var controller = new AbortController();
+    var id = setTimeout(function() { controller.abort(); }, timeout);
+    options = options || {};
+    options.signal = controller.signal;
+    return fetch(url, options).finally(function() { clearTimeout(id); });
+  }
+
   // =======================================================================
   // 3. RENDER: FIRST VISIT (Input)
   // =======================================================================
@@ -107,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function() {
       input.style.opacity = "0.5";
 
       getFingerprint().then(function(fp) {
-        return fetch(WORKER_URL + "/api/hello", {
+        return fetchWithTimeout(WORKER_URL + "/api/hello", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ fingerprint: fp, name: val }),
@@ -142,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
     getFingerprint().then(function(fp) {
       if (!storedName) {
         renderNamePrompt();
-        fetch(WORKER_URL + "/api/hello", {
+        fetchWithTimeout(WORKER_URL + "/api/hello", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ fingerprint: fp }),
