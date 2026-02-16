@@ -204,8 +204,29 @@ document.addEventListener("DOMContentLoaded", function() {
              }
           }
 
-          // ESTADO 3: TEXTO GENÉRICO
-          
+          // ESTADO 3: DIFF HIGHLIGHT
+          const isDiffContext = /\b(diff|patch|git)\b/.test(lastCmd);
+          if (isDiffContext) {
+            if (/^@@\s.*\s@@/.test(line)) {
+              htmlBuffer += `<div class="t-out t-diff-hdr">${escapeHtml(line)}</div>`;
+              return;
+            }
+            if (/^\+{3}\s/.test(line) || /^-{3}\s/.test(line)) {
+              htmlBuffer += `<div class="t-out t-diff-hdr">${escapeHtml(line)}</div>`;
+              return;
+            }
+            if (line.startsWith('+')) {
+              htmlBuffer += `<div class="t-out t-diff-add">${escapeHtml(line)}</div>`;
+              return;
+            }
+            if (line.startsWith('-')) {
+              htmlBuffer += `<div class="t-out t-diff-del">${escapeHtml(line)}</div>`;
+              return;
+            }
+          }
+
+          // ESTADO 4: TEXTO GENÉRICO
+
           // Compactação de espaços (ex: ls -l) para alinhar visualmente
           if (/^[-dcbpsl][-rwxst]{9}/.test(line) || /^total \d+/.test(line)) {
               line = line.replace(/[ \t]{4,}/g, '  ');

@@ -134,26 +134,69 @@ document.addEventListener("DOMContentLoaded", function() {
         }).then(function(res) { return res.json(); });
       }).then(function(data) {
         try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
-        renderGreeting(data.greeting || ("Bem-vindo, " + val + "!"));
+        renderGreeting(data);
       }).catch(function() {
         try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
-        renderGreeting("Bem-vindo, " + val + "!");
+        renderGreeting({ name: val, greeting: "Bem-vindo, " + val + "!" });
       });
     });
   }
 
   // =======================================================================
-  // 4. RENDER: RETURNING VISITOR
+  // 4. TIME AGO (ISO → texto relativo)
   // =======================================================================
-  function renderGreeting(text) {
-    greetingBlock.style.display = "block";
-    greetingBlock.innerHTML =
-      '<div>' +
-      '<div class="t-out">' + esc(text) + '</div>';
+  function timeAgo(isoString) {
+    if (!isoString) return null;
+    var now = Date.now();
+    var then = new Date(isoString).getTime();
+    var diff = Math.floor((now - then) / 1000);
+
+    if (diff < 60) return "agora mesmo";
+    if (diff < 3600) {
+      var m = Math.floor(diff / 60);
+      return "há " + m + " min";
+    }
+    if (diff < 86400) {
+      var h = Math.floor(diff / 3600);
+      return "há " + h + "h";
+    }
+    if (diff < 172800) return "ontem";
+    if (diff < 2592000) {
+      var d = Math.floor(diff / 86400);
+      return "há " + d + " dias";
+    }
+    if (diff < 31536000) {
+      var mo = Math.floor(diff / 2592000);
+      return "há " + mo + (mo === 1 ? " mês" : " meses");
+    }
+    return "há muito tempo";
   }
 
   // =======================================================================
-  // 5. MAIN
+  // 5. RENDER: RETURNING VISITOR (SSH-Style)
+  // =======================================================================
+  function renderGreeting(data) {
+    greetingBlock.style.display = "block";
+
+    var lastLine;
+    if (data.lastSeen) {
+      var ago = timeAgo(data.lastSeen);
+      var city = data.city || "desconhecido";
+      lastLine = "Último login: " + ago + ", de " + city;
+    } else {
+      lastLine = "Último login: primeiro acesso";
+    }
+
+    var greetLine = data.greeting || ("Bem-vindo, " + (data.name || "visitante") + "!");
+
+    greetingBlock.innerHTML =
+      '<div>' +
+      '<div class="t-gray">' + esc(lastLine) + '</div>' +
+      '<div class="t-out">' + esc(greetLine) + '</div>';
+  }
+
+  // =======================================================================
+  // 6. MAIN
   // =======================================================================
   function init() {
     var storedName = null;
@@ -176,11 +219,11 @@ document.addEventListener("DOMContentLoaded", function() {
         body: JSON.stringify({ fingerprint: fp, name: storedName }),
       }).then(function(res) { return res.json(); })
         .then(function(data) {
-          renderGreeting(data.greeting || ("Bem-vindo, " + storedName + "!"));
+          renderGreeting(data);
         });
     }).catch(function() {
       if (storedName) {
-        renderGreeting("Ol\u00e1, " + storedName + ".");
+        renderGreeting({ name: storedName, greeting: "Olá, " + storedName + "." });
       }
     });
   }

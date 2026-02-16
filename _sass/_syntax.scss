@@ -148,3 +148,8 @@ code[class*="c-"]:hover, code.tag:hover {
   font-weight: 700;
   text-decoration-color: var(--link-color);
 }
+
+/* 8. DIFF HIGHLIGHT */
+.t-diff-add { color: var(--green); }
+.t-diff-del { color: #ff5555; }
+.t-diff-hdr { color: var(--accent-cyan); font-weight: 700; }
