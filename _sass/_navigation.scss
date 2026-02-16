@@ -32,14 +32,10 @@ header nav {
 
 /* Estado: Terminal Mode (Fusão) */
 header.header-terminal-mode {
-  //background-color: var(--code-bg); 
-  
-  border-top-color: transparent; 
+  border-top-color: transparent;
   border-left: none;
   border-right: none;
-  border-bottom: none; 
-  
-  //box-shadow: var(--terminal-shadow);
+  border-bottom: none;
 }
 
 /* Itens do Menu */
@@ -118,7 +114,7 @@ header a.active {
 }
 
 header .terminal-box {
-    border-bottom: 1px solid #333545; 
+    border-bottom: 1px solid var(--border-dark);
 
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;

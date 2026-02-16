@@ -24,17 +24,6 @@ a.link-card {
   color: var(--text-color) !important;      
   
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
-  /* --- [CORREÇÃO DE BLUR v3.0 - GPU LOCK] --- */
-  /* Mantém o contexto 3D ativo o tempo todo para evitar rasterização */
-  transform: translate3d(0, 0, 0); 
-  
-  /* Mantém a nitidez da fonte */
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  
-  /* Evita flicker no 3D */
-  backface-visibility: hidden;
 }
 
 a.link-card.no-image { padding: 15px !important; min-height: auto; }
@@ -47,8 +36,7 @@ a.link-card:focus-visible {
 
 /* [HOVER STATE - BLINDADO] */
 a.link-card:hover {
-  /* [CORREÇÃO] Mantemos o contexto 3D ao mover apenas o Y */
-  transform: translate3d(0, -2px, 0); 
+  transform: translateY(-2px);
   
   /* Borda Rosa Suave */
   border-color: rgba(255, 121, 198, 0.5); 
@@ -115,7 +103,7 @@ a.link-card:hover .lc-host {
   margin-top: 8px; 
   font-size: 0.75em; 
   font-family: 'JetBrains Mono', monospace; 
-  color: #6272a4; 
+  color: var(--muted-color);
   text-transform: lowercase; 
   letter-spacing: 0.02em;
   display: flex; align-items: center; gap: 6px;
@@ -152,7 +140,7 @@ a.link-card:hover .lc-site {
   flex-grow: 1;
   background-color: rgba(40, 42, 54, 0.4);
   height: 14px;
-  border: 1px solid #44475a;
+  border: 1px solid var(--border-color);
   border-radius: 2px;
   position: relative;
   overflow: hidden;
@@ -208,8 +196,7 @@ a.link-card:hover .lc-site {
 /* Se 100%, fixa em Ciano sólido sem animação */
 .sys-load-bar[data-width="100%"] .sys-load-head {
   background-color: var(--accent-cyan);
-  box-shadow: 0 0 8px var(--accent-cyan); /* Glow reduzido */
-  filter: brightness(1);
+  box-shadow: 0 0 8px var(--accent-cyan);
   animation: none;
   opacity: 1;
 }
@@ -231,18 +218,13 @@ a.link-card:hover .lc-site {
 }
 
 @keyframes sys-head-breathe {
-  0% { 
-    opacity: 0.5; 
-    /* Brilho normal (cor original) e glow mínimo */
-    filter: brightness(1);
-    box-shadow: 0 0 2px var(--link-color); 
+  0% {
+    opacity: 0.5;
+    box-shadow: 0 0 2px var(--link-color);
   }
-  100% { 
-    opacity: 1;   
-    /* Aumenta o brilho da cor sem virar branco (1.5x) */
-    filter: brightness(1.5); 
-    /* Glow difuso, mas na cor rosa */
-    box-shadow: 0 0 12px var(--link-color); 
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 12px var(--link-color);
   }
 }
 
@@ -327,17 +309,17 @@ a.link-card:hover .lc-site {
    15. MENTION LINKS (@linux, @files) - FORÇAR CIANO
    ========================================================================== */
 .mention-link {
-  /* [CORREÇÃO 4] !important vence a injeção JS que colocava Rosa */
-  color: var(--accent-cyan) !important; 
+  color: var(--accent-cyan) !important;
   background-color: transparent !important;
   border: none !important;
-  
   font-family: 'JetBrains Mono', monospace;
-  font-weight: 400; 
+  font-weight: 400;
+  font-size: 1em;
+  letter-spacing: -0.02em;
   padding: 0 2px;
   display: inline-block;
   text-decoration: none !important;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .mention-link:hover {
@@ -404,8 +386,8 @@ a.link-card.internal-ref {
 
 /* --- UTILS: IMAGENS E TERMINAIS EMBUTIDOS --- */
 .embedded-terminal {
-  margin: 20px 0 !important;
-  border: 1px solid #bd93f9 !important; /* Roxo */
+  margin: 20px 0;
+  border: 1px solid var(--link-hover-color);
   background-color: var(--code-bg);
   border-radius: 6px;
   overflow: hidden;
@@ -438,20 +420,20 @@ a.link-card.internal-ref {
 
 .embed-image-wrapper {
   display: block; margin: 15px 0; 
-  border: 1px solid #44475a; border-radius: 6px; 
+  border: 1px solid var(--border-color); border-radius: 6px;
   overflow: hidden; background: #282a36;
 }
 .embed-image { max-width: 100%; display: block; }
 .embed-caption { 
   display: block; padding: 6px 12px; font-size: 12px; 
   font-family: 'JetBrains Mono', monospace; color: var(--base-color); 
-  background-color: var(--card-bg); border-top: 1px solid #44475a; 
+  background-color: var(--card-bg); border-top: 1px solid var(--border-color); 
 }
 
 .rt-loading {
   display: block; margin: 15px 0; padding: 12px;
-  color: #6272a4; background: rgba(40, 42, 54, 0.3);
-  border: 1px dashed #44475a; border-radius: 6px;
+  color: var(--muted-color); background: rgba(40, 42, 54, 0.3);
+  border: 1px dashed var(--border-color); border-radius: 6px;
   font-family: monospace; font-size: 13px;
 }
 
@@ -492,8 +474,8 @@ a.link-card.internal-ref {
 }
 
 /* Hover: Reply vira Verde, Share vira Amarelo (ou Roxo) */
-.reply-btn:hover { color: #50fa7b; transform: translateY(-1px); }
-.share-btn:hover { color: #f1fa8c; transform: translateY(-1px); }
+.reply-btn:hover { color: var(--green); transform: translateY(-1px); }
+.share-btn:hover { color: var(--yellow); transform: translateY(-1px); }
 
 /* Focus: Acessibilidade via teclado */
 .action-btn:focus-visible,
@@ -510,8 +492,8 @@ a.link-card.internal-ref {
   left: 50%;
   transform: translateX(-50%) translateY(5px);
   background-color: var(--code-bg);
-  border: 1px solid #f1fa8c;
-  color: #f1fa8c;
+  border: 1px solid var(--yellow);
+  color: var(--yellow);
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 10px;
@@ -553,8 +535,8 @@ a.link-card.internal-ref {
   
   /* Visual Hacker */
   background-color: rgba(15, 14, 20, 0.95); /* Fundo quase preto sólido */
-  border: 1px solid #50fa7b; /* Borda Verde Neon */
-  color: #50fa7b;
+  border: 1px solid var(--green); /* Borda Verde Neon */
+  color: var(--green);
   
   padding: 12px 24px;
   border-radius: 4px;
@@ -564,7 +546,7 @@ a.link-card.internal-ref {
   letter-spacing: 0.5px;
   
   /* Efeitos de Luz */
-  box-shadow: 0 0 15px rgba(80, 250, 123, 0.2);
+  box-shadow: 0 0 15px rgba(80, 250, 123, 0.15);
   backdrop-filter: blur(4px);
   
   z-index: 9999; /* Acima de tudo, inclusive header */
@@ -588,7 +570,7 @@ a.link-card.internal-ref {
 /* O Ícone de Check */
 #sys-toast .sys-icon {
   font-size: 16px;
-  color: #50fa7b;
+  color: var(--green);
 }
 
 /* Responsividade Mobile */
@@ -635,7 +617,6 @@ article.post {
   margin: 20px auto 40px auto; 
   
   border-radius: 4px; /* Opcional: borda leve */
-  //box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Sombra elegante */
 }
 
 /* Ajuste para Mobile */
@@ -652,7 +633,7 @@ article.post {
 /* Quando o corpo tem esta classe (ativada pelo Front Matter), consertamos a caixa */
 .no-header-mode .terminal-box {
   /* Devolve a borda superior que o header roubou */
-  border-top: 1px solid #44475a; 
+  border-top: 1px solid var(--border-color);
   
   /* Devolve o arredondamento completo */
   border-radius: 6px; 

@@ -207,8 +207,14 @@ document.addEventListener("DOMContentLoaded", function() {
           
           // Highlight de executáveis conhecidos no meio do texto
           safeContent = safeContent.replace(
-              /\b([\w.-]+\.(sh|bash|py|rb|pl|run|bin|appimage))\b/g, 
+              /\b([\w.-]+\.(sh|bash|py|rb|pl|run|bin|appimage))\b/g,
               '<span class="x">$1</span>'
+          );
+
+          // Highlight de [match] (grep-style)
+          safeContent = safeContent.replace(
+              /\[([^\]]*[a-zA-ZÀ-ú][^\]]*)\]/g,
+              '<span class="t-match">[$1]</span>'
           );
 
           htmlBuffer += `<div class="t-out">${safeContent}</div>`;
