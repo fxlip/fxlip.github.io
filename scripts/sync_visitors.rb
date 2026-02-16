@@ -2,6 +2,7 @@ require 'net/http'
 require 'json'
 require 'yaml'
 require 'uri'
+require 'fileutils'
 
 WORKER_URL = ENV['WORKER_URL'] || "https://fxlip-visitor-api.fxlip.workers.dev"
 ADMIN_TOKEN = ENV['ADMIN_TOKEN']
@@ -14,15 +15,28 @@ end
 
 puts "[ SYNC ] Buscando relatório de visitantes..."
 
-uri = URI("#{WORKER_URL}/api/report?token=#{ADMIN_TOKEN}")
-response = Net::HTTP.get_response(uri)
+uri = URI("#{WORKER_URL}/api/report")
+http = Net::HTTP.new(uri.host, uri.port)
+http.use_ssl = (uri.scheme == 'https')
+http.open_timeout = 10
+http.read_timeout = 10
+
+request = Net::HTTP::Get.new(uri.path)
+request['Authorization'] = "Bearer #{ADMIN_TOKEN}"
+
+response = http.request(request)
 
 if response.code != "200"
   puts "!! ERRO: Worker retornou HTTP #{response.code}"
   exit 1
 end
 
-data = JSON.parse(response.body)
+begin
+  data = JSON.parse(response.body)
+rescue JSON::ParserError => e
+  puts "!! ERRO: Resposta inválida do Worker: #{e.message}"
+  exit 1
+end
 
 report = {
   "generated" => data["generated"],
@@ -32,5 +46,6 @@ report = {
   "views" => data["views"]
 }
 
+FileUtils.mkdir_p(File.dirname(OUTPUT_FILE))
 File.write(OUTPUT_FILE, YAML.dump(report))
 puts "[ OK ] #{OUTPUT_FILE} atualizado: #{data['total_visitors']} visitantes, #{data['total_pages']} páginas."
