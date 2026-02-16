@@ -106,6 +106,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var input = document.getElementById("greeting-input");
 
+    // Máscara: lowercase, espaço→hífen, sem caracteres especiais
+    input.addEventListener("input", function() {
+      var pos = input.selectionStart;
+      var original = input.value;
+      var masked = original.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9à-ú\-]/g, "").replace(/-{2,}/g, "-");
+      if (masked !== original) {
+        input.value = masked;
+        input.selectionStart = input.selectionEnd = Math.min(pos, masked.length);
+      }
+    });
+
     input.addEventListener("keydown", function(e) {
       if (e.key !== "Enter") return;
       e.preventDefault();
