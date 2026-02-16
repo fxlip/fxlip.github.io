@@ -4,7 +4,12 @@ require 'json'
 
 # --- CONFIGURAÇÃO ---
 HOST = "fxlip.com"
-KEY = ENV.fetch('INDEXNOW_KEY') { abort "[ERRO] Variável INDEXNOW_KEY não definida." }
+if ENV['INDEXNOW_KEY'].nil? || ENV['INDEXNOW_KEY'].empty?
+  puts "   [AVISO] Sem INDEXNOW_KEY. Ignorando ping, mas mantendo deploy verde."
+  exit 0 
+end
+KEY = ENV['INDEXNOW_KEY']
+
 KEY_LOCATION = "https://fxlip.com/#{KEY}.txt"
 
 # Endpoint oficial do IndexNow (O Bing replica para os outros)
@@ -44,4 +49,7 @@ rescue Net::OpenTimeout, Net::ReadTimeout => e
   puts "   [ERRO] Timeout na conexão: #{e.message}"
 rescue => e
   puts "   [ERRO] Falha na conexão: #{e.class} - #{e.message}"
+rescue => e
+  puts "   [ERRO NÃO-FATAL] IndexNow falhou: #{e.message}"
+  exit 0
 end
