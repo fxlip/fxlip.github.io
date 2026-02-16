@@ -144,8 +144,7 @@ code[class*="c-"]:hover, code.tag:hover {
 
 /* 7. GREP MATCH HIGHLIGHT ([match]) */
 .t-match {
-  color: #ffffff;
-  background-color: rgba(255, 121, 198, 0.25);
-  border-radius: 2px;
-  padding: 0 1px;
+  color: #646464;
+  font-weight: 700;
+  text-decoration-color: var(--link-color);
 }
