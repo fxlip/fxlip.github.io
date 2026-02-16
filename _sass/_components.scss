@@ -385,41 +385,20 @@ a.link-card:hover .lc-site {
   opacity: 0.9;
 }
 
-/* --- CARDS INTERNOS (INTERNAL REFS) - BLINDAGEM v2 --- */
+/* --- CARDS INTERNOS (INTERNAL REFS / QUOTES) --- */
 a.link-card.internal-ref {
-    padding: 12px !important;
+    padding: 12px 15px !important;
     min-height: auto !important;
 
     .lc-meta { padding: 0 !important; }
 
     .lc-desc {
-        color: var(--text-color) !important; /* Força cor do texto normal */
-        font-size: 0.9em;
-        margin-bottom: 8px;
-        display: block !important;
+        color: var(--base-color);
+        font-size: inherit;
+        line-height: 1.6;
+        margin: 0;
+        display: block;
     }
-
-    .lc-site {
-        color: var(--accent-cyan) !important; /* A data fica em destaque ciano */
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 10px;
-        text-transform: uppercase;
-        
-        // Mata a seta ↗ e o ícone original
-        &::before, &::after { content: "" !important; display: none !important; }
-    }
-
-    // Garante que o título antigo não apareça nem como fantasma
-    .lc-host { display: none !important; visibility: hidden; }
-}
-
-/* [EXTERMINADOR DE SETA] Remove o ícone ↗ */
-a.link-card.internal-ref .lc-site::before,
-a.link-card.internal-ref .lc-site:before {
-  content: "" !important;
-  margin-right: 0 !important;
-  display: none !important;
-  width: 0 !important;
 }
 
 

@@ -1,0 +1,28 @@
+{% assign item_hash = include.item.url | replace: '.html', '' | replace: '/', ' ' | split: ' ' | last %}
+{% assign item_share_link = site.url | append: include.item.url | remove: '.html' %}
+<div class="post-footer" style="margin-top: {{ include.margin | default: '15px' }};"{% if include.nosnippet %} data-nosnippet{% endif %}>
+  <div class="sys-meta-group">
+    <a href="mailto:fxlip%40tuta.io?subject={{ item_hash }}" class="action-btn reply-btn" title="Responder via Email">
+      <svg viewBox="0 0 24 24"><polyline points="9 14 4 9 9 4"></polyline><path d="M20 20v-7a4 4 0 0 0-4-4H4"></path></svg>
+    </a>
+    <a href="#" class="action-btn share-btn" data-link="{{ item_share_link }}" title="Copiar Link" onclick="return false;">
+      <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+    </a>
+    <span class="view-counter" data-slug="{{ item_hash }}" title="Views">
+      <svg viewBox="0 0 24 24" class="view-icon"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+      <span class="view-count">-</span>
+    </span>
+    {% if include.static_hash %}
+      <span class="sys-hash-link static-mode" title="./{{ item_hash }}">
+        {{ item_hash }}
+      </span>
+    {% else %}
+      <a href="{{ include.item.url | remove: '.html' }}" class="sys-hash-link" title="./{{ item_hash }}">
+        {{ item_hash }}
+      </a>
+    {% endif %}
+  </div>
+  <time class="sys-date" datetime="{{ include.item.date | date_to_xmlschema }}">
+    {{ include.item.date | date: "%H:%M" }} · {{ include.item.date | date: "%-d de %b de %Y" | downcase }}
+  </time>
+</div>
