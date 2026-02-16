@@ -190,6 +190,11 @@ document.addEventListener("DOMContentLoaded", function() {
       if (regex.test(area.innerHTML)) {
           regex.lastIndex = 0;
           area.innerHTML = area.innerHTML.replace(regex, function(match, path) {
+            if (path === 'USER') {
+              let name = 'visitante';
+              try { const s = localStorage.getItem('fxlip_visitor_name'); if (s && s.trim()) name = s.trim(); } catch (_) {}
+              return `<span class="t-user">${escapeHtml(name)}</span>`;
+            }
             const safePath = escapeHtml(path);
             const url = `/${safePath}`;
             if (path.match(/\.(jpg|jpeg|png|gif|svg)$/i)) return `<span class="embed-image-wrapper"><img src="${url}" class="embed-image" alt="${safePath}" onerror="this.style.display='none'"><span class="embed-caption">./${safePath}</span></span>`;
