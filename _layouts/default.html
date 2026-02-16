@@ -94,6 +94,7 @@
       {% unless page.hide_header or layout.hide_header %}
         {%- include header.html -%}
       {% endunless %}
+      <main>
       {{ content }}
       </main>{% unless page.collection == 'root' or page.hide_footer or layout.hide_footer %}
         {%- include footer.html -%}  
