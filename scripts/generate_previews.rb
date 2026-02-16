@@ -22,12 +22,14 @@ UA_SOCIAL = 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatex
 puts "--- INICIANDO PROTOCOLO DE PREVIEWS ---"
 
 BLOCKED_RANGES = [
+  IPAddr.new('0.0.0.0/8'),
   IPAddr.new('127.0.0.0/8'),
   IPAddr.new('10.0.0.0/8'),
   IPAddr.new('172.16.0.0/12'),
   IPAddr.new('192.168.0.0/16'),
   IPAddr.new('169.254.0.0/16'),
   IPAddr.new('::1/128'),
+  IPAddr.new('fe80::/10'),
   IPAddr.new('fc00::/7')
 ].freeze
 
@@ -67,7 +69,11 @@ def fetch_url(url, limit = 5, use_social_ua = false)
       end
       fetch_url(new_loc, limit - 1, use_social_ua)
     else nil end
+  rescue Net::OpenTimeout, Net::ReadTimeout => e
+    puts "   [TIMEOUT] #{url}: #{e.message}"
+    nil
   rescue => e
+    puts "   [ERRO] #{url}: #{e.class} - #{e.message}"
     nil
   end
 end
@@ -159,7 +165,7 @@ def apply_domain_rules(data, url)
 end
 
 previews = File.exist?(PREVIEWS_FILE) ? YAML.safe_load_file(PREVIEWS_FILE, permitted_classes: [Symbol]) : {}
-previews ||= {}
+previews = {} unless previews.is_a?(Hash)
 updated = false
 
 TARGET_DIRS.each do |dir_name|
