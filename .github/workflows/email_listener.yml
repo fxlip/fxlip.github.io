@@ -56,6 +56,8 @@ jobs:
           ruby scripts/sync_visitors.rb
 
       - name: Commit and Push
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
         run: |
           git config user.name "kernel-bot"
           git config user.email "bot@fxlip.com"
@@ -79,6 +81,6 @@ jobs:
             git push
 
             echo ">>> Disparando Pings..."
-            ruby scripts/index_now.rb
+            ruby scripts/index_now.rb || echo "WARNING: IndexNow falhou, mas o deploy segue vivo."
 
           fi
