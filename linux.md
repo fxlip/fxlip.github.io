@@ -20,10 +20,9 @@ hide_footer: true
     </div>
     <div class="t-out">
 Roadmap da certificação LPI-1
-101-500:  29/01/2026-31/04/2026
-102-500:  13/04/2026-09/06/2026
 Começa em @linux/103/1/bash
 Comentários no @feed
+Dúvidas na @busca
     </div>
     <div>
       <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/linux</span><span class="t-gray">$</span> <span class="t-cmd">tree -L 3</span>
