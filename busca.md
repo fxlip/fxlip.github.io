@@ -1,6 +1,6 @@
 ---
-title: pesquisa
-permalink: /pesquisa
+title: busca
+permalink: /busca
 layout: home
 ---
 <script>

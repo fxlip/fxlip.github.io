@@ -216,7 +216,47 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   };
 
-// ==========================================================================
+// Hash-Menções (#cmd → link para busca)
+  window.applyHashMentions = function(context = document) {
+    const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .t-out');
+    const regex = /#([a-zA-Z][a-zA-Z0-9_\-\.]*)/g;
+
+    contentAreas.forEach(area => {
+      if (area.dataset.hashMentionsProcessed) return;
+      area.dataset.hashMentionsProcessed = 'true';
+
+      const walker = document.createTreeWalker(area, NodeFilter.SHOW_TEXT, null, false);
+      const nodesToReplace = [];
+      let node;
+      while ((node = walker.nextNode())) {
+        const tag = node.parentElement.tagName;
+        if (['A', 'SCRIPT', 'STYLE', 'CODE', 'PRE'].includes(tag)) continue;
+        regex.lastIndex = 0;
+        if (regex.test(node.nodeValue)) nodesToReplace.push(node);
+      }
+
+      nodesToReplace.forEach(node => {
+        const fragment = document.createDocumentFragment();
+        const parts = node.nodeValue.split(/(#[a-zA-Z][a-zA-Z0-9_\-\.]*)/g);
+        parts.forEach(part => {
+          const m = part.match(/^#([a-zA-Z][a-zA-Z0-9_\-\.]*)$/);
+          if (m) {
+            const a = document.createElement('a');
+            a.href = '/s?=' + encodeURIComponent(m[1]);
+            a.className = 'mention-link';
+            a.title = 'grep ' + m[1];
+            a.textContent = part;
+            fragment.appendChild(a);
+          } else {
+            fragment.appendChild(document.createTextNode(part));
+          }
+        });
+        node.parentNode.replaceChild(fragment, node);
+      });
+    });
+  };
+
+  // ==========================================================================
   // 6. CUSTOM SYNTAX HIGHLIGHTER (>> / << / ++ / ^^) - TREEWALKER ENGINE
   // ==========================================================================
   window.processSyntaxHighlighter = function(context) {
@@ -332,6 +372,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // Fase 1: Processadores visuais críticos (afetam layout/conteúdo visível)
   window.processProgressBars();
   window.applyMentions();
+  window.applyHashMentions();
   window.processTimeAgo();
 
   // Fase 2: Processadores secundários (links, embeds, highlight) — deferidos

@@ -67,7 +67,7 @@ Filtra comandos, funções e programas indexados.
 <script>
 const SEARCH_INDEX=[{% for pair in unique_pairs %}{% if pair != "" %}{%- assign ep = pair | split: "¦" -%}{"c":{{ ep[0] | jsonify }},"u":{{ ep[1] | jsonify }},"t":{{ ep[2] | jsonify }}},{% endif %}{% endfor %}];
 
-(function(){
+document.addEventListener('DOMContentLoaded', function(){
   const input  = document.getElementById('search-input');
   const output = document.getElementById('grep-output');
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -131,5 +131,5 @@ const SEARCH_INDEX=[{% for pair in unique_pairs %}{% if pair != "" %}{%- assign 
   const q0  = new URLSearchParams(qs).get('') || '';
   if(q0){ input.value=q0; input.style.width=q0.length+'ch'; doSearch(q0); }
   input.focus();
-})();
+});
 </script>
