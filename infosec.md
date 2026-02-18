@@ -22,8 +22,9 @@ hide_footer: true
 Roadmap da pós-graduação em SI
 Start:  01/04/2026-26/06/2026
 Middle: 03/08/2026-09/12/2026
-Finish: 01/02/2027-27/03/2027
-Comentários no @feed
+End:    01/02/2027-27/03/2027
+~~~VEM AÍ~~~
+Voltar pro @feed
     </div>
     <div>
       <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/infosec</span><span class="t-gray">$</span> <span class="t-cmd">tree -L 3</span>

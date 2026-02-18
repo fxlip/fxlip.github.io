@@ -78,6 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   const trimOutput = () => {
     document.querySelectorAll('.t-out').forEach(el => {
+      if (el.hasAttribute('data-no-trim')) return;
       let html = el.innerHTML;
       if (!html.trim()) { el.innerHTML = ""; return; }
       html = html.replace(/^\s*\n/, '').replace(/\n\s*$/, '');

@@ -185,6 +185,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .terminal-window p, .terminal-window div, .t-out');
     contentAreas.forEach(area => {
       if (area.dataset.mentionsProcessed) return;
+      if (area.querySelector('input, textarea, select')) return;
       const regex = /@([a-zA-Z0-9_\-\/\.]+)/g;
       regex.lastIndex = 0;
       if (regex.test(area.innerHTML)) {
