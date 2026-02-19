@@ -110,6 +110,19 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
       }
 
+      // Prioridade especial: ls sempre ciano, glob/expressão em rosa
+      if (baseCmd === 'ls') {
+        code.classList.add('tag', 'x');
+        const parts = text.split(/(\s+)/);
+        const html = parts.map(part => {
+          if (/^\s+$/.test(part) || part === 'ls' || part.startsWith('-')) return part;
+          if (/[*?[\]{}]/.test(part)) return `<span class="c-rx">${part}</span>`;
+          return part;
+        }).join('');
+        if (html !== text) code.innerHTML = html;
+        return;
+      }
+
       // Expressões Regulares (contém metacaracteres regex) — Rosa
       if (/[*+?^$[\](){}|\\]/.test(text) && text.length > 1) {
         code.classList.add('tag', 'k'); // Rosa (= code.c-op)

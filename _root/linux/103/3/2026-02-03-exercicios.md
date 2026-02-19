@@ -9,11 +9,11 @@ muted: true
 ---
 
 
-> **103.3**
+# 103.3
 
 ---
 
-> [1]
+## [1]
 
 No home de seu usuário, crie um diretório chamado LPI1, dentro dele crie Aulas, Exercicios e Exemplos.
 
@@ -51,7 +51,7 @@ Argumentos obrigatórios para opções longas também o são para opções curta
 
 ---
 
-> [2]
+## [2]
 
 Copie (não mova) todos os arquivos e diretórios existentes em `/etc/network/` para `/home/lpi/LPI1/Exercicios/Network/` . Mantenha as mesmas permissões incluindo as informações de proprietário dos arquivos.
 
@@ -146,7 +146,7 @@ Argumentos obrigatórios para opções longas também o são para opções curta
 ---
 
 
-> [3]
+## [3]
 
 Copie (não mova) todos os arquivos do diretório `/etc`, cujo nome termine com ".conf" para `/home/lpi/LPI1/Exercicios/Config/`
 
@@ -169,7 +169,7 @@ fxlip@www:~$
 ---
 
 
-> [4]
+## [4]
 
 Em `/home/lpi/LPI1/Exercicios`, crie um arquivo chamado arquivos-cron.tgz, compactado com o gzip, contendo todos os arquivos e diretórios do `/etc` que contenham a palavra "cron" no nome.
 
@@ -239,7 +239,7 @@ tar -xf archive.tar          # Extract all files from archive.tar.
 ---
 
 
-> [5]
+## [5]
 
 Descompacte conteúdo do arquivo arquivos-cron.tgz dentro do diretório:
 
@@ -297,7 +297,7 @@ fxlip@www:~$
 ---
 
 
-> [6]
+## [6]
 
 Encontre todos os arquivos do diretório `/var/log/lpi` , cujo nome termine com ".log" e cujo conteúdo foi modificado nas últimas 48 horas.
 
@@ -379,7 +379,7 @@ fxlip@www:~$
 ---
 
 
-> [7]
+## [7]
 
 Encontre os arquivos que estão como dono o usuário felip presentes em `/var/log` e subdiretórios sequentes e faça a cópia dos arquivos somente, para o diretório `logs_felip` que deverá ser criado no `HOME` do usuário lpi.
 

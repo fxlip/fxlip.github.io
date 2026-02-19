@@ -9,11 +9,11 @@ muted: true
 ---
 
 
-> **103.2**
+# 103.2
 
 ---
 
-> [1]
+## [1]
 
 O arquivo `/etc/passwd` contém a lista de usuários do Linux, os campos são separados pelo caractere :, o primeiro campo indica o nome do usuário e o terceiro o ID do usuário.
 
@@ -52,7 +52,7 @@ fxlip@www:~$
 
 ---
 
-> [2]
+## [2]
 
 No comando `sort`, o `-t` define o delimitador, o `-k` o campo referência para o ordenamento, e o `-g` ordena como números ao invés de como caracteres
 
@@ -144,13 +144,13 @@ fxlip@www:~$
 
 ---
 
-> [3]
+## [3]
 
 No diretório foi adicionado um arquivo chamado file.txt aonde contém um texto de exemplo. Com isso pegue as seguintes informações do arquivo:
 
-->> Quantidade de caracteres `-m` `--chars`
+-> Quantidade de caracteres `-m` `--chars`
 
-->> Quantidade de palavras `-w` `--words`
+-> Quantidade de palavras `-w` `--words`
 
 <div class="terminal-box">
   <div class="terminal-header">
