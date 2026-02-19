@@ -112,8 +112,9 @@ Dúvidas na @busca
          {%- assign target_item = nil -%}
          
          {%- for item in linux_items -%}
-            {%- assign check_path = prefix1 | append: child -%}
-            {%- if item.url == check_path or item.url == check_path | append: "/" -%}
+            {%- assign check_path = prefix1 | append: child -%}      
+            {% assign path_with_slash = check_path | append: "/" %}
+            {% if item.url == check_path or item.url == path_with_slash %}
                {%- assign is_file = true -%}
                {%- assign target_item = item -%}
                {%- break -%}

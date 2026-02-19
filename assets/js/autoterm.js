@@ -67,7 +67,10 @@ document.addEventListener("DOMContentLoaded", function() {
     if (data.directories) KNOWN_DIRS = new Set(data.directories);
     if (data.system_files) SYS_FILES = new Set(data.system_files);
     if (data.commands) COMMANDS = new Set(data.commands);
-    
+
+    // Expõe para outros módulos (ex: classify em s.md)
+    window.__knowledge = { commands: COMMANDS, dirs: KNOWN_DIRS, files: SYS_FILES };
+
     // Dispara a renderização assim que tiver dados
     window.renderTerminalWindows();
   };

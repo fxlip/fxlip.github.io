@@ -45,12 +45,15 @@ code a:hover, a code:hover {
 }
 
 /* 3. SEMANTIC HIGHLIGHTING */
+code.c-key { color: #6272a4 !important; font-weight: 400 !important; letter-spacing: 0.02em; }
+
 code.c-cmd, code.tag.x, code.tag.d {
   color: var(--accent-cyan) !important;
   font-weight: 700 !important;
   border-color: rgba(139, 233, 253, 0.2);
   background-color: rgba(139, 233, 253, 0.05);
 }
+code.c-flag { color: var(--yellow) !important; font-weight: 700 !important; }
 code.c-var, code.tag.m { color: #ffb86c !important; font-weight: 700 !important; }
 code.c-op, code.tag.k { color: var(--link-color) !important; font-weight: 700 !important; }
 code.c-path, code.tag.f { color: var(--link-hover-color) !important; font-style: italic; font-weight: 400 !important; }

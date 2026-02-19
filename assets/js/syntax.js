@@ -72,46 +72,65 @@ document.addEventListener("DOMContentLoaded", function() {
       code.classList.remove('language-plaintext', 'highlighter-rouge');
 
       // --- 1. HIGHEST PRIORITY: HARD SYNTAX ---
-      
-      // Flags (-r, --help) - Mantém neutro ou aplica cor se desejar
-      if (text.startsWith('-')) {
-        return; 
-      }
 
-      // Executável Forçado ($comando)
-      if (text.startsWith('$') && text.length > 1) {
-        code.classList.add('tag', 'x');
-        code.innerText = text.substring(1); 
+      // Variáveis de shell ($HOME, $PATH, $?, $1...) — Laranja
+      if (text.startsWith('$')) {
+        code.classList.add('tag', 'm');
         return;
       }
 
-      // Caminhos Absolutos ou Relativos (/etc, ./script, ~/)
+      // Flags/opções (-r, --help) — Amarelo
+      if (text.startsWith('-')) {
+        code.classList.add('c-flag');
+        return;
+      }
+
+      // Caminhos Absolutos ou Relativos (/etc, ./script, ~/) — Roxo
       if (text.startsWith('/') || text.startsWith('./') || text.startsWith('~/') || text.endsWith('/')) {
-        code.classList.add('tag', 'd'); // Trata como diretório/caminho (Ciano/Roxo)
+        code.classList.add('tag', 'f'); // roxo itálico (= code.c-path)
+        return;
+      }
+
+      // Keystrokes tipo [CTRL+X], [CTRL+B] + [C] — detecta ANTES do regex
+      if (/^\[.+?\](\s*\+\s*\[.+?\])*$/.test(text)) {
+        code.classList.add('c-key');
+        return;
+      }
+
+      // Expressões Regulares (contém metacaracteres regex) — Rosa
+      if (/[*+?^$[\](){}|\\]/.test(text) && text.length > 1) {
+        code.classList.add('tag', 'k'); // Rosa (= code.c-op)
         return;
       }
 
       // --- 2. KNOWLEDGE BASE MATCHING ---
 
-      // A. Comandos (Ciano)
+      // A. Comandos exatos (Ciano)
       if (COMMAND_LIST.has(text)) {
         code.classList.add('tag', 'x');
         return;
       }
 
-      // B. Diretórios Conhecidos (Ciano/Roxo) -> ex: "bin", "etc"
+      // B. Comandos com flags: extrai a base e verifica ("ls -l" → "ls")
+      const baseCmd = text.split(/\s+/)[0];
+      if (COMMAND_LIST.has(baseCmd) && baseCmd !== text) {
+        code.classList.add('tag', 'x');
+        return;
+      }
+
+      // C. Diretórios Conhecidos (Ciano) -> ex: "bin", "etc"
       if (KNOWN_DIRS.has(text)) {
         code.classList.add('tag', 'd');
         return;
       }
 
-      // C. Arquivos de Sistema (Roxo Itálico) -> ex: ".bashrc", "passwd"
+      // D. Arquivos de Sistema (Roxo Itálico) -> ex: ".bashrc", "passwd"
       if (SYS_FILES.has(text)) {
         code.classList.add('tag', 'f');
         return;
       }
 
-      // D. Arquitetura/Conceitos (Laranja) -> ex: "kernel", "BIOS"
+      // E. Arquitetura/Conceitos (Laranja) -> ex: "kernel", "BIOS"
       if (ARCH_TERMS.has(text)) {
         code.classList.add('tag', 'm');
         return;
@@ -119,26 +138,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
       // --- 3. REGEX FALLBACKS (Heurísticas Finais) ---
 
-      // Man Pages (ex: regex(7))
+      // Man Pages (ex: grep(1), regex(7))
       if (/^[a-zA-Z0-9_\-\.]+\(\d\)$/.test(text)) {
         code.classList.add('tag', 'm');
         return;
       }
 
-      // Keystrokes (Vim/Nano shortcuts: :wq, CTRL+C)
+      // Keystrokes (Vim/Nano: :wq, ZZ, h/j/k/l, i/o/a combos)
       const isSingleCmd = /^(:[a-z!]+|[\/?]|ZZ|gg|G|x|i|a|o)$/i.test(text);
       const isList = text.includes(',') && text.split(',').every(part => part.trim().length <= 6);
       if (isSingleCmd || isList) {
-        code.classList.add('tag', 'k'); // Rosa
+        code.classList.add('c-key');
         return;
       }
-      
-      // Extensões de Arquivo genéricas (Visual de Arquivo)
+
+      // Extensões de Arquivo genéricas (Roxo Itálico)
       if (/\.(conf|cfg|ini|txt|md|yml|yaml|xml|html|css|js|json|sh|py|rb|lock|gemspec|list|lst|log|sql|db)$/.test(text) || text.startsWith('.')) {
         code.classList.add('tag', 'f');
         return;
       }
-      
+
       // Fallback: Default Ghost (apenas borda, sem cor forte)
       code.classList.add('tag');
     });

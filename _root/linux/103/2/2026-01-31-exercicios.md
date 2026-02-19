@@ -19,7 +19,7 @@ O arquivo `/etc/passwd` contém a lista de usuários do Linux, os campos são se
 
 Escreva um comando que mostre os últimos 15 registros do arquivo, exibindo apenas o nome do usuário e seu ID, e que esteja ordenado pelo ID numérico. 
 
-No comando `sort`, o `–t` define o delimitador, o `–k` o campo referência para o ordenamento, e o `–g` ordena como números ao invés de como caracteres
+No comando `sort`, o `-t` define o delimitador, o `-k` o campo referência para o ordenamento, e o `-g` ordena como números ao invés de como caracteres
 
 <div class="terminal-box">
   <div class="terminal-header">
@@ -54,7 +54,7 @@ fxlip@www:~$
 
 > [2]
 
-No comando `sort`, o `–t` define o delimitador, o `–k` o campo referência para o ordenamento, e o `–g` ordena como números ao invés de como caracteres
+No comando `sort`, o `-t` define o delimitador, o `-k` o campo referência para o ordenamento, e o `-g` ordena como números ao invés de como caracteres
 
 <div class="terminal-box">
   <div class="terminal-header">

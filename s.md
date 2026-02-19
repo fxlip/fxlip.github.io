@@ -73,13 +73,41 @@ document.addEventListener('DOMContentLoaded', function(){
   const output = document.getElementById('grep-output');
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
+  // Classifica um token do índice em uma das 7 categorias
+  function classify(c){
+    const k    = window.__knowledge || {};
+    const cmds = k.commands instanceof Set ? k.commands : new Set();
+    const base = c.split(/\s+/)[0];
+    if(c.startsWith('$'))                                     return 'var';
+    if(/^[\/~]/.test(c))                                      return 'path';
+    if(/[*+?^[\](){}|\\]/.test(c))                           return 'regex';
+    if(/^[\w.-]+\.[a-z]{2,5}$/.test(c) && !c.includes(' ')) return 'file';
+    if(cmds.has(base))                                        return 'cmd';
+    if(c.startsWith('-'))                                     return 'flag';
+    return 'concept';
+  }
+
+  const TYPE_CLR = {
+    cmd:    'var(--accent-cyan)',       // cyan    — comandos     (= code.c-cmd, .d)
+    flag:   'var(--yellow)',            // amarelo — opções       (= .x executáveis)
+    var:    '#ffb86c',                  // laranja — variáveis    (= code.c-var, .z)
+    path:   'var(--link-hover-color)', // roxo    — caminhos     (= code.c-path, .l)
+    file:   '#f8f8f2',                  // branco  — arquivos     (= .f)
+    regex:  'var(--link-color)',        // rosa    — regex        (= code.c-op)
+    concept:'var(--muted-color)',       // cinza   — conceitos
+  };
+
   function doSearch(query, push=false){
     const q = query.trim().toLowerCase();
     if(!q){ output.innerHTML = ''; return; }
 
     if(push) history.pushState(null,'','/s?='+encodeURIComponent(q));
 
-    const matches = SEARCH_INDEX.filter(e => e.c.includes(q));
+    // Corresponde ao texto completo OU ao comando-base (ls encontra ls -l)
+    const matches = SEARCH_INDEX.filter(e => {
+      const base = e.c.split(/\s+/)[0];
+      return e.c.includes(q) || base === q;
+    });
     const byPage  = {};
     matches.forEach(e => {
       if(!byPage[e.u]) byPage[e.u] = {url:e.u, title:e.t, cmds:new Set()};
@@ -96,8 +124,11 @@ document.addEventListener('DOMContentLoaded', function(){
     let html = '';
     pages.sort((a,b) => a.url.localeCompare(b.url)).forEach(p => {
       const path = p.url.replace('/linux/','./' );
-      const cmds = [...p.cmds].sort().map(c => '`'+esc(c)+'`').join('  ');
-      html += `<div class="grep-result"><a href="${esc(p.url)}" class="file-link grep-file">${esc(path)}</a><span class="t-gray">: </span><span style="color:var(--accent-cyan)">${cmds}</span></div>`;
+      const cmds = [...p.cmds].sort().map(c => {
+        const t = classify(c);
+        return `<span style="color:${TYPE_CLR[t]}" title="${t}">\`${esc(c)}\`</span>`;
+      }).join(' ');
+      html += `<div class="grep-result"><a href="${esc(p.url)}" class="file-link grep-file">${esc(path)}</a><span class="t-gray">: </span>${cmds}</div>`;
     });
 
     const n = pages.length;
