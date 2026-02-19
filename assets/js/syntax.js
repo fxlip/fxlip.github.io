@@ -97,6 +97,19 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
       }
 
+      // Detecta o comando base (usado em múltiplas checagens abaixo)
+      const baseCmd = text.split(/\s+/)[0];
+
+      // Prioridade especial: sed sempre ciano, conteúdo das aspas em rosa
+      if (baseCmd === 'sed') {
+        code.classList.add('tag', 'x');
+        const html = text.replace(/(["'])(.+?)\1/g, (m, q, content) =>
+          `<span class="c-rx">${q}${content}${q}</span>`
+        );
+        if (html !== text) code.innerHTML = html;
+        return;
+      }
+
       // Expressões Regulares (contém metacaracteres regex) — Rosa
       if (/[*+?^$[\](){}|\\]/.test(text) && text.length > 1) {
         code.classList.add('tag', 'k'); // Rosa (= code.c-op)
@@ -112,7 +125,6 @@ document.addEventListener("DOMContentLoaded", function() {
       }
 
       // B. Comandos com flags: extrai a base e verifica ("ls -l" → "ls")
-      const baseCmd = text.split(/\s+/)[0];
       if (COMMAND_LIST.has(baseCmd) && baseCmd !== text) {
         code.classList.add('tag', 'x');
         return;

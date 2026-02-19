@@ -41,6 +41,11 @@
     "strace", "ltrace", "readlink", "realpath", "mktemp", "logname", "hostname", "domainname",
     "chroot", "pivot_root", "useradd", "userdel", "usermod", "groupadd", "groupdel", "groupmod"
   ],
+  "variables": [
+    "HISTFILE", "HISTSIZE", "HISTFILESIZE", "HOME", "PATH", "SHELL", "USER", "LOGNAME",
+    "PWD", "OLDPWD", "PS1", "PS2", "PS3", "PS4", "DISPLAY", "TERM", "EDITOR", "VISUAL",
+    "LANG", "LC_ALL", "SHLVL", "PPID", "IFS", "CDPATH", "COLUMNS", "LINES"
+  ],
   "architecture": [
     "BIOS", "UEFI", "bootloader", "kernel", "initramfs",
     "sysfs", "procfs", "devtmpfs", "mbr", "gpt", "GRUB", "LILO",
@@ -208,6 +213,40 @@
     "rpm": "RPM Package Manager",
     "dmesg": "exibe ou controla o ring buffer do kernel",
     "lsmod": "exibe o status dos módulos no kernel Linux",
-    "modprobe": "adiciona ou remove módulos do kernel Linux"
+    "modprobe": "adiciona ou remove módulos do kernel Linux",
+    "alias": "cria ou exibe apelidos para comandos",
+    "unalias": "remove definições de alias",
+    "clear": "limpa a tela do terminal",
+    "exit": "encerra o shell ou script com um código de saída",
+    "info": "lê documentação no formato Info",
+    "HISTFILE": "caminho do arquivo de histórico de comandos",
+    "HISTSIZE": "número de comandos mantidos em memória no histórico",
+    "HISTFILESIZE": "número máximo de linhas salvas no arquivo de histórico",
+    "HOME": "diretório home do usuário atual",
+    "PATH": "lista de diretórios onde o shell busca comandos executáveis",
+    "SHELL": "caminho do shell padrão do usuário atual",
+    "USER": "nome do usuário atual",
+    "LOGNAME": "nome de login do usuário",
+    "PWD": "diretório de trabalho atual",
+    "OLDPWD": "diretório de trabalho anterior",
+    "PS1": "define a aparência do prompt primário do shell",
+    "PS2": "prompt secundário exibido em continuações de linha",
+    "DISPLAY": "endereço do servidor X para aplicações gráficas",
+    "TERM": "tipo do terminal atual",
+    "EDITOR": "editor de texto padrão",
+    "LANG": "idioma e configuração regional padrão do sistema",
+    "SHLVL": "nível de aninhamento do shell atual",
+    "bzcat": "descomprime arquivos bzip2 para a saída padrão",
+    "sha512sum": "calcula e verifica digest SHA512",
+    "xzcat": "descomprime arquivos xz/lzma para a saída padrão",
+    "zcat": "descomprime arquivos gzip para a saída padrão",
+    "IFS": "Internal Field Separator — separador de campos do shell",
+    ".bash_history": "arquivo de histórico de comandos do bash",
+    ".bashrc": "script de inicialização do bash para shells interativos não-login",
+    ".bash_profile": "script de inicialização do bash para login shells",
+    ".bash_logout": "script executado ao encerrar um login shell bash",
+    ".profile": "script de inicialização do shell para login shells (POSIX)",
+    ".vimrc": "arquivo de configuração do vim",
+    ".gitconfig": "arquivo de configuração global do git"
   }
 }

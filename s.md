@@ -56,6 +56,7 @@ Filtra por comandos, funções, variáveis e caminhos.
     {%- if forloop.index0 > 0 -%}
       {%- assign after_open = code_part | split: ">" | slice: 1, 1 | first -%}
       {%- assign cmd_raw = after_open | split: "<" | first | strip | downcase -%}
+      {%- if cmd_raw | slice: 0 == "#" -%}{%- assign cmd_raw = cmd_raw | slice: 1, 100 -%}{%- endif -%}
       {%- if cmd_raw.size > 0 and cmd_raw.size < 60 -%}
         {%- assign pair = cmd_raw | append: "¦" | append: doc.url | append: "¦" | append: doc.title -%}
         {%- assign all_pairs = all_pairs | append: pair | append: "¶" -%}
@@ -80,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const base = c.split(/\s+/)[0];
     if(c.startsWith('$'))                                     return 'var';
     if(/^[\/~]/.test(c))                                      return 'path';
+    if(/^\.[a-zA-Z]/.test(c) && !c.includes(' '))            return 'file'; // dotfiles
     if(/[*+?^[\](){}|\\]/.test(c))                           return 'regex';
     if(/^[\w.-]+\.[a-z]{2,5}$/.test(c) && !c.includes(' ')) return 'file';
     if(cmds.has(base))                                        return 'cmd';
@@ -192,7 +194,8 @@ document.addEventListener('DOMContentLoaded', function(){
     // Prompt sempre visível quando há resultados; digita whatis só se for comando conhecido
     // Se knowledge ainda não carregou, adia para __knowledgePromise.then()
     if(window.__knowledge){
-      const desc = window.__knowledge.whatis[q];
+      const wk = window.__knowledge.whatis;
+      const desc = wk[q] || (q.startsWith('$') ? wk[q.slice(1)] : null);
       if(desc) animateWhatis(q, desc);
       else showPromptBlock();
     }
@@ -238,7 +241,8 @@ document.addEventListener('DOMContentLoaded', function(){
               commands: new Set(data.commands || []),
               whatis:   data.whatis || {},
               dirs:     new Set(data.directories || []),
-              files:    new Set(data.system_files || [])
+              files:    new Set(data.system_files || []),
+              vars:     new Set(data.variables || [])
             };
           }
           doSearch(q0);

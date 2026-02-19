@@ -220,7 +220,8 @@ document.addEventListener("DOMContentLoaded", function() {
 // Hash-Menções (#cmd → link para busca)
   window.applyHashMentions = function(context = document) {
     const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .t-out');
-    const regex = /#([a-zA-Z][a-zA-Z0-9_\-\.]*)/g;
+    // Suporta: #cmd  #.bash_history  #$HISTFILE  #/etc/fstab
+    const regex = /#([\.\$\/]?[a-zA-Z][a-zA-Z0-9_\-\.\/]*)/g;
 
     contentAreas.forEach(area => {
       if (area.dataset.hashMentionsProcessed) return;
@@ -238,9 +239,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
       nodesToReplace.forEach(node => {
         const fragment = document.createDocumentFragment();
-        const parts = node.nodeValue.split(/(#[a-zA-Z][a-zA-Z0-9_\-\.]*)/g);
+        const parts = node.nodeValue.split(/(#[\.\$\/]?[a-zA-Z][a-zA-Z0-9_\-\.\/]*)/g);
         parts.forEach(part => {
-          const m = part.match(/^#([a-zA-Z][a-zA-Z0-9_\-\.]*)$/);
+          const m = part.match(/^#([\.\$\/]?[a-zA-Z][a-zA-Z0-9_\-\.\/]*)$/);
           if (m) {
             const a = document.createElement('a');
             a.href = '/s?=' + encodeURIComponent(m[1]);
@@ -312,6 +313,32 @@ document.addEventListener("DOMContentLoaded", function() {
 
       // 4. Laugh (^^) — dois ombros animados (inclusive dentro de terminais)
       safeReplace(/\^\^/g, simpleSpan('laugh-shrug', '^^'), { skipTerminals: false });
+
+      // 5. Arrow (->)
+      safeReplace(/\->/g, simpleSpan('neon-arrow', '->'));
+    });
+  };
+
+  // Code Hashtags (`#cmd` dentro de backticks → link hashtag)
+  window.applyCodeHashtags = function(context = document) {
+    const contentAreas = (context === document)
+      ? context.querySelectorAll('.post-content')
+      : [context].concat(Array.from(context.querySelectorAll?.('.post-content') || []));
+    contentAreas.forEach(area => {
+      if (!area || !area.querySelectorAll) return;
+      area.querySelectorAll('code').forEach(code => {
+        if (code.closest('a, pre')) return;
+        const text = code.textContent;
+        if (!text.startsWith('#')) return;
+        const slug = text.slice(1);
+        if (!slug) return;
+        const a = document.createElement('a');
+        a.href = '/s?=' + encodeURIComponent(slug);
+        a.className = 'mention-link';
+        a.title = 'grep ' + slug;
+        a.textContent = text;
+        code.replaceWith(a);
+      });
     });
   };
 
@@ -374,6 +401,7 @@ document.addEventListener("DOMContentLoaded", function() {
   window.processProgressBars();
   window.applyMentions();
   window.applyHashMentions();
+  window.applyCodeHashtags();
   window.processTimeAgo();
 
   // Fase 2: Processadores secundários (links, embeds, highlight) — deferidos

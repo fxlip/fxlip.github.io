@@ -9,11 +9,11 @@ muted: true
 ---
 
 
-> **103.1**
+# 103.1
 
 ---
 
-> [1]
+## [1]
 
 Verifique qual o caminho completo do arquivo .bash_history para o seu usuário atual.
 
@@ -39,7 +39,7 @@ fxlip@www:~$
 
 ---
 
-> [2]
+## [2]
 
 Identifique o release do kernel instalado.
 
@@ -61,7 +61,7 @@ fxlip@www:~$
 
 ---
 
-> [3]
+## [3]
 
 Identifique os diretórios incluídos em seu PATH.
 
@@ -85,7 +85,7 @@ fxlip@www:~$
 
 ---
 
-> [4]
+## [4]
 
 Identifique o hostname da máquina.
 
@@ -109,7 +109,7 @@ fxlip@www:~$
 
 ---
 
-> [5]
+## [5]
 
 Busque a localização do binário do comando tar 
 
@@ -130,7 +130,7 @@ fxlip@www:~$
 
 ---
 
-> [6]
+## [6]
 
 Identifique o PID do bash atual. 
 
@@ -153,7 +153,7 @@ fxlip@www:~$
 
 ---
 
-> [7]
+## [7]
 
 Crie e exporte uma variável chamada "NOME" que contenha o seu nome completo.
 
@@ -199,7 +199,7 @@ fxlip@www:~$
 
 ---
 
-> [8]
+## [8]
 
 Crie um comando que escreva na tela a seguinte frase e execute em seu ambiente: "O Conteúdo da Variável $NOME é: (Valor da Variável NOME)"
 

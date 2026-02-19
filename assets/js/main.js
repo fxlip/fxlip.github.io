@@ -181,6 +181,8 @@ document.addEventListener("DOMContentLoaded", function() {
               
               // 1. Parser de Links e Estrutura (autolink.js)
               if (window.applyMentions) window.applyMentions(post);
+              if (window.applyHashMentions) window.applyHashMentions(post);
+              if (window.applyCodeHashtags) window.applyCodeHashtags(post);
               if (window.processProgressBars) window.processProgressBars(post);
               if (window.processNeonPipes) window.processNeonPipes(post);
               if (window.processSyntaxHighlighter) window.processSyntaxHighlighter(post);

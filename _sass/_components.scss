@@ -243,6 +243,14 @@ a.link-card:hover .lc-site {
   display: inline-block;
 }
 
+/* Arrow Operator (->) */
+.neon-arrow {
+  color: var(--accent-cyan);
+  text-shadow: 0 0 5px rgba(139, 233, 253, 0.5);
+  font-weight: bold;
+  display: inline-block;
+}
+
 /* Laugh Shrug (^^) */
 .laugh-shrug {
   display: inline-block;

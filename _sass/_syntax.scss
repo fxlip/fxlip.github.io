@@ -56,6 +56,7 @@ code.c-cmd, code.tag.x, code.tag.d {
 code.c-flag { color: var(--yellow) !important; font-weight: 700 !important; }
 code.c-var, code.tag.m { color: #ffb86c !important; font-weight: 700 !important; }
 code.c-op, code.tag.k { color: var(--link-color) !important; font-weight: 700 !important; }
+code.tag.x span.c-rx { color: var(--link-color) !important; font-weight: 700 !important; }
 code.c-path, code.tag.f { color: var(--link-hover-color) !important; font-style: italic; font-weight: 400 !important; }
 
 code[class*="c-"]:hover, code.tag:hover {
