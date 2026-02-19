@@ -37,7 +37,7 @@ hide_footer: true
     <div>
       <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/busca</span><span class="t-gray">$</span> <span class="t-cmd">grep -h && cat dog.txt</span>
     </div>
-    <div class="t-out" style="margin-bottom:.6em"><span class="t-gray">Uso: grep -r "alguma coisa"
+    <div class="t-out"><span class="t-gray">Uso: grep -r "alguma coisa"
 Filtra por comandos, funções, variáveis e caminhos.
 << @feed @linux
 </span></div>
@@ -97,7 +97,60 @@ document.addEventListener('DOMContentLoaded', function(){
     concept:'var(--muted-color)',       // cinza   — conceitos
   };
 
+  // Estado da animação whatis
+  let _wTimer1 = null, _wTimer2 = null, _wInterval = null;
+
+  function cancelWhatisAnimation(){
+    clearTimeout(_wTimer1);
+    clearTimeout(_wTimer2);
+    clearInterval(_wInterval);
+    _wTimer1 = _wTimer2 = _wInterval = null;
+    const old = document.getElementById('whatis-block');
+    if(old) old.remove();
+  }
+
+  function showPromptBlock(){
+    cancelWhatisAnimation();
+    const block = document.createElement('div');
+    block.id = 'whatis-block';
+    block.style.marginTop = '0';
+    block.innerHTML =
+      `<div id="w-prompt"><span class="t-user">fxlip</span><span class="t-gray">@</span>` +
+      `<span class="t-host">www</span><span class="t-gray">:</span>` +
+      `<span class="t-path">~/busca</span><span class="t-gray">$</span> ` +
+      `<span class="t-cmd" id="w-cmd"></span></div>`;
+    output.after(block);
+    return block;
+  }
+
+  function animateWhatis(q, desc){
+    const block = showPromptBlock();
+
+    // Após 2s, digita "whatis [cmd]"
+    _wTimer1 = setTimeout(() => {
+      const cmdEl = document.getElementById('w-cmd');
+      if(!cmdEl) return;
+      const full = `whatis ${q}`;
+      let i = 0;
+      _wInterval = setInterval(() => {
+        if(!document.getElementById('w-cmd')){ clearInterval(_wInterval); return; }
+        cmdEl.textContent = full.slice(0, ++i);
+        if(i >= full.length){
+          clearInterval(_wInterval);
+          // Exibe output após 1s de delay
+          _wTimer2 = setTimeout(() => {
+            const out = document.createElement('div');
+            out.className = 't-out';
+            out.innerHTML = `<span class="t-gray">${esc(q)} (1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- ${esc(desc)}</span>`;
+            block.appendChild(out);
+          }, 1000);
+        }
+      }, 70);
+    }, 1000);
+  }
+
   function doSearch(query, push=false){
+    cancelWhatisAnimation();
     const q = query.trim().toLowerCase();
     if(!q){ output.innerHTML = ''; return; }
 
@@ -133,7 +186,16 @@ document.addEventListener('DOMContentLoaded', function(){
 
     const n = pages.length;
     html += `\n<span class="t-gray">${n} arquivo${n!==1?'s':''} com resultados para </span><span style="color:var(--link-color)">"${esc(q)}"</span>`;
+
     output.innerHTML = html;
+
+    // Prompt sempre visível quando há resultados; digita whatis só se for comando conhecido
+    // Se knowledge ainda não carregou, adia para __knowledgePromise.then()
+    if(window.__knowledge){
+      const desc = window.__knowledge.whatis[q];
+      if(desc) animateWhatis(q, desc);
+      else showPromptBlock();
+    }
   }
 
   input.addEventListener('input', function(){
@@ -143,6 +205,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   document.addEventListener('keydown', function(e){
     if(e.key==='Escape'){
+      cancelWhatisAnimation();
       input.value=''; input.style.width='0';
       output.innerHTML='';
       history.pushState(null,'','/s');
@@ -161,7 +224,28 @@ document.addEventListener('DOMContentLoaded', function(){
 
   const qs  = location.search.startsWith('?') ? location.search.slice(1) : '';
   const q0  = new URLSearchParams(qs).get('') || '';
-  if(q0){ input.value=q0; input.style.width=q0.length+'ch'; doSearch(q0); }
+  if(q0){
+    input.value=q0; input.style.width=q0.length+'ch';
+    doSearch(q0);
+    // Se knowledge ainda não carregou, busca e re-executa o doSearch com dados completos
+    // (garante classify() correto e whatis)
+    if(!window.__knowledge){
+      fetch('/assets/data/knowledge.json')
+        .then(r => r.json())
+        .then(data => {
+          if(!window.__knowledge){
+            window.__knowledge = {
+              commands: new Set(data.commands || []),
+              whatis:   data.whatis || {},
+              dirs:     new Set(data.directories || []),
+              files:    new Set(data.system_files || [])
+            };
+          }
+          doSearch(q0);
+        })
+        .catch(() => {});
+    }
+  }
   input.focus();
 });
 </script>
