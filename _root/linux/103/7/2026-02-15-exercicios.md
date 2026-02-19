@@ -16,7 +16,7 @@ muted: true
 
 > [1]
 
-Gere um comando que exiba na tela todas as linhas do arquivo /etc/passwd que terminem com "nologin".
+Gere um comando que exiba na tela todas as linhas do arquivo `/etc/passwd` que terminem com "nologin".
 
 <div class="terminal-box">
   <div class="terminal-header">

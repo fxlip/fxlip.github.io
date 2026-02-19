@@ -37,29 +37,42 @@ body::before {
 /* --- HEADERS --- */
 h1 {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 2.2em; /* Reduzido para elegância (era 3em) */
+  font-size: 1.7em;
   text-transform: uppercase;
-  color: var(--link-hover-color);
-  
-  /* Espaçamento técnico */
-  letter-spacing: 0.05em; 
+  color: var(--accent-cyan);
+  letter-spacing: 0.08em;
   font-weight: 400;
-  
-  /* Glow Estático: Luz suave e constante, sem piscar */
-  text-shadow: 0 0 15px rgba(189, 147, 249, 0.25); 
-  
-  margin-top: 40px;    
+  text-shadow: 0 0 18px rgba(139, 233, 253, 0.3);
+  text-align: center;
+  margin-top: 40px;
   margin-bottom: 20px;
 }
 
-h2, h4, h5, h6 {
-  color: #ffffff;
+h2 {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.15em;
+  text-transform: uppercase;
+  color: var(--link-hover-color);
+  letter-spacing: 0.08em;
+  font-weight: 400;
+  text-shadow: 0 0 14px rgba(189, 147, 249, 0.22);
+  text-align: center;
   margin-top: 30px;
-  font-weight: 700;
 }
 
 h3 {
-  color: var(--link-hover-color); 
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  color: var(--muted-color);
+  letter-spacing: 0.08em;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 30px;
+}
+
+h4, h5, h6 {
+  color: #ffffff;
   margin-top: 30px;
   font-weight: 700;
 }
