@@ -587,12 +587,12 @@ a.link-card.internal-ref {
    ========================================================================== */
 
 article.post {
-  margin-top: 40px;
+  margin-top: 0;
 }
 
 .post-content {
-  /* 1. Alinhamento Lateral: Dá um respiro das bordas */
-  padding: 0 5px; 
+  /* 1. Alinhamento Lateral: herdado do .container (padding: 0 5px) */
+  padding: 0;
   
   /* 2. Fluxo de Leitura: Texto alinhado à esquerda */
   text-align: left;

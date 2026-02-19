@@ -1,15 +1,21 @@
 /* ==========================================================================
    3. NAVIGATION (STICKY & ADAPTIVE)
    ========================================================================== */
+@keyframes headerFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 header {
   position: sticky;
   top: 0;
   z-index: 1000;
+  animation: headerFadeIn 0.15s ease forwards;
   
   /* Geometria Full Width (Herda do Container) */
   width: 100%;          
   max-width: 100%;    
-  padding: 20px 5px 0 5px;
+  padding: 20px 0 0 0;
   
   box-sizing: border-box; 
   background-color: var(--background-color); 

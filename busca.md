@@ -1,8 +1,6 @@
 ---
 title: busca
 permalink: /busca
-layout: home
+layout: redirect
+redirect_to: /s
 ---
-<script>
-    window.location.href = "/s?";
-</script>

@@ -15,6 +15,14 @@
   width: 100%;
 }
 
+/* Espaçamento simétrico: texto após terminal recebe mesma margem do terminal acima do texto */
+.terminal-box + p,
+.terminal-box + ul,
+.terminal-box + ol,
+.terminal-box + blockquote {
+  margin-top: 30px;
+}
+
 /* --- 5.2. INTERACTION LAYER (LINK LOGIC) --- */
 
 /* [DEFAULT] Link Killer: Mata links padrão para evitar cliques acidentais */

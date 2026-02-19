@@ -1,8 +1,6 @@
 ---
 title: feed
 permalink: /feed
-layout: home
+layout: redirect
+redirect_to: /
 ---
-<script>
-    window.location.href = "/";
-</script>
