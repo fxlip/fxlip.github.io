@@ -123,12 +123,6 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
       }
 
-      // Expressões Regulares (contém metacaracteres regex) — Rosa
-      if (/[*+?^$[\](){}|\\]/.test(text) && text.length > 1) {
-        code.classList.add('tag', 'k'); // Rosa (= code.c-op)
-        return;
-      }
-
       // --- 2. KNOWLEDGE BASE MATCHING ---
 
       // A. Comandos exatos (Ciano)
@@ -137,9 +131,15 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
       }
 
-      // B. Comandos com flags: extrai a base e verifica ("ls -l" → "ls")
+      // B. Comandos com flags/pipes: extrai a base e verifica ("ps axu | head" → "ps")
       if (COMMAND_LIST.has(baseCmd) && baseCmd !== text) {
         code.classList.add('tag', 'x');
+        return;
+      }
+
+      // Expressões Regulares (contém metacaracteres regex) — Rosa
+      if (/[*+?^$[\](){}|\\]/.test(text) && text.length > 1) {
+        code.classList.add('tag', 'k'); // Rosa (= code.c-op)
         return;
       }
 

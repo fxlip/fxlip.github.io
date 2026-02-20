@@ -9,12 +9,12 @@ muted: true
 ---
 
 
-> **103.7**
+# 103.7
 
 ---
 
 
-> [1]
+## [1]
 
 Gere um comando que exiba na tela todas as linhas do arquivo `/etc/passwd` que terminem com "nologin".
 
@@ -64,7 +64,7 @@ fxlip@www:~$
 
 ---
 
-> [2]
+## [2]
 
 Escreva um comando que irá exibir as linhas referentes aos usuários www-data e lpi somente, no arquivo /etc/passwd e redirecione o resultado para ~/exercicio2.txt .
 
@@ -90,7 +90,7 @@ fxlip@www:~$
 
 ---
 
-> [3]
+## [3]
 
 Crie um comando que liste todos os arquivos do diretório /etc/ que contenham a palavra eth0 em seu conteúdo, não no nome do arquivo. A pesquisa deve incluir também os subdiretórios. Apenas o nome e caminho do arquivo devem ser exibidos.
 
@@ -115,7 +115,7 @@ fxlip@www:~$
 
 ---
 
-> [4]
+## [4]
 
 No arquivo /etc/passwd , o primeiro campo indica o nome do usuário, enquanto que o terceiro indica o ID do usuário. Crie um comando que exiba apenas os nomes de usuários que tenham o ID com 3 dígitos.
 
@@ -166,7 +166,7 @@ fxlip@www:~$
 
 ---
 
-> [5]
+## [5]
 
 Com base no arquivo ~/LPI1/Exercicios/alunos.txt , crie um novo arquivo ~/LPI1/Exercicios/alunos-exercicio.txt contendo o mesmo conteúdo do arquivo alunos.txt mas fazendo com que toda ocorrência a "Ana Maria" seja substituído por "Marieta".
 

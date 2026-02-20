@@ -243,7 +243,15 @@ a.link-card:hover .lc-site {
   display: inline-block;
 }
 
-/* Arrow Operator (->) */
+/* Key Separator (+) */
+.neon-key-sep {
+  color: #ffb86c;
+  text-shadow: 0 0 5px rgba(255, 184, 108, 0.5);
+  font-weight: bold;
+  display: inline-block;
+}
+
+/* Arrow Operator (->, <-, ↑, ↓) */
 .neon-arrow {
   color: var(--accent-cyan);
   text-shadow: 0 0 5px rgba(139, 233, 253, 0.5);

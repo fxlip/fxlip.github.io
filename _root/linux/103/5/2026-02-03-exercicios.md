@@ -9,12 +9,12 @@ muted: true
 ---
 
 
-> **103.5**
+# 103.5
 
 ---
 
 
-> [1]
+## [1]
 
 Faça a identificação das informações abaixo com os dados da instância Linux atual.
 
@@ -82,7 +82,7 @@ fxlip@www:~$
 
 ---
 
-> [2]
+## [2]
 
 Atualmente existem 3 processos no sistema que estão usando bastante CPU, identifique e use os comandos necessários para encerrá-los.
 (Use o sudo quando necessitar de permissão)
@@ -115,7 +115,7 @@ fxlip@www:~$
 
 ---
 
-> [3]
+## [3]
 
 Crie um comando, que gere um arquivo chamado /home/lpi/resultado-top.out , que contenha a saída do comando top , atualizado a cada 10 segundos, sendo executado indefinidamente até que o processo seja morto. O comando deve rodar em background.
 
@@ -147,7 +147,7 @@ PID USER  PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
 
 ---
 
-> [4]
+## [4]
 
 Envie um sinal de SIGKILL para o processo iniciado no exercício anterior.
 

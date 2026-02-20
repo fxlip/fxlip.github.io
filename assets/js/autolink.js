@@ -316,6 +316,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
       // 5. Arrow (->)
       safeReplace(/\->/g, simpleSpan('neon-arrow', '->'));
+
+      // 6. Left Arrow (<-)
+      safeReplace(/<-/g, simpleSpan('neon-arrow', '<-'));
+
+      // 7. Up Arrow (↑)
+      safeReplace(/↑/g, simpleSpan('neon-arrow', '↑'));
+
+      // 8. Down Arrow (↓)
+      safeReplace(/↓/g, simpleSpan('neon-arrow', '↓'));
+
+      // 9. Key separator (+ isolado entre espaços)
+      safeReplace(/ \+ /g, simpleSpan('neon-key-sep', ' + '));
     });
   };
 

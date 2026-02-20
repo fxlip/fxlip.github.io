@@ -8,13 +8,12 @@ tags: [103, 4]
 muted: true
 ---
 
-
-> **103.4**
+# 103.4
 
 ---
 
 
-> [1]
+## [1]
 
 Crie um único comando que gere a lista de arquivos e diretórios contidos em `~/LPI1/Exercicios/Network`, exibindo-os na tela e em um novo arquivo chamado `exercicio1.txt` no diretório `~/LPI1/Exercicios`.
 
@@ -47,7 +46,7 @@ fxlip@www:~$
 
 ---
 
-> [2]
+## [2]
 
 Crie um comando que exiba somente os 5 primeiros bytes do arquivo `~/LPI1/Exercicios/alunos.txt` e redirecione a resposta para `~/LPI1/Exercicios/exercicio2.txt`
 
@@ -71,7 +70,7 @@ fxlip@www:~/LPI1/Exercicios $
 
 ---
 
-> [3]
+## [3]
 
 Ainda no arquivo` ~/LPI1/Exercicios/alunos.txt` crie um comando que faça a substituição de todas as letras maiúsculas para minúsculas, redirecione a saída para o arquivo `~/LPI1/Exercicios/exercicio3.txt`
 
@@ -118,7 +117,7 @@ fxlip@www:~/LPI1/Exercicios$
 ---
 
 
-> [4]
+## [4]
 
 Gere um comando que em somente uma linha exiba no terminal a seguinte mensagem: "A versão do kernel do sistema é (Versão do kernel) e arquitetura (Arquitetura do sistema)", por fim redirecione a mensagem para o arquivo `~/LPI1/Exercicios/exercicio4.txt`
 
@@ -147,7 +146,7 @@ fxlip@www:~/LPI1/Exercicios$
 ---
 
 
-> [5]
+## [5]
 
 Gere um comando que encontre todos os diretórios e subdiretorios do /var cujo nome contenha a palavra "config" (excluindo os que contenham a palavra "docker", e logo após executando o ls com os parâmetros necessários em cada item do resultado, redirecionando a saída final para /home/lpi/LPI1/Exercicios/exercicio5.txt .
 

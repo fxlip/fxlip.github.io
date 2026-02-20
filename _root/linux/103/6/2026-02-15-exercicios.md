@@ -9,12 +9,12 @@ muted: true
 ---
 
 
-> **103.6**
+# 103.6
 
 ---
 
 
-> [1]
+## [1]
 
 Execute o comando top -b -d10 > /dev/null & com a menor prioridade possível.
 (Use o comando top ou ps para validar o valor NICE do processo)
@@ -38,7 +38,7 @@ lpi@ubuntu:~$
 
 ---
 
-> [2]
+## [2]
 
 Altere o NICE do processo rsyslogd para o valor -10.
 
