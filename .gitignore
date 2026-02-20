@@ -20,6 +20,7 @@ workers/
 # IDE
 .vscode/
 .idea/
+logs/
 
 # Gems
 *.gem
