@@ -12,6 +12,7 @@ Gemfile.lock
 .DS_Store
 *.swp
 *.log
+*.code-workspace
 
 # Segredos
 .env
