@@ -145,5 +145,8 @@
   
   /* Remove referências ao Dock antigo se sobraram */
   .sys-dock { display: none !important; }
-  
+
+  /* Previne zoom automático do iOS ao focar inputs (font-size < 16px dispara zoom) */
+  input, textarea, select { font-size: 16px !important; }
+
 }
