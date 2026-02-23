@@ -56,7 +56,8 @@ Filtra por comandos, funções, variáveis e caminhos.
     {%- if forloop.index0 > 0 -%}
       {%- assign after_open = code_part | split: ">" | slice: 1, 1 | first -%}
       {%- assign cmd_raw = after_open | split: "<" | first | strip | downcase -%}
-      {%- if cmd_raw | slice: 0 == "#" -%}{%- assign cmd_raw = cmd_raw | slice: 1, 100 -%}{%- endif -%}
+      {%- assign cmd_first = cmd_raw | slice: 0 -%}
+      {%- if cmd_first == "#" -%}{%- assign cmd_raw = cmd_raw | slice: 1, 100 -%}{%- endif -%}
       {%- if cmd_raw.size > 0 and cmd_raw.size < 60 -%}
         {%- assign pair = cmd_raw | append: "¦" | append: doc.url | append: "¦" | append: doc.title -%}
         {%- assign all_pairs = all_pairs | append: pair | append: "¶" -%}

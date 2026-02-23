@@ -17,7 +17,7 @@ muted: true
 
 Verifique qual o caminho completo do arquivo .bash_history para o seu usuário atual.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -43,7 +43,7 @@ fxlip@www:~$
 
 Identifique o release do kernel instalado.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -65,7 +65,7 @@ fxlip@www:~$
 
 Identifique os diretórios incluídos em seu PATH.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -89,7 +89,7 @@ fxlip@www:~$
 
 Identifique o hostname da máquina.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -113,7 +113,7 @@ fxlip@www:~$
 
 Busque a localização do binário do comando tar 
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -134,7 +134,7 @@ fxlip@www:~$
 
 Identifique o PID do bash atual. 
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -159,7 +159,7 @@ Crie e exporte uma variável chamada "NOME" que contenha o seu nome completo.
 
 Use o comando env para verificar se a variável foi criada corretamente.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -203,7 +203,7 @@ fxlip@www:~$
 
 Crie um comando que escreva na tela a seguinte frase e execute em seu ambiente: "O Conteúdo da Variável $NOME é: (Valor da Variável NOME)"
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>

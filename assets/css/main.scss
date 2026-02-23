@@ -2,12 +2,12 @@
 # Front Matter
 ---
 
-@import "variables";
-@import "fonts";
-@import "base";
-@import "components";
-@import "navigation";
-@import "responsive";
-@import "syntax";
-@import "terminal";
+@use "variables";
+@use "fonts";
+@use "base";
+@use "components";
+@use "navigation";
+@use "responsive";
+@use "syntax";
+@use "terminal";
 

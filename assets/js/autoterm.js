@@ -257,12 +257,118 @@ document.addEventListener("DOMContentLoaded", function() {
       // Aplica o HTML gerado e marca como processado
       if (!term.classList.contains('terminal-body')) {
          term.innerHTML = htmlBuffer;
-         term.classList.add('terminal-body'); 
+         term.classList.add('terminal-body');
          term.classList.remove('auto-term');
       } else {
          // Se já foi processado, só atualiza o conteúdo (re-render)
          term.innerHTML = htmlBuffer;
       }
+    });
+
+    initAnswerReveal();
+  };
+
+  // ==========================================================================
+  // 4. ANSWER REVEAL (Exercícios — terminal interativo)
+  // ==========================================================================
+  const CMD_TEXT = './resposta.sh';
+
+  // Digita texto caractere a caractere
+  const typeText = (el, target, speed, onDone) => {
+    if (el._typer) clearInterval(el._typer);
+    let i = 0;
+    el.textContent = '';
+    el._typer = setInterval(() => {
+      el.textContent += target[i++];
+      if (i >= target.length) {
+        clearInterval(el._typer);
+        el._typer = null;
+        if (onDone) onDone();
+      }
+    }, speed);
+  };
+
+  // Cancela digitação e limpa o texto
+  const clearType = (el) => {
+    if (el._typer) { clearInterval(el._typer); el._typer = null; }
+    el.textContent = '';
+  };
+
+  const initAnswerReveal = () => {
+    document.querySelectorAll('.terminal-box.answer-hidden').forEach(box => {
+      if (box.dataset.answerInit) return;
+      if (box.classList.contains('answer-revealed')) return;
+      box.dataset.answerInit = '1';
+
+      const body = box.querySelector('.terminal-body');
+      if (!body) return;
+
+      // Envolve o conteúdo existente em .answer-content (oculto)
+      const content = document.createElement('div');
+      content.className = 'answer-content';
+      while (body.firstChild) content.appendChild(body.firstChild);
+
+      // Cria o prompt: "fxlip@www:~$ ▌" — cmdSpan vazio por padrão
+      const prompt = document.createElement('div');
+      prompt.className = 'answer-prompt';
+
+      const cmdSpan = document.createElement('span');
+      cmdSpan.className = 't-cmd';
+      // vazio — só aparece no hover
+
+      prompt.innerHTML =
+        `<span class="t-user">${escapeHtml(VISITOR_NAME)}</span>` +
+        `<span class="t-gray">@</span>` +
+        `<span class="t-host">www</span>` +
+        `<span class="t-gray">:</span>` +
+        `<span class="t-path">~</span>` +
+        `<span class="t-gray">$</span> `;
+      prompt.appendChild(cmdSpan);
+
+      const cursor = document.createElement('span');
+      cursor.className = 'ans-cursor';
+      cursor.textContent = '▌';
+      prompt.appendChild(cursor);
+
+      body.appendChild(prompt);
+      body.appendChild(content);
+
+      // Hover: digita ./resposta.sh caractere a caractere
+      box.addEventListener('mouseenter', () => {
+        if (box.classList.contains('answer-revealed')) return;
+        typeText(cmdSpan, CMD_TEXT, 55);
+      });
+
+      // Mouse saiu antes de clicar: apaga o comando
+      box.addEventListener('mouseleave', () => {
+        if (box.classList.contains('answer-revealed')) return;
+        clearType(cmdSpan);
+      });
+
+      // Clique: revela conteúdo com scan
+      box.addEventListener('click', () => {
+        if (box.classList.contains('answer-revealed')) return;
+        box.classList.add('answer-revealed');
+
+        // Garante que o texto esteja completo antes de sumir
+        clearType(cmdSpan);
+        cmdSpan.textContent = CMD_TEXT;
+
+        // Cursor para de piscar
+        cursor.style.animation = 'none';
+        cursor.style.opacity = '0';
+
+        // Prompt some suavemente
+        setTimeout(() => {
+          prompt.classList.add('prompt-hiding');
+          setTimeout(() => prompt.remove(), 380);
+        }, 80);
+
+        // Conteúdo revela com scan+glitch
+        setTimeout(() => {
+          content.classList.add('revealing');
+        }, 160);
+      });
     });
   };
 
