@@ -220,36 +220,26 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =======================================================================
-  // 7. RENDER: ANONYMOUS RETURNING VISITOR
-  // Mostra mensagem anônima + link "revelar identidade"
+  // 7. PLACEHOLDER DINÂMICO baseado na contagem de visitas
   // =======================================================================
-  function renderAnonymousGreeting(data, fp) {
-    // Remove inputLine do renderNamePrompt anterior (se existir fora do greetingBlock)
-    var prev = document.getElementById("greeting-input-line");
-    if (prev) prev.remove();
+  function getAnonymousPlaceholder(visits) {
+    if (visits >= 20)  return "não quer revelar sua identidade?";
+    if (visits >= 10)  return "identificar_sujeito?";
+    if (visits >= 2)   return "ainda sem nome?";
+    return "qual seu nome?";
+  }
 
-    var lastLine;
-    if (data.lastSeen) {
-      lastLine = "Último login: " + timeAgo(data.lastSeen) + ", de " + (data.city || "desconhecido");
-    } else {
-      lastLine = "Último login: acesso anterior";
+  // =======================================================================
+  // 8. RENDER: ANONYMOUS RETURNING VISITOR
+  // Mantém o prompt visível, só atualiza mensagem e placeholder
+  // =======================================================================
+  function renderAnonymousGreeting(data) {
+    greetingOutput.textContent = data.greeting;
+
+    var input = document.getElementById("greeting-input");
+    if (input && !input.value) {
+      input.placeholder = getAnonymousPlaceholder(data.visits);
     }
-
-    greetingBlock.innerHTML =
-      '<div>' +
-      '<div class="t-gray">' + esc(lastLine) + '</div>' +
-      '<div class="t-out">' + esc(data.greeting) + '</div>' +
-      '<div class="t-out" style="margin-top:.25em">' +
-        '<a href="#" id="revelar-link" class="action-btn" style="opacity:.5;font-size:.9em">' +
-        '[revelar identidade]</a>' +
-      '</div>' +
-      '</div>';
-
-    document.getElementById("revelar-link").addEventListener("click", function(e) {
-      e.preventDefault();
-      this.parentElement.remove();
-      injectNameInput(fp);
-    });
   }
 
   // =======================================================================
@@ -271,11 +261,15 @@ document.addEventListener("DOMContentLoaded", function() {
           body: JSON.stringify({ fingerprint: fp }),
         }).then(function(res) { return res.json(); })
           .then(function(data) {
-            if (data.greeting) {
-              // Visitante anônimo recorrente: substitui o prompt pelo greeting anônimo
-              renderAnonymousGreeting(data, fp);
+            if (data.name) {
+              // Auto-nick atribuído pelo worker (≥100 visitas sem nome)
+              try { localStorage.setItem(NAME_KEY, data.name); } catch (_) {}
+              renderGreeting(data);
+            } else if (data.greeting) {
+              // Visitante anônimo recorrente: atualiza mensagem + placeholder
+              renderAnonymousGreeting(data);
             }
-            // Sem greeting = 1ª visita: mantém o prompt
+            // Sem name e sem greeting = 1ª visita: mantém o prompt
           })
           .catch(function() {
             // API offline: mantém o prompt (comportamento de fallback)
