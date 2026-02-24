@@ -77,13 +77,12 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =======================================================================
-  // 3. RENDER: FIRST VISIT (Input)
+  // 3. HELPER: INJETA O INPUT DE NOME NO DOM
+  // Usado tanto pelo renderNamePrompt quanto pelo "revelar identidade"
   // =======================================================================
-  function renderNamePrompt() {
-    greetingBlock.style.display = "block";
-    greetingOutput.textContent = "Primeiro acesso detectado.";
-
+  function injectNameInput(fp) {
     var inputLine = document.createElement("div");
+    inputLine.id = "greeting-input-line";
     inputLine.innerHTML =
       '<span class="t-user">fxlip</span>' +
       '<span class="t-gray">@</span>' +
@@ -139,24 +138,32 @@ document.addEventListener("DOMContentLoaded", function() {
       input.disabled = true;
       input.style.opacity = "0.5";
 
-      getFingerprint().then(function(fp) {
-        return fetchWithTimeout(WORKER_URL + "/api/hello", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ fingerprint: fp, name: val }),
-        }).then(function(res) { return res.json(); });
-      }).then(function(data) {
-        try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
-        renderGreeting(data);
-      }).catch(function() {
-        try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
-        renderGreeting({ name: val, greeting: "Bem-vindo, " + val + "!" });
-      });
+      fetchWithTimeout(WORKER_URL + "/api/hello", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fingerprint: fp, name: val }),
+      }).then(function(res) { return res.json(); })
+        .then(function(data) {
+          try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
+          renderGreeting(data);
+        }).catch(function() {
+          try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
+          renderGreeting({ name: val, greeting: "Bem-vindo, " + val + "!" });
+        });
     });
   }
 
   // =======================================================================
-  // 4. TIME AGO (ISO → texto relativo)
+  // 4. RENDER: FIRST VISIT (Prompt de nome)
+  // =======================================================================
+  function renderNamePrompt(fp) {
+    greetingBlock.style.display = "block";
+    greetingOutput.textContent = "Primeiro acesso detectado.";
+    injectNameInput(fp);
+  }
+
+  // =======================================================================
+  // 5. TIME AGO (ISO → texto relativo)
   // =======================================================================
   function timeAgo(isoString) {
     if (!isoString) return null;
@@ -186,9 +193,13 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =======================================================================
-  // 5. RENDER: RETURNING VISITOR (SSH-Style)
+  // 6. RENDER: RETURNING VISITOR (SSH-Style)
   // =======================================================================
   function renderGreeting(data) {
+    // Remove inputLine se ainda estiver no DOM (inserido fora do greetingBlock)
+    var prev = document.getElementById("greeting-input-line");
+    if (prev) prev.remove();
+
     greetingBlock.style.display = "block";
 
     var lastLine;
@@ -209,7 +220,40 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =======================================================================
-  // 6. MAIN
+  // 7. RENDER: ANONYMOUS RETURNING VISITOR
+  // Mostra mensagem anônima + link "revelar identidade"
+  // =======================================================================
+  function renderAnonymousGreeting(data, fp) {
+    // Remove inputLine do renderNamePrompt anterior (se existir fora do greetingBlock)
+    var prev = document.getElementById("greeting-input-line");
+    if (prev) prev.remove();
+
+    var lastLine;
+    if (data.lastSeen) {
+      lastLine = "Último login: " + timeAgo(data.lastSeen) + ", de " + (data.city || "desconhecido");
+    } else {
+      lastLine = "Último login: acesso anterior";
+    }
+
+    greetingBlock.innerHTML =
+      '<div>' +
+      '<div class="t-gray">' + esc(lastLine) + '</div>' +
+      '<div class="t-out">' + esc(data.greeting) + '</div>' +
+      '<div class="t-out" style="margin-top:.25em">' +
+        '<a href="#" id="revelar-link" class="action-btn" style="opacity:.5;font-size:.9em">' +
+        '[revelar identidade]</a>' +
+      '</div>' +
+      '</div>';
+
+    document.getElementById("revelar-link").addEventListener("click", function(e) {
+      e.preventDefault();
+      this.parentElement.remove();
+      injectNameInput(fp);
+    });
+  }
+
+  // =======================================================================
+  // 8. MAIN
   // =======================================================================
   function init() {
     var storedName = null;
@@ -217,12 +261,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
     getFingerprint().then(function(fp) {
       if (!storedName) {
-        renderNamePrompt();
+        // Mostra o prompt imediatamente, sem aguardar a API
+        renderNamePrompt(fp);
+
+        // Usa a resposta da API para identificar visitantes anônimos recorrentes
         fetchWithTimeout(WORKER_URL + "/api/hello", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ fingerprint: fp }),
-        }).catch(function() {});
+        }).then(function(res) { return res.json(); })
+          .then(function(data) {
+            if (data.greeting) {
+              // Visitante anônimo recorrente: substitui o prompt pelo greeting anônimo
+              renderAnonymousGreeting(data, fp);
+            }
+            // Sem greeting = 1ª visita: mantém o prompt
+          })
+          .catch(function() {
+            // API offline: mantém o prompt (comportamento de fallback)
+          });
         return;
       }
 
