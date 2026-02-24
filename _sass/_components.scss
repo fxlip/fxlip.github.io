@@ -455,22 +455,6 @@ a.link-card.internal-ref {
 
 /* --- ANSWER REVEAL (Exercícios — terminal interativo) --- */
 
-/* Scan suave de cima para baixo com micro-glitches laterais */
-@keyframes answer-scan {
-  0%   { clip-path: inset(0 0 100% 0); opacity: 0;    transform: translateX(0); }
-  5%   { clip-path: inset(0 0 92% 0);  opacity: 1;                               }
-  12%  { clip-path: inset(0 0 80% 0);                 transform: translateX(-2px); }
-  18%  { clip-path: inset(0 0 72% 0);                 transform: translateX(1px); }
-  25%  { clip-path: inset(0 0 60% 0);  opacity: 0.88; transform: translateX(0); }
-  34%  { clip-path: inset(0 0 48% 0);  opacity: 1;    transform: translateX(2px); }
-  42%  { clip-path: inset(0 0 38% 0);                 transform: translateX(-1px); }
-  52%  { clip-path: inset(0 0 26% 0);  opacity: 0.92; transform: translateX(0); }
-  62%  { clip-path: inset(0 0 15% 0);  opacity: 1;    transform: translateX(1px); }
-  74%  { clip-path: inset(0 0 6% 0);                  transform: translateX(-1px); }
-  86%  { clip-path: inset(0 0 2% 0);                  transform: translateX(0); }
-  100% { clip-path: inset(0 0 0% 0);   opacity: 1;    transform: translateX(0); }
-}
-
 /* Prompt que desaparece após revelar */
 @keyframes prompt-fade-out {
   0%   { opacity: 1;   max-height: 2em; }
@@ -520,17 +504,14 @@ a.link-card.internal-ref {
   animation: ans-cursor-blink 1s step-end infinite;
 }
 
-/* Conteúdo real, escondido até o clique */
-.answer-content {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
+/* Cursor invisível por padrão no estado oculto */
+.terminal-box.answer-hidden .answer-prompt .ans-cursor {
+  visibility: hidden;
 }
 
-.answer-content.revealing {
-  max-height: 3000px;
-  overflow: visible;
-  animation: answer-scan 0.85s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+/* Aparece só no hover */
+.terminal-box.answer-hidden:hover .answer-prompt .ans-cursor {
+  visibility: visible;
 }
 
 /* ==========================================================================
@@ -764,8 +745,7 @@ article.post {
 }
 
 .greeting-input::placeholder {
-  color: var(--placeholder-color);
-  opacity: 0.4;
+  color: rgba(92, 95, 119, 0.4);
 }
 
 .terminal-body .greeting-input {
@@ -804,4 +784,161 @@ article.post {
 
 .view-count {
   min-width: 10px;
+}
+
+/* ==========================================================================
+   20. QUIZ (Simulado Interativo)
+   ========================================================================== */
+
+/* Sobrescreve o [01] padrão para questões de quiz */
+.quiz-q ol {
+  counter-reset: sys-step;
+  padding-left: 5px;
+}
+
+.quiz-q ol li {
+  padding-left: 50px;
+  cursor: pointer;
+  transition: color 0.15s ease;
+  user-select: none;
+  margin-bottom: 10px;
+}
+
+/* Padrão: [--] */
+.quiz-q ol li::before {
+  content: "[--]";
+  color: var(--muted-color);
+  font-size: 1em;
+  font-weight: 400;
+  transition: color 0.15s ease;
+  letter-spacing: 0;
+  opacity: 0.5;
+}
+
+/* Hover: [>>] — só quando ainda não respondeu */
+.quiz-q:not(.quiz-answered) ol li:hover {
+  color: var(--text-color);
+}
+
+.quiz-q:not(.quiz-answered) ol li:hover::before {
+  content: "[>>]";
+  color: var(--accent-cyan);
+  opacity: 1;
+  text-shadow: 0 0 8px rgba(139, 233, 253, 0.5);
+}
+
+/* Selecionada — certa: [OK] */
+.quiz-q ol li.quiz-correct {
+  color: var(--green);
+}
+
+.quiz-q ol li.quiz-correct::before {
+  content: "[OK]";
+  color: var(--green);
+  opacity: 1;
+  text-shadow: 0 0 10px rgba(80, 250, 123, 0.5);
+}
+
+/* Selecionada — errada: [ER] */
+.quiz-q ol li.quiz-wrong {
+  color: #ff5555;
+}
+
+.quiz-q ol li.quiz-wrong::before {
+  content: "[ER]";
+  color: #ff5555;
+  opacity: 1;
+  text-shadow: 0 0 8px rgba(255, 85, 85, 0.4);
+}
+
+/* Correta revelada após erro: [OK] esmaecido */
+.quiz-q ol li.quiz-reveal {
+  color: var(--green);
+  opacity: 0.45;
+}
+
+.quiz-q ol li.quiz-reveal::before {
+  content: "[OK]";
+  color: var(--green);
+  opacity: 1;
+}
+
+/* Bloqueia questão após responder */
+.quiz-q.quiz-answered ol li {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Card de explicação — oculto até responder */
+.quiz-explanation {
+  display: none;
+  margin-top: 20px;
+  padding: 15px;
+  background: var(--card-bg);
+  background-color: rgba(255, 121, 198, 0.03);
+  border: 1px solid rgba(255, 121, 198, 0.5);
+  border-radius: 6px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3),
+              0 0 0 1px rgba(255, 121, 198, 0.05);
+  font-size: 0.9em;
+  color: var(--base-color);
+  line-height: 1.6;
+}
+
+.quiz-explanation.visible {
+  display: block;
+  animation: quiz-explain-in 0.25s ease forwards;
+}
+
+.quiz-explanation p:last-child {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+@keyframes quiz-explain-in {
+  from { opacity: 0; transform: translateY(-3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Placar injetado no header */
+#quiz-scoreboard {
+  margin-top: 6px;
+  padding-top: 5px;
+  border-top: 1px solid var(--border-color);
+}
+
+.quiz-sc-label {
+  color: var(--muted-color);
+  letter-spacing: 10;
+}
+
+.quiz-sc-num {
+  color: var(--accent-cyan);
+}
+
+.quiz-sc-correct-num {
+  color: var(--green);
+}
+
+.quiz-pass {
+  color: var(--green);
+}
+
+.quiz-fail {
+  color: #ff5555;
+}
+
+/* A Falange: Grid estrutural para as linhas do Quiz */
+.t-quiz-row {
+  display: grid;
+  /* Define as larguras exatas: Tópico, Pontuação, Porcentagem, e o Link ocupa o resto */
+  grid-template-columns: 5ch 6ch 5ch 1fr; 
+  gap: 15px; /* Substitui fisicamente o separador " · " */
+  align-items: center;
+}
+
+/* Alinhamentos internos finos */
+.t-quiz-row span:nth-child(2),
+.t-quiz-row span:nth-child(3) {
+  text-align: right; /* Garante que os números cresçam para a esquerda */
 }

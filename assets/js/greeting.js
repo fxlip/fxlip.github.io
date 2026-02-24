@@ -106,6 +106,19 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var input = document.getElementById("greeting-input");
 
+    // Respiração do placeholder (CSS animation não funciona em ::placeholder no Chrome)
+    var phStyle = document.createElement("style");
+    document.head.appendChild(phStyle);
+    var phStart = performance.now();
+    function animatePlaceholder(ts) {
+      if (!document.getElementById("greeting-input")) { phStyle.remove(); return; }
+      var v = (Math.sin((ts - phStart) / 2800 * Math.PI * 2) + 1) / 2;
+      var a = (0.12 + v * 0.28).toFixed(3);
+      phStyle.textContent = "#greeting-input::placeholder{color:rgba(92,95,119," + a + ")}";
+      requestAnimationFrame(animatePlaceholder);
+    }
+    requestAnimationFrame(animatePlaceholder);
+
     // Máscara: lowercase, espaço→hífen, sem caracteres especiais
     input.addEventListener("input", function() {
       var pos = input.selectionStart;

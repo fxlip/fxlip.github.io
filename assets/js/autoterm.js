@@ -266,33 +266,35 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     initAnswerReveal();
+    initQuiz();
   };
 
   // ==========================================================================
   // 4. ANSWER REVEAL (Exercícios — terminal interativo)
   // ==========================================================================
-  const CMD_TEXT = './resposta.sh';
-
-  // Digita texto caractere a caractere
-  const typeText = (el, target, speed, onDone) => {
-    if (el._typer) clearInterval(el._typer);
-    let i = 0;
-    el.textContent = '';
-    el._typer = setInterval(() => {
-      el.textContent += target[i++];
-      if (i >= target.length) {
-        clearInterval(el._typer);
-        el._typer = null;
-        if (onDone) onDone();
-      }
-    }, speed);
-  };
 
   // Cancela digitação e limpa o texto
   const clearType = (el) => {
     if (el._typer) { clearInterval(el._typer); el._typer = null; }
     el.textContent = '';
   };
+
+  // Versão Promise de typeText (coexiste com typeText)
+  const typeChars = (el, text, speed) => new Promise(resolve => {
+    if (el._typer) clearInterval(el._typer);
+    let i = 0;
+    el.textContent = '';
+    el._typer = setInterval(() => {
+      el.textContent += text[i++];
+      if (i >= text.length) {
+        clearInterval(el._typer);
+        el._typer = null;
+        resolve();
+      }
+    }, speed);
+  });
+
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
 
   const initAnswerReveal = () => {
     document.querySelectorAll('.terminal-box.answer-hidden').forEach(box => {
@@ -303,18 +305,16 @@ document.addEventListener("DOMContentLoaded", function() {
       const body = box.querySelector('.terminal-body');
       if (!body) return;
 
-      // Envolve o conteúdo existente em .answer-content (oculto)
-      const content = document.createElement('div');
-      content.className = 'answer-content';
-      while (body.firstChild) content.appendChild(body.firstChild);
+      // Salva todos os filhos renderizados e limpa o body
+      const nodes = Array.from(body.children);
+      body.innerHTML = '';
 
-      // Cria o prompt: "fxlip@www:~$ ▌" — cmdSpan vazio por padrão
+      // Cria o prompt hook: "fxlip@www:~$ ▌" — cursor oculto via CSS por padrão
       const prompt = document.createElement('div');
       prompt.className = 'answer-prompt';
 
       const cmdSpan = document.createElement('span');
       cmdSpan.className = 't-cmd';
-      // vazio — só aparece no hover
 
       prompt.innerHTML =
         `<span class="t-user">${escapeHtml(VISITOR_NAME)}</span>` +
@@ -331,43 +331,203 @@ document.addEventListener("DOMContentLoaded", function() {
       prompt.appendChild(cursor);
 
       body.appendChild(prompt);
-      body.appendChild(content);
 
-      // Hover: digita ./resposta.sh caractere a caractere
-      box.addEventListener('mouseenter', () => {
-        if (box.classList.contains('answer-revealed')) return;
-        typeText(cmdSpan, CMD_TEXT, 55);
-      });
-
-      // Mouse saiu antes de clicar: apaga o comando
+      // Mouse saiu antes de clicar: limpa qualquer texto digitado
       box.addEventListener('mouseleave', () => {
         if (box.classList.contains('answer-revealed')) return;
         clearType(cmdSpan);
       });
 
-      // Clique: revela conteúdo com scan
+      // Clique: replay terminal interativo
       box.addEventListener('click', () => {
         if (box.classList.contains('answer-revealed')) return;
+
+        // Bloqueia re-clique imediatamente
         box.classList.add('answer-revealed');
 
-        // Garante que o texto esteja completo antes de sumir
-        clearType(cmdSpan);
-        cmdSpan.textContent = CMD_TEXT;
+        const playback = async () => {
+          // Torna o cursor do hook visível para começar a digitar
+          cursor.style.visibility = 'visible';
 
-        // Cursor para de piscar
-        cursor.style.animation = 'none';
-        cursor.style.opacity = '0';
+          let firstCmd = true;
 
-        // Prompt some suavemente
-        setTimeout(() => {
-          prompt.classList.add('prompt-hiding');
-          setTimeout(() => prompt.remove(), 380);
-        }, 80);
+          for (const node of nodes) {
+            const cmdEl = node.querySelector('.t-cmd');
 
-        // Conteúdo revela com scan+glitch
-        setTimeout(() => {
-          content.classList.add('revealing');
-        }, 160);
+            if (cmdEl) {
+              const cmdText = cmdEl.textContent;
+
+              if (firstCmd) {
+                // Primeiro prompt: digita no hook já visível (não recria a linha)
+                firstCmd = false;
+
+                if (cmdText.trim()) {
+                  await typeChars(cmdSpan, cmdText, 45);
+                  cursor.remove();
+                  await sleep(500); // simula pressionar Enter
+                } else {
+                  cursor.style.visibility = 'hidden';
+                }
+                // Node não é adicionado ao body — o hook já representa essa linha
+              } else {
+                // Prompts seguintes: recria a linha com cursor
+                cmdEl.textContent = '';
+
+                const lineCursor = document.createElement('span');
+                lineCursor.className = 'ans-cursor';
+                lineCursor.textContent = '▌';
+                node.appendChild(lineCursor);
+
+                body.appendChild(node);
+
+                if (cmdText.trim()) {
+                  await typeChars(cmdEl, cmdText, 45);
+                  lineCursor.remove();
+                  await sleep(300); // simula pressionar Enter
+                } else {
+                  lineCursor.style.visibility = 'hidden';
+                }
+              }
+            } else {
+              // Linha de output: aparece instantaneamente
+              body.appendChild(node);
+            }
+          }
+        };
+
+        playback();
+      });
+    });
+  };
+
+  // ==========================================================================
+  // 5. QUIZ (Simulado Interativo)
+  // ==========================================================================
+  const initQuiz = () => {
+    if (document.getElementById('quiz-scoreboard')) return; // já inicializado
+
+    const questions = document.querySelectorAll('.quiz-q[data-answer]');
+    if (!questions.length) return;
+
+    const total = questions.length;
+    let answered = 0;
+    let correct = 0;
+    let timerSecs = 0;
+    let timerInterval = null;
+    const topics = {}; // { "103.6": { correct: 0, total: 0 }, ... }
+
+    const formatTime = s => {
+      const m = String(Math.floor(s / 60)).padStart(2, '0');
+      const ss = String(s % 60).padStart(2, '0');
+      return `${m}:${ss}`;
+    };
+
+    // Injeta placar no terminal-body do header
+    const headerBody = document.querySelector('header .terminal-body');
+    let scoreEl = null;
+
+    if (headerBody) {
+      scoreEl = document.createElement('div');
+      scoreEl.className = 't-out';
+      scoreEl.id = 'quiz-scoreboard';
+      scoreEl.innerHTML =
+        `<span id="quiz-timer" class="quiz-sc-num">00:00</span>` +
+        `<span class="quiz-sc-label"> · </span>` +
+        `<span id="quiz-sc-answered" class="quiz-sc-num"> 0</span>` +
+        `<span class="quiz-sc-label">/${String(total).padEnd(2,' ')}</span>`;
+      headerBody.appendChild(scoreEl);
+    }
+
+    const topicToLink = name => {
+      const parts = name.split('.');
+      if (parts.length !== 2) return null;
+      return `/linux/${parts[0]}/${parts[1]}/revisao`;
+    };
+
+    const updateScore = () => {
+      const ansEl = document.getElementById('quiz-sc-answered');
+      if (ansEl) ansEl.textContent = String(answered).padStart(2,' ');
+
+      if (answered === 1 && !timerInterval) {
+        timerInterval = setInterval(() => {
+          timerSecs++;
+          const timerEl = document.getElementById('quiz-timer');
+          if (timerEl) timerEl.textContent = formatTime(timerSecs);
+        }, 1000);
+      }
+
+      if (answered === total) {
+        clearInterval(timerInterval);
+        if (!scoreEl || !headerBody) return;
+
+        const pct = Math.round((correct / total) * 100);
+        const pass = pct >= 70;
+
+        // Linha do timer: acrescenta porcentagem total + resultado
+        scoreEl.innerHTML +=
+          `<span class="quiz-sc-label"> · </span>` +
+          `<span class="${pass ? 'quiz-pass' : 'quiz-fail'}">${String(pct).padStart(3,' ')}%</span>` +
+          `<span class="quiz-sc-label">      </span>` +
+          `<span class="${pass ? 'quiz-pass' : 'quiz-fail'}">[${pass ? 'aprovado' : 'reprovado'}]</span>`;
+
+        // Linhas dos subtópicos — ordenadas da pior taxa para a melhor
+        if (Object.keys(topics).length > 0) {
+          const sorted = Object.entries(topics).sort(
+            ([, a], [, b]) => (a.correct / a.total) - (b.correct / b.total)
+          );
+          sorted.forEach(([name, stats]) => {
+            const tPct = Math.round((stats.correct / stats.total) * 100);
+            const bad = tPct < 70;
+            const href = topicToLink(name);
+            const line = document.createElement('div');
+            line.className = 't-out';
+            const countStr = `${String(stats.correct).padStart(2,' ')}/${String(stats.total).padEnd(2,' ')}`;
+            const tPctStr = String(tPct).padStart(3,' ') + '%';
+            const sep = `<span class="quiz-sc-label"> · </span>`;
+            let html =
+              `<span class="quiz-sc-label">${name}</span>` +
+              sep +
+              `<span class="quiz-sc-label">${countStr}</span>` +
+              sep +
+              `<span class="${bad ? 'quiz-fail' : 'quiz-pass'}">${tPctStr}</span>`;
+            if (bad && href) {
+              html += `\u00a0\u00a0<a href="${href}" class="mention-link">@linux/${name.replace('.', '/')}/${href.split('/').pop()}</a>`;
+            }
+            line.innerHTML = html;
+            headerBody.appendChild(line);
+          });
+        }
+      }
+    };
+
+    questions.forEach(qEl => {
+      const topic = qEl.dataset.topic || null;
+      const correctIdx = parseInt(qEl.dataset.answer, 10) - 1;
+      const items = qEl.querySelectorAll('ol li');
+
+      if (topic) {
+        if (!topics[topic]) topics[topic] = { correct: 0, total: 0 };
+        topics[topic].total++;
+      }
+
+      items.forEach((li, idx) => {
+        li.addEventListener('click', () => {
+          if (qEl.classList.contains('quiz-answered')) return;
+          qEl.classList.add('quiz-answered');
+          answered++;
+          qEl.querySelector('.quiz-explanation')?.classList.add('visible');
+
+          if (idx === correctIdx) {
+            li.classList.add('quiz-correct');
+            correct++;
+            if (topic) topics[topic].correct++;
+          } else {
+            li.classList.add('quiz-wrong');
+            items[correctIdx]?.classList.add('quiz-reveal');
+          }
+
+          updateScore();
+        });
       });
     });
   };

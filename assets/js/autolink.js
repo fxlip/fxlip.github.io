@@ -275,7 +275,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
          while(node = walk.nextNode()) {
            if (node.parentNode.nodeName === 'SCRIPT' || node.parentNode.nodeName === 'STYLE') continue;
-           if (skipTerminals && node.parentNode.closest('.terminal-box, .auto-term')) continue;
+           if (skipTerminals && node.parentNode.closest('.terminal-box, .auto-term, .quiz-q')) continue;
            if (regex.test(node.nodeValue)) {
              nodesToReplace.push(node);
            }

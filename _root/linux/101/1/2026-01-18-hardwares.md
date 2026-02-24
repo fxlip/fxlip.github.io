@@ -28,6 +28,10 @@ Página de exemplo para mostrar que sou capaz de identificar e editar configura�
 
 Começando com BIOS, IRQ, endereços de I/O e DMA
 
+Conexões com barramentos PCIA??
+
+Como os discos aparecem na máquina
+
 ---
 
 > PROGRESSO ATÉ A 101-500
