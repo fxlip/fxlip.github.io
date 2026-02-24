@@ -467,7 +467,7 @@ document.addEventListener("DOMContentLoaded", function() {
         scoreEl.innerHTML +=
           `<span class="quiz-sc-label"> · </span>` +
           `<span class="${pass ? 'quiz-pass' : 'quiz-fail'}">${String(pct).padStart(3,' ')}%</span>` +
-          `<span class="quiz-sc-label">      </span>` +
+          `<span class="quiz-sc-label">     </span>` +
           `<span class="${pass ? 'quiz-pass' : 'quiz-fail'}">[${pass ? 'aprovado' : 'reprovado'}]</span>`;
 
         // Linhas dos subtópicos — ordenadas da pior taxa para a melhor
