@@ -467,7 +467,7 @@ document.addEventListener("DOMContentLoaded", function() {
         scoreEl.innerHTML +=
           `<span class="quiz-sc-label"> · </span>` +
           `<span class="${pass ? 'quiz-pass' : 'quiz-fail'}">${String(pct).padStart(3,' ')}%</span>` +
-          `<span class="quiz-sc-label">     </span>` +
+          `<span class="quiz-sc-label"> · </span>` +
           `<span class="${pass ? 'quiz-pass' : 'quiz-fail'}">[${pass ? 'aprovado' : 'reprovado'}]</span>`;
 
         // Linhas dos subtópicos — ordenadas da pior taxa para a melhor
@@ -484,6 +484,8 @@ document.addEventListener("DOMContentLoaded", function() {
             const countStr = `${String(stats.correct).padStart(2,' ')}/${String(stats.total).padEnd(2,' ')}`;
             const tPctStr = String(tPct).padStart(3,' ') + '%';
             const sep = `<span class="quiz-sc-label"> · </span>`;
+            const topicTitle = (window.__topicTitles || {})[name];
+            const label = topicTitle ? `[${topicTitle}]` : '[revisao]';
             let html =
               `<span class="quiz-sc-label">${name}</span>` +
               sep +
@@ -491,7 +493,9 @@ document.addEventListener("DOMContentLoaded", function() {
               sep +
               `<span class="${bad ? 'quiz-fail' : 'quiz-pass'}">${tPctStr}</span>`;
             if (bad && href) {
-              html += `<a href="${href}" class="mention-link"> @linux/${name.replace('.', '/')}/${href.split('/').pop()}</a>`;
+              const lessonHref = topicTitle ? `/linux/${name.replace('.', '/')}/${topicTitle}/` : href;
+              html += sep +
+                      `<a href="${lessonHref}" class="mention-link">${label}</a>`;
             }
             line.innerHTML = html;
             headerBody.appendChild(line);

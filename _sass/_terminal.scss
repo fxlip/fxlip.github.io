@@ -27,12 +27,19 @@
 
 /* [DEFAULT] Link Killer: Mata links padrão para evitar cliques acidentais */
 /* ADICIONEI: .sys-hash-link e .action-btn na lista de exceções (Whitelist) */
-.terminal-box a:not(.mention-link):not(.link-card):not(.file-link):not(.sys-hash-link):not(.action-btn) {
+.terminal-box a:not(.mention-link):not(.link-card):not(.file-link):not(.sys-hash-link):not(.action-btn):not(.quiz-fail):not(.quiz-pass) {
   color: inherit !important;
   text-decoration: none !important;
   pointer-events: none; /* <--- Isso que estava bloqueando o clique */
   cursor: text;
   border-bottom: none !important;
+}
+
+/* [EXCEPTION] Quiz links (tópicos reprovados/aprovados) */
+.terminal-box a.quiz-fail,
+.terminal-box a.quiz-pass {
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
 /* [FORÇAR INTERATIVIDADE] Garante que botões e hash links funcionem */
