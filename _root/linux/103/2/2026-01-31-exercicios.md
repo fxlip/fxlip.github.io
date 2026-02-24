@@ -21,7 +21,7 @@ Escreva um comando que mostre os últimos 15 registros do arquivo, exibindo apen
 
 No comando `sort`, o `-t` define o delimitador, o `-k` o campo referência para o ordenamento, e o `-g` ordena como números ao invés de como caracteres
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -56,7 +56,7 @@ fxlip@www:~$
 
 No comando `sort`, o `-t` define o delimitador, o `-k` o campo referência para o ordenamento, e o `-g` ordena como números ao invés de como caracteres
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -152,7 +152,7 @@ No diretório foi adicionado um arquivo chamado file.txt aonde contém um texto 
 
 -> Quantidade de palavras `-w` `--words`
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>

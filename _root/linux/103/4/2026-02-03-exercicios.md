@@ -17,7 +17,7 @@ muted: true
 
 Crie um único comando que gere a lista de arquivos e diretórios contidos em `~/LPI1/Exercicios/Network`, exibindo-os na tela e em um novo arquivo chamado `exercicio1.txt` no diretório `~/LPI1/Exercicios`.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -50,7 +50,7 @@ fxlip@www:~$
 
 Crie um comando que exiba somente os 5 primeiros bytes do arquivo `~/LPI1/Exercicios/alunos.txt` e redirecione a resposta para `~/LPI1/Exercicios/exercicio2.txt`
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -74,7 +74,7 @@ fxlip@www:~/LPI1/Exercicios $
 
 Ainda no arquivo` ~/LPI1/Exercicios/alunos.txt` crie um comando que faça a substituição de todas as letras maiúsculas para minúsculas, redirecione a saída para o arquivo `~/LPI1/Exercicios/exercicio3.txt`
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -121,7 +121,7 @@ fxlip@www:~/LPI1/Exercicios$
 
 Gere um comando que em somente uma linha exiba no terminal a seguinte mensagem: "A versão do kernel do sistema é (Versão do kernel) e arquitetura (Arquitetura do sistema)", por fim redirecione a mensagem para o arquivo `~/LPI1/Exercicios/exercicio4.txt`
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -159,7 +159,7 @@ A saída do comando deve ser algo como o visto abaixo:
 
 `drwx------ 4 lightdm lightdm 4096 Mar 27 16:41 /var/lib/lightdm/.config `
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>

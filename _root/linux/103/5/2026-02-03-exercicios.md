@@ -34,7 +34,7 @@ Quantidade de processos (separados por vírgula)
 
 .."
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -87,7 +87,7 @@ fxlip@www:~$
 Atualmente existem 3 processos no sistema que estão usando bastante CPU, identifique e use os comandos necessários para encerrá-los.
 (Use o sudo quando necessitar de permissão)
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -119,7 +119,7 @@ fxlip@www:~$
 
 Crie um comando, que gere um arquivo chamado /home/lpi/resultado-top.out , que contenha a saída do comando top , atualizado a cada 10 segundos, sendo executado indefinidamente até que o processo seja morto. O comando deve rodar em background.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -151,7 +151,7 @@ PID USER  PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
 
 Envie um sinal de SIGKILL para o processo iniciado no exercício anterior.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>

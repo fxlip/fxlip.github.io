@@ -17,7 +17,7 @@ muted: true
 
 No home de seu usuário, crie um diretório chamado LPI1, dentro dele crie Aulas, Exercicios e Exemplos.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -55,7 +55,7 @@ Argumentos obrigatórios para opções longas também o são para opções curta
 
 Copie (não mova) todos os arquivos e diretórios existentes em `/etc/network/` para `/home/lpi/LPI1/Exercicios/Network/` . Mantenha as mesmas permissões incluindo as informações de proprietário dos arquivos.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -150,7 +150,7 @@ Argumentos obrigatórios para opções longas também o são para opções curta
 
 Copie (não mova) todos os arquivos do diretório `/etc`, cujo nome termine com ".conf" para `/home/lpi/LPI1/Exercicios/Config/`
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -173,7 +173,7 @@ fxlip@www:~$
 
 Em `/home/lpi/LPI1/Exercicios`, crie um arquivo chamado arquivos-cron.tgz, compactado com o gzip, contendo todos os arquivos e diretórios do `/etc` que contenham a palavra "cron" no nome.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -245,7 +245,7 @@ Descompacte conteúdo do arquivo arquivos-cron.tgz dentro do diretório:
 
 `/home/lpi/LPI1/Exercicios/Descompactar/`
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -301,7 +301,7 @@ fxlip@www:~$
 
 Encontre todos os arquivos do diretório `/var/log/lpi` , cujo nome termine com ".log" e cujo conteúdo foi modificado nas últimas 48 horas.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -383,7 +383,7 @@ fxlip@www:~$
 
 Encontre os arquivos que estão como dono o usuário felip presentes em `/var/log` e subdiretórios sequentes e faça a cópia dos arquivos somente, para o diretório `logs_felip` que deverá ser criado no `HOME` do usuário lpi.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>

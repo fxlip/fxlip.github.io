@@ -19,7 +19,7 @@ muted: true
 Execute o comando top -b -d10 > /dev/null & com a menor prioridade possível.
 (Use o comando top ou ps para validar o valor NICE do processo)
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -42,7 +42,7 @@ lpi@ubuntu:~$
 
 Altere o NICE do processo rsyslogd para o valor -10.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -51,14 +51,13 @@ Altere o NICE do processo rsyslogd para o valor -10.
   </div>
   
   <div class="auto-term">
-ubuntu:/home/lpi$ ps -la | grep rsys*
-ubuntu:/home/lpi$ pgrep rsyslogd
+fxlip@www:~$ ps -la | grep rsys*
+fxlip@www:~$ pgrep rsyslogd
 807
-ubuntu:/home/lpi$ renice -10 807
+fxlip@www:~$ renice -10 807
 807 (process ID) old priority 0, new priority -10
-ubuntu:/home/lpi$ renice -10 $(pgrep rsyslogd)
+fxlip@www:~$ renice -10 $(pgrep rsyslogd)
 807 (process ID) old priority -10, new priority -10
-ubuntu:/home/lpi$ 
 fxlip@www:~$ 
   </div>
 </div>

@@ -34,7 +34,7 @@ Nele inclua as seguintes seções:
 
 Salve e saia do arquivo.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -59,7 +59,7 @@ Abra novamente o arquivo meu-curriculo.txt, faça as seguintes modificações:
 
 Salve e saia do arquivo.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>

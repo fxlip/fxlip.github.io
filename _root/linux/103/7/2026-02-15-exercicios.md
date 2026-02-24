@@ -18,7 +18,7 @@ muted: true
 
 Gere um comando que exiba na tela todas as linhas do arquivo `/etc/passwd` que terminem com "nologin".
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -68,7 +68,7 @@ fxlip@www:~$
 
 Escreva um comando que irá exibir as linhas referentes aos usuários www-data e lpi somente, no arquivo /etc/passwd e redirecione o resultado para ~/exercicio2.txt .
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -96,7 +96,7 @@ Crie um comando que liste todos os arquivos do diretório /etc/ que contenham a 
 
 (Use o sudo para obter privilégios) 
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -119,7 +119,7 @@ fxlip@www:~$
 
 No arquivo /etc/passwd , o primeiro campo indica o nome do usuário, enquanto que o terceiro indica o ID do usuário. Crie um comando que exiba apenas os nomes de usuários que tenham o ID com 3 dígitos.
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
@@ -170,7 +170,7 @@ fxlip@www:~$
 
 Com base no arquivo ~/LPI1/Exercicios/alunos.txt , crie um novo arquivo ~/LPI1/Exercicios/alunos-exercicio.txt contendo o mesmo conteúdo do arquivo alunos.txt mas fazendo com que toda ocorrência a "Ana Maria" seja substituído por "Marieta".
 
-<div class="terminal-box">
+<div class="terminal-box answer-hidden">
   <div class="terminal-header">
     <div class="terminal-controls">
       <span class="win-btn btn-min">_</span>
