@@ -491,7 +491,7 @@ document.addEventListener("DOMContentLoaded", function() {
               sep +
               `<span class="${bad ? 'quiz-fail' : 'quiz-pass'}">${tPctStr}</span>`;
             if (bad && href) {
-              html += `\u00a0\u00a0<a href="${href}" class="mention-link">@linux/${name.replace('.', '/')}/${href.split('/').pop()}</a>`;
+              html += `<a href="${href}" class="mention-link"> @linux/${name.replace('.', '/')}/${href.split('/').pop()}</a>`;
             }
             line.innerHTML = html;
             headerBody.appendChild(line);
