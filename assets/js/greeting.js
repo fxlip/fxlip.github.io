@@ -223,9 +223,14 @@ document.addEventListener("DOMContentLoaded", function() {
   // 7. PLACEHOLDER DINÂMICO baseado na contagem de visitas
   // =======================================================================
   function getAnonymousPlaceholder(visits) {
-    if (visits >= 20)  return "não quer revelar sua identidade?";
-    if (visits >= 10)  return "identificar_sujeito?";
-    if (visits >= 2)   return "ainda sem nome?";
+    if (visits >= 99)  return `NULL`;
+    if (visits >= 90)  return `ta acabaaaaaaaando a oportunidade heim`;
+    if (visits >= 80)  return `daqui a pouco isso vai ser um captcha`;
+    if (visits >= 40)  return `você pode se chamar invisível, que tal?`;
+    if (visits >= 20)  return `um nickname que seja?`;
+    if (visits >= 10)  return `sai do armário`;
+    if (visits >= 5)   return `que tal assumir logo?`;
+    if (visits < 5)    return `fala comigo!!!`;
     return "qual seu nome?";
   }
 
