@@ -1,0 +1,15 @@
+---
+layout: default
+---
+{%- assign bank = site.data.questions[page.exam] -%}
+<script>
+window.__questionBank  = {{ bank | jsonify }};
+window.__quizConfig    = {{ page.config | jsonify }};
+window.__topicTitles   = {{ page.topic_titles | jsonify }};
+</script>
+
+<article class="post">
+  <div class="post-content">
+    {{ content }}
+  </div>
+</article>

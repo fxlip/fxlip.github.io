@@ -1,0 +1,319 @@
+- id: "103-001"
+  topic: "103.6"
+  question: "Qual é o valor padrão do NICE em qualquer processo iniciado no sistema Linux?"
+  options:
+    - "10"
+    - "0"
+    - "+19"
+    - "-20"
+    - "-10"
+  answer: 2
+  comment: "Ao se iniciar um processo no Linux, por padrão seu valor de NICE será definido como 0. O valor 10 é o padrão quando o processo é iniciado através do comando nice, sem um valor específico no argumento. #nice"
+
+- id: "103-002"
+  topic: "103.2"
+  question: "Qual comando irá exibir as últimas linhas do arquivo /var/log/messages?"
+  options:
+    - "head -f /var/log/messages"
+    - "tail -n /var/log/messages"
+    - "tail -f /var/log/messages"
+    - "tac /var/log/messages"
+    - "sort --last-lines /var/log/messages"
+  answer: 3
+  comment: "A opção -f do comando tail exibe as atuais últimas linhas do arquivo e continua exibindo de maneira constante novas linhas que são inseridas. #tail"
+
+- id: "103-003"
+  topic: "103.4"
+  question: "Quais dos seguintes comandos é um uso correto do xargs?"
+  options:
+    - "xargs *.out"
+    - "grep config *.out | xargs"
+    - "find / -uid 1000 | xargs -perm | tee"
+    - "find / -uid 1000 | xargs ls -l"
+    - "xargs"
+  answer: 4
+  comment: "O xargs é normalmente usado recebendo como entrada a saída do comando anterior, através do uso do pipe, e com base nessa informação, gerando os comandos desejados. #xargs"
+
+- id: "103-004"
+  topic: "103.2"
+  question: "Qual dos seguintes comandos gera como saída um texto com os números de cada linha do arquivo ou stream de texto utilizado como entrada?"
+  options:
+    - "tar"
+    - "ln"
+    - "od"
+    - "split"
+    - "nl"
+  answer: 5
+  comment: "O comando nl numera as linhas de arquivos texto, ou de strings de texto passadas como entrada. #nl"
+
+- id: "103-005"
+  topic: "103.3"
+  question: "Para testar a instalação de um novo software, o administrador do sistema criou um subdiretório temporário no /root chamado usr. Quando o usuário root finaliza suas atividades, ele deseja excluir este diretório e todos os arquivos e subdiretórios contidos nele. Como isso deve ser feito?"
+  options:
+    - "Em qualquer diretório, digitar: rm -r /usr"
+    - "No diretório /root, digitar: rm -r usr"
+    - "No diretório /root, digitar: rmdir usr"
+    - "No diretório /root, digitar: rm -r /usr"
+    - "Em qualquer diretório, digitar: rm /root/usr"
+  answer: 2
+  comment: "A opção -r do comando rm possibilita que um diretório com arquivos e subdiretórios seja removido. Atenção com o caminho do diretório segundo o enunciado, que é /root/usr. #rm #rmdir"
+
+- id: "103-006"
+  topic: "103.1"
+  question: "Qual dos seguintes comandos cria uma variável chamada TEMP1, que estará presente no ambiente de um sub-processo do bash?"
+  options:
+    - 'TEMP1="export"'
+    - 'set TEMP1="valor"'
+    - 'TEMP1="valor" ; export TEMP1'
+    - "export TEMP1 = valor"
+    - "TEMP1=valor; env TEMP1"
+  answer: 3
+  comment: "A declaração de uma variável é composta pelo nome da variável, o sinal de igual e o valor, atenção pois não pode haver espaço antes e depois do =. Para que essa variável esteja também disponível para os processos filho da sessão atual, deve ser usado o comando export. #export"
+
+- id: "103-007"
+  topic: "103.5"
+  question: |
+    Como root, você deseja encerrar o processo 1230 e então digita o comando: kill 1230
+
+    No entanto, nada acontece e o processo continua em execução. Qual dos comandos abaixo pode encerrar definitivamente o processo?
+  options:
+    - "kill -1 1230"
+    - "killall 1230"
+    - "kill -9 1230"
+    - "kill -s SIGTERM 12340"
+    - "pkill -p 1230"
+  answer: 3
+  comment: "O sinal 9 usado no kill corresponde ao SIGKILL, que faz com que o processo seja interrompido imediatamente, não podendo ser ignorado pelo processo. #kill"
+
+- id: "103-008"
+  topic: "103.3"
+  question: "Você digita ls *e[0-9].doc em um diretório. Qual dos seguintes nomes de arquivo, se existente, será exibido no resultado?"
+  options:
+    - "ele.doc"
+    - "telefone2.doc"
+    - "carro9.doc"
+    - "e0.DOC"
+    - "telefone19.doc"
+  answer: 2
+  comment: "Os valores contidos dentro dos colchetes [] são referentes a uma lista de possíveis caracteres, no caso apenas 1 caractere entre 0 e 9. Importante notar também que no shell os caracteres são case-sensitive, ou seja, letras minúsculas são diferentes de letras maiúsculas. #glob"
+
+- id: "103-009"
+  topic: "103.8"
+  question: "No vi, você começa a editar um arquivo de configuração do sistema mas é avisado por um colega que está editando o arquivo errado. O que você deve fazer para abandonar a edição do arquivo, sem alterar o arquivo original?"
+  options:
+    - "Você abre o menu 'File', seleciona 'Exit', e clica em 'No' na caixa de diálogos que pergunta se você deseja salvar o arquivo."
+    - "Você deve entrar em modo de comando pressionando ESC, se necessário, e então digitar :w!"
+    - "Em modo de navegação, você deve digitar apenas ZZ, para sair sem salvar"
+    - "Você deve entrar em modo de comando pressionando ESC, se necessário, e então digitar :q!"
+  answer: 4
+  comment: "No modo de comando do vi, o :q indica sair do arquivo e o ! força a saída mesmo que tenham ocorrido alterações no arquivo, no caso saindo sem salvar. #vi"
+
+- id: "103-010"
+  topic: "103.4"
+  question: "Qual dos comandos abaixo redireciona a saída padrão do comando ls -l /etc/config* para o arquivo saida-ls.out e a saída de erro para o arquivo erros-ls.out?"
+  options:
+    - "ls -l /etc/config* >> saida-ls.out 2> erros-ls.out"
+    - "ls -l /etc/config* < saida-ls.out 2> erros-ls.out"
+    - "ls -l /etc/config* > saida-ls.out 2>&1 erros-ls.out"
+    - "ls -l /etc/config* > erro-ls.out 2> saida-ls.out"
+    - "ls -l /etc/config* >> saida-ls.out >> erro-ls.out"
+  answer: 1
+  comment: "Os redirecionadores > e >> redirecionam a saída padrão do comando, sendo que o >> indica que o conteúdo será adicionado ao final do arquivo indicado. Já o 2>, assim como o 2>>, redireciona a saída de erro da execução do comando. #bash"
+
+- id: "103-011"
+  topic: "103.1"
+  question: "O que acontece no shell ao se digitar apenas: !!"
+  options:
+    - "O PID do último processo é exibido"
+    - "O código de retorno do último comando digitado é exibido"
+    - "O erro \"command not found\" é exibido"
+    - "O PID do shell atual é exibido"
+    - "O último comando executado no bash é executado novamente"
+  answer: 5
+  comment: "O !! reexecuta o último comando registrado no histórico de comandos (history). #bash"
+
+- id: "103-012"
+  topic: "103.3"
+  question: "Qual dos seguintes comandos exibirá o conteúdo de um arquivo tar, incluindo os detalhes?"
+  options:
+    - "tar x arquivo.tgz"
+    - "tar cvfz arquivo.tgz"
+    - "tar tzvf arquivo.tgz"
+    - "tar xzvf arquivo.tgz"
+    - "tar --show-files -f arquivo.tar"
+  answer: 3
+  comment: "A opção -t do comando tar apenas exibe o conteúdo do arquivo informado, sem realizar a descompactação. O -z é necessário quando o arquivo foi compactado com o gzip. #tar"
+
+- id: "103-013"
+  topic: "103.5"
+  question: "Na execução de um comando ou programa, é inserido o caractere & no final da sentença. Qual o efeito desse símbolo?"
+  options:
+    - "Ele faz com que o comando seja executado em background"
+    - "Ele faz com que o comando seja executado em foreground"
+    - "Ele impede que o processo morra quando a sessão do shell for encerrada"
+    - "Ele evita que o comando escreva a saída padrão na tela"
+    - "Ele faz com que o comando seja executado com prioridade maior que os demais processos"
+  answer: 1
+  comment: "Ao se utilizar o símbolo & ao final de uma chamada de comando ou programa, este será executado em background, deixando a interface no shell livre para a execução de novos comandos. #bg"
+
+- id: "103-014"
+  topic: "103.7"
+  question: |
+    Qual das afirmações abaixo é a mais correta sobre o resultado do comando:
+
+    grep -E "^[0-9][A-Z]" arquivo.out
+  options:
+    - "Serão retornadas todas as linhas do arquivo.out que tenham um número seguido de uma letra qualquer"
+    - "Serão retornadas todas as linhas do arquivo.out, exceto aquelas que contenham um número seguido de uma letra maiúscula"
+    - "Serão retornadas todas as linhas que contenham letras ou números, excluindo-se as linhas em branco"
+    - "Serão retornadas todas as linhas que tenham no começo da linha um número seguido por uma letra maiúscula"
+    - "Serão retornadas todas as linhas que contenham no final da linha um número seguido por uma letra maiúscula"
+  answer: 4
+  comment: "Ao se utilizar a opção -E no grep, a expressão será interpretada como uma expressão regular estendida. Na expressão, o símbolo ^ indica que a string deve estar no início da linha, seguido então de um número de 0 a 9, e uma letra maiúscula de A a Z. #grep"
+
+- id: "103-015"
+  topic: "103.8"
+  question: 'No modo de navegação do vi, qual a funcionalidade do caractere "?" ?'
+  options:
+    - "Abrir a ajuda do vi"
+    - "Fazer a busca de uma string, sendo o sentido do final para o começo do arquivo"
+    - "Remover a linha atual"
+    - "Fazer a busca de uma string, sendo o sentido do começo para o final do arquivo"
+    - "Sair do arquivo sem realizar nenhuma alteração"
+  answer: 2
+  comment: "No vi o caractere / faz a busca normal, do começo para o fim, enquanto que o caractere ? faz a busca inversa, do fim do arquivo para o começo. #vi"
+
+- id: "103-016"
+  topic: "103.2"
+  question: "Qual o comportamento do comando split quando utilizado sem nenhum argumento?"
+  options:
+    - "Divide um arquivo em vários outros arquivos de 1000 linhas cada"
+    - "Divide um arquivo em vários outros arquivos de 1024 bytes cada"
+    - "Divide um arquivo em vários outros arquivos de 1000 bytes cada"
+    - "Divide um arquivo em vários outros arquivos de 1024 linhas cada"
+  answer: 1
+  comment: "O comportamento padrão do comando split é dividir o arquivo a cada 1000 linhas. #split"
+
+- id: "103-017"
+  topic: "103.1"
+  question: 'Em qual variável de ambiente fica registrado o nome do arquivo em que são armazenados os dados utilizados pelo comando "history"?'
+  options:
+    - "PS1"
+    - "HISTFILE"
+    - "HISTSIZE"
+    - "HISTCONTROL"
+  answer: 2
+  comment: "A variável de ambiente HISTFILE indica o arquivo usado para registrar o histórico de comandos da sessão atual. #history"
+
+- id: "103-018"
+  topic: "103.1"
+  question: |
+    A variável EXERCICIO foi declarada da seguinte maneira:
+
+    EXERCICIO=Valor1
+
+    Qual opção do comando echo gerará o seguinte resultado?
+
+    O valor da variável $EXERCICIO é Valor1
+  options:
+    - 'echo "O valor da variável $EXERCICIO é $EXERCICIO"'
+    - "echo 'O valor da variável $EXERCICIO é $EXERCICIO'"
+    - "echo \"O valor da variável '$EXERCICIO' é $EXERCICIO\""
+    - "echo 'O valor da variável \"$EXERCICIO\" é $EXERCICIO'"
+    - "echo O valor da variável '$EXERCICIO' é $EXERCICIO"
+  answer: 5
+  comment: "As aspas simples impedem que a variável seja interpretada. Outra possibilidade seria: echo O valor da variável \\$EXERCICIO é $EXERCICIO #echo"
+
+- id: "103-019"
+  topic: "103.1"
+  question: "Qual comando irá retornar apenas o caminho em que um arquivo pode ser executado baseado na variável de ambiente PATH?"
+  options:
+    - "locate"
+    - "whereis"
+    - "which"
+    - "file"
+    - "type"
+  answer: 3
+  comment: "O comando which retorna o caminho do arquivo que seria executado para o comando informado como argumento, sendo baseado nas informações contidas na variável PATH. #which"
+
+- id: "103-020"
+  topic: "103.2"
+  question: "Dos comandos abaixo, qual gera uma sequência de caracteres que pode ser utilizada para representar de maneira única um arquivo?"
+  options:
+    - "bzcat"
+    - "checksum"
+    - "sum"
+    - "sha256sum"
+    - "file"
+  answer: 4
+  comment: "O comando sha256sum é usado para gerar o hash de um arquivo e também para realizar as devidas comparações. Outras respostas possíveis seriam: md5sum, sha512sum. #sha256sum"
+
+- id: "103-021"
+  topic: "103.5"
+  question: "O administrador deseja manter em um terminal o comando 'free -m' em execução permanente, sendo atualizado a cada 5 segundos. Como isso pode ser feito no shell?"
+  options:
+    - "watch -n5 free -m"
+    - "free -m | watch -n5"
+    - "free -m | watch -t5"
+    - "tmux -t5 free -m"
+    - "tmux -n5 < free -m"
+  answer: 1
+  comment: "O comando watch permite que qualquer comando seja executado repetidamente no terminal. A opção -n indica o intervalo em segundos da atualização (reexecução) do comando. #watch"
+
+- id: "103-022"
+  topic: "103.5"
+  question: "Qual ferramenta permite que o usuário possa criar, acessar e controlar diversos terminais em uma única tela?"
+  options:
+    - "top"
+    - "watch"
+    - "tmux"
+    - "md5sum"
+    - "bash"
+  answer: 3
+  comment: "Os comandos tmux e screen são utilizados para administrar diversas sessões bash em um único emulador de terminal, permitindo o uso de abas e janelas. #tmux"
+
+- id: "103-023"
+  topic: "103.7"
+  question: "Para filtrar conteúdos em arquivos de texto utilizando expressões regulares estendidas, qual comando deve ser utilizado?"
+  options:
+    - "fgrep"
+    - "egrep"
+    - "regex"
+    - "xgrep"
+  answer: 2
+  comment: "Por padrão, o grep utiliza expressões regulares básicas, mas com o uso da opção -E ou do comando egrep são suportadas expressões estendidas. #egrep"
+
+- id: "103-024"
+  topic: "103.7"
+  question: "Qual comando e expressão regular pode ser utilizada para encontrar números com 3 dígitos (de 0 a 9) ou mais no arquivo /etc/passwd?"
+  options:
+    - "egrep '([0-9][0-9][0-9])*' /etc/passwd"
+    - "egrep '[0-9]{3}' /etc/passwd"
+    - "egrep '[0123456789]{3,}' /etc/passwd"
+    - "egrep '[0-9]{3,*}' /etc/passwd"
+  answer: 3
+  comment: "Deve ser utilizado o egrep ou o grep -E para que sejam aceitas expressões regulares estendidas. O [0123456789] indica que deve ocorrer um dos caracteres listados, e o {3,} indica que deve haver ao menos 3 ocorrências. #regex"
+
+- id: "103-025"
+  topic: "103.8"
+  question: "Das opções abaixo, qual é uma alternativa ao editor de textos vim?"
+  options:
+    - "tmux"
+    - "nano"
+    - "calc"
+    - "gimp"
+    - "cups"
+  answer: 2
+  comment: "O nano é outro editor de arquivos em modo texto muito utilizado em sistemas Unix e GNU/Linux. #nano"
+
+- id: "103-026"
+  topic: "103.8"
+  question: "Qual variável de ambiente pode ser utilizada para definir o editor de textos padrão de um usuário no shell?"
+  options:
+    - "VIM"
+    - "EDITOR"
+    - "CONSOLE"
+    - "TERMINAL"
+    - "GDMSESSION"
+  answer: 2
+  comment: "O editor padrão pode ser definido por usuário/sessão, através da variável de ambiente EDITOR. #editor"

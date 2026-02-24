@@ -1,0 +1,14 @@
+# Banco de questões do exam 101 — adicione aqui
+# Formato: id, topic, question, options (lista), answer (1-based), comment
+
+- id: "101-001"
+  topic: "101.1"
+  question: "placeholder"
+  options:
+    - "0"
+    - "1"
+    - "10"
+    - "11"
+    - "100"
+  answer: 1
+  comment: "placeholder"
