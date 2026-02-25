@@ -538,16 +538,28 @@ a.link-card.internal-ref {
   position: relative; /* Para posicionar o tooltip */
 }
 
+/* Container fixo para igualar button vs a */
+.comment-reply-btn,
+.share-btn {
+  width: 16px;
+  height: 16px;
+}
+
+/* Espaçamento fino entre ícones do post-footer */
+.comment-reply-btn { margin-right: -1px; }
+.comment-counter   { margin-left:   1px; }
+
 /* Ícones SVG */
 .action-btn svg {
-  width: 15px;
-  height: 15px;
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+.comment-reply-btn svg { width: 19px; height: 19px; }
+.share-btn svg         { width: 13px; height: 13px; }
 
 /* Hover: Reply vira Verde, Share vira Amarelo (ou Roxo) */
 .reply-btn:hover { color: var(--green); transform: translateY(-1px); }
@@ -772,8 +784,8 @@ article.post {
 }
 
 .view-icon {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
@@ -962,6 +974,7 @@ article.post {
   color: var(--placeholder-color);
   font-size: 11px;
   cursor: default;
+  transform: translateY(-0px);
 
   svg {
     width: 14px;
