@@ -13,8 +13,6 @@
 
   if (!WORKER_URL) return;
 
-  let pendingReplyName = null;
-
   // --------------------------------------------------------------------------
   // Fingerprint — lê do localStorage (definido pelo greeting.js)
   // --------------------------------------------------------------------------
@@ -184,13 +182,6 @@
       footer.insertAdjacentElement('afterend', wrap);
       textarea.focus();
 
-      // Prefill para replies
-      if (pendingReplyName) {
-        textarea.value = `@${pendingReplyName} `;
-        textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
-        pendingReplyName = null;
-      }
-
       function cleanup() {
         wrap.classList.add('icf-leaving');
         let gone = false;
@@ -287,7 +278,11 @@
       header.textContent = `${comments.length} comentário${comments.length !== 1 ? 's' : ''}`;
       wrap.appendChild(header);
 
-      comments.forEach(c => {
+      const headerHr = document.createElement('hr');
+      headerHr.className = 'comment-hr';
+      wrap.appendChild(headerHr);
+
+      comments.forEach((c, idx) => {
         const votes = counts[`c:${c.id}`]?.upvotes || 0;
         const voted = upvoted.has(String(c.id));
 
@@ -309,20 +304,23 @@
 
         const upvoteBtn = document.createElement('button');
         upvoteBtn.className = 'cmt-upvote' + (voted ? ' active' : '');
-        upvoteBtn.innerHTML = `↑<span class="cmt-votes">${votes || ''}</span>`;
+        upvoteBtn.innerHTML = `<span class="cmt-heart">${voted ? '♥' : '♡'}</span><span class="cmt-votes">${votes || ''}</span>`;
 
-        const replyBtn = document.createElement('button');
-        replyBtn.className = 'cmt-reply';
-        replyBtn.textContent = 'responder';
-
-        actions.append(upvoteBtn, replyBtn);
+        actions.append(upvoteBtn);
         item.append(meta, text, actions);
         wrap.appendChild(item);
+
+        if (idx < comments.length - 1) {
+          const hr = document.createElement('hr');
+          hr.className = 'comment-hr';
+          wrap.appendChild(hr);
+        }
 
         if (fp) {
           upvoteBtn.addEventListener('click', () => {
             if (upvoteBtn.classList.contains('active')) return;
             upvoteBtn.classList.add('active');
+            upvoteBtn.querySelector('.cmt-heart').textContent = '♥';
             const countEl = upvoteBtn.querySelector('.cmt-votes');
             const prev = parseInt(countEl.textContent) || 0;
             countEl.textContent = prev + 1;
@@ -333,6 +331,7 @@
               body: JSON.stringify({ fingerprint: fp, target_slug: `c:${c.id}`, target_type: 'post', type: 'upvote' })
             }).catch(() => {
               upvoteBtn.classList.remove('active');
+              upvoteBtn.querySelector('.cmt-heart').textContent = '♡';
               countEl.textContent = prev || '';
               const s2 = getUpvotedSet(); s2.delete(String(c.id)); saveUpvoted(s2);
             });
@@ -340,12 +339,6 @@
         } else {
           upvoteBtn.disabled = true;
         }
-
-        replyBtn.addEventListener('click', () => {
-          pendingReplyName = c.name;
-          const trigger = document.querySelector('.comment-reply-btn');
-          if (trigger) trigger.click();
-        });
       });
 
       container.innerHTML = '';

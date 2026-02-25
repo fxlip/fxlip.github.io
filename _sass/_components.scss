@@ -1055,24 +1055,18 @@ article.post {
 
 .cmt-wrap {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
 }
 
 .cmt-header {
-  color: var(--muted-color);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: 4px;
+  color: var(--base-color);
+  opacity: 0.9;
+  font-size: 12px;
+  text-align: right;
 }
 
 .cmt-item {
   padding: 12px 0;
-  border-bottom: 1px solid rgba(68, 71, 90, 0.35);
   animation: icf-boot 0.22s ease-out both;
-
-  &:last-child { border-bottom: none; }
 }
 
 .cmt-meta {
@@ -1095,42 +1089,34 @@ article.post {
 
 .cmt-text {
   color: var(--text-color);
-  line-height: 1.55;
+  line-height: 1.6;
   margin-bottom: 8px;
   white-space: pre-wrap;
   word-break: break-word;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .cmt-actions {
   display: flex;
   align-items: center;
-  gap: 14px;
 }
 
-.cmt-upvote,
-.cmt-reply {
+.cmt-upvote {
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted-color);
   transition: color 0.15s ease;
   display: flex;
   align-items: center;
   gap: 3px;
-  letter-spacing: 0.02em;
 
+  &:hover:not(:disabled) { color: var(--accent-pink); }
+  &.active { color: var(--accent-pink); }
   &:disabled { opacity: 0.3; cursor: default; }
 }
-
-.cmt-upvote {
-  &:hover:not(:disabled) { color: var(--accent-cyan); }
-  &.active { color: var(--accent-cyan); }
-}
-
-.cmt-reply:hover { color: var(--base-color); }
 
 .cmt-votes:empty { display: none; }
