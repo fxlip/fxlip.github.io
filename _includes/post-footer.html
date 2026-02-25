@@ -16,17 +16,16 @@
       <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
       <span class="comment-count">-</span>
     </span>
-    {% if include.static_hash %}
-      <span class="sys-hash-link static-mode" title="./{{ item_hash }}">
-        {{ item_hash }}
-      </span>
-    {% else %}
-      <a href="{{ include.item.url | remove: '.html' }}" class="sys-hash-link" title="./{{ item_hash }}">
-        {{ item_hash }}
-      </a>
-    {% endif %}
   </div>
-  <time class="sys-date" datetime="{{ include.item.date | date_to_xmlschema }}">
-    {{ include.item.date | date: "%H:%M" }} · {{ include.item.date | date: "%-d de %b de %Y" | downcase }}
-  </time>
+  {% if include.static_hash %}
+    <time class="sys-date" datetime="{{ include.item.date | date_to_xmlschema }}">
+      {{ include.item.date | date: "%H:%M" }} · {{ include.item.date | date: "%-d de %b de %Y" | downcase }}
+    </time>
+  {% else %}
+    <a href="{{ include.item.url | remove: '.html' }}" class="sys-date-link">
+      <time class="sys-date" datetime="{{ include.item.date | date_to_xmlschema }}">
+        {{ include.item.date | date: "%H:%M" }} · {{ include.item.date | date: "%-d de %b de %Y" | downcase }}
+      </time>
+    </a>
+  {% endif %}
 </div>

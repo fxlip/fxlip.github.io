@@ -101,8 +101,8 @@
   /* 6. POST FOOTER (DATA MENOR PARA NÃO QUEBRAR) */
   .post-footer {
     /* Garante alinhamento e evita quebra prematura */
-    align-items: baseline;
-    gap: 5px; 
+    align-items: center;
+    gap: 5px;
   }
 
   .sys-date {

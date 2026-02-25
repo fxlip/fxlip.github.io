@@ -27,7 +27,7 @@
 
 /* [DEFAULT] Link Killer: Mata links padrão para evitar cliques acidentais */
 /* ADICIONEI: .sys-hash-link e .action-btn na lista de exceções (Whitelist) */
-.terminal-box a:not(.mention-link):not(.link-card):not(.file-link):not(.sys-hash-link):not(.action-btn):not(.quiz-fail):not(.quiz-pass) {
+.terminal-box a:not(.mention-link):not(.link-card):not(.file-link):not(.sys-hash-link):not(.action-btn):not(.quiz-fail):not(.quiz-pass):not(.sys-date-link) {
   color: inherit !important;
   text-decoration: none !important;
   pointer-events: none; /* <--- Isso que estava bloqueando o clique */
@@ -44,7 +44,8 @@
 
 /* [FORÇAR INTERATIVIDADE] Garante que botões e hash links funcionem */
 .terminal-box .sys-hash-link,
-.terminal-box .action-btn {
+.terminal-box .action-btn,
+.terminal-box .sys-date-link {
   pointer-events: auto !important;
   cursor: pointer !important;
   z-index: 10; /* Garante que fiquem acima de qualquer camada do terminal */
