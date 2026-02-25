@@ -207,6 +207,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // 4b. Busca contagens dos novos posts
             if (window.fetchViewCounts) window.fetchViewCounts(postsContainer);
+            if (window.applyInteractionCounts) window.applyInteractionCounts(postsContainer);
           }
 
           // Atualiza o link da próxima página

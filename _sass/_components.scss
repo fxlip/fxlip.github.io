@@ -927,6 +927,14 @@ article.post {
   color: #ff5555;
 }
 
+/* Badge de porcentagem nas páginas de revisão */
+.quiz-score-badge {
+  font-size: 0.85em;
+  font-weight: normal;
+  margin-left: 0.4em;
+  opacity: 0.9;
+}
+
 /* A Falange: Grid estrutural para as linhas do Quiz */
 .t-quiz-row {
   display: grid;
@@ -940,4 +948,99 @@ article.post {
 .t-quiz-row span:nth-child(2),
 .t-quiz-row span:nth-child(3) {
   text-align: right; /* Garante que os números cresçam para a esquerda */
+}
+
+/* ==========================================================================
+   INTERAÇÕES — posts e linkcards
+   ========================================================================== */
+
+/* Contador de comentários no post-footer */
+.comment-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted-color);
+  font-size: 0.8em;
+  cursor: default;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+  }
+}
+
+/* Form de comentário terminal (irmão do .post-footer, fora do flex row) */
+.comment-hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 8px 0 4px;
+}
+
+.icf-wrap {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  padding: 0;
+  margin-top: 14px;
+  animation: icf-boot 0.22s ease-out forwards;
+}
+
+.icf-wrap.icf-leaving {
+  animation: icf-dissolve 0.16s ease-in forwards;
+  pointer-events: none;
+}
+
+@keyframes icf-boot {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes icf-dissolve {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icf-wrap, .icf-wrap.icf-leaving { animation: none; }
+}
+
+.icf-input-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+
+  .icf-arrow {
+    flex-shrink: 0;
+    line-height: 1.6;
+    margin-bottom: 0;
+    margin-top: 16px;
+  }
+
+  .icf-textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 0;
+    margin-top: 16px;
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    outline: none;
+    padding: 2px 0;
+    resize: none;
+    width: 100%;
+
+    &::placeholder { color: var(--muted-color); opacity: 0.5; font-size: 12px; }
+    &:focus    { border-color: var(--accent-cyan); }
+    &:disabled { opacity: 0.5; }
+  }
+}
+
+.icf-arrow {
+  transition: opacity 0.15s ease;
+  .icf-wrap.icf-leaving & { opacity: 0.4; }
 }

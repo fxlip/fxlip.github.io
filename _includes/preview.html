@@ -11,14 +11,16 @@
     {% assign is_internal = false %}
     {% if pv.url contains 'fxlip.com' %}{% assign is_internal = true %}{% endif %}
     {% if is_internal %}
-      <a href="{{ pv.url }}" class="link-card no-image internal-ref">
+      {% assign card_slug = pv.url | remove: 'https://' | remove: 'http://' | downcase | replace: '/', '-' | replace: '.', '-' | truncate: 64, '' %}
+      <a href="{{ pv.url }}" class="link-card no-image internal-ref" data-slug="{{ card_slug }}">
         <div class="lc-meta">
           {% if pv.description %}<div class="lc-desc">{{ pv.description }}</div>{% endif %}
         </div>
       </a>
     {% else %}
+      {% assign card_slug = pv.url | remove: 'https://' | remove: 'http://' | downcase | replace: '/', '-' | replace: '.', '-' | truncate: 64, '' %}
       <a href="{{ pv.url }}" target="_blank" rel="noopener noreferrer"
-         class="link-card {% unless pv.image %}no-image{% endunless %}">
+         class="link-card {% unless pv.image %}no-image{% endunless %}" data-slug="{{ card_slug }}">
         {% if pv.image %}
           <img src="{{ pv.image }}"
                alt="{{ pv.title | escape }}"

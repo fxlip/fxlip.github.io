@@ -173,6 +173,7 @@ document.addEventListener("DOMContentLoaded", function() {
           card.href = link.href;
           card.className = 'link-card no-image internal-ref';
           card.title = `./${filename}`;
+          card.dataset.slug = window.urlToSlug ? window.urlToSlug(link.href) : filename;
           card.innerHTML = `<div class="lc-meta"><div class="lc-desc">${desc}</div><div class="lc-site">${displayDate}</div></div>`;
           loader.replaceWith(card);
         })

@@ -18,7 +18,7 @@
     upgrade-insecure-requests;
 {%- endcapture -%}
 {%- capture csp_final -%}{{ csp | strip | replace: '\n', ' ' }} {%- if site.csp_extra %} {{ site.csp_extra }}{%- endif -%}{%- endcapture -%}
-{% assign t = site.time | date: "%s" %} {% assign master_hash = t | replace: '0', 'a' | replace: '1', 'b' | replace: '2', 'c' | replace: '3', 'd' | replace: '4', 'e' | replace: '5', 'f' | replace: '6', '7' | replace: '7', '8' | replace: '8', '9' | replace: '9', '0' | append: 'f' %} {% assign sig_css = master_hash %} {% assign sig_lnk = master_hash | replace: 'a', 'x' | replace: 'b', 'y' | replace: 'c', 'z' %} {% assign sig_trm = master_hash | replace: '7', '1' | replace: '8', '2' | append: 't' %} {% assign sig_syn = master_hash | remove: 'f' | append: 's9' %} {% assign sig_main = master_hash | replace: 'd', 'k' | replace: 'e', 'm' | prepend: 'v8-' %} {% assign sig_quiz = master_hash | replace: 'b', 'p' | replace: 'c', 'r' | append: 'qz' %}
+{% assign t = site.time | date: "%s" %} {% assign master_hash = t | replace: '0', 'a' | replace: '1', 'b' | replace: '2', 'c' | replace: '3', 'd' | replace: '4', 'e' | replace: '5', 'f' | replace: '6', '7' | replace: '7', '8' | replace: '8', '9' | replace: '9', '0' | append: 'f' %} {% assign sig_css = master_hash %} {% assign sig_lnk = master_hash | replace: 'a', 'x' | replace: 'b', 'y' | replace: 'c', 'z' %} {% assign sig_trm = master_hash | replace: '7', '1' | replace: '8', '2' | append: 't' %} {% assign sig_syn = master_hash | remove: 'f' | append: 's9' %} {% assign sig_main = master_hash | replace: 'd', 'k' | replace: 'e', 'm' | prepend: 'v8-' %} {% assign sig_quiz = master_hash | replace: 'b', 'p' | replace: 'c', 'r' | append: 'qz' %} {% assign sig_int = master_hash | replace: 'a', 'i' | append: 'nx' %}
   <{{ "head" }}>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -111,5 +111,6 @@
     <script defer src="{{ '/assets/js/greeting.js' | relative_url }}?x={{ sig_main }}"></script>
     <script defer src="{{ '/assets/js/main.js' | relative_url }}?x={{ sig_main }}"></script>
     <script defer src="{{ '/assets/js/quiz.js' | relative_url }}?x={{ sig_quiz }}"></script>
+    <script defer src="{{ '/assets/js/interactions.js' | relative_url }}?x={{ sig_int }}"></script>
   </body>
 </html>

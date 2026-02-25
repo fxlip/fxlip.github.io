@@ -34,6 +34,51 @@
   }
 
   // --------------------------------------------------------------------------
+  // Persistência de resultados (localStorage, por browser)
+  // --------------------------------------------------------------------------
+
+  const SCORES_KEY = 'fxlip_quiz_scores';
+
+  function loadScores() {
+    try { return JSON.parse(localStorage.getItem(SCORES_KEY)) || {}; }
+    catch (_) { return {}; }
+  }
+
+  function saveExamScores(examId, topicStats) {
+    try {
+      const scores = loadScores();
+      scores[examId] = {};
+      for (const [topic, stats] of Object.entries(topicStats)) {
+        scores[examId][topic] = Math.round((stats.correct / stats.total) * 100);
+      }
+      localStorage.setItem(SCORES_KEY, JSON.stringify(scores));
+    } catch (_) {}
+  }
+
+  // --------------------------------------------------------------------------
+  // Exibe resultados históricos na página de revisão
+  // --------------------------------------------------------------------------
+
+  function applyStoredScores() {
+    const match = window.location.pathname.match(/\/linux\/(\d+)\/revisao/);
+    if (!match) return;
+
+    const examScores = loadScores()[match[1]];
+    if (!examScores) return;
+
+    document.querySelectorAll('h2').forEach(h2 => {
+      if (h2.querySelector('.quiz-score-badge')) return;
+      const pct = examScores[h2.textContent.trim()];
+      if (pct == null) return;
+
+      const badge = document.createElement('span');
+      badge.className = 'quiz-score-badge ' + (pct >= 70 ? 'quiz-pass' : 'quiz-fail');
+      badge.textContent = ` [${pct}%]`;
+      h2.appendChild(badge);
+    });
+  }
+
+  // --------------------------------------------------------------------------
   // Seleção de questões
   // --------------------------------------------------------------------------
 
@@ -156,6 +201,10 @@
           `<span class="quiz-sc-label"> · </span>` +
           `<span class="${pass ? 'quiz-pass' : 'quiz-fail'}">[${pass ? 'aprovado' : 'reprovado'}]</span>`;
 
+        // Persiste os resultados para a página de revisão
+        const examId = Object.keys(topics)[0]?.split('.')[0];
+        if (examId) saveExamScores(examId, topics);
+
         // Desempenho por tópico — ordenado do pior para o melhor
         if (Object.keys(topics).length > 0) {
           const sorted = Object.entries(topics).sort(
@@ -235,5 +284,8 @@
     });
   }
 
-  document.addEventListener('DOMContentLoaded', initQuizFromBank);
+  document.addEventListener('DOMContentLoaded', () => {
+    initQuizFromBank();
+    applyStoredScores();
+  });
 })();
