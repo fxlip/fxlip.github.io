@@ -760,7 +760,7 @@ article.post {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: #5c5f77;
+  color: var(--placeholder-color);
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   transition: opacity 0.3s ease;
@@ -782,7 +782,7 @@ article.post {
 }
 
 .view-count {
-  min-width: 10px;
+  min-width: 0px;
 }
 
 /* ==========================================================================
@@ -959,8 +959,8 @@ article.post {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: var(--muted-color);
-  font-size: 0.8em;
+  color: var(--placeholder-color);
+  font-size: 11px;
   cursor: default;
 
   svg {
@@ -1052,10 +1052,11 @@ article.post {
 }
 
 .cmt-header {
-  color: var(--base-color);
+  color: var(--placeholder-color);
   opacity: 0.9;
   font-size: 12px;
   text-align: right;
+  margin-bottom: 20px;
 }
 
 .cmt-item {
@@ -1072,12 +1073,12 @@ article.post {
 
 .cmt-name {
   color: var(--accent-cyan);
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .cmt-time {
   color: var(--muted-color);
-  font-size: 11px;
+  font-size: 12px;
   opacity: 0.6;
 }
 
