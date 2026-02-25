@@ -1044,3 +1044,93 @@ article.post {
   transition: opacity 0.15s ease;
   .icf-wrap.icf-leaving & { opacity: 0.4; }
 }
+
+/* ==========================================================================
+   LISTA DE COMENTÁRIOS (POST PAGE)
+   ========================================================================== */
+
+#post-comments {
+  margin-top: 32px;
+}
+
+.cmt-wrap {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+}
+
+.cmt-header {
+  color: var(--muted-color);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 4px;
+}
+
+.cmt-item {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(68, 71, 90, 0.35);
+  animation: icf-boot 0.22s ease-out both;
+
+  &:last-child { border-bottom: none; }
+}
+
+.cmt-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.cmt-name {
+  color: var(--accent-cyan);
+  font-size: 12px;
+}
+
+.cmt-time {
+  color: var(--muted-color);
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.cmt-text {
+  color: var(--text-color);
+  line-height: 1.55;
+  margin-bottom: 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 13px;
+}
+
+.cmt-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cmt-upvote,
+.cmt-reply {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  color: var(--muted-color);
+  transition: color 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  letter-spacing: 0.02em;
+
+  &:disabled { opacity: 0.3; cursor: default; }
+}
+
+.cmt-upvote {
+  &:hover:not(:disabled) { color: var(--accent-cyan); }
+  &.active { color: var(--accent-cyan); }
+}
+
+.cmt-reply:hover { color: var(--base-color); }
+
+.cmt-votes:empty { display: none; }

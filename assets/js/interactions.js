@@ -6,11 +6,14 @@
 (function () {
   'use strict';
 
-  const WORKER_URL = document.body.dataset.workerUrl;
-  const FP_KEY     = 'fxlip_fp';
-  const INT_CACHE  = 'fxlip_int_cache';
+  const WORKER_URL   = document.body.dataset.workerUrl;
+  const FP_KEY       = 'fxlip_fp';
+  const INT_CACHE    = 'fxlip_int_cache';
+  const UPVOTED_KEY  = 'fxlip_upvoted_c';
 
   if (!WORKER_URL) return;
+
+  let pendingReplyName = null;
 
   // --------------------------------------------------------------------------
   // Fingerprint — lê do localStorage (definido pelo greeting.js)
@@ -181,6 +184,13 @@
       footer.insertAdjacentElement('afterend', wrap);
       textarea.focus();
 
+      // Prefill para replies
+      if (pendingReplyName) {
+        textarea.value = `@${pendingReplyName} `;
+        textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+        pendingReplyName = null;
+      }
+
       function cleanup() {
         wrap.classList.add('icf-leaving');
         let gone = false;
@@ -205,6 +215,7 @@
           if (fetchOk) {
             const cntEl = footer.querySelector(`.comment-counter[data-slug="${slug}"] .comment-count`);
             if (cntEl) cntEl.textContent = (parseInt(cntEl.textContent) || 0) + 1;
+            document.dispatchEvent(new CustomEvent('comment-added', { detail: { slug } }));
           }
           setTimeout(cleanup, 300);
         };
@@ -233,6 +244,119 @@
   }
 
   // --------------------------------------------------------------------------
+  // initPostComments() — lista de comentários na página do post
+  // --------------------------------------------------------------------------
+
+  function getUpvotedSet() {
+    try { return new Set(JSON.parse(localStorage.getItem(UPVOTED_KEY) || '[]')); } catch (_) { return new Set(); }
+  }
+
+  function saveUpvoted(set) {
+    try { localStorage.setItem(UPVOTED_KEY, JSON.stringify([...set])); } catch (_) {}
+  }
+
+  function initPostComments() {
+    const container = document.getElementById('post-comments');
+    if (!container) return;
+    const slug = container.dataset.slug;
+    if (!slug) return;
+
+    const load = () => {
+      fetch(`${WORKER_URL}/api/interactions?slug=${encodeURIComponent(slug)}&target_type=post`)
+        .then(r => r.json())
+        .then(data => {
+          const comments = (data.comments || []);
+          if (!comments.length) { container.innerHTML = ''; return; }
+          const cSlugs = comments.map(c => `c:${c.id}`).join(',');
+          fetch(`${WORKER_URL}/api/interactions/batch?slugs=${cSlugs}&target_type=post`)
+            .then(r => r.json())
+            .then(counts => render(comments, counts))
+            .catch(() => render(comments, {}));
+        })
+        .catch(() => {});
+    };
+
+    const render = (comments, counts) => {
+      const upvoted = getUpvotedSet();
+      const fp = getFingerprint();
+      const wrap = document.createElement('div');
+      wrap.className = 'cmt-wrap';
+
+      const header = document.createElement('div');
+      header.className = 'cmt-header';
+      header.textContent = `${comments.length} comentário${comments.length !== 1 ? 's' : ''}`;
+      wrap.appendChild(header);
+
+      comments.forEach(c => {
+        const votes = counts[`c:${c.id}`]?.upvotes || 0;
+        const voted = upvoted.has(String(c.id));
+
+        const item = document.createElement('div');
+        item.className = 'cmt-item';
+
+        const meta = document.createElement('div');
+        meta.className = 'cmt-meta';
+        meta.innerHTML =
+          `<span class="cmt-name">${escapeHtml(c.name)}</span>` +
+          `<span class="cmt-time">${timeAgo(c.created_at)}</span>`;
+
+        const text = document.createElement('div');
+        text.className = 'cmt-text';
+        text.textContent = c.content;
+
+        const actions = document.createElement('div');
+        actions.className = 'cmt-actions';
+
+        const upvoteBtn = document.createElement('button');
+        upvoteBtn.className = 'cmt-upvote' + (voted ? ' active' : '');
+        upvoteBtn.innerHTML = `↑<span class="cmt-votes">${votes || ''}</span>`;
+
+        const replyBtn = document.createElement('button');
+        replyBtn.className = 'cmt-reply';
+        replyBtn.textContent = 'responder';
+
+        actions.append(upvoteBtn, replyBtn);
+        item.append(meta, text, actions);
+        wrap.appendChild(item);
+
+        if (fp) {
+          upvoteBtn.addEventListener('click', () => {
+            if (upvoteBtn.classList.contains('active')) return;
+            upvoteBtn.classList.add('active');
+            const countEl = upvoteBtn.querySelector('.cmt-votes');
+            const prev = parseInt(countEl.textContent) || 0;
+            countEl.textContent = prev + 1;
+            const s = getUpvotedSet(); s.add(String(c.id)); saveUpvoted(s);
+            fetch(WORKER_URL + '/api/interact', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ fingerprint: fp, target_slug: `c:${c.id}`, target_type: 'post', type: 'upvote' })
+            }).catch(() => {
+              upvoteBtn.classList.remove('active');
+              countEl.textContent = prev || '';
+              const s2 = getUpvotedSet(); s2.delete(String(c.id)); saveUpvoted(s2);
+            });
+          });
+        } else {
+          upvoteBtn.disabled = true;
+        }
+
+        replyBtn.addEventListener('click', () => {
+          pendingReplyName = c.name;
+          const trigger = document.querySelector('.comment-reply-btn');
+          if (trigger) trigger.click();
+        });
+      });
+
+      container.innerHTML = '';
+      container.appendChild(wrap);
+    };
+
+    load();
+    document.addEventListener('comment-added', e => { if (e.detail.slug === slug) load(); });
+  }
+
+  // --------------------------------------------------------------------------
   // Slug helper para autolink.js (exposto globalmente)
   // --------------------------------------------------------------------------
 
@@ -258,6 +382,7 @@
     startHeartbeat();
     window.applyInteractionCounts(document);
     initInlineComments();
+    initPostComments();
   });
 
 })();

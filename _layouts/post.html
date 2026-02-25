@@ -19,5 +19,7 @@ hide_footer: true
   {% include preview.html %}
   {% include post-footer.html item=page margin="30px" nosnippet=true static_hash=true %}
 
-
 </article>
+
+{% assign post_hash = page.url | replace: '.html', '' | replace: '/', ' ' | split: ' ' | last %}
+<div id="post-comments" data-slug="{{ post_hash }}"></div>
