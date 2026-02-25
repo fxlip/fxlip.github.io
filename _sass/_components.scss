@@ -546,7 +546,8 @@ a.link-card.internal-ref {
 }
 
 /* Espaçamento fino entre ícones do post-footer */
-.comment-reply-btn { margin-right: -1px; }
+.comment-reply-btn { margin-right: -2px; margin-left: 14px;}
+.share-btn         { margin-right: -1px; }
 .comment-counter   { margin-left:   1px; }
 
 /* Ícones SVG */
@@ -974,7 +975,6 @@ article.post {
   color: var(--placeholder-color);
   font-size: 11px;
   cursor: default;
-  transform: translateY(-0px);
 
   svg {
     width: 14px;
