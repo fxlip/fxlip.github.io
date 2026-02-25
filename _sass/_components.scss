@@ -972,12 +972,6 @@ article.post {
   }
 }
 
-/* Form de comentário terminal (irmão do .post-footer, fora do flex row) */
-.comment-hr {
-  border: none;
-  border-top: 1px solid var(--border-color);
-  margin: 8px 0 4px;
-}
 
 .icf-wrap {
   font-family: 'JetBrains Mono', monospace;
@@ -1096,27 +1090,3 @@ article.post {
   font-size: 14px;
 }
 
-.cmt-actions {
-  display: flex;
-  align-items: center;
-}
-
-.cmt-upvote {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 13px;
-  color: var(--muted-color);
-  transition: color 0.15s ease;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-
-  &:hover:not(:disabled) { color: var(--accent-pink); }
-  &.active { color: var(--accent-pink); }
-  &:disabled { opacity: 0.3; cursor: default; }
-}
-
-.cmt-votes:empty { display: none; }

@@ -9,8 +9,6 @@
   const WORKER_URL   = document.body.dataset.workerUrl;
   const FP_KEY       = 'fxlip_fp';
   const INT_CACHE    = 'fxlip_int_cache';
-  const UPVOTED_KEY  = 'fxlip_upvoted_c';
-
   if (!WORKER_URL) return;
 
   // --------------------------------------------------------------------------
@@ -238,14 +236,6 @@
   // initPostComments() — lista de comentários na página do post
   // --------------------------------------------------------------------------
 
-  function getUpvotedSet() {
-    try { return new Set(JSON.parse(localStorage.getItem(UPVOTED_KEY) || '[]')); } catch (_) { return new Set(); }
-  }
-
-  function saveUpvoted(set) {
-    try { localStorage.setItem(UPVOTED_KEY, JSON.stringify([...set])); } catch (_) {}
-  }
-
   function initPostComments() {
     const container = document.getElementById('post-comments');
     if (!container) return;
@@ -256,20 +246,14 @@
       fetch(`${WORKER_URL}/api/interactions?slug=${encodeURIComponent(slug)}&target_type=post`)
         .then(r => r.json())
         .then(data => {
-          const comments = (data.comments || []);
+          const comments = data.comments || [];
           if (!comments.length) { container.innerHTML = ''; return; }
-          const cSlugs = comments.map(c => `c:${c.id}`).join(',');
-          fetch(`${WORKER_URL}/api/interactions/batch?slugs=${cSlugs}&target_type=post`)
-            .then(r => r.json())
-            .then(counts => render(comments, counts))
-            .catch(() => render(comments, {}));
+          render(comments);
         })
         .catch(() => {});
     };
 
-    const render = (comments, counts) => {
-      const upvoted = getUpvotedSet();
-      const fp = getFingerprint();
+    const render = (comments) => {
       const wrap = document.createElement('div');
       wrap.className = 'cmt-wrap';
 
@@ -277,15 +261,9 @@
       header.className = 'cmt-header';
       header.textContent = `${comments.length} comentário${comments.length !== 1 ? 's' : ''}`;
       wrap.appendChild(header);
-
-      const headerHr = document.createElement('hr');
-      headerHr.className = 'comment-hr';
-      wrap.appendChild(headerHr);
+      wrap.appendChild(document.createElement('hr'));
 
       comments.forEach((c, idx) => {
-        const votes = counts[`c:${c.id}`]?.upvotes || 0;
-        const voted = upvoted.has(String(c.id));
-
         const item = document.createElement('div');
         item.className = 'cmt-item';
 
@@ -299,46 +277,10 @@
         text.className = 'cmt-text';
         text.textContent = c.content;
 
-        const actions = document.createElement('div');
-        actions.className = 'cmt-actions';
-
-        const upvoteBtn = document.createElement('button');
-        upvoteBtn.className = 'cmt-upvote' + (voted ? ' active' : '');
-        upvoteBtn.innerHTML = `<span class="cmt-heart">${voted ? '♥' : '♡'}</span><span class="cmt-votes">${votes || ''}</span>`;
-
-        actions.append(upvoteBtn);
-        item.append(meta, text, actions);
+        item.append(meta, text);
         wrap.appendChild(item);
 
-        if (idx < comments.length - 1) {
-          const hr = document.createElement('hr');
-          hr.className = 'comment-hr';
-          wrap.appendChild(hr);
-        }
-
-        if (fp) {
-          upvoteBtn.addEventListener('click', () => {
-            if (upvoteBtn.classList.contains('active')) return;
-            upvoteBtn.classList.add('active');
-            upvoteBtn.querySelector('.cmt-heart').textContent = '♥';
-            const countEl = upvoteBtn.querySelector('.cmt-votes');
-            const prev = parseInt(countEl.textContent) || 0;
-            countEl.textContent = prev + 1;
-            const s = getUpvotedSet(); s.add(String(c.id)); saveUpvoted(s);
-            fetch(WORKER_URL + '/api/interact', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ fingerprint: fp, target_slug: `c:${c.id}`, target_type: 'post', type: 'upvote' })
-            }).catch(() => {
-              upvoteBtn.classList.remove('active');
-              upvoteBtn.querySelector('.cmt-heart').textContent = '♡';
-              countEl.textContent = prev || '';
-              const s2 = getUpvotedSet(); s2.delete(String(c.id)); saveUpvoted(s2);
-            });
-          });
-        } else {
-          upvoteBtn.disabled = true;
-        }
+        if (idx < comments.length - 1) wrap.appendChild(document.createElement('hr'));
       });
 
       container.innerHTML = '';
