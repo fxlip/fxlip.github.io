@@ -364,10 +364,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const newText = getRelativeTime(originalText);
       if (newText && newText !== originalText) {
           el.innerText = newText;
-          el.title = originalText; 
-          el.style.opacity = "1"; 
-          el.style.color = "var(--placeholder-color)"; 
-          el.style.fontWeight = "400";
+          el.title = originalText;
       }
       el.dataset.timeagoProcessed = "true";
     });
