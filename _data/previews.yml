@@ -69,3 +69,9 @@ fc31e673db143509:
   description: Conteúdo externo.
   url: https://www.bloomberg.com/news/articles/2026-02-25/hacker-used-anthropic-s-claude-to-steal-sensitive-mexican-data
   image:
+aac57914d46a6186:
+  title: We Built an Open-Source Prompt Injection Attack Console. Here's Why.
+  description: Every major AI chatbot deployed in 2024 was vulnerable to prompt injection.
+    Not some of them. All of...
+  image:
+  url: https://dev.to/jtil4201/we-built-an-open-source-prompt-injection-attack-console-heres-why-2ege
