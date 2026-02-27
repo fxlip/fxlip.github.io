@@ -160,6 +160,8 @@ def apply_domain_rules(data, url)
     data['title'] = handle ? "@#{handle}" : data['title'].gsub(/\s*on X$/, '').gsub(/\s*on Twitter$/, '')
   when /youtube\.com/, /youtu\.be/
     data['title'] = data['title'].gsub(/\s*-\s*YouTube$/, '')
+  when /timesbrasil\.com\.br/
+    data['title'] = data['title'].gsub(/\s*[-|]\s*Times Brasil.*$/i, '').gsub(/\s*\|\s*CNBC.*$/i, '')
   end
   data['title'] = data['title'].strip
   # Limita descrição a 300 caracteres, cortando no último ponto
