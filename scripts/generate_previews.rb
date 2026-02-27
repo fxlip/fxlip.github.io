@@ -80,7 +80,7 @@ end
 
 def extract_og_data(html, url)
   return nil unless html
-  doc = Nokogiri::HTML(html)
+  doc = Nokogiri::HTML(html, nil, 'UTF-8')
   og = {}
   doc.css('meta').each do |m|
     prop = m['property'] || m['name']
@@ -156,11 +156,19 @@ def apply_domain_rules(data, url)
   when /uol\.com\.br/
     data['title'] = data['title'].gsub(/\s*-\s*UOL.*$/, '')
   when /(twitter|x)\.com/, /fixupx\.com/
-    data['title'] = data['title'].gsub(/\s*on X$/, '').gsub(/\s*on Twitter$/, '')
+    handle = url.match(%r{(?:twitter|x)\.com/([^/?#]+)})&.captures&.first
+    data['title'] = handle ? "@#{handle}" : data['title'].gsub(/\s*on X$/, '').gsub(/\s*on Twitter$/, '')
   when /youtube\.com/, /youtu\.be/
     data['title'] = data['title'].gsub(/\s*-\s*YouTube$/, '')
   end
   data['title'] = data['title'].strip
+  # Limita descrição a 300 caracteres, cortando no último ponto
+  if data['description'] && data['description'].length > 300
+    truncated = data['description'][0, 300]
+    last_dot  = truncated.rindex('.')
+    cut       = last_dot && last_dot > 0 ? last_dot + 1 : truncated.rstrip.length
+    data['description'] = data['description'][0, cut] + ' [...]'
+  end
   data
 end
 
@@ -217,7 +225,7 @@ TARGET_DIRS.each do |dir_name|
         data = fetch_vimeo_data(link, vim_id)
       elsif link =~ /https?:\/\/(www\.)?(twitter|x)\.com/
         proxy = link.gsub(%r{https?://(www\.)?(twitter|x)\.com}, 'https://fixupx.com')
-        html = fetch_url(proxy)
+        html = fetch_url(proxy, 5, true)  # social UA obrigatório: fixupx redireciona browsers para x.com
         data = extract_og_data(html, link) if html
       else
         body = fetch_url(link, 5, false)
