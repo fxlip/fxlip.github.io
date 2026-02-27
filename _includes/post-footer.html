@@ -1,5 +1,10 @@
 {% assign item_hash = include.item.url | replace: '.html', '' | replace: '/', ' ' | split: ' ' | last %}
 {% assign item_share_link = site.url | append: include.item.url | remove: '.html' %}
+{% assign pv = site.data.previews[include.item.slug] %}
+{% assign has_external_card = false %}
+{% if pv and pv.url and pv.video_id == nil %}
+  {% unless pv.url contains 'fxlip.com' %}{% assign has_external_card = true %}{% endunless %}
+{% endif %}
 <div class="post-footer" style="margin-top: {{ include.margin | default: '15px' }};"{% if include.nosnippet %} data-nosnippet{% endif %}>
   <div class="sys-meta-group">
     <button class="action-btn comment-reply-btn" data-hash="{{ item_hash }}" title="Comentar">
@@ -8,14 +13,20 @@
     <a href="#" class="action-btn share-btn" data-link="{{ item_share_link }}" title="Compartilhar" onclick="return false;">
       <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
     </a>
+    <span class="comment-counter" data-slug="{{ item_hash }}" title="Comentários">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      <span class="comment-count"></span>
+    </span>
     <span class="view-counter" data-slug="{{ item_hash }}" title="Visualizações">
       <svg viewBox="0 0 24 24" class="view-icon"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
       <span class="view-count">-</span>
     </span>
-    <span class="comment-counter" data-slug="{{ item_hash }}" title="Comentários">
-      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-      <span class="comment-count">-</span>
+    {% if has_external_card %}
+    <span class="click-counter" data-slug="{{ item_hash }}" title="Clicks no link">
+      <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+      <span class="click-count"></span>
     </span>
+    {% endif %}
   </div>
   {% if include.static_hash %}
     <time class="sys-date" datetime="{{ include.item.date | date_to_xmlschema }}">

@@ -144,19 +144,63 @@
       .then(r => r.json())
       .then(data => {
         slugs.forEach(slug => {
-          const n = data[slug]?.comments ?? 0;
-          applySingleCount(context || document, slug, n);
+          applySingleCount(context || document, slug, {
+            comments: data[slug]?.comments ?? 0,
+            clicks:   data[slug]?.clicks   ?? 0,
+          });
         });
         setIntCache(
-          Object.fromEntries(slugs.map(s => [s, data[s]?.comments ?? 0]))
+          Object.fromEntries(slugs.map(s => [s, {
+            comments: data[s]?.comments ?? 0,
+            clicks:   data[s]?.clicks   ?? 0,
+          }]))
         );
       })
       .catch(() => {});
   };
 
-  function applySingleCount(ctx, slug, n) {
+  function applySingleCount(ctx, slug, counts) {
+    // counts pode ser number (cache antigo) ou { comments, clicks }
+    const comments = typeof counts === 'object' ? (counts.comments ?? 0) : counts;
+    const clicks   = typeof counts === 'object' ? (counts.clicks   ?? 0) : 0;
+    // ícone sempre visível, número só aparece quando > 0
     (ctx || document).querySelectorAll(`.comment-counter[data-slug="${slug}"] .comment-count`)
-      .forEach(el => { el.textContent = n; });
+      .forEach(el => { el.textContent = comments > 0 ? comments : ''; });
+    // ícone inteiro oculto por CSS enquanto vazio
+    (ctx || document).querySelectorAll(`.click-counter[data-slug="${slug}"] .click-count`)
+      .forEach(el => { el.textContent = clicks > 0 ? clicks : ''; });
+  }
+
+  // --------------------------------------------------------------------------
+  // initLinkCardClicks() — rastreia clicks em linkcards externos
+  // Registra contra o slug do POST pai para exibir no post-footer
+  // --------------------------------------------------------------------------
+
+  function initLinkCardClicks() {
+    document.addEventListener('click', function(e) {
+      const card = e.target.closest('.link-card');
+      if (!card || card.classList.contains('internal-ref')) return;
+
+      const fp = getFingerprint();
+      if (!fp) return;
+
+      // Slug do post pai, obtido via DOM
+      const article = card.closest('article');
+      const slug = article && article.querySelector('.comment-counter[data-slug]')
+        ? article.querySelector('.comment-counter[data-slug]').dataset.slug
+        : null;
+      if (!slug) return;
+
+      // Update otimista: incrementa counter na UI sem esperar servidor
+      const countEl = article.querySelector(`.click-counter[data-slug="${slug}"] .click-count`);
+      if (countEl) countEl.textContent = (parseInt(countEl.textContent) || 0) + 1;
+
+      fetch(WORKER_URL + '/api/interact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fingerprint: fp, target_slug: slug, target_type: 'post', type: 'click' })
+      }).catch(() => {});
+    });
   }
 
   // --------------------------------------------------------------------------
@@ -355,6 +399,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     startHeartbeat();
     window.applyInteractionCounts(document);
+    initLinkCardClicks();
     initInlineComments();
     initPostComments();
   });

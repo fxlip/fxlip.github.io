@@ -559,9 +559,18 @@ a.link-card.internal-ref {
 }
 
 /* Espaçamento fino entre ícones do post-footer */
-.comment-reply-btn { margin-right: -2px; margin-left: 14px;}
+/* ordem: comentar / compartilhar / comentários / visualizações / trending */
+.comment-reply-btn { margin-right: -2px; margin-left: 14px; }
 .share-btn         { margin-right: -1px; }
 .comment-counter   { margin-left:   1px; }
+.view-counter      { margin-left:   2px; }
+.click-counter     { margin-left:   2px; }
+
+/* click-counter: oculto enquanto não há nenhum click */
+.click-counter:has(.click-count:empty) { display: none; }
+
+/* comment-count: sem espaço reservado quando zero */
+.comment-count:empty { display: none; }
 
 /* Ícones SVG */
 .action-btn svg {
@@ -988,8 +997,9 @@ article.post {
    INTERAÇÕES — posts e linkcards
    ========================================================================== */
 
-/* Contador de comentários no post-footer */
-.comment-counter {
+/* Contadores no post-footer (comentários e clicks) */
+.comment-counter,
+.click-counter {
   display: inline-flex;
   align-items: center;
   gap: 4px;
