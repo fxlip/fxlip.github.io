@@ -168,7 +168,9 @@ begin
 
             date = DateTime.now
             filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
-            filepath = File.join(POSTS_ROOT, filename)
+            subdir   = date.strftime('%Y/%m')
+            filepath = File.join(POSTS_ROOT, subdir, filename)
+            FileUtils.mkdir_p(File.dirname(filepath))
             body = extract_body(email)
 
             fm_data = {

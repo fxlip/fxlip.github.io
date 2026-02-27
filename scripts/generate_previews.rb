@@ -173,7 +173,7 @@ TARGET_DIRS.each do |dir_name|
   next unless Dir.exist?(full_path)
   puts "\n>>> Analisando diretório: #{dir_name}"
   
-  Dir.glob(File.join(full_path, '*.{md,markdown,MD,MARKDOWN}')).each do |post_path|
+  Dir.glob(File.join(full_path, '**/*.{md,markdown,MD,MARKDOWN}')).each do |post_path|
     filename = File.basename(post_path)
     slug = filename.sub(/^\d{4}-\d{2}-\d{2}-/, '').sub(/\.[^.]+$/, '')
     content = File.read(post_path)
