@@ -181,6 +181,13 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   };
 
+  // Blacklist de paths internos — mentions para esses slugs não são perfis de usuário
+  const MENTIONS_BLACKLIST = new Set([
+    'linux','sobre','setup','manifesto','arquivos','feed','www','fxlip','infosec',
+    'busca','s','x','404','robots','sitemap','assets','files','favicon','api','admin',
+    'u','p','tag','category','page','search','post','posts'
+  ]);
+
   // Menções (@usuario)
   window.applyMentions = function(context = document) {
     const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .terminal-window p, .terminal-window div, .t-out');
@@ -201,7 +208,8 @@ document.addEventListener("DOMContentLoaded", function() {
             const url = `/${safePath}`;
             if (path.match(/\.(jpg|jpeg|png|gif|svg)$/i)) return `<span class="embed-image-wrapper"><img src="${url}" class="embed-image" alt="${safePath}" onerror="this.style.display='none'"><span class="embed-caption">./${safePath}</span></span>`;
             if (path.match(/\.(sh|js|py|rb|txt|md|yml|json)$/i)) return `<div class="terminal-box embedded-terminal" data-src="${url}"><div class="terminal-header"><div class="terminal-controls"><span style="font-size:12px; color:#bd93f9; margin-right:10px;">./${safePath}</span></div></div><div class="terminal-body"><div class="embedded-loading"><span class="cursor-blink">█</span> loading...</div></div></div>`;
-            return `<a href="${url}" class="mention-link" title="./${safePath}">${escapeHtml(match)}</a>`;
+            const mentionClass = MENTIONS_BLACKLIST.has(path.toLowerCase()) ? 'mention-link' : 'mention-link profile-mention';
+            return `<a href="${url}" class="${mentionClass}" title="./${safePath}">${escapeHtml(match)}</a>`;
           });
       }
       area.dataset.mentionsProcessed = "true";

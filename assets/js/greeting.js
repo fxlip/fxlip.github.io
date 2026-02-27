@@ -160,8 +160,22 @@ document.addEventListener("DOMContentLoaded", function() {
         body: JSON.stringify({ fingerprint: fp, name: val }),
       }).then(function(res) { return res.json(); })
         .then(function(data) {
+          if (data.error === 'name_taken') {
+            input.disabled = false;
+            input.style.opacity = '1';
+            var existing = document.getElementById('greeting-name-error');
+            if (existing) existing.remove();
+            var errEl = document.createElement('div');
+            errEl.id = 'greeting-name-error';
+            errEl.className = 't-out';
+            errEl.style.cssText = 'color:var(--link-color);margin-top:0.2em';
+            errEl.textContent = data.greeting || 'esse nick já existe. tenta outro?';
+            inputLine.appendChild(errEl);
+            input.focus();
+            return;
+          }
           try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
-          setHelloCache(data); // atualiza cache com nova saudação
+          setHelloCache(data);
           renderGreeting(data);
         }).catch(function() {
           try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
@@ -230,10 +244,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var greetLine = data.greeting || ("Bem-vindo, " + (data.name || "visitante") + "!");
 
+    var profileLine = '';
+    if (data.name) {
+      profileLine = '<div class="t-gray" style="margin-top:0.3em">perfil: <a href="/' + esc(data.name) + '" class="file-link">fxlip.com/' + esc(data.name) + '</a></div>';
+    }
+
     greetingBlock.innerHTML =
       '<div>' +
       '<div class="t-gray">' + esc(lastLine) + '</div>' +
-      '<div class="t-out">' + esc(greetLine) + '</div>';
+      '<div class="t-out">' + esc(greetLine) + '</div>' +
+      profileLine;
   }
 
   // =======================================================================

@@ -1223,3 +1223,128 @@ article.post {
   font-size: 14px;
 }
 
+/* ==========================================================================
+   25. USER PROFILE PAGE
+   ========================================================================== */
+
+.profile-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.profile-avatar {
+  border-radius: 50%;
+  border: 2px solid var(--link-color);
+  box-shadow: 0 0 10px rgba(255, 121, 198, 0.3);
+  flex-shrink: 0;
+  image-rendering: pixelated; // para identicons
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 4px;
+}
+
+.profile-name {
+  font-size: 1.1em;
+  color: var(--link-color);
+  font-weight: bold;
+}
+
+.profile-badge {
+  font-size: 0.75em;
+  color: var(--accent-cyan);
+  border: 1px solid var(--accent-cyan);
+  padding: 1px 5px;
+  border-radius: 3px;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+.profile-divider {
+  margin: 12px 0 8px;
+  opacity: 0.6;
+  font-size: 0.85em;
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 4px;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+
+.profile-stat-val {
+  color: var(--accent-cyan);
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.profile-heatmap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin: 4px 0 12px;
+}
+
+.heatmap-cell {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  background-color: rgba(255, 121, 198, calc(0.1 + var(--intensity, 0) * 0.7));
+  border: 1px solid rgba(255, 121, 198, 0.15);
+  cursor: default;
+}
+
+.profile-activity-item {
+  padding: 4px 0;
+  font-size: 0.9em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  word-break: break-word;
+
+  &:last-child { border-bottom: none; }
+}
+
+.profile-owner-zone {
+  margin-top: 8px;
+  padding-top: 4px;
+}
+
+.t-hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 16px 0 12px;
+}
+
+// Menções de perfil de usuário (distinto de links internos)
+.mention-link.profile-mention {
+  color: var(--accent-purple) !important;
+
+  &:hover {
+    color: var(--link-color) !important;
+    text-shadow: 0 0 5px rgba(255, 121, 198, 0.5);
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
