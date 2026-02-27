@@ -136,8 +136,9 @@
       }
     });
 
-    // Pula revalidação se cache for recente
-    if (cacheAge < INT_CACHE_TTL && Object.keys(cacheData).length > 0) return;
+    // Pula revalidação se cache for recente E todos os slugs já estiverem cacheados
+    const allCached = slugs.every(s => cacheData[s] !== undefined);
+    if (cacheAge < INT_CACHE_TTL && allCached) return;
 
     // Revalida
     fetch(`${WORKER_URL}/api/interactions/batch?slugs=${slugs.join(',')}&target_type=post`)
