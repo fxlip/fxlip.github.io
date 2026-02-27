@@ -233,27 +233,27 @@ document.addEventListener("DOMContentLoaded", function() {
 
     greetingBlock.style.display = "block";
 
-    var lastLine;
-    if (data.lastSeen) {
-      var ago = timeAgo(data.lastSeen);
-      var city = data.city || "desconhecido";
-      lastLine = "Último login: " + ago + ", de " + city;
+    var ago = data.lastSeen ? timeAgo(data.lastSeen) : null;
+    var city = data.city || "desconhecido";
+
+    var lastLineHtml;
+    if (data.name) {
+      var nameLink = '<a href="/' + esc(data.name) + '" class="file-link">@' + esc(data.name) + '</a>';
+      lastLineHtml = ago
+        ? nameLink + ', seu último login foi ' + esc(ago) + ', de ' + esc(city) + '.'
+        : nameLink + ', primeiro acesso.';
     } else {
-      lastLine = "Último login: primeiro acesso";
+      lastLineHtml = ago
+        ? esc("Último login: " + ago + ", de " + city)
+        : esc("Último login: primeiro acesso");
     }
 
     var greetLine = data.greeting || ("Bem-vindo, " + (data.name || "visitante") + "!");
 
-    var profileLine = '';
-    if (data.name) {
-      profileLine = '<div class="t-gray" style="margin-top:0.3em">perfil: <a href="/' + esc(data.name) + '" class="file-link">fxlip.com/' + esc(data.name) + '</a></div>';
-    }
-
     greetingBlock.innerHTML =
       '<div>' +
-      '<div class="t-gray">' + esc(lastLine) + '</div>' +
-      '<div class="t-out">' + esc(greetLine) + '</div>' +
-      profileLine;
+      '<div class="t-gray">' + lastLineHtml + '</div>' +
+      '<div class="t-out">' + esc(greetLine) + '</div>';
   }
 
   // =======================================================================
