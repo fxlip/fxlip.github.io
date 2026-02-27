@@ -195,6 +195,16 @@
       const countEl = article.querySelector(`.click-counter[data-slug="${slug}"] .click-count`);
       if (countEl) countEl.textContent = (parseInt(countEl.textContent) || 0) + 1;
 
+      // Espelha o incremento no cache local para sobreviver ao F5 dentro do TTL
+      try {
+        const c = getIntCache();
+        if (c.data) {
+          if (!c.data[slug]) c.data[slug] = { comments: 0, clicks: 0 };
+          c.data[slug].clicks = (c.data[slug].clicks || 0) + 1;
+          localStorage.setItem(INT_CACHE, JSON.stringify(c));
+        }
+      } catch (_) {}
+
       fetch(WORKER_URL + '/api/interact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
