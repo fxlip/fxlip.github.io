@@ -5,16 +5,23 @@ document.addEventListener("DOMContentLoaded", function() {
   // ==========================================================================
   const WORKER_URL = document.body.dataset.workerUrl;
   var VIEWS_CACHE_KEY = 'fxlip_views_cache';
+  var VIEWS_CACHE_TTL = 3 * 60 * 1000; // 3 minutos
 
   function getViewsCache() {
-    try { return JSON.parse(localStorage.getItem(VIEWS_CACHE_KEY)) || {}; } catch (_) { return {}; }
+    try {
+      var raw = JSON.parse(localStorage.getItem(VIEWS_CACHE_KEY));
+      // Formato: { ts: number, data: {...} }
+      if (raw && raw.data) return raw;
+    } catch (_) {}
+    return { ts: 0, data: {} };
   }
 
   function setViewsCache(updates) {
     try {
-      var cache = getViewsCache();
-      Object.keys(updates).forEach(function(k) { cache[k] = updates[k]; });
-      localStorage.setItem(VIEWS_CACHE_KEY, JSON.stringify(cache));
+      var current = getViewsCache();
+      Object.keys(updates).forEach(function(k) { current.data[k] = updates[k]; });
+      current.ts = Date.now();
+      localStorage.setItem(VIEWS_CACHE_KEY, JSON.stringify(current));
     } catch (_) {}
   }
 
@@ -53,11 +60,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (slugs.length === 0) return;
 
-    // SWR: mostra cache imediato
-    var cache = getViewsCache();
+    // Mostra cache imediato e respeita TTL de 3 min
+    var cacheEntry = getViewsCache();
+    var cacheData  = cacheEntry.data || {};
+    var cacheAge   = Date.now() - (cacheEntry.ts || 0);
+
     var cached = {};
-    slugs.forEach(function(s) { if (cache[s] !== undefined) cached[s] = cache[s]; });
+    slugs.forEach(function(s) { if (cacheData[s] !== undefined) cached[s] = cacheData[s]; });
     if (Object.keys(cached).length > 0) applyCountsToDOM(cached, counterMap);
+
+    // Pula revalidação se cache for recente
+    if (cacheAge < VIEWS_CACHE_TTL && Object.keys(cacheData).length > 0) {
+      slugs.forEach(function(s) {
+        if (counterMap[s]) counterMap[s].forEach(function(c) { c.dataset.viewLoaded = "true"; });
+      });
+      return;
+    }
 
     // Revalida com dados frescos
     fetch(WORKER_URL + "/api/views?slugs=" + slugs.join(","))

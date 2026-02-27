@@ -9,6 +9,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
   var FP_KEY = "fxlip_fp";
   var NAME_KEY = "fxlip_visitor_name";
+  var HELLO_CACHE_KEY = "fxlip_hello_cache";
+  var HELLO_TTL = 10 * 60 * 1000; // 10 minutos
+
+  function getHelloCache() {
+    try {
+      var c = JSON.parse(localStorage.getItem(HELLO_CACHE_KEY));
+      if (c && c.ts && (Date.now() - c.ts) < HELLO_TTL) return c.data;
+    } catch (_) {}
+    return null;
+  }
+
+  function setHelloCache(data) {
+    try {
+      localStorage.setItem(HELLO_CACHE_KEY, JSON.stringify({ ts: Date.now(), data: data }));
+    } catch (_) {}
+  }
 
   // =======================================================================
   // 1. FINGERPRINT (SHA-256, sem lib externa)
@@ -145,6 +161,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }).then(function(res) { return res.json(); })
         .then(function(data) {
           try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
+          setHelloCache(data); // atualiza cache com nova saudação
           renderGreeting(data);
         }).catch(function() {
           try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
@@ -282,12 +299,20 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
       }
 
+      // Usa cache se disponível e recente (TTL 10 min) — evita chamar hello em toda página
+      var cachedHello = getHelloCache();
+      if (cachedHello) {
+        renderGreeting(cachedHello);
+        return;
+      }
+
       return fetch(WORKER_URL + "/api/hello", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fingerprint: fp, name: storedName }),
       }).then(function(res) { return res.json(); })
         .then(function(data) {
+          setHelloCache(data);
           renderGreeting(data);
         });
     }).catch(function() {

@@ -8,7 +8,8 @@
 
   const WORKER_URL   = document.body.dataset.workerUrl;
   const FP_KEY       = 'fxlip_fp';
-  const INT_CACHE    = 'fxlip_int_cache';
+  const INT_CACHE     = 'fxlip_int_cache';
+  const INT_CACHE_TTL = 3 * 60 * 1000; // 3 minutos
   if (!WORKER_URL) return;
 
   // --------------------------------------------------------------------------
@@ -49,36 +50,68 @@
   // --------------------------------------------------------------------------
 
   function getIntCache() {
-    try { return JSON.parse(localStorage.getItem(INT_CACHE)) || {}; } catch (_) { return {}; }
+    try {
+      const raw = JSON.parse(localStorage.getItem(INT_CACHE));
+      // Formato: { ts: number, data: {...} }
+      if (raw && raw.data) return raw;
+    } catch (_) {}
+    return { ts: 0, data: {} };
   }
 
   function setIntCache(updates) {
     try {
-      const c = getIntCache();
-      Object.assign(c, updates);
-      localStorage.setItem(INT_CACHE, JSON.stringify(c));
+      const current = getIntCache();
+      Object.assign(current.data, updates);
+      current.ts = Date.now();
+      localStorage.setItem(INT_CACHE, JSON.stringify(current));
     } catch (_) {}
   }
 
   // --------------------------------------------------------------------------
-  // Heartbeat — ping a cada 30s, pausa com visibilitychange
+  // Heartbeat — acumula tempo ativo no cliente, flush a cada 5min (sem KV)
+  // O servidor recebe { fingerprint, seconds } e soma direto no D1.
   // --------------------------------------------------------------------------
 
   function startHeartbeat() {
-    let interval = null;
-    const ping = () => {
+    let accumulated = 0;
+    let lastVisible = document.hidden ? null : Date.now();
+
+    // Rastreia janelas de visibilidade
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (lastVisible !== null) {
+          accumulated += Math.floor((Date.now() - lastVisible) / 1000);
+          lastVisible = null;
+        }
+      } else {
+        lastVisible = Date.now();
+      }
+    });
+
+    const flush = () => {
+      // Contabiliza tempo desde o último ponto de referência
+      if (lastVisible !== null) {
+        const now = Date.now();
+        accumulated += Math.floor((now - lastVisible) / 1000);
+        lastVisible = now;
+      }
       const fp = getFingerprint();
-      if (!fp) return;
+      if (!fp || accumulated < 10) return;
+      const secs = accumulated;
+      accumulated = 0;
       fetch(WORKER_URL + '/api/ping', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fingerprint: fp })
+        body: JSON.stringify({ fingerprint: fp, seconds: secs })
       }).catch(() => {});
     };
-    const start = () => { if (!interval) interval = setInterval(ping, 30000); };
-    const stop  = () => { clearInterval(interval); interval = null; };
-    document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
-    start();
+
+    // Flush a cada 5 minutos
+    setInterval(flush, 5 * 60 * 1000);
+
+    // Flush ao sair da página (beforeunload + visibilitychange para mobile)
+    window.addEventListener('beforeunload', flush);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) flush(); });
   }
 
   // --------------------------------------------------------------------------
@@ -92,13 +125,19 @@
 
     const slugs = [...new Set([...counters].map(c => c.dataset.slug))];
 
-    // SWR: mostra cache imediato
-    const cache = getIntCache();
+    // Mostra cache imediato e respeita TTL de 3 min
+    const cacheEntry = getIntCache();
+    const cacheData  = cacheEntry.data || {};
+    const cacheAge   = Date.now() - (cacheEntry.ts || 0);
+
     slugs.forEach(slug => {
-      if (cache[slug] !== undefined) {
-        applySingleCount(context || document, slug, cache[slug]);
+      if (cacheData[slug] !== undefined) {
+        applySingleCount(context || document, slug, cacheData[slug]);
       }
     });
+
+    // Pula revalidação se cache for recente
+    if (cacheAge < INT_CACHE_TTL && Object.keys(cacheData).length > 0) return;
 
     // Revalida
     fetch(`${WORKER_URL}/api/interactions/batch?slugs=${slugs.join(',')}&target_type=post`)
