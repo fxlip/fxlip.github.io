@@ -235,6 +235,29 @@
 
       // Fecha qualquer outro formulário aberto em outros posts
       document.querySelectorAll('.icf-wrap:not(.icf-leaving)').forEach(existing => {
+        // Retorna o botão do outro post (animação reversa)
+        const existingFooter = existing.previousElementSibling;
+        if (existingFooter) {
+          const existingBtn = existingFooter.querySelector('.comment-reply-btn');
+          if (existingBtn) {
+            existingBtn.style.transition = 'none';
+            existingBtn.classList.remove('icf-btn-exiting', 'icf-btn-returning', 'icf-btn-completing');
+            existingBtn.style.animation = 'none';
+            void existingBtn.offsetWidth;
+            existingBtn.style.animation = 'reply-btn-return 0.28s ease-in forwards';
+            existingBtn.addEventListener('animationend', () => {
+              const pink = getComputedStyle(existingBtn).color;
+              existingBtn.style.animation = '';
+              existingBtn.style.color = pink;
+              existingBtn.style.filter = 'drop-shadow(0 0 4px rgba(255, 121, 198, 0.5))';
+              void existingBtn.offsetWidth;
+              existingBtn.style.transition = 'color 0.4s ease, filter 0.4s ease';
+              existingBtn.style.color = '';
+              existingBtn.style.filter = '';
+              setTimeout(() => { existingBtn.style.transition = ''; }, 400);
+            }, { once: true });
+          }
+        }
         existing.classList.add('icf-leaving');
         let gone = false;
         const remove = () => { if (!gone) { gone = true; existing.remove(); } };
@@ -246,13 +269,21 @@
       const fp   = getFingerprint();
       if (!fp) return;
 
+      // Anima o botão para fora: segmento 1 (0° → -90°, fade out)
+      btn.classList.add('icf-btn-exiting');
+
       // --- Linha de input ---
       const inputLine = document.createElement('div');
       inputLine.className = 'icf-input-line';
 
       const arrow = document.createElement('span');
-      arrow.className = 't-gray icf-arrow';
-      arrow.textContent = '›';
+      arrow.className = 'icf-arrow';
+
+      const arrowIcon = document.createElement('span');
+      arrowIcon.className = 'icf-arrow-icon icf-arrow-icon--entering';
+      arrowIcon.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="9 14 4 9 9 4"></polyline><path d="M20 20v-7a4 4 0 0 0-4-4H4"></path></svg>';
+
+      arrow.append(arrowIcon);
 
       const textarea = document.createElement('textarea');
       textarea.className = 'icf-textarea';
@@ -274,6 +305,24 @@
       textarea.focus();
 
       function cleanup() {
+        // Botão retorna: animação inversa da saída (-90° → 0°, fade in)
+        btn.style.transition = 'none';
+        btn.classList.remove('icf-btn-exiting', 'icf-btn-returning', 'icf-btn-completing');
+        btn.style.animation = 'none';
+        void btn.offsetWidth;
+        btn.style.animation = 'reply-btn-return 0.28s ease-in forwards';
+        btn.addEventListener('animationend', () => {
+          const pink = getComputedStyle(btn).color;
+          btn.style.animation = '';
+          btn.style.color = pink;
+          btn.style.filter = 'drop-shadow(0 0 4px rgba(255, 121, 198, 0.5))';
+          void btn.offsetWidth;
+          btn.style.transition = 'color 0.4s ease, filter 0.4s ease';
+          btn.style.color = '';
+          btn.style.filter = '';
+          setTimeout(() => { btn.style.transition = ''; }, 400);
+        }, { once: true });
+
         wrap.classList.add('icf-leaving');
         let gone = false;
         const remove = () => { if (!gone) { gone = true; wrap.remove(); } };
@@ -294,16 +343,61 @@
 
         const tryCleanup = () => {
           if (!arrowShown || !fetchDone) return;
+
+          // Atualiza contador apenas em caso de sucesso
           if (fetchOk) {
             const cntEl = footer.querySelector(`.comment-counter[data-slug="${slug}"] .comment-count`);
             if (cntEl) cntEl.textContent = (parseInt(cntEl.textContent) || 0) + 1;
             document.dispatchEvent(new CustomEvent('comment-added', { detail: { slug } }));
           }
-          setTimeout(cleanup, 300);
+
+          // Seg. 3 + Seg. 4 + slide-up: todos simultâneos
+          // Seta sai na linha de baixo, botão entra na linha de cima, form sobe — ao mesmo tempo
+          btn.style.transition = 'none';
+          btn.style.animation = 'none';
+          btn.classList.remove('icf-btn-exiting', 'icf-btn-returning', 'icf-btn-completing');
+          void btn.offsetWidth;
+          btn.style.animation = 'reply-btn-complete 0.28s ease-out forwards';
+          btn.addEventListener('animationend', () => {
+            const pink = getComputedStyle(btn).color;
+            btn.style.animation = '';
+            btn.style.color = pink;
+            btn.style.filter = 'drop-shadow(0 0 4px rgba(255, 121, 198, 0.5))';
+            void btn.offsetWidth;
+            btn.style.transition = 'color 0.4s ease, filter 0.4s ease';
+            btn.style.color = '';
+            btn.style.filter = '';
+            setTimeout(() => { btn.style.transition = ''; }, 400);
+          }, { once: true });
+
+          wrap.classList.add('icf-success');
+          let gone = false;
+          const remove = () => { if (!gone) { gone = true; wrap.remove(); } };
+          wrap.addEventListener('animationend', e => { if (e.target === wrap) remove(); });
+          setTimeout(remove, 500);
         };
 
+        // Loading: substitui o texto da textarea progressivamente por '#'
+        // Cada caractere "criptografa" da esquerda para a direita durante 2s
+        arrowIcon.hidden = true;
+        const origContent = content;
+        const totalChars = origContent.length;
+        const steps = Math.min(Math.max(totalChars, 5), 40);
+        const charsPerStep = Math.ceil(totalChars / steps);
+        const stepMs = Math.floor(2000 / steps);
+        let filled = 0;
+
+        const loadInterval = setInterval(() => {
+          filled = Math.min(filled + charsPerStep, totalChars);
+          textarea.value = '#'.repeat(filled) + origContent.substring(filled);
+          if (filled >= totalChars) clearInterval(loadInterval);
+        }, stepMs);
+
         setTimeout(() => {
-          arrow.textContent = '…';
+          clearInterval(loadInterval);
+          textarea.value = '#'.repeat(totalChars);
+          arrowIcon.hidden = false;
+          arrow.classList.add('icf-arrow--sent');
           arrowShown = true;
           tryCleanup();
         }, 2000);

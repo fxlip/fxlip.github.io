@@ -1030,6 +1030,12 @@ article.post {
   pointer-events: none;
 }
 
+.icf-wrap.icf-success {
+  animation: icf-slide-up 0.38s ease-in forwards;
+  pointer-events: none;
+  overflow: hidden;
+}
+
 @keyframes icf-boot {
   from { opacity: 0; transform: translateY(-5px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1040,8 +1046,14 @@ article.post {
   to   { opacity: 0; transform: translateY(-4px); }
 }
 
+@keyframes icf-slide-up {
+  0%   { opacity: 1; transform: translateY(0);     max-height: 160px; }
+  60%  { opacity: 1; transform: translateY(-8px);  max-height: 160px; }
+  100% { opacity: 0; transform: translateY(-18px); max-height: 0;     }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .icf-wrap, .icf-wrap.icf-leaving { animation: none; }
+  .icf-wrap, .icf-wrap.icf-leaving, .icf-wrap.icf-success { animation: none; }
 }
 
 .icf-input-line {
@@ -1051,9 +1063,11 @@ article.post {
 
   .icf-arrow {
     flex-shrink: 0;
-    line-height: 1.6;
-    margin-bottom: 0;
+    width: 16px;
+    overflow: visible;
     margin-top: 16px;
+    display: flex;
+    align-items: center;
   }
 
   .icf-textarea {
@@ -1063,6 +1077,8 @@ article.post {
     border-bottom: 1px solid var(--border-color);
     margin-bottom: 0;
     margin-top: 16px;
+    margin-left: 16px;
+    margin-right: 15px;
     color: var(--text-color);
     font-family: inherit;
     font-size: 14px;
@@ -1080,7 +1096,78 @@ article.post {
 
 .icf-arrow {
   transition: opacity 0.15s ease;
-  .icf-wrap.icf-leaving & { opacity: 0.4; }
+}
+
+.icf-arrow-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  overflow: visible;
+  color: var(--link-color);
+  margin-left: 14px;
+  svg {
+    width: 19px;
+    height: 19px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transform: rotate(-180deg); /* estado de repouso */
+    opacity: 1;
+  }
+  /* Entrada: segmento 2 de 4 — -90° → -180°, fade in */
+  &.icf-arrow-icon--entering svg {
+    animation: icf-arrow-enter 0.28s ease-out forwards;
+  }
+}
+
+/* Saída: segmento 3 de 4 — -180° → -270°, fade out */
+.icf-arrow--sent .icf-arrow-icon svg {
+  animation: icf-arrow-exit 0.28s ease-in forwards;
+}
+
+/* Controle do comment-reply-btn gerenciado por JS */
+/* transition: none em todos para evitar que o .action-btn { transition: all }
+   dispare entre o fim de uma animação e o início da próxima              */
+/* Seg. 1 — saída: 0° → -90°, fade out */
+.comment-reply-btn.icf-btn-exiting {
+  transition: none;
+  animation: reply-btn-exit 0.28s ease-out forwards;
+  pointer-events: none;
+}
+/* Seg. 2 reverso — retorno via ESC: -90° → 0°, fade in */
+.comment-reply-btn.icf-btn-returning {
+  transition: none;
+  animation: reply-btn-return 0.28s ease-in forwards;
+}
+/* Seg. 4 — completa após sucesso: aparece do lado oposto (90° → 0°), fade in */
+.comment-reply-btn.icf-btn-completing {
+  transition: none;
+  animation: reply-btn-complete 0.28s ease-in forwards;
+}
+
+@keyframes reply-btn-exit {
+  from { transform: rotate(0deg);    opacity: 1; }
+  to   { transform: rotate(-90deg);  opacity: 0; }
+}
+@keyframes reply-btn-return {
+  from { transform: rotate(-90deg);  opacity: 0; color: var(--link-color); filter: drop-shadow(0 0 4px rgba(255, 121, 198, 0.5)); }
+  to   { transform: rotate(0deg);    opacity: 1; color: var(--link-color); filter: drop-shadow(0 0 4px rgba(255, 121, 198, 0.5)); }
+}
+@keyframes icf-arrow-enter {
+  from { transform: rotate(-90deg);  opacity: 0; }
+  to   { transform: rotate(-180deg); opacity: 1; }
+}
+@keyframes icf-arrow-exit {
+  from { transform: rotate(-180deg); opacity: 1; }
+  to   { transform: rotate(-270deg); opacity: 0; }
+}
+@keyframes reply-btn-complete {
+  from { transform: rotate(-270deg); opacity: 0; color: var(--link-color); filter: drop-shadow(0 0 4px rgba(255, 121, 198, 0.5)); }
+  to   { transform: rotate(-360deg); opacity: 1; color: var(--link-color); filter: drop-shadow(0 0 4px rgba(255, 121, 198, 0.5)); }
 }
 
 /* ==========================================================================
