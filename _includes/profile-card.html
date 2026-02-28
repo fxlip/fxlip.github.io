@@ -1,53 +1,57 @@
-<div class="terminal-body">
-  <div class="ps-shell-line">
-    <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">fsociety</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">whoami --stats</span>
+<div class="ps" id="profile-card" hidden>
+
+  <div class="terminal-body">
+    <div class="ps-shell-line">
+      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">fsociety</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">whoami --stats</span>
+    </div>
+
+    <div class="ps-container">
+      <header class="ps-header-v2">
+        <div class="avatar-wrapper">
+          <img id="pc-avatar" class="profile-avatar" src="" alt="User Avatar">
+          <div class="avatar-status"></div>
+        </div>
+        <div class="ps-identity">
+          <h2 id="pc-name" class="ps-name"></h2>
+          <p id="pc-meta" class="ps-meta t-gray"></p>
+          <div id="pc-social" class="ps-social-tags"></div>
+        </div>
+      </header>
+
+      <section class="ps-dashboard">
+        <div class="ps-stat-card">
+          <span class="ps-label">VISITS</span>
+          <span class="ps-val" id="pc-visits">0</span>
+        </div>
+        <div class="ps-stat-card">
+          <span class="ps-label">UPTIME</span>
+          <span class="ps-val" id="pc-time">0m</span>
+        </div>
+        <div class="ps-stat-card">
+          <span class="ps-label">COMMENTS</span>
+          <span class="ps-val" id="pc-comments">0</span>
+        </div>
+        <div class="ps-stat-card">
+          <span class="ps-label">REPUTATION</span>
+          <span class="ps-val" id="pc-upvotes">0</span>
+        </div>
+      </section>
+
+      <section class="ps-activity">
+        <div id="pc-heatmap" class="gh-heatmap-v2"></div>
+        <div id="profile-activity-section" class="ps-log-entries"></div>
+      </section>
+
+      <footer id="pc-owner-zone" class="ps-config-zone" hidden>
+        <div class="config-divider">SYSTEM CONFIGURATION</div>
+        <div class="ps-terminal-grid">
+          <div class="ps-field">
+            <label>EMAIL</label>
+            <input type="email" id="pf-email" class="ps-term-input" placeholder="root@localhost">
+          </div>
+          </div>
+      </footer>
+    </div>
   </div>
 
-  <div class="ps-container">
-    <header class="ps-header-v2">
-      <div class="avatar-wrapper">
-        <img id="pc-avatar" class="profile-avatar" src="" alt="User Avatar">
-        <div class="avatar-status"></div>
-      </div>
-      <div class="ps-identity">
-        <h2 id="pc-name" class="ps-name"></h2>
-        <p id="pc-meta" class="ps-meta t-gray"></p>
-        <div id="pc-social" class="ps-social-tags"></div>
-      </div>
-    </header>
-
-    <section class="ps-dashboard">
-      <div class="ps-stat-card">
-        <span class="ps-label">VISITS</span>
-        <span class="ps-val" id="pc-visits">0</span>
-      </div>
-      <div class="ps-stat-card">
-        <span class="ps-label">UPTIME</span>
-        <span class="ps-val" id="pc-time">0m</span>
-      </div>
-      <div class="ps-stat-card">
-        <span class="ps-label">COMMENTS</span>
-        <span class="ps-val" id="pc-comments">0</span>
-      </div>
-      <div class="ps-stat-card">
-        <span class="ps-label">REPUTATION</span>
-        <span class="ps-val" id="pc-upvotes">0</span>
-      </div>
-    </section>
-
-    <section class="ps-activity">
-      <div id="pc-heatmap" class="gh-heatmap-v2"></div>
-      <div id="profile-activity-section" class="ps-log-entries"></div>
-    </section>
-
-    <footer id="pc-owner-zone" class="ps-config-zone" hidden>
-      <div class="config-divider">SYSTEM CONFIGURATION</div>
-      <div class="ps-terminal-grid">
-        <div class="ps-field">
-          <label>EMAIL</label>
-          <input type="email" id="pf-email" class="ps-term-input" placeholder="root@localhost">
-        </div>
-        </div>
-    </footer>
-  </div>
 </div>
