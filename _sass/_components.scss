@@ -1460,3 +1460,58 @@ article.post {
   }
 }
 
+/* Grid de Alta Densidade */
+.ps-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 10px;
+}
+
+/* Header Estilo "ID Card" */
+.ps-header-v2 {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 15px;
+}
+
+/* Stat Cards: Estilo Dashboard Militar */
+.ps-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.ps-stat-card {
+  background: rgba(0, 0, 0, 0.2);
+  border-left: 3px solid var(--accent-cyan);
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ps-label {
+  font-size: 10px;
+  color: var(--muted-color);
+  letter-spacing: 1px;
+}
+
+/* Terminal Inputs */
+.ps-terminal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 20px;
+}
+
+.ps-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  
+  label { color: var(--link-hover-color); width: 80px; }
+  input { flex: 1; border-bottom: 1px dashed #444; }
+}
