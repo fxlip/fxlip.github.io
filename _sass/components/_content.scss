@@ -1,0 +1,111 @@
+/* ==========================================================================
+   SYSTEM STEPS (CUSTOM ORDERED LISTS)
+   Transforma "1." em "[01]" estilo index de array
+   ========================================================================== */
+
+/* Reseta o contador padrão */
+.post-content ol {
+  counter-reset: sys-step;
+  list-style: none; /* Remove o "1." padrão feio */
+  padding-left: 10px;
+}
+
+.post-content ol li {
+  position: relative;
+  padding-left: 45px; /* Espaço reservado para o [01] */
+  margin-bottom: 12px;
+  counter-increment: sys-step;
+  line-height: 1.6;
+}
+
+/* O Marcador [01] */
+.post-content ol li::before {
+  /* Gera o número com zero à esquerda (decimal-leading-zero) */
+  content: "[" counter(sys-step, decimal-leading-zero) "]";
+
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 0.85em; /* Levemente menor que o texto */
+
+  /* Cor: Ciano (Ação/Índice) */
+  color: var(--accent-cyan);
+
+  /* Estilo visual */
+  opacity: 0.9;
+  letter-spacing: 0.5px;
+}
+
+/* Micro-interação: Brilho ao passar o mouse no item */
+.post-content ol li:hover::before {
+  color: var(--link-color); /* Muda para Rosa */
+  text-shadow: 0 0 8px rgba(255, 121, 198, 0.4);
+}
+
+/* ==========================================================================
+   MENTION LINKS (@linux, @files) - FORÇAR CIANO
+   ========================================================================== */
+.mention-link {
+  color: var(--accent-cyan) !important;
+  background-color: transparent !important;
+  border: none !important;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 400;
+  font-size: 1em;
+  letter-spacing: -0.02em;
+  display: inline;
+  text-decoration: none !important;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.mention-link:hover {
+  color: var(--accent-cyan-bright) !important;
+  text-shadow: 0 0 5px rgba(139, 233, 253, 0.7);
+}
+
+/* ==========================================================================
+   CONTENT LAYOUT PATCH (ALIGNMENT & IMAGES)
+   ========================================================================== */
+
+article.post {
+  margin-top: 0;
+}
+
+.post-content {
+  /* 1. Alinhamento Lateral: herdado do .container (padding: 0 5px) */
+  padding: 0;
+
+  /* 2. Fluxo de Leitura: Texto alinhado à esquerda */
+  text-align: left;
+
+  /* 3. Ritmo Vertical */
+  line-height: 1.6;
+}
+
+.post-content p {
+  margin-bottom: 1.2em; /* Espaço entre parágrafos */
+}
+
+/* --- CORREÇÃO DE IMAGENS (CENTRALIZADAS) --- */
+.post-content img,
+.post-content video,
+.post-content iframe {
+  max-width: 100%; /* Nunca estoura a largura */
+  height: auto;
+  display: block; /* Comporta-se como bloco */
+
+  /* [O SEGREDO] 'auto' nas laterais centraliza a imagem */
+  margin: 20px auto 40px auto;
+
+  border-radius: 4px; /* Opcional: borda leve */
+}
+
+/* Ajuste para Mobile */
+@media (max-width: 768px) {
+  .post-content {
+    padding: 0 2px;
+  }
+}

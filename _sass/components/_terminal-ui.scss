@@ -1,0 +1,200 @@
+/* ==========================================================================
+   SYSTEM LOADER - v8 ACTIVE BLOCK (No Cursor)
+   ========================================================================== */
+
+.sys-load-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 25px 0;
+  height: 20px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* O TRILHO (Vazio) */
+.sys-load-track {
+  flex-grow: 1;
+  background-color: rgba(40, 42, 54, 0.4);
+  height: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  margin-right: 15px;
+
+  /* Padrão de blocos vazios (Slots) */
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 2px,     /* Largura do Slot */
+    rgba(68, 71, 90, 0.3) 2px,
+    rgba(68, 71, 90, 0.3) 4px /* Espaço entre slots */
+  );
+}
+
+/* O PREENCHIMENTO (Cheio) */
+.sys-load-bar {
+  height: 100%;
+  background-color: var(--link-color);
+  position: relative;
+  transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Padrão de blocos cheios */
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--link-color),
+    var(--link-color) 2px,    /* Largura do Bloco: 2px (Bem fino/tech) */
+    rgba(0,0,0,0.6) 2px,      /* Espaço Escuro */
+    rgba(0,0,0,0.6) 4px
+  );
+
+  box-shadow: 0 0 10px var(--link-color);
+}
+
+/* [O BLOCO PISCANTE] A Cabeça Ativa */
+.sys-load-head {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 4px;
+
+  background-color: var(--link-color);
+
+  z-index: 2;
+
+  animation: sys-head-breathe 1.5s ease-in-out infinite alternate;
+}
+
+/* Se 100%, fixa em Ciano sólido sem animação */
+.sys-load-bar[data-width="100%"] .sys-load-head {
+  background-color: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+  animation: none;
+  opacity: 1;
+}
+
+/* O NÚMERO (Limpo) */
+.sys-load-data {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  min-width: 35px;
+  justify-content: flex-end;
+}
+
+.sys-load-pct {
+  text-shadow: 0 0 5px rgba(139, 233, 253, 0.4);
+}
+
+@keyframes sys-head-breathe {
+  0% {
+    opacity: 0.5;
+    box-shadow: 0 0 2px var(--link-color);
+  }
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 12px var(--link-color);
+  }
+}
+
+/* ==========================================================================
+   NEON PIPE (CUSTOM OPERATOR) - v2 Tuned
+   ========================================================================== */
+
+/* Neon Operators (>>, <<, ++) */
+.neon-pipe,
+.neon-in,
+.neon-plus {
+  color: #bd93f9;
+  text-shadow: 0 0 5px rgba(255, 121, 198, 0.7);
+  font-weight: bold;
+  margin-right: 5px;
+  display: inline-block;
+}
+
+/* Key Separator (+) */
+.neon-key-sep {
+  color: #ffb86c;
+  text-shadow: 0 0 5px rgba(255, 184, 108, 0.5);
+  font-weight: bold;
+  display: inline-block;
+}
+
+/* Arrow Operator (->, <-, ↑, ↓) */
+.neon-arrow {
+  color: var(--accent-cyan);
+  text-shadow: 0 0 5px rgba(139, 233, 253, 0.5);
+  font-weight: bold;
+  display: inline-block;
+}
+
+/* Laugh Shrug (^^) */
+.laugh-shrug {
+  display: inline-block;
+  animation: shrug-bounce 0.4s ease-in-out 3;
+}
+
+@keyframes shrug-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .laugh-shrug { animation: none; }
+}
+
+/* ==========================================================================
+   NO-HEADER MODE (RESTORATION PATCH)
+   ========================================================================== */
+
+/* Quando o corpo tem esta classe (ativada pelo Front Matter), consertamos a caixa */
+.no-header-mode .terminal-box {
+  /* Devolve a borda superior que o header roubou */
+  border-top: 1px solid var(--border-color);
+
+  /* Devolve o arredondamento completo */
+  border-radius: 6px;
+
+  /* Adiciona um respiro do topo (já que não tem header) */
+  margin-top: 30px;
+}
+
+/* Ajuste Opcional: Se quiser que nessas páginas a caixa ocupe menos espaço */
+.no-header-mode .container {
+  padding-top: 20px;
+}
+
+/* ==========================================================================
+   GREETING INPUT (Terminal Style)
+   ========================================================================== */
+.greeting-input {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  color: #f8f8f2;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: inherit;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: auto;
+  min-width: 80px;
+  max-width: 200px;
+  display: inline;
+  caret-color: #fff;
+  line-height: inherit;
+}
+
+.greeting-input::placeholder {
+  color: rgba(92, 95, 119, 0.4);
+}
+
+.terminal-body .greeting-input {
+  width: auto;
+  margin-bottom: 0;
+  border-radius: 0;
+}

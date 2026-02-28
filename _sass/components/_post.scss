@@ -1,0 +1,375 @@
+/* ==========================================================================
+   POST METADATA & UTILS
+   (hash links, footer, embeds, answer reveal, actions, toast, view counter)
+   ========================================================================== */
+
+/* --- HASH LINKS (.html links) --- */
+.sys-hash-link {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--placeholder-color) !important; /* #5c5f77 */
+  opacity: 0.4;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  transition: all 0.3s ease;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+.sys-hash-link:hover {
+  color: var(--accent-cyan-bright) !important;
+  text-shadow: 0 0 8px rgba(139, 233, 253, 0.6);
+  opacity: 1;
+  background: transparent !important;
+}
+
+/* --- POST METADATA (Footer do Post) --- */
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  margin-top: 15px;
+}
+
+.sys-date {
+  color: var(--placeholder-color);
+  margin-right: 15px;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.sys-date-link {
+  text-decoration: none;
+  color: inherit;
+  &:hover .sys-date {
+    opacity: 1;
+    color: var(--link-hover-color);
+    text-shadow:
+      0 0 6px rgba(255, 121, 198, 0.3),
+      0 0 12px rgba(189, 147, 249, 0.2);
+  }
+}
+
+/* --- UTILS: IMAGENS E TERMINAIS EMBUTIDOS --- */
+.embedded-terminal {
+  margin: 20px 0;
+  border: 1px solid var(--link-hover-color);
+  background-color: var(--code-bg);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.embedded-terminal pre {
+  margin: 0; padding: 10px;
+  white-space: pre-wrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-color);
+  background: transparent !important;
+  border: none !important;
+}
+
+/* --- VIDEO WRAPPER (16:9 responsivo) --- */
+.video-wrapper {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: black;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+.video-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.embed-image-wrapper {
+  display: block; margin: 15px 0;
+  border: 1px solid var(--border-color); border-radius: 6px;
+  overflow: hidden; background: #282a36;
+}
+.embed-image { max-width: 100%; display: block; }
+.embed-caption {
+  display: block; padding: 6px 12px; font-size: 12px;
+  font-family: 'JetBrains Mono', monospace; color: var(--base-color);
+  background-color: var(--card-bg); border-top: 1px solid var(--border-color);
+}
+
+.rt-loading {
+  display: block; margin: 15px 0; padding: 12px;
+  color: var(--muted-color); background: rgba(40, 42, 54, 0.3);
+  border: 1px dashed var(--border-color); border-radius: 6px;
+  font-family: monospace; font-size: 13px;
+}
+
+/* --- ANSWER REVEAL (Exercícios — terminal interativo) --- */
+
+/* Prompt que desaparece após revelar */
+@keyframes prompt-fade-out {
+  0%   { opacity: 1;   max-height: 2em; }
+  40%  { opacity: 0.3; }
+  100% { opacity: 0;   max-height: 0; padding: 0; margin: 0; }
+}
+
+@keyframes ans-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Terminal clicável (estado oculto) */
+.terminal-box.answer-hidden {
+  cursor: pointer;
+  border-color: rgba(189, 147, 249, 0.3);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.terminal-box.answer-hidden:hover {
+  border-color: rgba(189, 147, 249, 0.6);
+  box-shadow: 0 0 18px rgba(189, 147, 249, 0.1), 0 0 40px rgba(189, 147, 249, 0.04);
+}
+
+/* Reseta cursor e brilho após revelar */
+.terminal-box.answer-hidden.answer-revealed {
+  cursor: default;
+  border-color: var(--border-dark);
+  box-shadow: none;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Prompt "ver resposta" injetado pelo JS */
+.answer-prompt {
+  overflow: hidden;
+}
+
+.answer-prompt.prompt-hiding {
+  animation: prompt-fade-out 0.35s ease forwards;
+  pointer-events: none;
+}
+
+/* Cursor piscante no prompt */
+.ans-cursor {
+  color: #bd93f9;
+  margin-left: 1px;
+  animation: ans-cursor-blink 1s step-end infinite;
+}
+
+/* Cursor invisível por padrão no estado oculto */
+.terminal-box.answer-hidden .answer-prompt .ans-cursor {
+  visibility: hidden;
+}
+
+/* Aparece só no hover */
+.terminal-box.answer-hidden:hover .answer-prompt .ans-cursor {
+  visibility: visible;
+}
+
+/* ==========================================================================
+   POST ACTIONS (REPLY & SHARE)
+   ========================================================================== */
+
+/* Container que agrupa Hash + Ícones */
+.sys-meta-group {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espaço entre o hash e os ícones */
+}
+
+/* O Botão de Ação (Reset Visual) */
+.action-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--placeholder-color); /* Cinza padrão (#5c5f77) */
+  transition: all 0.2s ease;
+  position: relative; /* Para posicionar o tooltip */
+}
+
+/* Container fixo para igualar button vs a */
+.comment-reply-btn,
+.share-btn {
+  width: 16px;
+  height: 16px;
+}
+
+/* Espaçamento fino entre ícones do post-footer */
+/* ordem: comentar / compartilhar / comentários / visualizações / trending */
+.comment-reply-btn { margin-right: -2px; margin-left: 14px; }
+.share-btn         { margin-right: -1px; }
+.comment-counter   { margin-left:   1px; }
+.view-counter      { margin-left:   2px; }
+.click-counter     { margin-left:   2px; }
+.pin-badge         { margin-left:   6px; display: inline-flex; align-items: center; color: #bd93f9; opacity: 0.8; }
+.pin-badge svg     { width: 13px; height: 13px; }
+
+/* click-counter: oculto enquanto não há nenhum click */
+.click-counter:has(.click-count:empty) { display: none; }
+
+/* comment-count: sem espaço reservado quando zero */
+.comment-count:empty { display: none; }
+
+/* Ícones SVG */
+.action-btn svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.comment-reply-btn svg { width: 19px; height: 19px; }
+.share-btn svg         { width: 13px; height: 13px; }
+
+/* Hover: Rosa/Roxo padronizado */
+.comment-reply-btn:hover {
+  color: var(--link-color);
+  transform: translateY(-1px);
+  filter: drop-shadow(0 0 4px rgba(255, 121, 198, 0.5));
+}
+.share-btn:hover {
+  color: var(--link-hover-color);
+  transform: translateY(-1px);
+  filter: drop-shadow(0 0 4px rgba(189, 147, 249, 0.5));
+}
+
+/* Focus: Acessibilidade via teclado */
+.action-btn:focus-visible,
+.share-btn:focus-visible,
+.reply-btn:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+/* --- TOOLTIP DE FEEDBACK ("Copiado!") --- */
+.copy-feedback {
+  position: absolute;
+  bottom: 140%; /* Aparece acima do ícone */
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+  background-color: var(--code-bg);
+  border: 1px solid var(--yellow);
+  color: var(--yellow);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  z-index: 10;
+}
+
+/* Estado Ativo (Quando o JS adiciona a classe) */
+.copy-feedback.active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* --- EXCEÇÃO: HASH ESTÁTICO (PAGE) --- */
+/* Garante que o span com esta classe não reaja ao mouse */
+.sys-hash-link.static-mode {
+  color: var(--placeholder-color) !important;
+  cursor: default !important;
+  pointer-events: none; /* A ARMA SECRETA: O mouse "atravessa" o texto, ignorando qualquer hover */
+  text-shadow: none !important;
+  transform: none !important;
+  text-decoration: none !important;
+  opacity: 1 !important;
+}
+
+/* ==========================================================================
+   SYSTEM NOTIFICATION (TOAST)
+   ========================================================================== */
+#sys-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px); /* Começa levemente deslocado */
+
+  /* Visual Hacker */
+  background-color: rgba(15, 14, 20, 0.95); /* Fundo quase preto sólido */
+  border: 1px solid var(--green); /* Borda Verde Neon */
+  color: var(--green);
+
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+
+  /* Efeitos de Luz */
+  box-shadow: 0 0 15px rgba(80, 250, 123, 0.15);
+  backdrop-filter: blur(4px);
+
+  z-index: 9999; /* Acima de tudo, inclusive header */
+
+  /* Estado Inicial: Invisível */
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Estado Ativo (JS adiciona esta classe) */
+#sys-toast.active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0); /* Sobe para a posição final */
+}
+
+/* O Ícone de Check */
+#sys-toast .sys-icon {
+  font-size: 16px;
+  color: var(--green);
+}
+
+/* Responsividade Mobile */
+@media (max-width: 600px) {
+  #sys-toast {
+    width: 90%;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   VIEW COUNTER
+   ========================================================================== */
+.view-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--placeholder-color);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  transition: opacity 0.3s ease;
+  user-select: none;
+}
+
+.view-counter:hover {
+  opacity: 1;
+}
+
+.view-icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.view-count {
+  min-width: 0px;
+}

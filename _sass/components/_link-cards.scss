@@ -1,0 +1,137 @@
+/* ==========================================================================
+   LINK CARDS (ISOLATED SYSTEM)
+   ========================================================================== */
+a.link-card {
+  position: relative;
+  margin-top: 20px;
+  background: var(--card-bg);
+
+  /* Borda sutil inicial */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  border-radius: 6px;
+  min-height: 100px;
+  padding: 10px 10px 10px 145px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  /* Resets Críticos (Blindagem) */
+  box-shadow: none;
+  text-decoration: none !important;
+
+  /* Força a cor padrão do texto para não herdar o Ciano dos links globais */
+  color: var(--text-color) !important;
+
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+a.link-card.no-image { padding: 15px !important; min-height: auto; }
+
+/* [FOCUS STATE - ACESSIBILIDADE] */
+a.link-card:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+/* [HOVER STATE - BLINDADO] */
+a.link-card:hover {
+  transform: translateY(-2px);
+
+  /* Borda Rosa Suave */
+  border-color: rgba(255, 121, 198, 0.5);
+
+  /* Fundo muito sutil */
+  background-color: rgba(255, 121, 198, 0.03);
+
+  /* Glow externo */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3),
+              0 0 0 1px rgba(255, 121, 198, 0.05);
+
+  cursor: pointer;
+
+  text-shadow: none !important;
+  color: var(--text-color) !important;
+}
+
+/* IMAGEM DO CARD */
+.link-card .lc-img {
+  position: absolute; top: 10px; left: 10px;
+  width: 120px; height: calc(100% - 20px);
+  object-fit: cover; border-radius: 4px;
+  margin: 0 !important; padding: 0 !important; background: none !important;
+  border: none !important; box-shadow: none !important;
+
+  filter: grayscale(60%);
+  transition: all 0.4s ease;
+  opacity: 0.9;
+}
+
+a.link-card:hover .lc-img {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+/* TÍTULO DO HOST (O único que deve mudar de cor) */
+.link-card .lc-host {
+  color: var(--link-hover-color); /* Roxo Inicial */
+  font-weight: 700;
+  font-size: 0.9em;
+  line-height: 1.4;
+  display: block;
+  margin-bottom: 4px;
+  text-decoration: none !important;
+
+  transition: color 0.4s ease;
+}
+
+/* No Hover do Card, o Título vira Rosa (Link Color) */
+a.link-card:hover .lc-host {
+  color: var(--link-color) !important;
+  /* Sem text-shadow aqui também para manter a leitura limpa */
+}
+
+/* DESCRIÇÃO E METADATA */
+.link-card .lc-desc {
+  color: var(--base-color);
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+/* URL Metadata */
+.lc-site {
+  margin-top: 8px;
+  font-size: 0.75em;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--muted-color);
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+  display: flex; align-items: center; gap: 6px;
+  transition: all 0.4s ease;
+}
+
+.lc-site::before {
+  content: "↗";
+  font-family: sans-serif; font-size: 1.1em; opacity: 0.6;
+}
+
+/* Hover: Metadata acende em Ciano (Contraste) */
+a.link-card:hover .lc-site {
+  color: var(--accent-cyan);
+}
+
+/* --- CARDS INTERNOS (INTERNAL REFS / QUOTES) --- */
+a.link-card.internal-ref {
+    padding: 12px 15px !important;
+    min-height: auto !important;
+
+    .lc-meta { padding: 0 !important; }
+
+    .lc-desc {
+        color: var(--base-color);
+        font-size: inherit;
+        line-height: 1.6;
+        margin: 0;
+        display: block;
+    }
+}

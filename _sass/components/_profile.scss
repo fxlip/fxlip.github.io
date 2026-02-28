@@ -1,0 +1,623 @@
+/* ==========================================================================
+   USER PROFILE PAGE — v2 Minimal
+   Redesign: avatar ring, gender icons, OAuth social buttons, badge pills.
+   Removed: heatmap, input fields, two-col layout.
+   ========================================================================== */
+
+// Wrapper
+.ps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ps[hidden] { display: none; }
+
+// ── Identity ──────────────────────────────────────────────────────────────
+
+// Reset white-space herdado do .t-out (pre-wrap vira espaçamento indesejado)
+.ps {
+  white-space: normal;
+}
+
+.ps-identity {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.ps-avatar-wrap {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ps-avatar {
+  // Dimensões fixas
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 50% !important;
+  // Resets de main img que sangram para cá
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  transform: none;
+  display: block;
+  // Imagem
+  object-fit: cover;
+  image-rendering: pixelated;
+  background: var(--card-bg, #282a36);
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  box-sizing: content-box !important;
+}
+
+// Ring animado — entrada suave sem clip-path
+.ps-avatar-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  background:
+    conic-gradient(
+      var(--link-color),
+      var(--link-hover-color),
+      var(--accent-cyan),
+      var(--link-color)
+    ) border-box;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  opacity: 0;
+  animation: ps-ring-appear 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
+}
+
+@keyframes ps-ring-appear {
+  0%   { opacity: 0; transform: scale(0.72) rotate(-30deg); }
+  100% { opacity: 1; transform: scale(1)    rotate(0deg);   }
+}
+
+.ps-id-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.ps-handle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ps-name {
+  color: var(--accent-cyan);
+  font-size: 1.15em;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.profile-badge {
+  font-size: 0.65em;
+  color: var(--link-color);
+  border: 1px solid rgba(255, 121, 198, 0.4);
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-left: 8px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+  letter-spacing: 0.02em;
+}
+
+.ps-location {
+  font-size: 0.85em;
+  line-height: 1.3;
+}
+
+.ps-since {
+  font-size: 0.78em;
+  opacity: 0.6;
+}
+
+// ── Gender picker (canto inferior direito do avatar) ──────────────────
+
+.ps-gender-picker {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row-reverse; // M(first)=rightmost, NB(last)=leftmost
+  gap: 3px;
+  z-index: 2;
+}
+
+// Sem animação no carregamento inicial (evita flash dos 3 botões)
+.ps-gender-picker.ps-gender-no-anim,
+.ps-gender-picker.ps-gender-no-anim .ps-gender-btn {
+  transition: none !important;
+  animation: none !important;
+}
+
+// Estado colapsado: só o selecionado fica visível
+.ps-gender-picker.ps-gender-collapsed .ps-gender-btn:not(.selected) {
+  width: 0 !important;
+  min-width: 0 !important;
+  border-width: 0 !important;
+  padding: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none;
+  overflow: hidden;
+  margin: 0 !important;
+  gap: 0;
+}
+
+// Botão selecionado sempre ocupa a posição mais à direita (canto do avatar)
+.ps-gender-btn.selected { order: -1; }
+
+.ps-gender-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-color);
+  background: rgba(15, 14, 20, 0.82);
+  backdrop-filter: blur(4px);
+  color: var(--muted-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+  transition: width 0.2s ease, opacity 0.16s ease, padding 0.2s ease,
+              border-width 0.2s ease, margin 0.2s ease,
+              color 0.25s ease, border-color 0.25s ease,
+              transform 0.25s cubic-bezier(.34, 1.56, .64, 1),
+              background 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    transition: transform 0.25s cubic-bezier(.34, 1.56, .64, 1);
+  }
+
+  &:hover {
+    color: var(--text-color);
+    border-color: var(--muted-color);
+    transform: scale(1.1);
+  }
+
+  &:active { transform: scale(0.9); }
+
+  // Selecionado
+  &.selected {
+    color: var(--link-hover-color);
+    border-color: var(--link-hover-color);
+    background: rgba(189, 147, 249, 0.18);
+    box-shadow: 0 0 8px rgba(189, 147, 249, 0.35);
+    animation: ps-gender-pop 0.35s cubic-bezier(.34, 1.56, .64, 1);
+
+    svg { transform: scale(1.15); }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1px solid var(--link-hover-color);
+      opacity: 0;
+      animation: ps-gender-ring 1.1s ease-out;
+    }
+  }
+
+  &.deselecting { animation: ps-gender-shrink 0.22s ease; }
+}
+
+@keyframes ps-gender-pop {
+  0%   { transform: scale(0.7); }
+  50%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+@keyframes ps-gender-ring {
+  0%   { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes ps-gender-shrink {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(0.85); }
+  100% { transform: scale(1); }
+}
+
+// ── Social icons (2×2 grid ao lado do avatar) ─────────────────────────
+
+.ps-socials {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.ps-social-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--muted-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.25s ease;
+  position: relative;
+
+  svg { width: 16px; height: 16px; }
+
+  &:hover {
+    border-color: var(--muted-color);
+    color: var(--text-color);
+    background: rgba(255, 255, 255, 0.04);
+    transform: translateY(-1px);
+  }
+
+  // Conectado (ativo)
+  &[data-active="true"] {
+    color: var(--link-color);
+    border-color: var(--link-color);
+    background: rgba(255, 121, 198, 0.08);
+    box-shadow: 0 0 10px rgba(255, 121, 198, 0.15);
+    animation: ps-social-connect 0.5s cubic-bezier(.34, 1.56, .64, 1);
+
+    &:hover {
+      color: var(--link-hover-color);
+      border-color: var(--link-hover-color);
+      background: rgba(189, 147, 249, 0.1);
+      box-shadow: 0 0 12px rgba(189, 147, 249, 0.2);
+    }
+
+    // Check badge
+    &::after {
+      content: '✓';
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 12px;
+      height: 12px;
+      font-size: 7px;
+      background: var(--link-color);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+  }
+
+  // Tooltip "conectar" (apenas owner, inativo)
+  &[data-active="false"].ps-social-owner::after {
+    content: 'conectar';
+    position: absolute;
+    bottom: -22px;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    font-size: 9px;
+    color: var(--muted-color);
+    white-space: nowrap;
+    opacity: 0;
+    transition: all 0.2s ease;
+    pointer-events: none;
+  }
+
+  &[data-active="false"].ps-social-owner:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes ps-social-connect {
+  0%   { transform: scale(0.6) rotate(-10deg); opacity: 0.5; }
+  60%  { transform: scale(1.15) rotate(2deg); }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+// ── Stats ──────────────────────────────────────────────────────────────
+
+.ps-stats {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.ps-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.ps-val {
+  color: var(--accent-cyan);
+  font-size: 1.05em;
+  font-weight: 700;
+}
+
+.ps-stat-sep {
+  opacity: 0.4;
+}
+
+// ── Badges (totens/broches) ──────────────────────────────────────────────
+
+.ps-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+  min-height: 0;
+
+  &:empty { display: none; margin: 0; padding: 0; border: none; }
+}
+
+// Totem base
+.ps-badge-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 18px 13px;
+  border-radius: 12px;
+  min-width: 74px;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+
+  .ps-badge-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    display: block;
+  }
+
+  .ps-badge-label {
+    font-size: 0.67em;
+    letter-spacing: 0.04em;
+    position: relative;
+    z-index: 1;
+    white-space: nowrap;
+    opacity: 0.85;
+    text-transform: lowercase;
+  }
+
+  .ps-badge-value {
+    font-size: 0.85em;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+    line-height: 1;
+  }
+
+  // Shimmer interno (opt-in por tier)
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    opacity: 0;
+  }
+}
+
+// ── Tier: rep (roxo/rosa — estrela) ──
+.ps-badge-item[data-tier="rep"] {
+  background: linear-gradient(145deg, rgba(189, 147, 249, 0.13) 0%, rgba(255, 121, 198, 0.10) 100%);
+  border: 1px solid rgba(189, 147, 249, 0.32);
+  box-shadow: 0 2px 14px rgba(189, 147, 249, 0.08);
+  color: var(--link-hover-color);
+
+  .ps-badge-icon {
+    filter: drop-shadow(0 0 5px rgba(189, 147, 249, 0.5));
+    animation: ps-badge-glow-rep 2.8s ease-in-out infinite;
+  }
+
+  .ps-badge-value { color: var(--link-hover-color); }
+
+  &::before {
+    background: conic-gradient(transparent 0deg, rgba(189, 147, 249, 0.07) 60deg, transparent 120deg);
+    animation: ps-badge-shimmer 3.5s linear infinite;
+    opacity: 1;
+  }
+}
+
+// ── Tier: popular (amarelo — coroa) ──
+.ps-badge-item[data-tier="popular"] {
+  background: rgba(241, 250, 140, 0.06);
+  border: 1px solid rgba(241, 250, 140, 0.28);
+  color: var(--yellow);
+
+  .ps-badge-icon { filter: drop-shadow(0 0 5px rgba(241, 250, 140, 0.45)); }
+}
+
+// ── Tier: frequente (ciano — loop) ──
+.ps-badge-item[data-tier="frequente"] {
+  background: rgba(139, 233, 253, 0.06);
+  border: 1px solid rgba(139, 233, 253, 0.28);
+  color: var(--accent-cyan);
+
+  .ps-badge-icon { filter: drop-shadow(0 0 5px rgba(139, 233, 253, 0.45)); }
+}
+
+// ── Tier: engajado (verde — balão) ──
+.ps-badge-item[data-tier="engajado"] {
+  background: rgba(80, 250, 123, 0.06);
+  border: 1px solid rgba(80, 250, 123, 0.28);
+  color: var(--green);
+
+  .ps-badge-icon { filter: drop-shadow(0 0 5px rgba(80, 250, 123, 0.45)); }
+}
+
+// ── Tier: curtidor (rosa — coração) ──
+.ps-badge-item[data-tier="curtidor"] {
+  background: rgba(255, 121, 198, 0.06);
+  border: 1px solid rgba(255, 121, 198, 0.28);
+  color: var(--link-color);
+
+  .ps-badge-icon { filter: drop-shadow(0 0 5px rgba(255, 121, 198, 0.45)); }
+}
+
+// ── Tier: veterano (laranja/amarelo — ampulheta) ──
+.ps-badge-item[data-tier="veterano"] {
+  background: rgba(255, 184, 108, 0.06);
+  border: 1px solid rgba(255, 184, 108, 0.28);
+  color: #ffb86c;
+
+  .ps-badge-icon { filter: drop-shadow(0 0 5px rgba(255, 184, 108, 0.45)); }
+}
+
+@keyframes ps-badge-glow-rep {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(189, 147, 249, 0.35)); }
+  50%      { filter: drop-shadow(0 0 10px rgba(189, 147, 249, 0.65)); }
+}
+
+@keyframes ps-badge-shimmer {
+  to { transform: rotate(360deg); }
+}
+
+// ── Log de atividade recente ────────────────────────────────────────────
+
+#profile-activity-section {
+  margin-top: 14px;
+
+  &:empty { display: none; margin: 0; }
+}
+
+.profile-activity-log {
+  // cmd line do terminal
+}
+
+.pal-cmd {
+  margin-bottom: 4px;
+  font-size: 0.88em;
+  user-select: none;
+}
+
+.profile-activity-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 6px;
+  padding: 3px 0;
+  font-size: 0.81em;
+  color: var(--muted-color);
+  line-height: 1.4;
+
+  &:last-child .pal-date { }
+
+  .pal-ts {
+    white-space: nowrap;
+    flex-shrink: 0;
+    opacity: 0.55;
+    font-size: 0.92em;
+  }
+
+  .pal-content {
+    color: var(--text-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    .pal-verb { color: var(--accent-cyan); margin-right: 3px; }
+    .pal-quote { color: var(--muted-color); font-style: italic; }
+  }
+
+  .pal-type-icon {
+    color: var(--muted-color);
+    opacity: 0.6;
+    white-space: nowrap;
+  }
+}
+
+// ── Save status (para PATCH do gender) ──
+
+.ps-save-status {
+  font-size: 0.8em;
+  margin-top: 2px;
+  min-height: 0;
+}
+
+.t-hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 4px 0;
+}
+
+// Menções de perfil de usuário
+.mention-link.profile-mention {
+  color: var(--accent-purple) !important;
+
+  &:hover {
+    color: var(--link-color) !important;
+    text-shadow: 0 0 5px rgba(255, 121, 198, 0.5);
+  }
+}
+
+// ── Responsive ──────────────────────────────────────────────────────────
+
+@media (max-width: 540px) {
+  .ps-identity {
+    gap: 12px;
+  }
+
+  .ps-avatar-wrap {
+    width: 70px;
+    height: 70px;
+  }
+
+  .ps-avatar {
+    width: 64px;
+    height: 64px;
+  }
+
+  .ps-name {
+    font-size: 1em;
+  }
+
+  .ps-stats {
+    gap: 6px;
+    font-size: 0.9em;
+  }
+
+  .ps-socials {
+    gap: 4px;
+  }
+}
