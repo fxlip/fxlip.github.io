@@ -138,32 +138,34 @@
 
   function setupGenderPicker(username, fingerprint, currentGender) {
     var picker = document.getElementById('pf-gender-picker');
-    var divider = document.getElementById('pc-divider');
     if (!picker) return;
 
     var btns = picker.querySelectorAll('.ps-gender-btn');
     var selected = currentGender || null;
 
+    console.log('[profile] gender from API:', JSON.stringify(currentGender), '→ selected:', selected);
+
     // Aplica estado inicial sem animação, antes de revelar o picker
+    picker.classList.add('ps-gender-no-anim');
+
     if (selected) {
-      picker.classList.add('ps-gender-no-anim');
       btns.forEach(function(btn) {
-        if (btn.dataset.value === selected) btn.classList.add('selected');
+        if (btn.dataset.value === selected) {
+          btn.classList.add('selected');
+          console.log('[profile] gender btn marcado:', btn.dataset.value);
+        }
       });
       picker.classList.add('ps-gender-collapsed');
     }
 
     picker.hidden = false;
-    divider.hidden = false;
 
     // Reativa transições após o primeiro render
-    if (selected) {
+    requestAnimationFrame(function() {
       requestAnimationFrame(function() {
-        requestAnimationFrame(function() {
-          picker.classList.remove('ps-gender-no-anim');
-        });
+        picker.classList.remove('ps-gender-no-anim');
       });
-    }
+    });
 
     btns.forEach(function(btn) {
       btn.addEventListener('click', function() {
@@ -336,27 +338,37 @@
           var typeLabel = { comment: 'comentou', like: 'curtiu', upvote: 'upvotou' };
 
           var items = acts.map(function(a) {
-            var dateStr  = a.created_at ? new Date(a.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) : '';
-            var icon     = typeIcon[a.type]  || '·';
-            var verb     = typeLabel[a.type] || a.type;
-            var quote    = a.content
-              ? ' <span class="pal-quote">"' + esc(a.content.substring(0, 60)) + (a.content.length > 60 ? '…' : '') + '"</span>'
+            var d       = a.created_at ? new Date(a.created_at) : null;
+            var ts      = d ? d.toLocaleString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }).replace(',', '') : '--';
+            var icon    = typeIcon[a.type]  || '·';
+            var verb    = typeLabel[a.type] || a.type;
+            var quote   = a.content
+              ? ' <span class="pal-quote">"' + esc(a.content.substring(0, 55)) + (a.content.length > 55 ? '…' : '') + '"</span>'
               : '';
 
             return '<div class="profile-activity-item">'
-              + '<span class="pal-icon t-gray">' + icon + '</span>'
+              + '<span class="pal-ts t-gray">[' + esc(ts) + ']</span>'
               + '<span class="pal-content">'
-              + verb + ' <a href="/' + esc(a.target_slug) + '" class="file-link">' + esc(a.target_slug) + '</a>'
+              + '<span class="pal-verb">' + verb + '</span>'
+              + '<a href="/' + esc(a.target_slug) + '" class="file-link">/' + esc(a.target_slug) + '</a>'
               + quote
               + '</span>'
-              + '<span class="pal-date">' + esc(dateStr) + '</span>'
+              + '<span class="pal-type-icon">' + icon + '</span>'
               + '</div>';
           }).join('');
 
-          section.innerHTML = '<div class="profile-activity-log">'
-            + '<div class="pal-header t-gray">log de atividade</div>'
-            + items
+          // Linha de comando do terminal
+          var cmd = '<div class="pal-cmd">'
+            + '<span class="t-user">fxlip</span>'
+            + '<span class="t-gray">@</span>'
+            + '<span class="t-host">www</span>'
+            + '<span class="t-gray">:</span>'
+            + '<span class="t-path">~</span>'
+            + '<span class="t-gray">$</span>'
+            + ' <span class="t-cmd">tail /home/' + esc(username) + '/action.log</span>'
             + '</div>';
+
+          section.innerHTML = '<div class="profile-activity-log">' + cmd + items + '</div>';
         }).catch(function() {});
     }
   }
