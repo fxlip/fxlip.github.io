@@ -341,37 +341,76 @@
     document.getElementById('profile-card').hidden     = false;
     document.title = '@' + username;
 
-    // ── Bloco stat (síncrono) ──────────────────────────────────────────────
+    // ── Log completo do perfil (síncrono) ─────────────────────────────────
     var section = document.getElementById('profile-activity-section');
     if (section) {
       var device    = detectDevice();
       var fpShort   = fingerprint ? fingerprint.substring(0, 16) + '…' : '—';
       var firstFull = formatDateFull(data.first_seen);
+      var genderMap = { m: 'masculino', f: 'feminino', nb: 'não-binário' };
+      var genderStr = data.gender ? (genderMap[data.gender] || data.gender) : '—';
+      var geo2      = [data.city, data.country].filter(Boolean).join(', ') || '—';
 
-      var statCmd = '<div class="pal-cmd">'
-        + '<span class="t-user">fxlip</span>'
-        + '<span class="t-gray">@</span>'
-        + '<span class="t-host">www</span>'
-        + '<span class="t-gray">:</span>'
-        + '<span class="t-path">~</span>'
-        + '<span class="t-gray">$</span>'
-        + ' <span class="t-cmd">stat /home/' + esc(username) + '</span>'
-        + '</div>';
-
-      var sysEntries = [
-        ['first_seen',   firstFull],
-        ['fingerprint',  fpShort],
-        ['platform',     device],
-      ].map(function(e) {
+      // Linha de entrada: chave · valor
+      function row(key, val) {
         return '<div class="pal-sys-entry">'
-          + '<span class="pal-sys-key t-gray">' + esc(e[0]) + '</span>'
+          + '<span class="pal-sys-key t-gray">' + esc(key) + '</span>'
           + '<span class="pal-sys-sep t-gray">·</span>'
-          + '<span class="pal-sys-val">'        + esc(e[1]) + '</span>'
+          + '<span class="pal-sys-val">'        + esc(String(val)) + '</span>'
           + '</div>';
-      }).join('');
+      }
 
-      section.innerHTML = '<div class="profile-activity-log" id="pc-log">'
-        + statCmd + sysEntries + '</div>';
+      // Cabeçalho de seção
+      function sec(label) {
+        return '<div class="pal-section t-gray"># ' + label + '</div>';
+      }
+
+      // Prompt de comando do terminal
+      function cmd(command) {
+        return '<div class="pal-cmd">'
+          + '<span class="t-user">fxlip</span>'
+          + '<span class="t-gray">@</span><span class="t-host">www</span>'
+          + '<span class="t-gray">:</span><span class="t-path">~</span>'
+          + '<span class="t-gray">$</span> <span class="t-cmd">' + command + '</span>'
+          + '</div>';
+      }
+
+      // Conquistas: rep + badges
+      var badgeStats = {
+        visits:           data.visits_count     || 0,
+        total_time_spent: data.total_time_spent || 0,
+        comments:         comments,
+        upvotes:          upvotes,
+        first_seen:       data.first_seen       || null,
+      };
+      var rep = computeReputation(badgeStats);
+      var earnedLabels = BADGE_DEFS
+        .filter(function(b) { return b.test(badgeStats); })
+        .map(function(b) { return b.label; });
+      var allBadges = (rep > 0 ? ['rep(' + rep + ')'] : []).concat(earnedLabels);
+
+      var profileHtml = cmd('cat /home/' + esc(username) + '/.profile')
+        + sec('identidade')
+        + row('username',     '@' + username)
+        + row('local',        geo2)
+        + row('gênero',       genderStr)
+        + row('membro desde', firstFull)
+        + row('plataforma',   device)
+        + row('fingerprint',  fpShort)
+        + sec('atividade')
+        + row('visitas',      (data.visits_count || 0).toLocaleString('pt-BR'))
+        + row('tempo no site', formatTime(data.total_time_spent))
+        + row('comentários',  String(comments))
+        + row('upvotes',      String(upvotes))
+        + sec('redes sociais')
+        + row('email',        (data.email     && data.email.trim())    || '—')
+        + row('github',       data.github    ? '@' + data.github    : '—')
+        + row('instagram',    data.instagram ? '@' + data.instagram : '—')
+        + row('twitter',      data.twitter   ? '@' + data.twitter   : '—')
+        + sec('conquistas')
+        + row('badges',       allBadges.length ? allBadges.join('  ') : '—');
+
+      section.innerHTML = '<div class="profile-activity-log" id="pc-log">' + profileHtml + '</div>';
     }
 
     // ── Atividade recente (async) ──────────────────────────────────────────
@@ -387,12 +426,10 @@
           var typeIcon  = { comment: '›', like: '♥', upvote: '▲' };
           var typeLabel = { comment: 'comentou', like: 'curtiu', upvote: 'upvotou' };
 
-          var tailCmd = '<div class="pal-cmd" style="margin-top:8px">'
+          var tailCmd = '<div class="pal-cmd" style="margin-top:10px">'
             + '<span class="t-user">fxlip</span>'
-            + '<span class="t-gray">@</span>'
-            + '<span class="t-host">www</span>'
-            + '<span class="t-gray">:</span>'
-            + '<span class="t-path">~</span>'
+            + '<span class="t-gray">@</span><span class="t-host">www</span>'
+            + '<span class="t-gray">:</span><span class="t-path">~</span>'
             + '<span class="t-gray">$</span>'
             + ' <span class="t-cmd">tail /home/' + esc(username) + '/action.log</span>'
             + '</div>';

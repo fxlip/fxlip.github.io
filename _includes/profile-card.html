@@ -10,7 +10,7 @@
     <div><span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">./profile.sh</span></div>
     <div class="t-out">
 
-  <!-- Identity: avatar | info | socials (grid 3 colunas) -->
+  <!-- Identity: avatar | info + sociais -->
   <div class="ps-identity">
 
     <!-- Col 1: avatar + gender picker -->
@@ -24,39 +24,27 @@
       </div>
     </div>
 
-    <!-- Col 2: nome / localidade / desde -->
+    <!-- Col 2: nome / localidade / desde + ícones sociais -->
     <div class="ps-id-stack">
       <div class="ps-handle"><span class="ps-name" id="pc-name"></span></div>
       <div class="ps-location t-gray" id="pc-meta"></div>
       <div class="ps-since t-gray" id="pc-since"></div>
-    </div>
 
-    <!-- Col 3: lista de redes sociais com info à direita -->
-    <div class="ps-socials" id="pc-social">
-      <button class="ps-social-btn" data-service="email" title="E-mail" data-active="false">
-        <span class="ps-social-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg></span>
-        <span class="ps-social-name">gmail</span>
-        <span class="ps-social-sep t-gray">·</span>
-        <span class="ps-social-info"></span>
-      </button>
-      <button class="ps-social-btn" data-service="github" title="GitHub" data-active="false">
-        <span class="ps-social-icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.78 0 12.292c0 5.21 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.333-1.724-1.333-1.724-1.089-.731.083-.716.083-.716 1.205.083 1.838 1.215 1.838 1.215 1.07 1.803 2.809 1.282 3.495.98.108-.763.417-1.282.76-1.577-2.665-.295-5.466-1.309-5.466-5.827 0-1.287.465-2.339 1.228-3.164-.123-.297-.532-1.497.117-3.12 0 0 1.001-.314 3.28 1.209A11.5 11.5 0 0 1 12 6.813c1.02.005 2.047.136 3.006.398 2.277-1.523 3.275-1.209 3.275-1.209.651 1.623.242 2.823.119 3.12.765.825 1.226 1.877 1.226 3.164 0 4.53-2.805 5.528-5.475 5.818.43.364.814 1.083.814 2.183 0 1.576-.014 2.846-.014 3.233 0 .315.216.683.825.567C20.565 21.917 24 17.497 24 12.292 24 5.78 18.627.5 12 .5z"/></svg></span>
-        <span class="ps-social-name">github</span>
-        <span class="ps-social-sep t-gray">·</span>
-        <span class="ps-social-info"></span>
-      </button>
-      <button class="ps-social-btn" data-service="instagram" title="Instagram" data-active="false">
-        <span class="ps-social-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></span>
-        <span class="ps-social-name">instagram</span>
-        <span class="ps-social-sep t-gray">·</span>
-        <span class="ps-social-info"></span>
-      </button>
-      <button class="ps-social-btn" data-service="twitter" title="X / Twitter" data-active="false">
-        <span class="ps-social-icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>
-        <span class="ps-social-name">x.com</span>
-        <span class="ps-social-sep t-gray">·</span>
-        <span class="ps-social-info"></span>
-      </button>
+      <!-- Ícones sociais: apenas ícones, alinhados horizontalmente -->
+      <div class="ps-socials" id="pc-social">
+        <button class="ps-social-btn" data-service="email" title="E-mail" data-active="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg>
+        </button>
+        <button class="ps-social-btn" data-service="github" title="GitHub" data-active="false">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.78 0 12.292c0 5.21 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.333-1.724-1.333-1.724-1.089-.731.083-.716.083-.716 1.205.083 1.838 1.215 1.838 1.215 1.07 1.803 2.809 1.282 3.495.98.108-.763.417-1.282.76-1.577-2.665-.295-5.466-1.309-5.466-5.827 0-1.287.465-2.339 1.228-3.164-.123-.297-.532-1.497.117-3.12 0 0 1.001-.314 3.28 1.209A11.5 11.5 0 0 1 12 6.813c1.02.005 2.047.136 3.006.398 2.277-1.523 3.275-1.209 3.275-1.209.651 1.623.242 2.823.119 3.12.765.825 1.226 1.877 1.226 3.164 0 4.53-2.805 5.528-5.475 5.818.43.364.814 1.083.814 2.183 0 1.576-.014 2.846-.014 3.233 0 .315.216.683.825.567C20.565 21.917 24 17.497 24 12.292 24 5.78 18.627.5 12 .5z"/></svg>
+        </button>
+        <button class="ps-social-btn" data-service="instagram" title="Instagram" data-active="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+        </button>
+        <button class="ps-social-btn" data-service="twitter" title="X / Twitter" data-active="false">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </button>
+      </div>
     </div>
 
   </div>
@@ -75,7 +63,7 @@
     <div class="ps-stat"><span class="ps-val" id="pc-upvotes"></span><span class="t-gray"> upvotes</span></div>
   </div>
 
-  <!-- Log de atividade (populado pelo JS) -->
+  <!-- Log do perfil (populado pelo JS) -->
   <div id="profile-activity-section"></div>
 
 </div>
