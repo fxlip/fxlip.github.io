@@ -1227,32 +1227,13 @@ article.post {
    25. USER PROFILE PAGE
    ========================================================================== */
 
-.profile-header {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
+// Avatar (usado em seção 1 e potencialmente em comentários)
 .profile-avatar {
   border-radius: 50%;
   border: 2px solid var(--link-color);
   box-shadow: 0 0 10px rgba(255, 121, 198, 0.3);
   flex-shrink: 0;
-  image-rendering: pixelated; // para identicons
-}
-
-.profile-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding-top: 4px;
-}
-
-.profile-name {
-  font-size: 1.1em;
-  color: var(--link-color);
-  font-weight: bold;
+  image-rendering: pixelated;
 }
 
 .profile-badge {
@@ -1265,78 +1246,178 @@ article.post {
   margin-left: 6px;
 }
 
-.profile-divider {
-  margin: 12px 0 8px;
-  opacity: 0.6;
-  font-size: 0.85em;
+// Wrapper geral
+.ps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.profile-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-bottom: 4px;
-
-  > div {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
+// Seção 1: header
+.ps-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
 }
 
-.profile-stat-val {
-  color: var(--accent-cyan);
-  font-size: 1.2em;
+.ps-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 4px;
+}
+
+.ps-name {
+  font-size: 1.1em;
+  color: var(--link-color);
   font-weight: bold;
 }
 
-.profile-heatmap {
+.ps-meta {
+  font-size: 0.9em;
+}
+
+.ps-social {
   display: flex;
   flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.85em;
+  margin-top: 2px;
+}
+
+// Duas colunas (seções 2 e 3)
+.ps-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.ps-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ps-block-title {
+  font-size: 0.8em;
+  opacity: 0.6;
+}
+
+// Bloco de uso (seção 2, esquerda)
+.ps-stat-row {
+  display: flex;
+  gap: 16px;
+}
+
+.ps-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.ps-val {
+  color: var(--accent-cyan);
+  font-size: 1.15em;
+  font-weight: bold;
+}
+
+// Gráfico de barras por hora (seção 2, direita)
+.ps-barchart {
+  display: flex;
+  flex-direction: column;
   gap: 3px;
-  margin: 4px 0 12px;
+  width: 100%;
 }
 
-.heatmap-cell {
-  width: 14px;
-  height: 14px;
-  border-radius: 2px;
-  background-color: rgba(255, 121, 198, calc(0.1 + var(--intensity, 0) * 0.7));
-  border: 1px solid rgba(255, 121, 198, 0.15);
+.ps-hbars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 44px;
+}
+
+.ps-hbar {
+  flex: 1;
+  height: var(--h, 4%);
+  background: rgba(255, 121, 198, 0.45);
+  border-radius: 2px 2px 0 0;
+  min-height: 2px;
   cursor: default;
+  transition: background 0.15s;
+
+  &:hover { background: rgba(255, 121, 198, 0.8); }
 }
 
+.ps-hlabels {
+  display: flex;
+  gap: 2px;
+}
+
+.ps-hlabel {
+  flex: 1;
+  text-align: center;
+  font-size: 0.6em;
+  color: rgba(197, 198, 208, 0.45);
+  white-space: nowrap;
+}
+
+// Lista de atividade recente (abaixo do gráfico)
 .profile-activity-item {
-  padding: 4px 0;
-  font-size: 0.9em;
+  padding: 3px 0;
+  font-size: 0.82em;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   word-break: break-word;
 
   &:last-child { border-bottom: none; }
 }
 
-.profile-social {
-  margin-top: 4px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  font-size: 0.85em;
-}
-
-.profile-owner-zone {
-  margin-top: 8px;
-  padding-top: 4px;
-}
-
-.profile-field {
+// Seção 3: editar perfil
+.ps-field {
   display: flex;
   align-items: center;
-  gap: 0;
-  margin-top: 6px;
-  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+  font-size: 0.88em;
+
+  .greeting-input {
+    flex: 1;
+    min-width: 0;
+  }
 }
 
-.profile-field select.greeting-input {
+.ps-field-locked {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ps-badge-public {
+  font-size: 0.72em;
+  color: var(--accent-cyan);
+  border: 1px solid rgba(139, 233, 253, 0.4);
+  padding: 1px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ps-badge-private {
+  font-size: 0.72em;
+  color: rgba(197, 198, 208, 0.55);
+  border: 1px solid rgba(197, 198, 208, 0.25);
+  padding: 1px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ps-save-status {
+  font-size: 0.85em;
+  margin-top: -4px;
+}
+
+// select dentro de ps-field
+.ps-field select.greeting-input {
   background: transparent;
   border: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
@@ -1351,7 +1432,7 @@ article.post {
 .t-hr {
   border: none;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin: 16px 0 12px;
+  margin: 4px 0;
 }
 
 // Menções de perfil de usuário (distinto de links internos)
@@ -1364,15 +1445,19 @@ article.post {
   }
 }
 
-@media (max-width: 480px) {
-  .profile-stats {
-    grid-template-columns: repeat(2, 1fr);
+@media (max-width: 540px) {
+  .ps-two-col {
+    grid-template-columns: 1fr;
   }
 
-  .profile-header {
+  .ps-header {
     flex-direction: column;
     align-items: center;
     text-align: center;
+  }
+
+  .ps-social {
+    justify-content: center;
   }
 }
 
