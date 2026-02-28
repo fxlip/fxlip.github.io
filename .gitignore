@@ -13,6 +13,7 @@ Gemfile.lock
 *.swp
 *.log
 *.code-workspace
+fxlip.sh
 
 # Segredos
 .env
