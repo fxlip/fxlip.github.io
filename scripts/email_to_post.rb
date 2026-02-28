@@ -41,6 +41,24 @@ def extract_body(mail)
   end
 end
 
+def parse_flags(text)
+  flags = {}
+  text.each_line do |line|
+    l = line.strip.downcase
+    if l =~ /\bhide\s*:\s*false\b/
+      flags['hide'] = false
+    elsif l =~ /\bhide\b/
+      flags['hide'] = true
+    end
+    if l =~ /\bpin\s*:\s*false\b/
+      flags['pin'] = false
+    elsif l =~ /\bpin\b/
+      flags['pin'] = true
+    end
+  end
+  flags
+end
+
 puts "[ SYSTEM_READY ] Conectando via IMAP..."
 
 begin
@@ -147,7 +165,7 @@ begin
           end
 
         else
-          # --- LÓGICA DE CRIAÇÃO ---
+          # --- LÓGICA DE CRIAÇÃO / REBUILD ---
           if subject_str.empty?
             command = 'quick_post'
           else
@@ -155,10 +173,14 @@ begin
             command = slugify(parts[0])
           end
 
-          post_count = (post_count || 0) + 1
-          if post_count > MAX_POSTS_PER_RUN
-            puts "   [RATE LIMIT] Máximo de #{MAX_POSTS_PER_RUN} posts por execução."
-            next
+          is_rebuild = command =~ /\A[0-9a-f]{16}\z/ ? true : false
+
+          unless is_rebuild
+            post_count = (post_count || 0) + 1
+            if post_count > MAX_POSTS_PER_RUN
+              puts "   [RATE LIMIT] Máximo de #{MAX_POSTS_PER_RUN} posts por execução."
+              next
+            end
           end
 
           case command
@@ -185,6 +207,58 @@ begin
             File.open(filepath, 'w') do |file| file.write(front_matter + "\n" + body) end
             puts "   [SUCESSO] Post criado: #{filepath}"
             success = true
+
+          when 'hide'
+            slug = SecureRandom.hex(8)
+            date = DateTime.now
+            filename = "#{date.strftime('%Y-%m-%d')}-#{slug}.md"
+            subdir   = date.strftime('%Y/%m')
+            filepath = File.join(POSTS_ROOT, subdir, filename)
+            FileUtils.mkdir_p(File.dirname(filepath))
+            body = extract_body(email)
+
+            fm_data = {
+              'layout' => 'post',
+              'title' => slug,
+              'date' => date.to_s,
+              'permalink' => "/#{slug}",
+              'categories' => ['feed'],
+              'tags' => ['quicklog'],
+              'hide' => true
+            }
+            front_matter = "---\n#{YAML.dump(fm_data).sub(/^---\n/, '')}---\n"
+            File.open(filepath, 'w') { |file| file.write(front_matter + "\n" + body) }
+            puts "   [SUCESSO] Post oculto criado: #{filepath}"
+            success = true
+
+          when /\A[0-9a-f]{16}\z/
+            # --- REBUILD: atualiza front matter de post existente pelo hash ---
+            hash = command
+            post_file = Dir.glob(File.join(POSTS_ROOT, "**/*-#{hash}.md")).first
+            if post_file.nil?
+              puts "   [404] Post com hash '#{hash}' não encontrado."
+              success = true
+            else
+              body = extract_body(email)
+              flags = parse_flags(body)
+              if flags.empty?
+                puts "   [SKIP] Nenhum flag reconhecido no corpo para #{hash}."
+                success = true
+              else
+                raw = File.read(post_file)
+                fm_parts = raw.split(/^---\n/, 3)
+                if fm_parts.length >= 3
+                  fm = YAML.safe_load(fm_parts[1]) || {}
+                  flags.each { |k, v| fm[k] = v }
+                  new_content = "---\n#{YAML.dump(fm).sub(/^---\n/, '')}---\n#{fm_parts[2]}"
+                  File.write(post_file, new_content)
+                  puts "   [REBUILD] #{post_file} atualizado com: #{flags.inspect}"
+                  success = true
+                else
+                  puts "   [ERRO] Front matter inválido em #{post_file}"
+                end
+              end
+            end
 
           when 'files'
             path_args = parts[1..-1]

@@ -46,8 +46,27 @@ Também dou meus 2kb de opnião.
             </div>
             <hr class="post-list__divider" style="margin: 10px 0 35px 0;">
             {%- if site.posts.size > 0 -%}
+              {%- assign pinned_post = site.posts | where: "pin", true | first -%}
               <div class="posts-list">
+                {%- if pinned_post -%}
+                  {%- assign pinned_pv = site.data.previews[pinned_post.slug] -%}
+                  <article class="post-item post-item--pinned">
+                    <div class="post-content">
+                      {%- if pinned_pv -%}
+                        {{ pinned_post.content | remove: pinned_pv.url | markdownify }}
+                      {%- else -%}
+                        {{ pinned_post.content | markdownify }}
+                      {%- endif -%}
+                    </div>
+                    {%- assign pv = pinned_pv -%}
+                    {% include preview.html %}
+                    {% include post-footer.html item=pinned_post %}
+                    <hr class="post-list__divider">
+                  </article>
+                {%- endif -%}
                 {%- for post in paginator.posts -%}
+                  {%- if post.hide -%}{%- continue -%}{%- endif -%}
+                  {%- if pinned_post and post.url == pinned_post.url -%}{%- continue -%}{%- endif -%}
                   {% assign pv = site.data.previews[post.slug] %}
                   <article class="post-item">
                     <div class="post-content">

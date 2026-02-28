@@ -565,6 +565,8 @@ a.link-card.internal-ref {
 .comment-counter   { margin-left:   1px; }
 .view-counter      { margin-left:   2px; }
 .click-counter     { margin-left:   2px; }
+.pin-badge         { margin-left:   6px; display: inline-flex; align-items: center; color: #bd93f9; opacity: 0.8; }
+.pin-badge svg     { width: 13px; height: 13px; }
 
 /* click-counter: oculto enquanto não há nenhum click */
 .click-counter:has(.click-count:empty) { display: none; }

@@ -26,7 +26,9 @@
     <meta http-equiv="X-XSS-Protection" content="1;mode=block">
     <meta name="theme-color" content="#13121d">
     {%- assign current_hash = page.url | split: '/' | last | remove: '.html' -%}
-    {%- if page.url == "/" or page.layout == "post" -%}
+    {%- if page.hide -%}
+      <meta name="robots" content="noindex, nofollow">
+    {%- elsif page.url == "/" or page.layout == "post" -%}
       <meta name="robots" content="index, follow">
     {%- else -%}
       <meta name="robots" content="noindex, nofollow">
