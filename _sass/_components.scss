@@ -1227,13 +1227,15 @@ article.post {
    25. USER PROFILE PAGE
    ========================================================================== */
 
-// Avatar (usado em seção 1 e potencialmente em comentários)
 .profile-avatar {
   border-radius: 50%;
   border: 2px solid var(--link-color);
   box-shadow: 0 0 10px rgba(255, 121, 198, 0.3);
   flex-shrink: 0;
   image-rendering: pixelated;
+  object-fit: cover;
+  width: 80px;
+  height: 80px;
 }
 
 .profile-badge {
@@ -1246,46 +1248,46 @@ article.post {
   margin-left: 6px;
 }
 
-// Wrapper geral
+// Wrapper
 .ps {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 // Seção 1: header
 .ps-header {
   display: flex;
-  align-items: flex-start;
-  gap: 16px;
+  align-items: center;
+  gap: 12px;
 }
 
 .ps-header-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding-top: 4px;
+  gap: 1px;
 }
 
 .ps-name {
   font-size: 1.1em;
   color: var(--link-color);
   font-weight: bold;
+  line-height: 1.2;
 }
 
 .ps-meta {
-  font-size: 0.9em;
+  font-size: 0.85em;
+  line-height: 1.3;
 }
 
 .ps-social {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  font-size: 0.85em;
-  margin-top: 2px;
+  gap: 6px;
+  font-size: 0.83em;
 }
 
-// Duas colunas (seções 2 e 3)
+// Seção 2: duas colunas stats + heatmap
 .ps-two-col {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1303,7 +1305,6 @@ article.post {
   opacity: 0.6;
 }
 
-// Bloco de uso (seção 2, esquerda)
 .ps-stat-row {
   display: flex;
   gap: 16px;
@@ -1312,7 +1313,7 @@ article.post {
 .ps-stat {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
   flex: 1;
 }
 
@@ -1322,47 +1323,49 @@ article.post {
   font-weight: bold;
 }
 
-// Gráfico de barras por hora (seção 2, direita)
-.ps-barchart {
+// GitHub-style heatmap
+.gh-heatmap {
   display: flex;
   flex-direction: column;
+  gap: 4px;
+}
+
+.gh-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gh-lbl {
+  font-size: 0.68em;
+  width: 34px;
+  text-align: right;
+  flex-shrink: 0;
+  opacity: 0.55;
+}
+
+.gh-cells {
+  display: flex;
   gap: 3px;
-  width: 100%;
 }
 
-.ps-hbars {
-  display: flex;
-  align-items: flex-end;
-  gap: 2px;
-  height: 44px;
-}
-
-.ps-hbar {
-  flex: 1;
-  height: var(--h, 4%);
-  background: rgba(255, 121, 198, 0.45);
-  border-radius: 2px 2px 0 0;
-  min-height: 2px;
+.gh-cell {
+  width: 13px;
+  height: 13px;
+  border-radius: 2px;
   cursor: default;
-  transition: background 0.15s;
+  transition: transform 0.1s;
 
-  &:hover { background: rgba(255, 121, 198, 0.8); }
+  &:hover { transform: scale(1.35); }
 }
 
-.ps-hlabels {
-  display: flex;
-  gap: 2px;
-}
+.gh-lv0 { background: rgba(255, 121, 198, 0.07); border: 1px solid rgba(255, 121, 198, 0.18); }
+.gh-lv1 { background: rgba(255, 121, 198, 0.25); }
+.gh-lv2 { background: rgba(255, 121, 198, 0.45); }
+.gh-lv3 { background: rgba(255, 121, 198, 0.65); }
+.gh-lv4 { background: rgba(255, 121, 198, 0.85); }
 
-.ps-hlabel {
-  flex: 1;
-  text-align: center;
-  font-size: 0.6em;
-  color: rgba(197, 198, 208, 0.45);
-  white-space: nowrap;
-}
-
-// Lista de atividade recente (abaixo do gráfico)
+// Lista de atividade recente
 .profile-activity-item {
   padding: 3px 0;
   font-size: 0.82em;
@@ -1372,61 +1375,56 @@ article.post {
   &:last-child { border-bottom: none; }
 }
 
-// Seção 3: editar perfil
-.ps-field {
+// Seção 3: terminal de edição
+.ps-terminal {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ps-term-line {
   display: flex;
   align-items: center;
-  gap: 4px;
-  margin-top: 2px;
+  overflow: hidden;
   font-size: 0.88em;
-
-  .greeting-input {
-    flex: 1;
-    min-width: 0;
-  }
-}
-
-.ps-field-locked {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.ps-badge-public {
-  font-size: 0.72em;
-  color: var(--accent-cyan);
-  border: 1px solid rgba(139, 233, 253, 0.4);
-  padding: 1px 5px;
-  border-radius: 3px;
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
-.ps-badge-private {
-  font-size: 0.72em;
-  color: rgba(197, 198, 208, 0.55);
-  border: 1px solid rgba(197, 198, 208, 0.25);
-  padding: 1px 5px;
-  border-radius: 3px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.ps-save-status {
-  font-size: 0.85em;
-  margin-top: -4px;
-}
-
-// select dentro de ps-field
-.ps-field select.greeting-input {
+.ps-term-input {
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
   color: var(--text-color);
   font-family: inherit;
   font-size: inherit;
-  padding: 0 4px;
-  cursor: pointer;
-  option { background: var(--bg-color, #13121d); }
+  padding: 0 3px;
+  min-width: 0;
+  flex: 1;
+
+  &:focus { outline: none; border-bottom-color: var(--link-color); }
+  option  { background: var(--bg-color, #13121d); }
+}
+
+.ps-term-locked {
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+.ps-term-line.ps-term-saved {
+  .ps-term-input {
+    opacity: 0.45;
+    border-bottom-color: transparent;
+    cursor: default;
+    pointer-events: none;
+  }
+}
+
+.ps-tc-pub  { color: var(--accent-cyan); font-size: 0.8em; flex-shrink: 0; }
+.ps-tc-priv { color: rgba(197, 198, 208, 0.4); font-size: 0.8em; flex-shrink: 0; }
+
+.ps-save-status {
+  font-size: 0.85em;
+  margin-top: 2px;
 }
 
 .t-hr {
