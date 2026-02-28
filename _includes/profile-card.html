@@ -1,57 +1,123 @@
 <div class="ps" id="profile-card" hidden>
 
-  <div class="terminal-body">
-    <div class="ps-shell-line">
-      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">fsociety</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">whoami --stats</span>
+  
+<div class="terminal-box">
+  <div class="terminal-header">
+    <div class="terminal-controls">
+      <div class="win-btn btn-min" title="Minimize">−</div>
+      <div class="win-btn btn-close" title="Close">✕</div>
     </div>
+  </div>
+  <div class="terminal-body">
+    <div>
+      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">./footer.sh</span>
+    </div>
+    <div class="t-out">
 
-    <div class="ps-container">
-      <header class="ps-header-v2">
-        <div class="avatar-wrapper">
-          <img id="pc-avatar" class="profile-avatar" src="" alt="User Avatar">
-          <div class="avatar-status"></div>
-        </div>
-        <div class="ps-identity">
-          <h2 id="pc-name" class="ps-name"></h2>
-          <p id="pc-meta" class="ps-meta t-gray"></p>
-          <div id="pc-social" class="ps-social-tags"></div>
-        </div>
-      </header>
-
-      <section class="ps-dashboard">
-        <div class="ps-stat-card">
-          <span class="ps-label">VISITS</span>
-          <span class="ps-val" id="pc-visits">0</span>
-        </div>
-        <div class="ps-stat-card">
-          <span class="ps-label">UPTIME</span>
-          <span class="ps-val" id="pc-time">0m</span>
-        </div>
-        <div class="ps-stat-card">
-          <span class="ps-label">COMMENTS</span>
-          <span class="ps-val" id="pc-comments">0</span>
-        </div>
-        <div class="ps-stat-card">
-          <span class="ps-label">REPUTATION</span>
-          <span class="ps-val" id="pc-upvotes">0</span>
-        </div>
-      </section>
-
-      <section class="ps-activity">
-        <div id="pc-heatmap" class="gh-heatmap-v2"></div>
-        <div id="profile-activity-section" class="ps-log-entries"></div>
-      </section>
-
-      <footer id="pc-owner-zone" class="ps-config-zone" hidden>
-        <div class="config-divider">SYSTEM CONFIGURATION</div>
-        <div class="ps-terminal-grid">
-          <div class="ps-field">
-            <label>EMAIL</label>
-            <input type="email" id="pf-email" class="ps-term-input" placeholder="root@localhost">
-          </div>
-          </div>
-      </footer>
+  <!-- Seção 1: header -->
+  <div class="ps-header">
+    <img id="pc-avatar" class="profile-avatar" width="80" height="80" alt="">
+    <div class="ps-header-info">
+      <div class="ps-name" id="pc-name"></div>
+      <div class="ps-meta t-gray" id="pc-meta"></div>
+      <div class="ps-social" id="pc-social" hidden></div>
     </div>
   </div>
 
+  <!-- Seção 2: stats + heatmap -->
+  <div class="ps-two-col">
+    <div class="ps-block">
+      <div class="ps-stat-row">
+        <div class="ps-stat">
+          <span class="ps-val" id="pc-visits"></span>
+          <span class="t-gray"> visitas</span>
+        </div>
+        <div class="ps-stat">
+          <span class="ps-val" id="pc-time"></span>
+          <span class="t-gray"> no site</span>
+        </div>
+      </div>
+      <div class="ps-stat-row">
+        <div class="ps-stat">
+          <span class="ps-val" id="pc-comments"></span>
+          <span class="t-gray"> comentários</span>
+        </div>
+        <div class="ps-stat">
+          <span class="ps-val" id="pc-upvotes"></span>
+          <span class="t-gray"> upvotes</span>
+        </div>
+      </div>
+    </div>
+    <div class="ps-block">
+      <div id="pc-heatmap"><!-- células geradas pelo JS com os dados da API --></div>
+      <div id="profile-activity-section"></div>
+    </div>
+  </div>
+
+  <!-- Seção 3: editar perfil (apenas dono) -->
+  <div id="pc-owner-zone" hidden>
+    <hr class="t-hr">
+    <div class="ps-terminal">
+
+      <div class="ps-term-line" id="tl-email">
+        <span class="pc-prompt"></span>
+        <span class="t-cmd">export EMAIL=</span>
+        <input type="email" id="pf-email" class="ps-term-input"
+               placeholder="seu@email.com" maxlength="254"
+               autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="ps-term-line" id="tl-gender">
+        <span class="pc-prompt"></span>
+        <span class="t-cmd">export GENDER=</span>
+        <select id="pf-gender" class="ps-term-input">
+          <option value="">--</option>
+          <option value="m">m</option>
+          <option value="f">f</option>
+          <option value="nb">nb</option>
+        </select>
+      </div>
+
+      <div class="ps-term-line" id="tl-instagram">
+        <span class="pc-prompt"></span>
+        <span class="t-cmd">export INSTAGRAM=</span>
+        <input type="text" id="pf-instagram" class="ps-term-input"
+               placeholder="handle" maxlength="30"
+               autocomplete="off" spellcheck="false">
+        <span class="ps-tc-pub">&nbsp;# público</span>
+      </div>
+
+      <div class="ps-term-line" id="tl-twitter">
+        <span class="pc-prompt"></span>
+        <span class="t-cmd">export TWITTER=</span>
+        <input type="text" id="pf-twitter" class="ps-term-input"
+               placeholder="handle" maxlength="15"
+               autocomplete="off" spellcheck="false">
+        <span class="ps-tc-pub">&nbsp;# público</span>
+      </div>
+
+      <div class="ps-term-line" id="tl-whatsapp">
+        <span class="pc-prompt"></span>
+        <span class="t-cmd">export NUMERO=</span>
+        <input type="tel" id="pf-whatsapp" class="ps-term-input"
+               placeholder="+55 11 99999-9999" maxlength="20"
+               autocomplete="off" spellcheck="false">
+        <span class="ps-tc-priv">&nbsp;# privado</span>
+      </div>
+
+      <div class="ps-term-line ps-term-locked">
+        <span class="pc-prompt"></span>
+        <span class="t-gray">LOCATION=</span>
+        <span class="t-gray" id="pc-location-val"></span>
+        <span class="ps-tc-priv">&nbsp;# auto-detect</span>
+      </div>
+
+    </div>
+    <div id="profile-save-status" class="t-gray ps-save-status"></div>
+  </div>
+
+</div>
+    </div>
+  </div>
+  
 </div>
