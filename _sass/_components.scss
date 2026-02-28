@@ -1254,6 +1254,7 @@ article.post {
   flex-direction: column;
   gap: 12px;
 }
+.ps[hidden] { display: none; }
 
 // Seção 1: header
 .ps-header {
