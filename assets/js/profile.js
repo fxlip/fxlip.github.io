@@ -25,6 +25,11 @@
     return new Date(iso).toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' });
   }
 
+  function formatDateFull(iso) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
   function formatTime(secs) {
     if (!secs) return '0min';
     var h = Math.floor(secs / 3600);
@@ -37,6 +42,27 @@
     return 'https://www.gravatar.com/avatar/'
       + (hash || '00000000000000000000000000000000')
       + '?s=' + (size || 80) + '&d=identicon';
+  }
+
+  // ── Detecção de dispositivo/OS ─────────────────────────────────────────────
+
+  function detectDevice() {
+    var ua = navigator.userAgent || '';
+    var pf = navigator.platform  || '';
+
+    // Mobile — ordem importa (iPad pode ter "Mac" no UA em iPadOS)
+    if (/iPhone/i.test(ua))                      return 'iPhone · iOS';
+    if (/iPad/i.test(ua) || (/Mac/i.test(ua) && navigator.maxTouchPoints > 1))
+                                                  return 'iPad · iOS';
+    if (/Android/i.test(ua) && /Mobile/i.test(ua)) return 'Android · mobile';
+    if (/Android/i.test(ua))                      return 'Android · tablet';
+
+    // Desktop OS
+    if (/Windows/i.test(ua) || /Win/i.test(pf))  return 'Windows';
+    if (/Mac OS X/i.test(ua) || /Mac/i.test(pf))  return 'macOS';
+    if (/Linux/i.test(ua)   || /Linux/i.test(pf)) return 'Linux';
+
+    return 'desconhecido';
   }
 
   // ── Badges ────────────────────────────────────────────────────────────────
@@ -88,7 +114,6 @@
     );
   }
 
-  // SVG da estrela para o badge de rep (totem)
   var STAR_SVG = '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" '
     + 'stroke-width="1" stroke-linecap="round" stroke-linejoin="round">'
     + '<polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>'
@@ -97,7 +122,6 @@
   function renderBadgesHtml(s) {
     var parts = [];
 
-    // Rep totem (sempre primeiro)
     var rep = computeReputation(s);
     if (rep > 0) {
       parts.push(
@@ -109,7 +133,6 @@
       );
     }
 
-    // Badges tradicionais como totens
     BADGE_DEFS.forEach(function(b) {
       if (b.test(s)) {
         parts.push(
@@ -143,24 +166,17 @@
     var btns = picker.querySelectorAll('.ps-gender-btn');
     var selected = currentGender || null;
 
-    console.log('[profile] gender from API:', JSON.stringify(currentGender), '→ selected:', selected);
-
-    // Aplica estado inicial sem animação, antes de revelar o picker
     picker.classList.add('ps-gender-no-anim');
 
     if (selected) {
       btns.forEach(function(btn) {
-        if (btn.dataset.value === selected) {
-          btn.classList.add('selected');
-          console.log('[profile] gender btn marcado:', btn.dataset.value);
-        }
+        if (btn.dataset.value === selected) btn.classList.add('selected');
       });
       picker.classList.add('ps-gender-collapsed');
     }
 
     picker.hidden = false;
 
-    // Reativa transições após o primeiro render
     requestAnimationFrame(function() {
       requestAnimationFrame(function() {
         picker.classList.remove('ps-gender-no-anim');
@@ -172,7 +188,6 @@
         var val = btn.dataset.value;
 
         if (selected === val) {
-          // Clicou no selecionado → expande os outros e desseleciona
           picker.classList.remove('ps-gender-collapsed');
           btn.classList.remove('selected');
           btn.classList.add('deselecting');
@@ -182,7 +197,6 @@
           return;
         }
 
-        // Desselecionar anterior (sem colapsar ainda)
         btns.forEach(function(b) {
           if (b.classList.contains('selected')) {
             b.classList.remove('selected');
@@ -191,7 +205,6 @@
           }
         });
 
-        // Selecionar novo e colapsar os outros
         requestAnimationFrame(function() {
           btn.classList.add('selected');
           selected = val;
@@ -215,7 +228,7 @@
       .catch(function(err) { console.warn('[profile] gender save failed', err); });
   }
 
-  // ── Social icons state ────────────────────────────────────────────────────
+  // ── Social icons — lista com info à direita ───────────────────────────────
 
   function setupSocialIcons(data, isMine) {
     var socials = document.getElementById('pc-social');
@@ -229,29 +242,35 @@
     };
 
     socials.querySelectorAll('.ps-social-btn').forEach(function(btn) {
-      var svc = btn.dataset.service;
+      var svc  = btn.dataset.service;
       var conf = serviceMap[svc];
       if (!conf) return;
 
-      var val = data[conf.key];
+      var val      = data[conf.key];
       var hasValue = !!(val && val.trim && val.trim());
 
       btn.dataset.active = hasValue ? 'true' : 'false';
 
-      // Se owner, adiciona classe para tooltip "conectar"
-      if (isMine) {
-        btn.classList.add('ps-social-owner');
+      // Preenche o span de info (lado direito)
+      var infoEl = btn.querySelector('.ps-social-info');
+      if (infoEl) {
+        if (hasValue) {
+          infoEl.textContent = (svc === 'email') ? val : '@' + val;
+        } else if (isMine) {
+          infoEl.textContent = 'conectar';
+        } else {
+          infoEl.textContent = '—';
+        }
       }
 
-      // Click: abre link se conectado, ou redireciona para OAuth se owner
+      if (isMine) btn.classList.add('ps-social-owner');
+
       btn.addEventListener('click', function() {
         if (hasValue && conf.url) {
           window.open(conf.url + encodeURIComponent(val), '_blank', 'noopener');
         } else if (hasValue && svc === 'email') {
           window.location.href = 'mailto:' + val;
         } else if (isMine && !hasValue) {
-          // Aqui entraria o redirect para OAuth
-          // window.location.href = '/auth/' + svc + '/connect';
           console.log('[profile] OAuth connect →', svc);
         }
       });
@@ -290,7 +309,7 @@
     }
 
     // Localidade + desde
-    document.getElementById('pc-meta').textContent = geo;
+    document.getElementById('pc-meta').textContent  = geo;
     document.getElementById('pc-since').textContent = 'desde ' + since;
 
     // Stats
@@ -315,34 +334,75 @@
     setupSocialIcons(data, isMine);
 
     // Gender picker (apenas owner)
-    if (isMine) {
-      setupGenderPicker(username, fingerprint, data.gender || '');
-    }
+    if (isMine) setupGenderPicker(username, fingerprint, data.gender || '');
 
     // Troca estado: esconde terminal de 404, exibe perfil
     document.getElementById('profile-terminal').hidden = true;
     document.getElementById('profile-card').hidden     = false;
     document.title = '@' + username;
 
-    // Atividade recente (async)
+    // ── Bloco stat (síncrono) ──────────────────────────────────────────────
+    var section = document.getElementById('profile-activity-section');
+    if (section) {
+      var device    = detectDevice();
+      var fpShort   = fingerprint ? fingerprint.substring(0, 16) + '…' : '—';
+      var firstFull = formatDateFull(data.first_seen);
+
+      var statCmd = '<div class="pal-cmd">'
+        + '<span class="t-user">fxlip</span>'
+        + '<span class="t-gray">@</span>'
+        + '<span class="t-host">www</span>'
+        + '<span class="t-gray">:</span>'
+        + '<span class="t-path">~</span>'
+        + '<span class="t-gray">$</span>'
+        + ' <span class="t-cmd">stat /home/' + esc(username) + '</span>'
+        + '</div>';
+
+      var sysEntries = [
+        ['first_seen',   firstFull],
+        ['fingerprint',  fpShort],
+        ['platform',     device],
+      ].map(function(e) {
+        return '<div class="pal-sys-entry">'
+          + '<span class="pal-sys-key t-gray">' + esc(e[0]) + '</span>'
+          + '<span class="pal-sys-sep t-gray">·</span>'
+          + '<span class="pal-sys-val">'        + esc(e[1]) + '</span>'
+          + '</div>';
+      }).join('');
+
+      section.innerHTML = '<div class="profile-activity-log" id="pc-log">'
+        + statCmd + sysEntries + '</div>';
+    }
+
+    // ── Atividade recente (async) ──────────────────────────────────────────
     if (WORKER_URL) {
       fetch(WORKER_URL + '/api/user/' + encodeURIComponent(username) + '/activity')
         .then(function(r) { return r.json(); })
         .then(function(actData) {
-          var section = document.getElementById('profile-activity-section');
-          if (!section) return;
+          var log  = document.getElementById('pc-log');
+          if (!log) return;
           var acts = (actData.activities || []).slice(0, 10);
-          if (!acts.length) { section.innerHTML = ''; return; }
+          if (!acts.length) return;
 
           var typeIcon  = { comment: '›', like: '♥', upvote: '▲' };
           var typeLabel = { comment: 'comentou', like: 'curtiu', upvote: 'upvotou' };
 
+          var tailCmd = '<div class="pal-cmd" style="margin-top:8px">'
+            + '<span class="t-user">fxlip</span>'
+            + '<span class="t-gray">@</span>'
+            + '<span class="t-host">www</span>'
+            + '<span class="t-gray">:</span>'
+            + '<span class="t-path">~</span>'
+            + '<span class="t-gray">$</span>'
+            + ' <span class="t-cmd">tail /home/' + esc(username) + '/action.log</span>'
+            + '</div>';
+
           var items = acts.map(function(a) {
-            var d       = a.created_at ? new Date(a.created_at) : null;
-            var ts      = d ? d.toLocaleString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }).replace(',', '') : '--';
-            var icon    = typeIcon[a.type]  || '·';
-            var verb    = typeLabel[a.type] || a.type;
-            var quote   = a.content
+            var d     = a.created_at ? new Date(a.created_at) : null;
+            var ts    = d ? d.toLocaleString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }).replace(',', '') : '--';
+            var icon  = typeIcon[a.type]  || '·';
+            var verb  = typeLabel[a.type] || a.type;
+            var quote = a.content
               ? ' <span class="pal-quote">"' + esc(a.content.substring(0, 55)) + (a.content.length > 55 ? '…' : '') + '"</span>'
               : '';
 
@@ -357,18 +417,7 @@
               + '</div>';
           }).join('');
 
-          // Linha de comando do terminal
-          var cmd = '<div class="pal-cmd">'
-            + '<span class="t-user">fxlip</span>'
-            + '<span class="t-gray">@</span>'
-            + '<span class="t-host">www</span>'
-            + '<span class="t-gray">:</span>'
-            + '<span class="t-path">~</span>'
-            + '<span class="t-gray">$</span>'
-            + ' <span class="t-cmd">tail /home/' + esc(username) + '/action.log</span>'
-            + '</div>';
-
-          section.innerHTML = '<div class="profile-activity-log">' + cmd + items + '</div>';
+          log.insertAdjacentHTML('beforeend', tailCmd + items);
         }).catch(function() {});
     }
   }
