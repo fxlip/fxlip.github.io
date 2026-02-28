@@ -1224,29 +1224,10 @@ article.post {
 }
 
 /* ==========================================================================
-   25. USER PROFILE PAGE
+   25. USER PROFILE PAGE — v2 Minimal
+   Redesign: avatar ring, gender icons, OAuth social buttons, badge pills.
+   Removed: heatmap, input fields, two-col layout.
    ========================================================================== */
-
-.profile-avatar {
-  border-radius: 50%;
-  border: 2px solid var(--link-color);
-  box-shadow: 0 0 10px rgba(255, 121, 198, 0.3);
-  flex-shrink: 0;
-  image-rendering: pixelated;
-  object-fit: cover;
-  width: 80px;
-  height: 80px;
-}
-
-.profile-badge {
-  font-size: 0.75em;
-  color: var(--accent-cyan);
-  border: 1px solid var(--accent-cyan);
-  padding: 1px 5px;
-  border-radius: 3px;
-  vertical-align: middle;
-  margin-left: 6px;
-}
 
 // Wrapper
 .ps {
@@ -1256,138 +1237,425 @@ article.post {
 }
 .ps[hidden] { display: none; }
 
-// Badges de usuário
-.badge {
-  display: inline-block;
-  font-size: 0.68em;
-  padding: 1px 5px;
-  border-radius: 3px;
-  border: 1px solid;
-  font-family: monospace;
-  vertical-align: middle;
-  margin: 1px 2px;
-  cursor: default;
-  white-space: nowrap;
-}
-.ps-badges { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px; min-height: 0; }
-.badge-popular  { color: var(--link-color);       border-color: var(--link-color); }
-.badge-frequente{ color: var(--accent-cyan);       border-color: var(--accent-cyan); }
-.badge-engajado { color: var(--green);             border-color: var(--green); }
-.badge-curtidor { color: var(--link-hover-color);  border-color: var(--link-hover-color); }
-.badge-veterano { color: var(--yellow);            border-color: var(--yellow); }
-.badge-rep      { color: var(--base-color);        border-color: var(--muted-color); }
+// ── Identity ──────────────────────────────────────────────────────────────
 
-// Seção 1: header
-.ps-header {
+.ps-identity {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
-.ps-header-info {
+.ps-avatar-wrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.ps-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  image-rendering: pixelated;
+  background: var(--card-bg, #282a36);
+  position: relative;
+  z-index: 1;
+}
+
+// Ring animado estilo Instagram Stories
+.ps-avatar-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+  background:
+    conic-gradient(
+      var(--link-color),
+      var(--link-hover-color),
+      var(--accent-cyan),
+      var(--link-color)
+    ) border-box;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  // Animação: loading lento → aceleração → fixo
+  clip-path: polygon(50% 50%, 50% 0%, 50% 0%);
+  animation: ps-ring-load 1.8s cubic-bezier(.22,.68,.36,1) forwards;
+}
+
+@keyframes ps-ring-load {
+  0%   { clip-path: polygon(50% 50%, 50% 0%, 50% 0%);
+         transform: rotate(0deg); }
+  25%  { clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 50%);
+         transform: rotate(45deg); }
+  35%  { clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 50%);
+         transform: rotate(55deg); }
+  70%  { clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%);
+         transform: rotate(300deg); }
+  100% { clip-path: none;
+         transform: rotate(360deg); }
+}
+
+.ps-id-stack {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 3px;
+}
+
+.ps-handle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .ps-name {
-  font-size: 1.1em;
-  color: var(--link-color);
-  font-weight: bold;
+  color: var(--accent-cyan);
+  font-size: 1.15em;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   line-height: 1.2;
 }
 
-.ps-meta {
+.profile-badge {
+  font-size: 0.7em;
+  color: var(--link-color);
+  border: 1px solid rgba(255, 121, 198, 0.4);
+  padding: 1px 5px;
+  border-radius: 3px;
+  vertical-align: middle;
+  margin-left: 2px;
+  line-height: 1.3;
+}
+
+.ps-location {
   font-size: 0.85em;
   line-height: 1.3;
 }
 
-.ps-social {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  font-size: 0.83em;
-}
-
-// Seção 2: duas colunas stats + heatmap
-.ps-two-col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.ps-block {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.ps-block-title {
-  font-size: 0.8em;
+.ps-since {
+  font-size: 0.78em;
   opacity: 0.6;
 }
 
-.ps-stat-row {
+// ── Actions bar (gender + socials) ──────────────────────────────────────
+
+.ps-actions-bar {
   display: flex;
-  gap: 16px;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.ps-divider {
+  width: 1px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+// ── Gender picker ──────────────────────────────────────────────────────
+
+.ps-gender-picker {
+  display: flex;
+  gap: 6px;
+}
+
+.ps-gender-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--muted-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.3s cubic-bezier(.34, 1.56, .64, 1);
+  position: relative;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    transition: transform 0.3s cubic-bezier(.34, 1.56, .64, 1);
+  }
+
+  &:hover {
+    color: var(--text-color);
+    border-color: var(--muted-color);
+    transform: scale(1.08);
+  }
+
+  &:active {
+    transform: scale(0.92);
+  }
+
+  // Selecionado
+  &.selected {
+    color: var(--link-hover-color);
+    border-color: var(--link-hover-color);
+    background: rgba(189, 147, 249, 0.1);
+    box-shadow: 0 0 12px rgba(189, 147, 249, 0.2);
+    animation: ps-gender-pop 0.4s cubic-bezier(.34, 1.56, .64, 1);
+
+    svg { transform: scale(1.15); }
+
+    // Ring pulse
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1px solid var(--link-hover-color);
+      opacity: 0;
+      animation: ps-gender-ring 1.2s ease-out;
+    }
+  }
+
+  // Desseleção
+  &.deselecting {
+    animation: ps-gender-shrink 0.25s ease;
+  }
+}
+
+@keyframes ps-gender-pop {
+  0%   { transform: scale(0.7); }
+  50%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+@keyframes ps-gender-ring {
+  0%   { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes ps-gender-shrink {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(0.85); }
+  100% { transform: scale(1); }
+}
+
+// ── Social icons ──────────────────────────────────────────────────────
+
+.ps-socials {
+  display: flex;
+  gap: 10px;
+}
+
+.ps-social-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--muted-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.25s ease;
+  position: relative;
+
+  svg { width: 16px; height: 16px; }
+
+  &:hover {
+    border-color: var(--muted-color);
+    color: var(--text-color);
+    background: rgba(255, 255, 255, 0.04);
+    transform: translateY(-1px);
+  }
+
+  // Conectado (ativo)
+  &[data-active="true"] {
+    color: var(--link-color);
+    border-color: var(--link-color);
+    background: rgba(255, 121, 198, 0.08);
+    box-shadow: 0 0 10px rgba(255, 121, 198, 0.15);
+    animation: ps-social-connect 0.5s cubic-bezier(.34, 1.56, .64, 1);
+
+    &:hover {
+      color: var(--link-hover-color);
+      border-color: var(--link-hover-color);
+      background: rgba(189, 147, 249, 0.1);
+      box-shadow: 0 0 12px rgba(189, 147, 249, 0.2);
+    }
+
+    // Check badge
+    &::after {
+      content: '✓';
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 12px;
+      height: 12px;
+      font-size: 7px;
+      background: var(--link-color);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+  }
+
+  // Tooltip "conectar" (apenas owner, inativo)
+  &[data-active="false"].ps-social-owner::after {
+    content: 'conectar';
+    position: absolute;
+    bottom: -22px;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    font-size: 9px;
+    color: var(--muted-color);
+    white-space: nowrap;
+    opacity: 0;
+    transition: all 0.2s ease;
+    pointer-events: none;
+  }
+
+  &[data-active="false"].ps-social-owner:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes ps-social-connect {
+  0%   { transform: scale(0.6) rotate(-10deg); opacity: 0.5; }
+  60%  { transform: scale(1.15) rotate(2deg); }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+// ── Stats ──────────────────────────────────────────────────────────────
+
+.ps-stats {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .ps-stat {
   display: flex;
-  flex-direction: column;
-  gap: 1px;
-  flex: 1;
+  align-items: baseline;
+  gap: 4px;
 }
 
 .ps-val {
   color: var(--accent-cyan);
-  font-size: 1.15em;
-  font-weight: bold;
+  font-size: 1.05em;
+  font-weight: 700;
 }
 
-// GitHub-style heatmap
-.gh-heatmap {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.ps-stat-sep {
+  opacity: 0.4;
 }
 
-.gh-row {
+// ── Badges ──────────────────────────────────────────────────────────────
+
+.ps-badges {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   gap: 6px;
+  min-height: 0;
 }
 
-.gh-lbl {
-  font-size: 0.68em;
-  width: 34px;
-  text-align: right;
-  flex-shrink: 0;
-  opacity: 0.55;
-}
-
-.gh-cells {
-  display: flex;
-  gap: 3px;
-}
-
-.gh-cell {
-  width: 13px;
-  height: 13px;
-  border-radius: 2px;
+// Badge pill base
+.ps-badge-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px 4px 7px;
+  border-radius: 20px;
+  font-size: 0.75em;
+  color: var(--text-color);
+  position: relative;
+  overflow: hidden;
   cursor: default;
-  transition: transform 0.1s;
+  white-space: nowrap;
 
-  &:hover { transform: scale(1.35); }
+  .ps-badge-icon {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ps-badge-label {
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.03em;
+  }
 }
 
-.gh-lv0 { background: rgba(255, 121, 198, 0.07); border: 1px solid rgba(255, 121, 198, 0.18); }
-.gh-lv1 { background: rgba(255, 121, 198, 0.25); }
-.gh-lv2 { background: rgba(255, 121, 198, 0.45); }
-.gh-lv3 { background: rgba(255, 121, 198, 0.65); }
-.gh-lv4 { background: rgba(255, 121, 198, 0.85); }
+// Rep badge (primeiro badge)
+.ps-badge-item[data-tier="rep"] {
+  background: linear-gradient(
+    135deg,
+    rgba(189, 147, 249, 0.12) 0%,
+    rgba(255, 121, 198, 0.12) 100%
+  );
+  border: 1px solid rgba(189, 147, 249, 0.3);
+  box-shadow: 0 0 16px rgba(189, 147, 249, 0.08);
 
-// Lista de atividade recente
+  .ps-badge-icon {
+    color: var(--link-hover-color);
+    filter: drop-shadow(0 0 3px rgba(189, 147, 249, 0.4));
+    animation: ps-badge-glow 2.5s ease-in-out infinite;
+  }
+
+  .ps-badge-label strong {
+    color: var(--link-hover-color);
+    font-weight: 700;
+  }
+
+  // Shimmer rotacional
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      transparent 0deg,
+      rgba(189, 147, 249, 0.06) 60deg,
+      transparent 120deg
+    );
+    animation: ps-badge-shimmer 3s linear infinite;
+  }
+}
+
+// Tier badges tradicionais (mantém compatibilidade)
+.ps-badge-item[data-tier="popular"]   { border: 1px solid var(--link-color);      color: var(--link-color); }
+.ps-badge-item[data-tier="frequente"] { border: 1px solid var(--accent-cyan);      color: var(--accent-cyan); }
+.ps-badge-item[data-tier="engajado"]  { border: 1px solid var(--green);            color: var(--green); }
+.ps-badge-item[data-tier="curtidor"]  { border: 1px solid var(--link-hover-color); color: var(--link-hover-color); }
+.ps-badge-item[data-tier="veterano"]  { border: 1px solid var(--yellow);           color: var(--yellow); }
+
+@keyframes ps-badge-glow {
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(189, 147, 249, 0.3)); }
+  50%      { filter: drop-shadow(0 0 8px rgba(189, 147, 249, 0.6)); }
+}
+
+@keyframes ps-badge-shimmer {
+  to { transform: rotate(360deg); }
+}
+
+// ── Atividade recente ──────────────────────────────────────────────────
+
 .profile-activity-item {
   padding: 3px 0;
   font-size: 0.82em;
@@ -1397,56 +1665,12 @@ article.post {
   &:last-child { border-bottom: none; }
 }
 
-// Seção 3: terminal de edição
-.ps-terminal {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.ps-term-line {
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  font-size: 14px;
-  white-space: nowrap;
-}
-
-.ps-term-input {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-  color: var(--text-color);
-  font-family: inherit;
-  font-size: inherit;
-  padding: 0 3px;
-  min-width: 0;
-  flex: 1;
-
-  &:focus { outline: none; border-bottom-color: var(--link-color); }
-  option  { background: var(--bg-color, #13121d); }
-}
-
-.ps-term-locked {
-  opacity: 0.38;
-  pointer-events: none;
-}
-
-.ps-term-line.ps-term-saved {
-  .ps-term-input {
-    opacity: 0.45;
-    border-bottom-color: transparent;
-    cursor: default;
-    pointer-events: none;
-  }
-}
-
-.ps-tc-pub  { color: var(--accent-cyan); font-size: 0.8em; flex-shrink: 0; }
-.ps-tc-priv { color: rgba(197, 198, 208, 0.4); font-size: 0.8em; flex-shrink: 0; }
+// ── Save status (para PATCH do gender) ──
 
 .ps-save-status {
-  font-size: 0.85em;
+  font-size: 0.8em;
   margin-top: 2px;
+  min-height: 0;
 }
 
 .t-hr {
@@ -1455,7 +1679,7 @@ article.post {
   margin: 4px 0;
 }
 
-// Menções de perfil de usuário (distinto de links internos)
+// Menções de perfil de usuário
 .mention-link.profile-mention {
   color: var(--accent-purple) !important;
 
@@ -1465,74 +1689,33 @@ article.post {
   }
 }
 
+// ── Responsive ──────────────────────────────────────────────────────────
+
 @media (max-width: 540px) {
-  .ps-two-col {
-    grid-template-columns: 1fr;
+  .ps-identity {
+    gap: 12px;
   }
 
-  .ps-header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  .ps-avatar-wrap {
+    width: 64px;
+    height: 64px;
   }
 
-  .ps-social {
-    justify-content: center;
+  .ps-avatar {
+    width: 64px;
+    height: 64px;
   }
-}
 
-/* Grid de Alta Densidade */
-.ps-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 10px;
-}
+  .ps-name {
+    font-size: 1em;
+  }
 
-/* Header Estilo "ID Card" */
-.ps-header-v2 {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  padding-bottom: 15px;
-}
+  .ps-stats {
+    gap: 6px;
+    font-size: 0.9em;
+  }
 
-/* Stat Cards: Estilo Dashboard Militar */
-.ps-dashboard {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 10px;
-}
-
-.ps-stat-card {
-  background: rgba(0, 0, 0, 0.2);
-  border-left: 3px solid var(--accent-cyan);
-  padding: 8px 12px;
-  display: flex;
-  flex-direction: column;
-}
-
-.ps-label {
-  font-size: 10px;
-  color: var(--muted-color);
-  letter-spacing: 1px;
-}
-
-/* Terminal Inputs */
-.ps-terminal-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px 20px;
-}
-
-.ps-field {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  
-  label { color: var(--link-hover-color); width: 80px; }
-  input { flex: 1; border-bottom: 1px dashed #444; }
+  .ps-actions-bar {
+    gap: 10px;
+  }
 }

@@ -43,29 +43,29 @@
 
   var BADGE_DEFS = [
     {
-      id: 'popular', label: 'popular',
+      id: 'popular', label: 'popular', icon: '★',
       title: '24h+ no site · 10+ visitas · 1+ comentário · 10+ upvotes',
       test: function(s) {
         return s.total_time_spent >= 86400 && s.visits >= 10 && s.comments >= 1 && s.upvotes >= 10;
       }
     },
     {
-      id: 'frequente', label: 'frequente',
+      id: 'frequente', label: 'frequente', icon: '↻',
       title: '50+ visitas',
       test: function(s) { return s.visits >= 50; }
     },
     {
-      id: 'engajado', label: 'engajado',
+      id: 'engajado', label: 'engajado', icon: '>',
       title: '5+ comentários',
       test: function(s) { return s.comments >= 5; }
     },
     {
-      id: 'curtidor', label: 'curtidor',
+      id: 'curtidor', label: 'curtidor', icon: '♥',
       title: '20+ upvotes dados',
       test: function(s) { return s.upvotes >= 20; }
     },
     {
-      id: 'veterano', label: 'veterano',
+      id: 'veterano', label: 'veterano', icon: '⌛',
       title: 'membro há 90+ dias',
       test: function(s) {
         if (!s.first_seen) return false;
@@ -83,18 +83,38 @@
     );
   }
 
+  // SVG da estrela para o badge de rep
+  var STAR_SVG = '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+    + 'stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">'
+    + '<polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>'
+    + '</svg>';
+
   function renderBadgesHtml(s) {
     var parts = [];
-    BADGE_DEFS.forEach(function(b) {
-      if (b.test(s)) {
-        parts.push('<span class="badge badge-' + b.id + '" title="' + b.title + '">' + b.label + '</span>');
-      }
-    });
+
+    // Rep badge primeiro (badge pill com animação)
     var rep = computeReputation(s);
     if (rep > 0) {
-      parts.push('<span class="badge badge-rep" title="reputação: visitas + tempo + interações">rep ' + rep + '</span>');
+      parts.push(
+        '<div class="ps-badge-item" data-tier="rep">'
+        + STAR_SVG
+        + '<span class="ps-badge-label">rep <strong>' + rep + '</strong></span>'
+        + '</div>'
+      );
     }
-    return parts.join(' ');
+
+    // Badges tradicionais como pills
+    BADGE_DEFS.forEach(function(b) {
+      if (b.test(s)) {
+        parts.push(
+          '<div class="ps-badge-item" data-tier="' + b.id + '" title="' + b.title + '">'
+          + '<span class="ps-badge-label">' + b.label + '</span>'
+          + '</div>'
+        );
+      }
+    });
+
+    return parts.join('');
   }
 
   // ── 404 real ──────────────────────────────────────────────────────────────
@@ -107,29 +127,113 @@
       + 'Voltar pro <a href=\'/\' class=\'mention-link\'>@feed</a>?';
   }
 
-  // ── Heatmap estilo GitHub ──────────────────────────────────────────────────
+  // ── Gender picker ─────────────────────────────────────────────────────────
 
-  function renderHeatmap(container, clusterJson) {
-    var cluster  = {};
-    try { cluster = JSON.parse(clusterJson || '{}'); } catch (_) {}
-    var hourData = cluster.hour || {};
-    var vals     = Object.values(hourData).map(Number);
-    var maxVal   = vals.length ? Math.max.apply(null, vals) : 1;
-    if (maxVal < 1) maxVal = 1;
+  function setupGenderPicker(username, fingerprint, currentGender) {
+    var picker = document.getElementById('pf-gender-picker');
+    var divider = document.getElementById('pc-divider');
+    if (!picker) return;
 
-    var periods = [[0,1,2,3,4,5],[6,7,8,9,10,11],[12,13,14,15,16,17],[18,19,20,21,22,23]];
-    var plabels = ['00–05','06–11','12–17','18–23'];
+    picker.hidden = false;
+    divider.hidden = false;
 
-    container.innerHTML = periods.map(function (hours, i) {
-      var cells = hours.map(function (h) {
-        var n  = hourData[String(h)] || 0;
-        var lv = n === 0 ? 0 : n <= maxVal * 0.25 ? 1 : n <= maxVal * 0.5 ? 2 : n <= maxVal * 0.75 ? 3 : 4;
-        return '<span class="gh-cell gh-lv' + lv + '" title="'
-          + (h < 10 ? '0' : '') + h + 'h: ' + n + '"></span>';
-      }).join('');
-      return '<div class="gh-row"><span class="gh-lbl t-gray">' + plabels[i]
-        + '</span><div class="gh-cells">' + cells + '</div></div>';
-    }).join('');
+    var btns = picker.querySelectorAll('.ps-gender-btn');
+    var selected = currentGender || null;
+
+    // Marca o gênero atual
+    if (selected) {
+      btns.forEach(function(btn) {
+        if (btn.dataset.value === selected) btn.classList.add('selected');
+      });
+    }
+
+    btns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var val = btn.dataset.value;
+
+        if (selected === val) {
+          // Desselecionar
+          btn.classList.remove('selected');
+          btn.classList.add('deselecting');
+          setTimeout(function() { btn.classList.remove('deselecting'); }, 250);
+          selected = null;
+          saveGender(username, fingerprint, '');
+          return;
+        }
+
+        // Desselecionar anterior
+        btns.forEach(function(b) {
+          if (b.classList.contains('selected')) {
+            b.classList.remove('selected');
+            b.classList.add('deselecting');
+            setTimeout(function() { b.classList.remove('deselecting'); }, 250);
+          }
+        });
+
+        // Selecionar novo
+        requestAnimationFrame(function() {
+          btn.classList.add('selected');
+          selected = val;
+          saveGender(username, fingerprint, val);
+        });
+      });
+    });
+  }
+
+  function saveGender(username, fingerprint, gender) {
+    if (!WORKER_URL) return;
+    fetch(WORKER_URL + '/api/profile', {
+      method:  'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ fingerprint: fingerprint, gender: gender }),
+    }).then(function(r) { return r.json(); })
+      .then(function(res) {
+        if (!res.ok) console.warn('[profile] gender save error:', res.error);
+      })
+      .catch(function(err) { console.warn('[profile] gender save failed', err); });
+  }
+
+  // ── Social icons state ────────────────────────────────────────────────────
+
+  function setupSocialIcons(data, isMine) {
+    var socials = document.getElementById('pc-social');
+    if (!socials) return;
+
+    var serviceMap = {
+      email:     { key: 'email',     url: null },
+      github:    { key: 'github',    url: 'https://github.com/' },
+      instagram: { key: 'instagram', url: 'https://instagram.com/' },
+      twitter:   { key: 'twitter',   url: 'https://x.com/' },
+    };
+
+    socials.querySelectorAll('.ps-social-btn').forEach(function(btn) {
+      var svc = btn.dataset.service;
+      var conf = serviceMap[svc];
+      if (!conf) return;
+
+      var val = data[conf.key];
+      var hasValue = !!(val && val.trim && val.trim());
+
+      btn.dataset.active = hasValue ? 'true' : 'false';
+
+      // Se owner, adiciona classe para tooltip "conectar"
+      if (isMine) {
+        btn.classList.add('ps-social-owner');
+      }
+
+      // Click: abre link se conectado, ou redireciona para OAuth se owner
+      btn.addEventListener('click', function() {
+        if (hasValue && conf.url) {
+          window.open(conf.url + encodeURIComponent(val), '_blank', 'noopener');
+        } else if (hasValue && svc === 'email') {
+          window.location.href = 'mailto:' + val;
+        } else if (isMine && !hasValue) {
+          // Aqui entraria o redirect para OAuth
+          // window.location.href = '/auth/' + svc + '/connect';
+          console.log('[profile] OAuth connect →', svc);
+        }
+      });
+    });
   }
 
   // ── Popula o perfil no DOM ────────────────────────────────────────────────
@@ -147,25 +251,13 @@
     var upvotes  = ((data.interactions && data.interactions.likes) || 0)
                  + ((data.interactions && data.interactions.upvotes) || 0);
 
-    // Badges
-    var badgesEl = document.getElementById('pc-badges');
-    if (badgesEl) {
-      badgesEl.innerHTML = renderBadgesHtml({
-        visits:           data.visits_count     || 0,
-        total_time_spent: data.total_time_spent  || 0,
-        comments:         comments,
-        upvotes:          upvotes,
-        first_seen:       data.first_seen        || null,
-      });
-    }
-
     // Avatar
-    var avatar   = document.getElementById('pc-avatar');
-    avatar.src   = WORKER_URL + '/api/user/' + encodeURIComponent(username) + '/avatar';
-    avatar.alt   = '@' + username;
-    avatar.onerror = function () { this.onerror = null; this.src = gravatarUrl(data.gravatar_hash, 80); };
+    var avatar = document.getElementById('pc-avatar');
+    avatar.src = WORKER_URL + '/api/user/' + encodeURIComponent(username) + '/avatar';
+    avatar.alt = '@' + username;
+    avatar.onerror = function() { this.onerror = null; this.src = gravatarUrl(data.gravatar_hash, 80); };
 
-    // Nome + badge
+    // Nome + badge [você]
     var nameEl = document.getElementById('pc-name');
     nameEl.textContent = '@' + username;
     if (isMine) {
@@ -175,15 +267,9 @@
       nameEl.appendChild(badge);
     }
 
-    // Meta (geo + data)
-    document.getElementById('pc-meta').textContent = geo + ' · desde ' + since;
-
-    // Links sociais
-    var socialEl = document.getElementById('pc-social');
-    var links    = [];
-    if (data.instagram) links.push('<a href="https://instagram.com/' + esc(data.instagram) + '" class="file-link" target="_blank" rel="noopener">ig/' + esc(data.instagram) + '</a>');
-    if (data.twitter)   links.push('<a href="https://x.com/'         + esc(data.twitter)   + '" class="file-link" target="_blank" rel="noopener">x/'  + esc(data.twitter)   + '</a>');
-    if (links.length) { socialEl.innerHTML = links.join(' '); socialEl.hidden = false; }
+    // Localidade + desde
+    document.getElementById('pc-meta').textContent = geo;
+    document.getElementById('pc-since').textContent = 'desde ' + since;
 
     // Stats
     document.getElementById('pc-visits').textContent   = visits;
@@ -191,24 +277,24 @@
     document.getElementById('pc-comments').textContent = String(comments);
     document.getElementById('pc-upvotes').textContent  = String(upvotes);
 
-    // Heatmap (único HTML gerado por JS — os dados são dinâmicos)
-    renderHeatmap(document.getElementById('pc-heatmap'), data.activity_cluster);
+    // Badges
+    var badgesEl = document.getElementById('pc-badges');
+    if (badgesEl) {
+      badgesEl.innerHTML = renderBadgesHtml({
+        visits:           data.visits_count      || 0,
+        total_time_spent: data.total_time_spent  || 0,
+        comments:         comments,
+        upvotes:          upvotes,
+        first_seen:       data.first_seen        || null,
+      });
+    }
 
-    // Prompts do terminal (username@www:~$)
-    var promptHTML = '<span class="t-user">' + esc(username) + '</span>'
-      + '<span class="t-gray">@</span><span class="t-host">www</span>'
-      + '<span class="t-gray">:~$&nbsp;</span>';
-    document.querySelectorAll('.pc-prompt').forEach(function (el) {
-      el.innerHTML = promptHTML;
-    });
+    // Social icons
+    setupSocialIcons(data, isMine);
 
-    // Localização travada
-    document.getElementById('pc-location-val').textContent = geo;
-
-    // Zona do dono
+    // Gender picker (apenas owner)
     if (isMine) {
-      document.getElementById('pc-owner-zone').hidden = false;
-      setupOwnerZone(username, fingerprint);
+      setupGenderPicker(username, fingerprint, data.gender || '');
     }
 
     // Troca estado: esconde terminal de 404, exibe perfil
@@ -219,13 +305,13 @@
     // Atividade recente (async)
     if (WORKER_URL) {
       fetch(WORKER_URL + '/api/user/' + encodeURIComponent(username) + '/activity')
-        .then(function (r) { return r.json(); })
-        .then(function (actData) {
+        .then(function(r) { return r.json(); })
+        .then(function(actData) {
           var section = document.getElementById('profile-activity-section');
           if (!section) return;
           var acts = (actData.activities || []).slice(0, 10);
           if (!acts.length) { section.innerHTML = ''; return; }
-          section.innerHTML = acts.map(function (a) {
+          section.innerHTML = acts.map(function(a) {
             var dateStr = a.created_at ? new Date(a.created_at).toLocaleDateString('pt-BR') : '';
             var icon    = a.type === 'comment' ? '>' : a.type === 'like' ? '♥' : '▲';
             var content = a.content
@@ -237,89 +323,8 @@
               + content + ' <span class="t-gray">' + esc(dateStr) + '</span>'
               + '</div>';
           }).join('');
-        }).catch(function () {});
+        }).catch(function() {});
     }
-  }
-
-  // ── Owner zone: masks + lock-on-enter ─────────────────────────────────────
-
-  function setupOwnerZone(username, fingerprint) {
-    var ownerFields = [
-      { id: 'pf-email',     lineId: 'tl-email',     mask: null     },
-      { id: 'pf-gender',    lineId: 'tl-gender',     mask: null     },
-      { id: 'pf-instagram', lineId: 'tl-instagram',  mask: 'handle' },
-      { id: 'pf-twitter',   lineId: 'tl-twitter',    mask: 'handle' },
-      { id: 'pf-whatsapp',  lineId: 'tl-whatsapp',   mask: 'phone'  },
-    ];
-
-    function maskHandle(el) {
-      el.addEventListener('input', function () {
-        el.value = el.value.replace(/^@+/, '').replace(/[^a-zA-Z0-9._\-]/g, '');
-      });
-    }
-
-    function maskPhone(el) {
-      el.addEventListener('input', function () {
-        var d = el.value.replace(/\D/g, '').slice(0, 13);
-        var r = '';
-        if (d.length > 0) r  = '+' + d.slice(0, 2);
-        if (d.length > 2) r += ' ' + d.slice(2, 4);
-        if (d.length > 4) r += ' ' + d.slice(4, 9);
-        if (d.length > 9) r += '-' + d.slice(9, 13);
-        el.value = r;
-      });
-    }
-
-    function lockField(fieldId, lineId) {
-      var el   = document.getElementById(fieldId);
-      var line = document.getElementById(lineId);
-      if (el)   el.disabled = true;
-      if (line) line.classList.add('ps-term-saved');
-    }
-
-    function saveProfile() {
-      var status    = document.getElementById('profile-save-status');
-      var emailVal  = (document.getElementById('pf-email')     || {}).value || '';
-      var genderVal = (document.getElementById('pf-gender')    || {}).value || '';
-      var igVal     = (document.getElementById('pf-instagram') || {}).value || '';
-      var twVal     = (document.getElementById('pf-twitter')   || {}).value || '';
-      var waVal     = (document.getElementById('pf-whatsapp')  || {}).value || '';
-      var payload   = { fingerprint: fingerprint };
-      if (emailVal)  payload.email     = emailVal.trim();
-      if (genderVal) payload.gender    = genderVal;
-      if (igVal)     payload.instagram = igVal.trim();
-      if (twVal)     payload.twitter   = twVal.trim();
-      if (waVal)     payload.whatsapp  = waVal.trim();
-      fetch(WORKER_URL + '/api/profile', {
-        method:  'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(payload),
-      }).then(function (r) { return r.json(); })
-        .then(function (res) {
-          if (res.ok) {
-            if (status) status.textContent = 'salvo.';
-            if (emailVal.trim()) {
-              var av = document.getElementById('pc-avatar');
-              if (av) av.src = WORKER_URL + '/api/user/' + encodeURIComponent(username) + '/avatar?' + Date.now();
-            }
-          } else {
-            if (status) status.textContent = res.error || 'erro ao salvar.';
-          }
-        }).catch(function () { if (status) status.textContent = 'erro ao salvar.'; });
-    }
-
-    ownerFields.forEach(function (item) {
-      var el = document.getElementById(item.id);
-      if (!el) return;
-      if (item.mask === 'handle') maskHandle(el);
-      if (item.mask === 'phone')  maskPhone(el);
-      el.addEventListener('keydown', function (e) {
-        if (e.key !== 'Enter') return;
-        e.preventDefault();
-        saveProfile();
-        lockField(item.id, item.lineId);
-      });
-    });
   }
 
   // ── Main ──────────────────────────────────────────────────────────────────
@@ -333,13 +338,13 @@
   try { fingerprint = localStorage.getItem(FP_KEY); } catch (_) {}
 
   fetch(WORKER_URL + '/api/user/' + encodeURIComponent(pathSegment))
-    .then(function (res) {
+    .then(function(res) {
       if (res.status === 404) { show404(location.pathname); return null; }
       return res.json();
     })
-    .then(function (data) {
+    .then(function(data) {
       if (!data || data.error) { show404(location.pathname); return; }
       showProfile(pathSegment, data, fingerprint);
     })
-    .catch(function () { show404(location.pathname); });
+    .catch(function() { show404(location.pathname); });
 })();
