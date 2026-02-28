@@ -1241,6 +1241,11 @@ article.post {
 
 // ── Identity ──────────────────────────────────────────────────────────────
 
+// Reset white-space herdado do .t-out (pre-wrap vira espaçamento indesejado)
+.ps {
+  white-space: normal;
+}
+
 .ps-identity {
   display: flex;
   align-items: center;
@@ -1258,15 +1263,26 @@ article.post {
 }
 
 .ps-avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
+  // Dimensões fixas
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 50% !important;
+  // Resets de main img que sangram para cá
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  transform: none;
+  display: block;
+  // Imagem
   object-fit: cover;
   image-rendering: pixelated;
   background: var(--card-bg, #282a36);
   position: relative;
   z-index: 1;
   flex-shrink: 0;
+  box-sizing: content-box !important;
 }
 
 // Ring animado estilo Instagram Stories
@@ -1361,7 +1377,7 @@ article.post {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 12px 0;
+  padding: 7px 0;
   border-top: 1px dashed rgba(255, 255, 255, 0.08);
   border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
 }
@@ -1378,6 +1394,12 @@ article.post {
 .ps-gender-picker {
   display: flex;
   gap: 6px;
+}
+
+// Sem animação no carregamento inicial (evita flash dos 3 botões)
+.ps-gender-picker.ps-gender-no-anim,
+.ps-gender-picker.ps-gender-no-anim .ps-gender-btn {
+  transition: none !important;
 }
 
 // Estado colapsado: só o selecionado fica visível
@@ -1575,9 +1597,10 @@ article.post {
 .ps-stats {
   display: flex;
   align-items: baseline;
+  justify-content: center;
   gap: 8px;
   flex-wrap: wrap;
-  padding-bottom: 10px;
+  padding: 6px 0;
   border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
 }
 
@@ -1603,7 +1626,7 @@ article.post {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 10px 0;
+  padding: 7px 0;
   border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
   min-height: 0;
 
@@ -1615,18 +1638,18 @@ article.post {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
-  padding: 12px 14px 10px;
-  border-radius: 10px;
-  min-width: 60px;
+  gap: 6px;
+  padding: 16px 18px 13px;
+  border-radius: 12px;
+  min-width: 74px;
   cursor: default;
   position: relative;
   overflow: hidden;
   text-align: center;
 
   .ps-badge-icon {
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
     flex-shrink: 0;
     position: relative;
     z-index: 1;
@@ -1644,7 +1667,7 @@ article.post {
   }
 
   .ps-badge-value {
-    font-size: 0.82em;
+    font-size: 0.85em;
     font-weight: 700;
     position: relative;
     z-index: 1;
@@ -1739,7 +1762,7 @@ article.post {
 // ── Log de atividade recente ────────────────────────────────────────────
 
 .profile-activity-log {
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
 .pal-header {

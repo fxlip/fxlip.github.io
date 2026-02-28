@@ -141,20 +141,28 @@
     var divider = document.getElementById('pc-divider');
     if (!picker) return;
 
-    picker.hidden = false;
-    divider.hidden = false;
-
     var btns = picker.querySelectorAll('.ps-gender-btn');
     var selected = currentGender || null;
 
-    // Aplica estado inicial
+    // Aplica estado inicial sem animação, antes de revelar o picker
     if (selected) {
+      picker.classList.add('ps-gender-no-anim');
       btns.forEach(function(btn) {
-        if (btn.dataset.value === selected) {
-          btn.classList.add('selected');
-        }
+        if (btn.dataset.value === selected) btn.classList.add('selected');
       });
       picker.classList.add('ps-gender-collapsed');
+    }
+
+    picker.hidden = false;
+    divider.hidden = false;
+
+    // Reativa transições após o primeiro render
+    if (selected) {
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          picker.classList.remove('ps-gender-no-anim');
+        });
+      });
     }
 
     btns.forEach(function(btn) {
