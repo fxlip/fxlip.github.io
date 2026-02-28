@@ -43,30 +43,35 @@
 
   var BADGE_DEFS = [
     {
-      id: 'popular', label: 'popular', icon: '★',
+      id: 'popular', label: 'popular',
       title: '24h+ no site · 10+ visitas · 1+ comentário · 10+ upvotes',
+      svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>',
       test: function(s) {
         return s.total_time_spent >= 86400 && s.visits >= 10 && s.comments >= 1 && s.upvotes >= 10;
       }
     },
     {
-      id: 'frequente', label: 'frequente', icon: '↻',
+      id: 'frequente', label: 'frequente',
       title: '50+ visitas',
+      svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.89"/></svg>',
       test: function(s) { return s.visits >= 50; }
     },
     {
-      id: 'engajado', label: 'engajado', icon: '>',
+      id: 'engajado', label: 'engajado',
       title: '5+ comentários',
+      svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
       test: function(s) { return s.comments >= 5; }
     },
     {
-      id: 'curtidor', label: 'curtidor', icon: '♥',
+      id: 'curtidor', label: 'curtidor',
       title: '20+ upvotes dados',
+      svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
       test: function(s) { return s.upvotes >= 20; }
     },
     {
-      id: 'veterano', label: 'veterano', icon: '⌛',
+      id: 'veterano', label: 'veterano',
       title: 'membro há 90+ dias',
+      svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14M5 2h14M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22M7 2v4.17a2 2 0 0 1 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/></svg>',
       test: function(s) {
         if (!s.first_seen) return false;
         return (Date.now() - new Date(s.first_seen).getTime()) >= 90 * 86400 * 1000;
@@ -83,31 +88,33 @@
     );
   }
 
-  // SVG da estrela para o badge de rep
-  var STAR_SVG = '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
-    + 'stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">'
+  // SVG da estrela para o badge de rep (totem)
+  var STAR_SVG = '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" '
+    + 'stroke-width="1" stroke-linecap="round" stroke-linejoin="round">'
     + '<polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>'
     + '</svg>';
 
   function renderBadgesHtml(s) {
     var parts = [];
 
-    // Rep badge primeiro (badge pill com animação)
+    // Rep totem (sempre primeiro)
     var rep = computeReputation(s);
     if (rep > 0) {
       parts.push(
-        '<div class="ps-badge-item" data-tier="rep">'
+        '<div class="ps-badge-item" data-tier="rep" title="Reputação acumulada">'
         + STAR_SVG
-        + '<span class="ps-badge-label">rep <strong>' + rep + '</strong></span>'
+        + '<span class="ps-badge-label">reputação</span>'
+        + '<strong class="ps-badge-value">' + rep + '</strong>'
         + '</div>'
       );
     }
 
-    // Badges tradicionais como pills
+    // Badges tradicionais como totens
     BADGE_DEFS.forEach(function(b) {
       if (b.test(s)) {
         parts.push(
           '<div class="ps-badge-item" data-tier="' + b.id + '" title="' + b.title + '">'
+          + b.svg
           + '<span class="ps-badge-label">' + b.label + '</span>'
           + '</div>'
         );
@@ -140,11 +147,14 @@
     var btns = picker.querySelectorAll('.ps-gender-btn');
     var selected = currentGender || null;
 
-    // Marca o gênero atual
+    // Aplica estado inicial
     if (selected) {
       btns.forEach(function(btn) {
-        if (btn.dataset.value === selected) btn.classList.add('selected');
+        if (btn.dataset.value === selected) {
+          btn.classList.add('selected');
+        }
       });
+      picker.classList.add('ps-gender-collapsed');
     }
 
     btns.forEach(function(btn) {
@@ -152,7 +162,8 @@
         var val = btn.dataset.value;
 
         if (selected === val) {
-          // Desselecionar
+          // Clicou no selecionado → expande os outros e desseleciona
+          picker.classList.remove('ps-gender-collapsed');
           btn.classList.remove('selected');
           btn.classList.add('deselecting');
           setTimeout(function() { btn.classList.remove('deselecting'); }, 250);
@@ -161,7 +172,7 @@
           return;
         }
 
-        // Desselecionar anterior
+        // Desselecionar anterior (sem colapsar ainda)
         btns.forEach(function(b) {
           if (b.classList.contains('selected')) {
             b.classList.remove('selected');
@@ -170,10 +181,11 @@
           }
         });
 
-        // Selecionar novo
+        // Selecionar novo e colapsar os outros
         requestAnimationFrame(function() {
           btn.classList.add('selected');
           selected = val;
+          picker.classList.add('ps-gender-collapsed');
           saveGender(username, fingerprint, val);
         });
       });
@@ -311,18 +323,32 @@
           if (!section) return;
           var acts = (actData.activities || []).slice(0, 10);
           if (!acts.length) { section.innerHTML = ''; return; }
-          section.innerHTML = acts.map(function(a) {
-            var dateStr = a.created_at ? new Date(a.created_at).toLocaleDateString('pt-BR') : '';
-            var icon    = a.type === 'comment' ? '>' : a.type === 'like' ? '♥' : '▲';
-            var content = a.content
-              ? ' "' + esc(a.content.substring(0, 80)) + (a.content.length > 80 ? '…' : '') + '"'
+
+          var typeIcon  = { comment: '›', like: '♥', upvote: '▲' };
+          var typeLabel = { comment: 'comentou', like: 'curtiu', upvote: 'upvotou' };
+
+          var items = acts.map(function(a) {
+            var dateStr  = a.created_at ? new Date(a.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }) : '';
+            var icon     = typeIcon[a.type]  || '·';
+            var verb     = typeLabel[a.type] || a.type;
+            var quote    = a.content
+              ? ' <span class="pal-quote">"' + esc(a.content.substring(0, 60)) + (a.content.length > 60 ? '…' : '') + '"</span>'
               : '';
+
             return '<div class="profile-activity-item">'
-              + '<span class="t-gray">' + icon + '</span> '
-              + '<a href="/' + esc(a.target_slug) + '" class="file-link">' + esc(a.target_slug) + '</a>'
-              + content + ' <span class="t-gray">' + esc(dateStr) + '</span>'
+              + '<span class="pal-icon t-gray">' + icon + '</span>'
+              + '<span class="pal-content">'
+              + verb + ' <a href="/' + esc(a.target_slug) + '" class="file-link">' + esc(a.target_slug) + '</a>'
+              + quote
+              + '</span>'
+              + '<span class="pal-date">' + esc(dateStr) + '</span>'
               + '</div>';
           }).join('');
+
+          section.innerHTML = '<div class="profile-activity-log">'
+            + '<div class="pal-header t-gray">log de atividade</div>'
+            + items
+            + '</div>';
         }).catch(function() {});
     }
   }
