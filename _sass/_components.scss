@@ -1256,6 +1256,27 @@ article.post {
 }
 .ps[hidden] { display: none; }
 
+// Badges de usuário
+.badge {
+  display: inline-block;
+  font-size: 0.68em;
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid;
+  font-family: monospace;
+  vertical-align: middle;
+  margin: 1px 2px;
+  cursor: default;
+  white-space: nowrap;
+}
+.ps-badges { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px; min-height: 0; }
+.badge-popular  { color: var(--link-color);       border-color: var(--link-color); }
+.badge-frequente{ color: var(--accent-cyan);       border-color: var(--accent-cyan); }
+.badge-engajado { color: var(--green);             border-color: var(--green); }
+.badge-curtidor { color: var(--link-hover-color);  border-color: var(--link-hover-color); }
+.badge-veterano { color: var(--yellow);            border-color: var(--yellow); }
+.badge-rep      { color: var(--base-color);        border-color: var(--muted-color); }
+
 // Seção 1: header
 .ps-header {
   display: flex;

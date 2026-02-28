@@ -39,6 +39,64 @@
       + '?s=' + (size || 80) + '&d=identicon';
   }
 
+  // ── Badges ────────────────────────────────────────────────────────────────
+
+  var BADGE_DEFS = [
+    {
+      id: 'popular', label: 'popular',
+      title: '24h+ no site · 10+ visitas · 1+ comentário · 10+ upvotes',
+      test: function(s) {
+        return s.total_time_spent >= 86400 && s.visits >= 10 && s.comments >= 1 && s.upvotes >= 10;
+      }
+    },
+    {
+      id: 'frequente', label: 'frequente',
+      title: '50+ visitas',
+      test: function(s) { return s.visits >= 50; }
+    },
+    {
+      id: 'engajado', label: 'engajado',
+      title: '5+ comentários',
+      test: function(s) { return s.comments >= 5; }
+    },
+    {
+      id: 'curtidor', label: 'curtidor',
+      title: '20+ upvotes dados',
+      test: function(s) { return s.upvotes >= 20; }
+    },
+    {
+      id: 'veterano', label: 'veterano',
+      title: 'membro há 90+ dias',
+      test: function(s) {
+        if (!s.first_seen) return false;
+        return (Date.now() - new Date(s.first_seen).getTime()) >= 90 * 86400 * 1000;
+      }
+    }
+  ];
+
+  function computeReputation(s) {
+    return Math.floor(
+      (s.visits || 0) * 1 +
+      Math.floor((s.total_time_spent || 0) / 3600) * 2 +
+      (s.comments || 0) * 10 +
+      (s.upvotes  || 0) * 3
+    );
+  }
+
+  function renderBadgesHtml(s) {
+    var parts = [];
+    BADGE_DEFS.forEach(function(b) {
+      if (b.test(s)) {
+        parts.push('<span class="badge badge-' + b.id + '" title="' + b.title + '">' + b.label + '</span>');
+      }
+    });
+    var rep = computeReputation(s);
+    if (rep > 0) {
+      parts.push('<span class="badge badge-rep" title="reputação: visitas + tempo + interações">rep ' + rep + '</span>');
+    }
+    return parts.join(' ');
+  }
+
   // ── 404 real ──────────────────────────────────────────────────────────────
 
   function show404(path) {
@@ -86,7 +144,20 @@
     var visits   = (data.visits_count || 0).toLocaleString('pt-BR');
     var timeStr  = formatTime(data.total_time_spent);
     var comments = (data.interactions && data.interactions.comments) || 0;
-    var upvotes  = (data.interactions && data.interactions.likes)    || 0;
+    var upvotes  = ((data.interactions && data.interactions.likes) || 0)
+                 + ((data.interactions && data.interactions.upvotes) || 0);
+
+    // Badges
+    var badgesEl = document.getElementById('pc-badges');
+    if (badgesEl) {
+      badgesEl.innerHTML = renderBadgesHtml({
+        visits:           data.visits_count     || 0,
+        total_time_spent: data.total_time_spent  || 0,
+        comments:         comments,
+        upvotes:          upvotes,
+        first_seen:       data.first_seen        || null,
+      });
+    }
 
     // Avatar
     var avatar   = document.getElementById('pc-avatar');

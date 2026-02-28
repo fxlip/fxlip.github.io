@@ -7,10 +7,10 @@ document.addEventListener("DOMContentLoaded", function() {
   var WORKER_URL = document.body.dataset.workerUrl;
   if (!WORKER_URL) return;
 
-  var FP_KEY = "fxlip_fp";
-  var NAME_KEY = "fxlip_visitor_name";
+  var FP_KEY         = "fxlip_fp";
+  var NAME_KEY       = "fxlip_visitor_name";
   var HELLO_CACHE_KEY = "fxlip_hello_cache";
-  var HELLO_TTL = 10 * 60 * 1000; // 10 minutos
+  var HELLO_TTL       = 10 * 60 * 1000; // 10 minutos
 
   function getHelloCache() {
     try {
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =======================================================================
-  // 2. ESCAPE HTML
+  // 2. UTILITÁRIOS
   // =======================================================================
   function esc(text) {
     return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -92,9 +92,102 @@ document.addEventListener("DOMContentLoaded", function() {
     return fetch(url, options).finally(function() { clearTimeout(id); });
   }
 
+  function timeAgo(isoString) {
+    if (!isoString) return null;
+    var now = Date.now();
+    var then = new Date(isoString).getTime();
+    var diff = Math.floor((now - then) / 1000);
+
+    if (diff < 60) return "agora mesmo";
+    if (diff < 3600) {
+      var m = Math.floor(diff / 60);
+      return "há " + m + " min";
+    }
+    if (diff < 86400) {
+      var h = Math.floor(diff / 3600);
+      return "há " + h + "h";
+    }
+    if (diff < 172800) return "ontem";
+    if (diff < 2592000) {
+      var d = Math.floor(diff / 86400);
+      return "há " + d + " dias";
+    }
+    if (diff < 31536000) {
+      var mo = Math.floor(diff / 2592000);
+      return "há " + mo + (mo === 1 ? " mês" : " meses");
+    }
+    return "há muito tempo";
+  }
+
   // =======================================================================
-  // 3. HELPER: INJETA O INPUT DE NOME NO DOM
-  // Usado tanto pelo renderNamePrompt quanto pelo "revelar identidade"
+  // 3. BADGES
+  // =======================================================================
+  var BADGE_DEFS = [
+    {
+      id:    'popular',
+      label: 'popular',
+      title: '24h+ no site · 10+ visitas · 1+ comentário · 10+ upvotes',
+      test:  function(s) {
+        return s.total_time_spent >= 86400
+            && s.visits    >= 10
+            && s.comments  >= 1
+            && s.upvotes   >= 10;
+      }
+    },
+    {
+      id:    'frequente',
+      label: 'frequente',
+      title: '50+ visitas',
+      test:  function(s) { return s.visits >= 50; }
+    },
+    {
+      id:    'engajado',
+      label: 'engajado',
+      title: '5+ comentários',
+      test:  function(s) { return s.comments >= 5; }
+    },
+    {
+      id:    'curtidor',
+      label: 'curtidor',
+      title: '20+ upvotes dados',
+      test:  function(s) { return s.upvotes >= 20; }
+    },
+    {
+      id:    'veterano',
+      label: 'veterano',
+      title: 'membro há 90+ dias',
+      test:  function(s) {
+        if (!s.first_seen) return false;
+        return (Date.now() - new Date(s.first_seen).getTime()) >= 90 * 86400 * 1000;
+      }
+    }
+  ];
+
+  function computeReputation(s) {
+    return Math.floor(
+      (s.visits             || 0) * 1  +
+      Math.floor((s.total_time_spent || 0) / 3600) * 2 +
+      (s.comments           || 0) * 10 +
+      (s.upvotes            || 0) * 3
+    );
+  }
+
+  function renderBadgesHtml(s) {
+    var parts = [];
+    BADGE_DEFS.forEach(function(b) {
+      if (b.test(s)) {
+        parts.push('<span class="badge badge-' + b.id + '" title="' + b.title + '">' + b.label + '</span>');
+      }
+    });
+    var rep = computeReputation(s);
+    if (rep > 0) {
+      parts.push('<span class="badge badge-rep" title="reputação: visitas + tempo + interações">rep ' + rep + '</span>');
+    }
+    return parts.join(' ');
+  }
+
+  // =======================================================================
+  // 4. HELPER: INJETA O INPUT DE NOME NO DOM
   // =======================================================================
   function injectNameInput(fp) {
     var inputLine = document.createElement("div");
@@ -111,7 +204,6 @@ document.addEventListener("DOMContentLoaded", function() {
         'maxlength="30" autocomplete="off" spellcheck="false" ' +
         'placeholder="qual seu nome?">';
 
-    // Insere o input ABAIXO da descrição do site (próximo t-out irmão)
     var siteDesc = greetingBlock.nextElementSibling;
     if (siteDesc && siteDesc.classList.contains('t-out')) {
       siteDesc.insertAdjacentElement('afterend', inputLine);
@@ -121,7 +213,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var input = document.getElementById("greeting-input");
 
-    // Respiração do placeholder (CSS animation não funciona em ::placeholder no Chrome)
+    // Respiração do placeholder
     var phStyle = document.createElement("style");
     document.head.appendChild(phStyle);
     var phStart = performance.now();
@@ -169,7 +261,7 @@ document.addEventListener("DOMContentLoaded", function() {
             errEl.id = 'greeting-name-error';
             errEl.className = 't-out';
             errEl.style.cssText = 'color:var(--link-color);margin-top:0.2em';
-            errEl.textContent = data.greeting || 'esse nick já existe. tenta outro?';
+            errEl.textContent = 'esse nick já existe. tenta outro?';
             inputLine.appendChild(errEl);
             input.focus();
             return;
@@ -179,13 +271,13 @@ document.addEventListener("DOMContentLoaded", function() {
           renderGreeting(data);
         }).catch(function() {
           try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
-          renderGreeting({ name: val, greeting: "Bem-vindo, " + val + "!" });
+          renderGreeting({ name: val });
         });
     });
   }
 
   // =======================================================================
-  // 4. RENDER: FIRST VISIT (Prompt de nome)
+  // 5. RENDER: FIRST VISIT (Prompt de nome)
   // =======================================================================
   function renderNamePrompt(fp) {
     greetingBlock.style.display = "block";
@@ -194,98 +286,35 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =======================================================================
-  // 5. TIME AGO (ISO → texto relativo)
-  // =======================================================================
-  function timeAgo(isoString) {
-    if (!isoString) return null;
-    var now = Date.now();
-    var then = new Date(isoString).getTime();
-    var diff = Math.floor((now - then) / 1000);
-
-    if (diff < 60) return "agora mesmo";
-    if (diff < 3600) {
-      var m = Math.floor(diff / 60);
-      return "há " + m + " min";
-    }
-    if (diff < 86400) {
-      var h = Math.floor(diff / 3600);
-      return "há " + h + "h";
-    }
-    if (diff < 172800) return "ontem";
-    if (diff < 2592000) {
-      var d = Math.floor(diff / 86400);
-      return "há " + d + " dias";
-    }
-    if (diff < 31536000) {
-      var mo = Math.floor(diff / 2592000);
-      return "há " + mo + (mo === 1 ? " mês" : " meses");
-    }
-    return "há muito tempo";
-  }
-
-  // =======================================================================
-  // 6. RENDER: RETURNING VISITOR (SSH-Style)
+  // 6. RENDER: RETURNING VISITOR
   // =======================================================================
   function renderGreeting(data) {
-    // Remove inputLine se ainda estiver no DOM (inserido fora do greetingBlock)
     var prev = document.getElementById("greeting-input-line");
     if (prev) prev.remove();
 
     greetingBlock.style.display = "block";
 
-    var ago = data.lastSeen ? timeAgo(data.lastSeen) : null;
+    var ago  = data.lastSeen ? timeAgo(data.lastSeen) : null;
     var city = data.city || "desconhecido";
 
-    var lastLineHtml;
+    var line;
     if (data.name) {
       var nameLink = '<a href="/' + esc(data.name) + '" class="file-link">@' + esc(data.name) + '</a>';
-      lastLineHtml = ago
-        ? nameLink + ', seu último login foi ' + esc(ago) + ', de ' + esc(city) + '.'
-        : nameLink + ', primeiro acesso.';
+      line = nameLink
+        + (ago
+            ? ', seu último login foi ' + esc(ago) + ', de ' + esc(city) + '.'
+            : ', primeiro acesso.');
     } else {
-      lastLineHtml = ago
-        ? esc("Último login: " + ago + ", de " + city)
-        : esc("Último login: primeiro acesso");
+      line = ago
+        ? esc('Último login: ' + ago + ', de ' + city)
+        : esc('Último login: primeiro acesso');
     }
 
-    var greetLine = data.greeting || ("Bem-vindo, " + (data.name || "visitante") + "!");
-
-    greetingBlock.innerHTML =
-      '<div>' +
-      '<div class="t-gray">' + lastLineHtml + '</div>' +
-      '<div class="t-out">' + esc(greetLine) + '</div>';
+    greetingBlock.innerHTML = '<div class="t-gray">' + line + '</div>';
   }
 
   // =======================================================================
-  // 7. PLACEHOLDER DINÂMICO baseado na contagem de visitas
-  // =======================================================================
-  function getAnonymousPlaceholder(visits) {
-    if (visits >= 99)  return `NULL`;
-    if (visits >= 90)  return `ta acabaaaaaaaando a oportunidade heim`;
-    if (visits >= 80)  return `daqui a pouco isso vai ser um captcha`;
-    if (visits >= 40)  return `você pode se chamar invisível, que tal?`;
-    if (visits >= 20)  return `um nickname que seja?`;
-    if (visits >= 10)  return `sai do armário`;
-    if (visits >= 5)   return `que tal assumir logo?`;
-    if (visits < 5)    return `fala comigo!!!`;
-    return "qual seu nome?";
-  }
-
-  // =======================================================================
-  // 8. RENDER: ANONYMOUS RETURNING VISITOR
-  // Mantém o prompt visível, só atualiza mensagem e placeholder
-  // =======================================================================
-  function renderAnonymousGreeting(data) {
-    greetingOutput.textContent = data.greeting;
-
-    var input = document.getElementById("greeting-input");
-    if (input && !input.value) {
-      input.placeholder = getAnonymousPlaceholder(data.visits);
-    }
-  }
-
-  // =======================================================================
-  // 8. MAIN
+  // 7. MAIN
   // =======================================================================
   function init() {
     var storedName = null;
@@ -293,10 +322,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     getFingerprint().then(function(fp) {
       if (!storedName) {
-        // Mostra o prompt imediatamente, sem aguardar a API
+        // Mostra prompt imediatamente
         renderNamePrompt(fp);
 
-        // Usa a resposta da API para identificar visitantes anônimos recorrentes
+        // Consulta API para detectar auto-nick (≥100 visitas sem nome)
         fetchWithTimeout(WORKER_URL + "/api/hello", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -304,22 +333,16 @@ document.addEventListener("DOMContentLoaded", function() {
         }).then(function(res) { return res.json(); })
           .then(function(data) {
             if (data.name) {
-              // Auto-nick atribuído pelo worker (≥100 visitas sem nome)
               try { localStorage.setItem(NAME_KEY, data.name); } catch (_) {}
               renderGreeting(data);
-            } else if (data.greeting) {
-              // Visitante anônimo recorrente: atualiza mensagem + placeholder
-              renderAnonymousGreeting(data);
             }
-            // Sem name e sem greeting = 1ª visita: mantém o prompt
+            // Sem nome → mantém prompt, sem mensagem de visitas
           })
-          .catch(function() {
-            // API offline: mantém o prompt (comportamento de fallback)
-          });
+          .catch(function() {});
         return;
       }
 
-      // Usa cache se disponível e recente (TTL 10 min) — evita chamar hello em toda página
+      // Cache de 10 min para evitar hello em toda página
       var cachedHello = getHelloCache();
       if (cachedHello) {
         renderGreeting(cachedHello);
@@ -337,7 +360,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }).catch(function() {
       if (storedName) {
-        renderGreeting({ name: storedName, greeting: "Olá, " + storedName + "." });
+        renderGreeting({ name: storedName });
       }
     });
   }
