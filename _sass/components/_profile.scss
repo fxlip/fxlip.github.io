@@ -695,3 +695,61 @@
     grid-template-columns: 96px auto 1fr;
   }
 }
+
+// ── Estado "conectando" nos ícones sociais ───────────────────────────────
+
+.ps-social-btn[data-connecting="true"] {
+  animation: ps-social-connecting 0.9s ease-in-out infinite;
+  pointer-events: none;
+  cursor: wait;
+}
+
+@keyframes ps-social-connecting {
+  0%, 100% { opacity: 0.55; transform: scale(0.92); }
+  50%       { opacity: 1;    transform: scale(1);    }
+}
+
+// ── Auth OAuth callback terminal ─────────────────────────────────────────
+
+.auth-cb-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 2rem 1rem;
+}
+
+.auth-cb-term {
+  width: min(500px, 100%);
+  margin: 0 !important; // override .terminal-box { margin: 30px 0 0 0 }
+}
+
+// Cada linha de saída: entra com fade + slide suave
+.auth-line {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  line-height: 1.65;
+
+  &.auth-line-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.auth-line-ok   { color: var(--green); }
+.auth-icon-ok   { color: var(--green); margin-right: 0.35em; }
+.auth-icon-err  { color: #ff5555;      margin-right: 0.35em; }
+.auth-text-err  { color: #ff5555; }
+
+// Cursor piscante durante a digitação
+.auth-cursor {
+  color: var(--accent-cyan);
+  animation: auth-cursor-blink 0.85s step-end infinite;
+  margin-left: 1px;
+}
+
+@keyframes auth-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}

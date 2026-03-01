@@ -368,16 +368,26 @@
 
   function startOAuth(provider, fingerprint) {
     if (!WORKER_URL || !fingerprint) return;
+
+    // Feedback visual no botão enquanto aguarda o redirect
+    var svcKey = provider === 'google' ? 'email' : provider;
+    var btn = document.querySelector('.ps-social-btn[data-service="' + svcKey + '"]');
+    if (btn) btn.dataset.connecting = 'true';
+
     fetch(WORKER_URL + '/api/auth/start?provider=' + provider + '&fingerprint=' + encodeURIComponent(fingerprint))
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (data && data.url) {
           window.location.href = data.url;
         } else {
+          if (btn) btn.dataset.connecting = 'false';
           console.warn('[profile] auth/start error:', data && data.error);
         }
       })
-      .catch(function(err) { console.warn('[profile] auth/start failed', err); });
+      .catch(function(err) {
+        if (btn) btn.dataset.connecting = 'false';
+        console.warn('[profile] auth/start failed', err);
+      });
   }
 
   // ── Instagram: input inline (sem OAuth) ──────────────────────────────────
