@@ -3,7 +3,7 @@
   var FP_KEY      = 'fxlip_fp';
   var NAME_KEY    = 'fxlip_visitor_name';
   var output      = document.getElementById('auth-output');
-  var wrap        = document.getElementById('auth-cb-wrap');
+  var wrap        = document.getElementById('auth-terminal');
   var providerArg = document.getElementById('auth-provider-arg');
 
   var PROVIDER_LABEL = { google: 'gmail', github: 'github', twitter: 'twitter' };
@@ -108,12 +108,17 @@
   typeLine('inicializando...', 't-gray', 80)
     .then(function () { return typeLine('aguardando servidor...', 't-gray', 280); });
 
+  var controller = new AbortController();
+  var fetchTimeout = setTimeout(function () { controller.abort(); }, 20000);
+
   fetch(WORKER_URL + '/api/auth/callback', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({ code: code, state: state, fingerprint: fingerprint }),
+    signal:  controller.signal,
   })
     .then(function (res) {
+      clearTimeout(fetchTimeout);
       return res.json().then(function (d) { return { ok: res.ok, data: d }; });
     })
     .then(function (result) {
@@ -156,7 +161,9 @@
       }, wait);
     })
     .catch(function (err) {
+      clearTimeout(fetchTimeout);
       var wait = Math.max(0, 600 - (performance.now() - startTs));
-      setTimeout(function () { showError('erro de rede', err.message); }, wait);
+      var msg = err.name === 'AbortError' ? 'tempo esgotado' : err.message;
+      setTimeout(function () { showError('erro de rede', msg); }, wait);
     });
 })();

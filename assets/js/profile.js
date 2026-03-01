@@ -523,8 +523,19 @@
     // Social icons
     setupSocialIcons(data, isMine, fingerprint);
 
-    // Gender picker (apenas owner)
-    if (isMine) setupGenderPicker(username, fingerprint, data.gender || '');
+    // Gender picker: editável para o dono, somente leitura para terceiros (oculto se NULL)
+    if (isMine) {
+      setupGenderPicker(username, fingerprint, data.gender || '');
+    } else if (data.gender) {
+      var picker = document.getElementById('pf-gender-picker');
+      if (picker) {
+        picker.querySelectorAll('.ps-gender-btn').forEach(function(btn) {
+          if (btn.dataset.value === data.gender) btn.classList.add('selected');
+        });
+        picker.classList.add('ps-gender-collapsed', 'ps-gender-no-anim');
+        picker.hidden = false;
+      }
+    }
 
     // Troca estado: esconde terminal de 404, exibe perfil
     document.getElementById('profile-terminal').hidden = true;
