@@ -459,8 +459,22 @@
     avatar.src = '/files/img/avatar/' + encodeURIComponent(username) + '.png';
     avatar.onerror = function() {
       this.onerror = null;
-      // 2ª tentativa: avatar personalizado no worker
-      if (data.has_avatar && WORKER_URL) {
+      var oauthUrl = data.oauth_avatar_url; // prioridade já computada pelo worker: twitter > google > github
+      if (oauthUrl) {
+        // 2ª tentativa: foto OAuth (Twitter > Google > GitHub)
+        this.src = oauthUrl;
+        this.onerror = function() {
+          this.onerror = null;
+          // 3ª tentativa: Gravatar importado (base64 no worker)
+          if (data.has_avatar && WORKER_URL) {
+            this.src = WORKER_URL + '/api/user/' + encodeURIComponent(username) + '/avatar';
+            this.onerror = function() { this.onerror = null; this.src = svgFallback; };
+          } else {
+            this.src = svgFallback;
+          }
+        };
+      } else if (data.has_avatar && WORKER_URL) {
+        // 2ª tentativa: Gravatar importado (base64 no worker)
         this.src = WORKER_URL + '/api/user/' + encodeURIComponent(username) + '/avatar';
         this.onerror = function() { this.onerror = null; this.src = svgFallback; };
       } else {
