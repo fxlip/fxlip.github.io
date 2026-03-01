@@ -10,6 +10,9 @@
   var NAME_KEY    = 'fxlip_visitor_name';
   var USERNAME_RE = /^[a-z0-9à-ú][a-z0-9à-ú-]{0,28}[a-z0-9à-ú]?$/;
 
+  // Avatar padrão — silhueta estilo WhatsApp (Dracula palette)
+  var DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' rx='40' fill='%23282a36'/%3E%3Ccircle cx='40' cy='29' r='14' fill='%2344475a'/%3E%3Cellipse cx='40' cy='70' rx='25' ry='17' fill='%2344475a'/%3E%3C/svg%3E";
+
   var pathSegment = location.pathname.slice(1).split('/')[0].toLowerCase();
 
   // ── Utilitários ────────────────────────────────────────────────────────────
@@ -131,9 +134,8 @@
     var rep = computeReputation(s);
     if (rep > 0) {
       parts.push(
-        '<div class="ps-badge-item" data-tier="rep" title="Reputação acumulada">'
+        '<div class="ps-badge-item" data-tier="rep" title="Reputação: ' + rep + '">'
         + STAR_SVG
-        + '<span class="ps-badge-label">reputação</span>'
         + '<strong class="ps-badge-value">' + rep + '</strong>'
         + '</div>'
       );
@@ -144,7 +146,6 @@
         parts.push(
           '<div class="ps-badge-item" data-tier="' + b.id + '" title="' + b.title + '">'
           + b.svg
-          + '<span class="ps-badge-label">' + b.label + '</span>'
           + '</div>'
         );
       }
@@ -203,7 +204,6 @@
         parts.push(
           '<div class="ps-badge-item" data-tier="' + b.tier + '" title="' + b.label + '">'
           + b.svg
-          + '<span class="ps-badge-label">' + b.label + '</span>'
           + '</div>'
         );
       }
@@ -437,9 +437,16 @@
 
     // Avatar
     var avatar = document.getElementById('pc-avatar');
-    avatar.src = WORKER_URL + '/api/user/' + encodeURIComponent(username) + '/avatar';
     avatar.alt = '@' + username;
-    avatar.onerror = function() { this.onerror = null; this.src = gravatarUrl(data.gravatar_hash, 80); };
+    if (data.has_avatar) {
+      avatar.src = WORKER_URL + '/api/user/' + encodeURIComponent(username) + '/avatar';
+      avatar.onerror = function() { this.onerror = null; this.src = DEFAULT_AVATAR; };
+    } else if (data.email_connected && data.gravatar_hash !== '00000000000000000000000000000000') {
+      avatar.src = 'https://www.gravatar.com/avatar/' + data.gravatar_hash + '?s=80&d=404';
+      avatar.onerror = function() { this.onerror = null; this.src = DEFAULT_AVATAR; };
+    } else {
+      avatar.src = DEFAULT_AVATAR;
+    }
 
     // Nome + badge [você]
     var nameEl = document.getElementById('pc-name');
@@ -461,22 +468,18 @@
     document.getElementById('pc-comments').textContent = String(comments);
     document.getElementById('pc-upvotes').textContent  = String(upvotes);
 
-    // Badges de reputação/atividade
+    // Badges — reputação/atividade + redes conectadas (mesmo container)
     var badgesEl = document.getElementById('pc-badges');
     if (badgesEl) {
-      badgesEl.innerHTML = renderBadgesHtml({
-        visits:           data.visits_count      || 0,
-        total_time_spent: data.total_time_spent  || 0,
-        comments:         comments,
-        upvotes:          upvotes,
-        first_seen:       data.first_seen        || null,
-      });
-    }
-
-    // Badges de redes sociais conectadas
-    var socialBadgesEl = document.getElementById('pc-social-badges');
-    if (socialBadgesEl) {
-      socialBadgesEl.innerHTML = renderSocialBadgesHtml(data);
+      badgesEl.innerHTML =
+        renderBadgesHtml({
+          visits:           data.visits_count      || 0,
+          total_time_spent: data.total_time_spent  || 0,
+          comments:         comments,
+          upvotes:          upvotes,
+          first_seen:       data.first_seen        || null,
+        })
+        + renderSocialBadgesHtml(data);
     }
 
     // Social icons
@@ -493,9 +496,10 @@
     // ── Log de atividade (síncrono: monta container + entrada de first_seen) ──
     var section = document.getElementById('profile-activity-section');
     if (section) {
-      var browser = detectBrowser();
-      var osLabel = detectOSLabel();
-      var city    = data.city || 'local desconhecido';
+      var browser  = detectBrowser();
+      var osLabel  = detectOSLabel();
+      var city     = data.city || 'local desconhecido';
+      var fpShort  = fingerprint ? fingerprint.substring(0, 8) : '????????';
 
       var firstSeenDate = data.first_seen ? new Date(data.first_seen) : null;
       var fpTs = firstSeenDate
@@ -513,7 +517,7 @@
       var fingerprintEntry = '<div class="profile-activity-item">'
         + '<span class="pal-ts t-gray">[' + esc(fpTs) + ']</span>'
         + '<span class="pal-content">'
-        + '<span class="pal-verb">fingerprint</span>'
+        + '<span class="pal-verb">' + esc(fpShort) + '</span>'
         + ' entrou usando um ' + esc(browser) + ' no ' + esc(osLabel) + ' em ' + esc(city)
         + '</span>'
         + '<span class="pal-type-icon">⌁</span>'
