@@ -79,34 +79,27 @@
 
   var BADGE_DEFS = [
     {
-      id: 'popular', label: 'popular',
-      title: '24h+ no site · 10+ visitas · 1+ comentário · 10+ upvotes',
-      svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>',
-      test: function(s) {
-        return s.total_time_spent >= 86400 && s.visits >= 10 && s.comments >= 1 && s.upvotes >= 10;
-      }
-    },
-    {
-      id: 'frequente', label: 'frequente',
-      title: '50+ visitas',
+      id: 'frequente', title: '30+ visitas',
       svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.89"/></svg>',
-      test: function(s) { return s.visits >= 50; }
+      test: function(s) { return (s.visits || 0) >= 30; }
     },
     {
-      id: 'engajado', label: 'engajado',
-      title: '5+ comentários',
+      id: 'assiduo', title: '5h+ no site',
+      svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      test: function(s) { return (s.total_time_spent || 0) >= 18000; }
+    },
+    {
+      id: 'engajado', title: '5+ comentários',
       svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
-      test: function(s) { return s.comments >= 5; }
+      test: function(s) { return (s.comments || 0) >= 5; }
     },
     {
-      id: 'curtidor', label: 'curtidor',
-      title: '20+ upvotes dados',
+      id: 'curtidor', title: '10+ upvotes dados',
       svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
-      test: function(s) { return s.upvotes >= 20; }
+      test: function(s) { return (s.upvotes || 0) >= 10; }
     },
     {
-      id: 'veterano', label: 'veterano',
-      title: 'membro há 90+ dias',
+      id: 'veterano', title: 'membro há 90+ dias',
       svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14M5 2h14M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22M7 2v4.17a2 2 0 0 1 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/></svg>',
       test: function(s) {
         if (!s.first_seen) return false;
@@ -115,13 +108,18 @@
     }
   ];
 
+  // Fórmula de reputação: sqrt dá retorno decrescente para quem farma visitas/tempo;
+  // comentários e upvotes são ações raras e pesam mais por unidade.
   function computeReputation(s) {
-    return Math.floor(
-      (s.visits || 0) * 1 +
-      Math.floor((s.total_time_spent || 0) / 3600) * 2 +
-      (s.comments || 0) * 10 +
-      (s.upvotes  || 0) * 3
-    );
+    var v = s.visits || 0;
+    var h = Math.floor((s.total_time_spent || 0) / 3600);
+    var c = s.comments || 0;
+    var u = s.upvotes  || 0;
+    var pv = Math.floor(Math.sqrt(v) * 9);
+    var ph = Math.floor(Math.sqrt(h) * 22);
+    var pc = Math.floor(c * 8 + Math.sqrt(c) * 5);
+    var pu = Math.floor(u * 4 + Math.sqrt(u) * 6);
+    return { v: pv, h: ph, c: pc, u: pu, total: pv + ph + pc + pu };
   }
 
   var STAR_SVG = '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" '
@@ -129,86 +127,57 @@
     + '<polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>'
     + '</svg>';
 
-  function renderBadgesHtml(s) {
+  var HANDSHAKE_SVG = '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+    + '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>'
+    + '<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>'
+    + '</svg>';
+
+  function renderBadgesHtml(s, data) {
+    var rep = computeReputation(s);
     var parts = [];
 
-    var rep = computeReputation(s);
-    if (rep > 0) {
+    // Reputação total (primeiro — destaque)
+    if (rep.total > 0) {
       parts.push(
-        '<div class="ps-badge-item" data-tier="rep" title="Reputação: ' + rep + '">'
+        '<div class="ps-badge-item" data-tier="rep" title="reputação: vis·h·cmt·up">'
         + STAR_SVG
-        + '<strong class="ps-badge-value">' + rep + '</strong>'
+        + '<strong class="ps-badge-value">' + rep.total + '</strong>'
         + '</div>'
       );
     }
 
+    // Badges de atividade
     BADGE_DEFS.forEach(function(b) {
       if (b.test(s)) {
         parts.push(
           '<div class="ps-badge-item" data-tier="' + b.id + '" title="' + b.title + '">'
-          + b.svg
-          + '</div>'
+          + b.svg + '</div>'
         );
       }
     });
 
-    return parts.join('');
-  }
+    // Badge especial: todas as 3 redes conectadas (gmail + github + twitter)
+    if (data && data.email_connected && (data.github && data.github.trim()) && (data.twitter && data.twitter.trim())) {
+      parts.push(
+        '<div class="ps-badge-item" data-tier="conectado" title="gmail + github + twitter conectados">'
+        + HANDSHAKE_SVG
+        + '<span class="ps-badge-label">conectado</span>'
+        + '</div>'
+      );
+    }
 
-  // ── Badges de redes sociais conectadas ───────────────────────────────────
+    // Breakdown individual abaixo dos badges
+    if (rep.total > 0) {
+      parts.push(
+        '<div class="ps-rep-breakdown">'
+        + 'vis <span>+' + rep.v + '</span>'
+        + ' · h <span>+' + rep.h + '</span>'
+        + ' · cmt <span>+' + rep.c + '</span>'
+        + ' · up <span>+' + rep.u + '</span>'
+        + '</div>'
+      );
+    }
 
-  var SOCIAL_BADGE_DEFS = [
-    {
-      service: 'email',
-      connected: function(d) { return !!d.email_connected; },
-      label: 'organizado',
-      tier: 'social-email',
-      svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'
-        + '<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>'
-        + '<path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>'
-        + '</svg>',
-    },
-    {
-      service: 'github',
-      connected: function(d) { return !!(d.github && d.github.trim()); },
-      label: 'desenvolvedor',
-      tier: 'social-github',
-      svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
-        + '<polyline points="16 18 22 12 16 6"/>'
-        + '<polyline points="8 6 2 12 8 18"/>'
-        + '</svg>',
-    },
-    {
-      service: 'instagram',
-      connected: function(d) { return !!(d.instagram && d.instagram.trim()); },
-      label: 'vaidoso',
-      tier: 'social-instagram',
-      svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
-        + '<polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>'
-        + '</svg>',
-    },
-    {
-      service: 'twitter',
-      connected: function(d) { return !!(d.twitter && d.twitter.trim()); },
-      label: 'comunicativo',
-      tier: 'social-twitter',
-      svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
-        + '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'
-        + '</svg>',
-    },
-  ];
-
-  function renderSocialBadgesHtml(data) {
-    var parts = [];
-    SOCIAL_BADGE_DEFS.forEach(function(b) {
-      if (b.connected(data)) {
-        parts.push(
-          '<div class="ps-badge-item" data-tier="' + b.tier + '" title="' + b.label + '">'
-          + b.svg
-          + '</div>'
-        );
-      }
-    });
     return parts.join('');
   }
 
@@ -500,15 +469,13 @@
     // Badges — reputação/atividade + redes conectadas (mesmo container)
     var badgesEl = document.getElementById('pc-badges');
     if (badgesEl) {
-      badgesEl.innerHTML =
-        renderBadgesHtml({
-          visits:           data.visits_count      || 0,
-          total_time_spent: data.total_time_spent  || 0,
-          comments:         comments,
-          upvotes:          upvotes,
-          first_seen:       data.first_seen        || null,
-        })
-        + renderSocialBadgesHtml(data);
+      badgesEl.innerHTML = renderBadgesHtml({
+        visits:           data.visits_count      || 0,
+        total_time_spent: data.total_time_spent  || 0,
+        comments:         comments,
+        upvotes:          upvotes,
+        first_seen:       data.first_seen        || null,
+      }, data);
     }
 
     // Social icons
@@ -557,7 +524,7 @@
         + ' <span class="t-cmd">tail -f /home/' + esc(username) + '/action.log</span>'
         + '</div>';
 
-      var fingerprintEntry = '<div class="profile-activity-item">'
+      var fingerprintEntry = '<div class="profile-activity-item" id="pc-fingerprint-entry">'
         + '<span class="pal-ts t-gray">[' + esc(fpTs) + ']</span>'
         + '<span class="pal-content">'
         + '<span class="pal-verb">' + esc(fpShort) + '</span>'
@@ -578,7 +545,7 @@
         .then(function(actData) {
           var log  = document.getElementById('pc-log');
           if (!log) return;
-          var acts = (actData.activities || []).slice(0, 10).reverse();
+          var acts = (actData.activities || []).slice(0, 10);
           if (!acts.length) return;
 
           var typeIcon  = { comment: '›', like: '♥', upvote: '▲' };
@@ -604,7 +571,12 @@
               + '</div>';
           }).join('');
 
-          log.insertAdjacentHTML('beforeend', items);
+          var fpEntry = document.getElementById('pc-fingerprint-entry');
+          if (fpEntry) {
+            fpEntry.insertAdjacentHTML('beforebegin', items);
+          } else {
+            log.insertAdjacentHTML('beforeend', items);
+          }
         }).catch(function() {});
     }
   }
