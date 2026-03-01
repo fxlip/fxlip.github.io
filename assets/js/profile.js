@@ -10,8 +10,24 @@
   var NAME_KEY    = 'fxlip_visitor_name';
   var USERNAME_RE = /^[a-z0-9à-ú][a-z0-9à-ú-]{0,28}[a-z0-9à-ú]?$/;
 
-  // Avatar padrão — silhueta estilo WhatsApp (Dracula palette)
-  var DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' rx='40' fill='%23282a36'/%3E%3Ccircle cx='40' cy='29' r='14' fill='%2344475a'/%3E%3Cellipse cx='40' cy='70' rx='25' ry='17' fill='%2344475a'/%3E%3C/svg%3E";
+  // Avatar padrão — silhueta com cor de fundo determinística por username
+  var AVATAR_BG_COLORS = ['#6e1d3e', '#6e4e27', '#3a327b', '#15603f', '#064b6c'];
+
+  function pickAvatarBg(str) {
+    var n = 0;
+    for (var i = 0; i < str.length; i++) n = (n + str.charCodeAt(i)) & 0xffff;
+    return AVATAR_BG_COLORS[n % AVATAR_BG_COLORS.length];
+  }
+
+  function makeDefaultAvatar(username) {
+    var bg  = pickAvatarBg(username || '');
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">'
+      + '<rect width="80" height="80" rx="40" fill="' + bg + '"/>'
+      + '<circle cx="40" cy="29" r="14" fill="#fff" fill-opacity="0.35"/>'
+      + '<ellipse cx="40" cy="70" rx="25" ry="17" fill="#fff" fill-opacity="0.35"/>'
+      + '</svg>';
+    return 'data:image/svg+xml,' + encodeURIComponent(svg);
+  }
 
   var pathSegment = location.pathname.slice(1).split('/')[0].toLowerCase();
 
@@ -435,17 +451,22 @@
                  + ((data.interactions && data.interactions.upvotes) || 0);
 
     // Avatar
-    var avatar = document.getElementById('pc-avatar');
-    avatar.alt = '@' + username;
-    if (data.has_avatar) {
-      avatar.src = WORKER_URL + '/api/user/' + encodeURIComponent(username) + '/avatar';
-      avatar.onerror = function() { this.onerror = null; this.src = DEFAULT_AVATAR; };
-    } else if (data.email_connected && data.gravatar_hash !== '00000000000000000000000000000000') {
-      avatar.src = 'https://www.gravatar.com/avatar/' + data.gravatar_hash + '?s=80&d=404';
-      avatar.onerror = function() { this.onerror = null; this.src = DEFAULT_AVATAR; };
-    } else {
-      avatar.src = DEFAULT_AVATAR;
-    }
+    var avatar    = document.getElementById('pc-avatar');
+    var svgFallback = makeDefaultAvatar(username);
+    avatar.alt  = '@' + username;
+
+    // 1ª tentativa: arquivo estático files/img/avatar/{username}.png
+    avatar.src = '/files/img/avatar/' + encodeURIComponent(username) + '.png';
+    avatar.onerror = function() {
+      this.onerror = null;
+      // 2ª tentativa: avatar personalizado no worker
+      if (data.has_avatar && WORKER_URL) {
+        this.src = WORKER_URL + '/api/user/' + encodeURIComponent(username) + '/avatar';
+        this.onerror = function() { this.onerror = null; this.src = svgFallback; };
+      } else {
+        this.src = svgFallback;
+      }
+    };
 
     // Nome + badge [você]
     var nameEl = document.getElementById('pc-name');
