@@ -299,10 +299,9 @@
     if (!socials) return;
 
     var serviceMap = {
-      email:     { key: 'email_connected', url: null, boolCheck: true },
-      github:    { key: 'github',    url: 'https://github.com/' },
-      instagram: { key: 'instagram', url: 'https://instagram.com/' },
-      twitter:   { key: 'twitter',   url: 'https://x.com/' },
+      email:   { key: 'email_connected', url: null, boolCheck: true },
+      github:  { key: 'github',  url: 'https://github.com/' },
+      twitter: { key: 'twitter', url: 'https://x.com/' },
     };
 
     socials.querySelectorAll('.ps-social-btn').forEach(function(btn) {

@@ -129,17 +129,13 @@
   opacity: 0.6;
 }
 
-// ── Gender picker (centralizado sobre o avatar) ────────────────────────
+// ── Gender picker (inline nos ícones sociais) ──────────────────────────
 
 .ps-gender-picker {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: row;
   gap: 4px;
-  z-index: 2;
+  align-items: center;
 }
 
 .ps-gender-picker.ps-gender-no-anim,
@@ -163,12 +159,11 @@
 .ps-gender-btn.selected { order: -1; }
 
 .ps-gender-btn {
-  width: 24px;
-  height: 24px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  border: 1.5px solid var(--border-color);
-  background: rgba(15, 14, 20, 0.82);
-  backdrop-filter: blur(4px);
+  border: 1px solid var(--border-color);
+  background: transparent;
   color: var(--muted-color);
   cursor: pointer;
   display: flex;
@@ -185,8 +180,8 @@
   overflow: hidden;
 
   svg {
-    width: 12px;
-    height: 12px;
+    width: 17px;
+    height: 17px;
     flex-shrink: 0;
     transition: transform 0.25s cubic-bezier(.34, 1.56, .64, 1);
   }
@@ -194,7 +189,8 @@
   &:hover {
     color: var(--text-color);
     border-color: var(--muted-color);
-    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.04);
+    transform: translateY(-2px);
   }
 
   &:active { transform: scale(0.9); }
@@ -202,8 +198,8 @@
   &.selected {
     color: var(--link-hover-color);
     border-color: var(--link-hover-color);
-    background: rgba(189, 147, 249, 0.18);
-    box-shadow: 0 0 8px rgba(189, 147, 249, 0.35);
+    background: rgba(189, 147, 249, 0.1);
+    box-shadow: 0 0 10px rgba(189, 147, 249, 0.25);
     animation: ps-gender-pop 0.35s cubic-bezier(.34, 1.56, .64, 1);
 
     svg { transform: scale(1.15); }
@@ -682,11 +678,12 @@
     gap: 6px;
   }
 
-  .ps-social-btn {
+  .ps-social-btn,
+  .ps-gender-btn {
     width: 36px;
     height: 36px;
 
-    svg { width: 17px; height: 17px; }
+    svg { width: 15px; height: 15px; }
   }
 
   .ps-stats {
