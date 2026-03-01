@@ -355,6 +355,13 @@ document.addEventListener("DOMContentLoaded", function() {
         body: JSON.stringify({ fingerprint: fp, name: storedName }),
       }).then(function(res) { return res.json(); })
         .then(function(data) {
+          // Perfil deletado pelo admin: limpa cache local e volta ao prompt
+          if (data.account_deleted) {
+            try { localStorage.removeItem(NAME_KEY); } catch (_) {}
+            try { localStorage.removeItem(HELLO_CACHE_KEY); } catch (_) {}
+            renderNamePrompt(fp);
+            return;
+          }
           setHelloCache(data);
           renderGreeting(data);
         });
