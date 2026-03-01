@@ -342,29 +342,34 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
       }
 
-      // Cache de 10 min para evitar hello em toda página
+      // Render imediato do cache (UX instantânea) enquanto API verifica em background
       var cachedHello = getHelloCache();
       if (cachedHello) {
         renderGreeting(cachedHello);
-        return;
       }
 
-      return fetch(WORKER_URL + "/api/hello", {
+      // SEMPRE consulta a API quando há nome — detecta deleção mesmo com cache válido
+      fetchWithTimeout(WORKER_URL + "/api/hello", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fingerprint: fp, name: storedName }),
       }).then(function(res) { return res.json(); })
         .then(function(data) {
-          // Perfil deletado pelo admin: limpa cache local e volta ao prompt
+          // Perfil deletado pelo admin: limpa cache local e recarrega para mostrar prompt
           if (data.account_deleted) {
             try { localStorage.removeItem(NAME_KEY); } catch (_) {}
             try { localStorage.removeItem(HELLO_CACHE_KEY); } catch (_) {}
-            renderNamePrompt(fp);
+            location.reload();
             return;
           }
           setHelloCache(data);
-          renderGreeting(data);
+          // Só renderiza se não usou o cache (evita re-render desnecessário)
+          if (!cachedHello) renderGreeting(data);
+        })
+        .catch(function() {
+          if (!cachedHello) renderGreeting({ name: storedName });
         });
+      return;
     }).catch(function() {
       if (storedName) {
         renderGreeting({ name: storedName });
