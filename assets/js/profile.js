@@ -230,7 +230,7 @@
 
   // ── Social icons — lista com info à direita ───────────────────────────────
 
-  function setupSocialIcons(data, isMine) {
+  function setupSocialIcons(data, isMine, fingerprint) {
     var socials = document.getElementById('pc-social');
     if (!socials) return;
 
@@ -271,9 +271,88 @@
         } else if (hasValue && svc === 'email') {
           window.location.href = 'mailto:' + val;
         } else if (isMine && !hasValue) {
-          console.log('[profile] OAuth connect →', svc);
+          if (svc === 'email') {
+            startOAuth('google', fingerprint);
+          } else if (svc === 'github') {
+            startOAuth('github', fingerprint);
+          } else if (svc === 'twitter') {
+            startOAuth('twitter', fingerprint);
+          } else if (svc === 'instagram') {
+            showInstagramInput(btn, fingerprint, socials);
+          }
         }
       });
+    });
+  }
+
+  // ── OAuth: redireciona para provider via /api/auth/start ─────────────────
+
+  function startOAuth(provider, fingerprint) {
+    if (!WORKER_URL || !fingerprint) return;
+    fetch(WORKER_URL + '/api/auth/start?provider=' + provider + '&fingerprint=' + encodeURIComponent(fingerprint))
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data.url) {
+          window.location.href = data.url;
+        } else {
+          console.warn('[profile] auth/start error:', data && data.error);
+        }
+      })
+      .catch(function(err) { console.warn('[profile] auth/start failed', err); });
+  }
+
+  // ── Instagram: input inline (sem OAuth) ──────────────────────────────────
+
+  function showInstagramInput(btn, fingerprint, container) {
+    // Evita duplicatas
+    if (container.querySelector('.ps-ig-input-wrap')) return;
+
+    var wrap  = document.createElement('div');
+    wrap.className = 'ps-ig-input-wrap';
+
+    var input = document.createElement('input');
+    input.type        = 'text';
+    input.placeholder = '@handle';
+    input.maxLength   = 30;
+    input.className   = 'ps-ig-input';
+
+    var cancel = document.createElement('button');
+    cancel.textContent = '✕';
+    cancel.className   = 'ps-ig-cancel';
+    cancel.addEventListener('click', function() { wrap.remove(); });
+
+    wrap.appendChild(input);
+    wrap.appendChild(cancel);
+    btn.insertAdjacentElement('afterend', wrap);
+    input.focus();
+
+    function save() {
+      var handle = input.value.replace(/^@/, '').replace(/[^a-zA-Z0-9._]/g, '').substring(0, 30);
+      if (!handle) return;
+      if (!WORKER_URL) return;
+      fetch(WORKER_URL + '/api/profile', {
+        method:  'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ fingerprint: fingerprint, instagram: handle }),
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(res) {
+          if (res.ok) {
+            wrap.remove();
+            // Atualiza o botão localmente sem recarregar a página
+            btn.dataset.active = 'true';
+            var infoEl = btn.querySelector('.ps-social-info');
+            if (infoEl) infoEl.textContent = '@' + handle;
+          } else {
+            console.warn('[profile] instagram save error:', res.error);
+          }
+        })
+        .catch(function(err) { console.warn('[profile] instagram save failed', err); });
+    }
+
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') save();
+      if (e.key === 'Escape') wrap.remove();
     });
   }
 
@@ -331,7 +410,7 @@
     }
 
     // Social icons
-    setupSocialIcons(data, isMine);
+    setupSocialIcons(data, isMine, fingerprint);
 
     // Gender picker (apenas owner)
     if (isMine) setupGenderPicker(username, fingerprint, data.gender || '');

@@ -315,6 +315,48 @@
   }
 }
 
+// ── Instagram input inline ─────────────────────────────────────────────
+
+.ps-ig-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.ps-ig-input {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-color);
+  font-family: inherit;
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  outline: none;
+  width: 140px;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    border-color: var(--link-color);
+  }
+
+  &::placeholder {
+    color: var(--muted-color);
+    opacity: 0.6;
+  }
+}
+
+.ps-ig-cancel {
+  background: transparent;
+  border: none;
+  color: var(--muted-color);
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 2px 4px;
+
+  &:hover { color: var(--text-color); }
+}
+
 // ── Stats ──────────────────────────────────────────────────────────────
 
 .ps-stats {
