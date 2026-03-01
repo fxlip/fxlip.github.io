@@ -534,7 +534,7 @@
         + '</div>';
 
       section.innerHTML = '<div class="profile-activity-log" id="pc-log">'
-        + tailCmd + fingerprintEntry
+        + tailCmd
         + '</div>';
     }
 
@@ -546,7 +546,6 @@
           var log  = document.getElementById('pc-log');
           if (!log) return;
           var acts = (actData.activities || []).slice(0, 10);
-          if (!acts.length) return;
 
           var typeIcon  = { comment: '›', like: '♥', upvote: '▲' };
           var typeLabel = { comment: 'comentou', like: 'curtiu', upvote: 'upvotou' };
@@ -571,13 +570,11 @@
               + '</div>';
           }).join('');
 
-          var fpEntry = document.getElementById('pc-fingerprint-entry');
-          if (fpEntry) {
-            fpEntry.insertAdjacentHTML('beforebegin', items);
-          } else {
-            log.insertAdjacentHTML('beforeend', items);
-          }
-        }).catch(function() {});
+          log.insertAdjacentHTML('beforeend', items + fingerprintEntry);
+        }).catch(function() {
+          var log = document.getElementById('pc-log');
+          if (log) log.insertAdjacentHTML('beforeend', fingerprintEntry);
+        });
     }
   }
 
