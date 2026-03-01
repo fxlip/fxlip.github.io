@@ -295,23 +295,6 @@
       box-shadow: 0 0 14px rgba(189, 147, 249, 0.25);
     }
 
-    // Check badge
-    &::after {
-      content: '✓';
-      position: absolute;
-      top: -3px;
-      right: -3px;
-      width: 13px;
-      height: 13px;
-      font-size: 7px;
-      background: var(--link-color);
-      color: #fff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-    }
   }
 }
 
@@ -506,6 +489,51 @@
   color: #ffb86c;
 
   .ps-badge-icon { filter: drop-shadow(0 0 5px rgba(255, 184, 108, 0.45)); }
+}
+
+// ── Badges de redes sociais conectadas ────────────────────────────────
+
+.ps-social-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 10px;
+  min-height: 0;
+
+  &:empty { display: none; margin: 0; padding: 0; }
+}
+
+.ps-badge-item[data-tier="social-email"] {
+  background: rgba(255, 85, 85, 0.06);
+  border: 1px solid rgba(255, 85, 85, 0.28);
+  color: #ff6e6e;
+
+  .ps-badge-icon { filter: drop-shadow(0 0 5px rgba(255, 85, 85, 0.4)); }
+}
+
+.ps-badge-item[data-tier="social-github"] {
+  background: rgba(139, 233, 253, 0.06);
+  border: 1px solid rgba(139, 233, 253, 0.28);
+  color: var(--accent-cyan);
+
+  .ps-badge-icon { filter: drop-shadow(0 0 5px rgba(139, 233, 253, 0.4)); }
+}
+
+.ps-badge-item[data-tier="social-instagram"] {
+  background: rgba(189, 147, 249, 0.06);
+  border: 1px solid rgba(189, 147, 249, 0.28);
+  color: var(--link-hover-color);
+
+  .ps-badge-icon { filter: drop-shadow(0 0 5px rgba(189, 147, 249, 0.4)); }
+}
+
+.ps-badge-item[data-tier="social-twitter"] {
+  background: rgba(80, 250, 123, 0.06);
+  border: 1px solid rgba(80, 250, 123, 0.28);
+  color: var(--green);
+
+  .ps-badge-icon { filter: drop-shadow(0 0 5px rgba(80, 250, 123, 0.4)); }
 }
 
 @keyframes ps-badge-glow-rep {

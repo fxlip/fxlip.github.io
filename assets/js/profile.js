@@ -44,25 +44,31 @@
       + '?s=' + (size || 80) + '&d=identicon';
   }
 
-  // ── Detecção de dispositivo/OS ─────────────────────────────────────────────
+  // ── Detecção de dispositivo/OS/browser ────────────────────────────────────
 
-  function detectDevice() {
+  function detectOSLabel() {
     var ua = navigator.userAgent || '';
     var pf = navigator.platform  || '';
 
-    // Mobile — ordem importa (iPad pode ter "Mac" no UA em iPadOS)
-    if (/iPhone/i.test(ua))                      return 'iPhone · iOS';
-    if (/iPad/i.test(ua) || (/Mac/i.test(ua) && navigator.maxTouchPoints > 1))
-                                                  return 'iPad · iOS';
-    if (/Android/i.test(ua) && /Mobile/i.test(ua)) return 'Android · mobile';
-    if (/Android/i.test(ua))                      return 'Android · tablet';
+    if (/iPhone/i.test(ua))                                                    return 'iPhone';
+    if (/iPad/i.test(ua) || (/Mac/i.test(ua) && navigator.maxTouchPoints > 1)) return 'iPad';
+    if (/Android/i.test(ua))                                                   return 'Android';
+    if (/Windows/i.test(ua) || /Win/i.test(pf))                               return 'Windows';
+    if (/Mac OS X/i.test(ua) || /Mac/i.test(pf))                              return 'macOS';
+    if (/Linux/i.test(ua)   || /Linux/i.test(pf))                             return 'Linux';
+    return 'dispositivo';
+  }
 
-    // Desktop OS
-    if (/Windows/i.test(ua) || /Win/i.test(pf))  return 'Windows';
-    if (/Mac OS X/i.test(ua) || /Mac/i.test(pf))  return 'macOS';
-    if (/Linux/i.test(ua)   || /Linux/i.test(pf)) return 'Linux';
-
-    return 'desconhecido';
+  function detectBrowser() {
+    var ua = navigator.userAgent || '';
+    if (/Firefox\//i.test(ua))                                                           return 'Firefox';
+    if (/Edg\//i.test(ua))                                                               return 'Edge';
+    if (/OPR\/|Opera/i.test(ua))                                                         return 'Opera';
+    if (/SamsungBrowser/i.test(ua))                                                      return 'Samsung';
+    if (/Chrome\//i.test(ua) && !/Chromium/i.test(ua) && !/Edg/i.test(ua) && !/OPR/i.test(ua)) return 'Chrome';
+    if (/Chromium/i.test(ua))                                                            return 'Chromium';
+    if (/Safari\//i.test(ua) && !/Chrome/i.test(ua))                                    return 'Safari';
+    return 'navegador';
   }
 
   // ── Badges ────────────────────────────────────────────────────────────────
@@ -144,6 +150,64 @@
       }
     });
 
+    return parts.join('');
+  }
+
+  // ── Badges de redes sociais conectadas ───────────────────────────────────
+
+  var SOCIAL_BADGE_DEFS = [
+    {
+      service: 'email',
+      connected: function(d) { return !!d.email_connected; },
+      label: 'organizado',
+      tier: 'social-email',
+      svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'
+        + '<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>'
+        + '<path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>'
+        + '</svg>',
+    },
+    {
+      service: 'github',
+      connected: function(d) { return !!(d.github && d.github.trim()); },
+      label: 'desenvolvedor',
+      tier: 'social-github',
+      svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+        + '<polyline points="16 18 22 12 16 6"/>'
+        + '<polyline points="8 6 2 12 8 18"/>'
+        + '</svg>',
+    },
+    {
+      service: 'instagram',
+      connected: function(d) { return !!(d.instagram && d.instagram.trim()); },
+      label: 'vaidoso',
+      tier: 'social-instagram',
+      svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+        + '<polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>'
+        + '</svg>',
+    },
+    {
+      service: 'twitter',
+      connected: function(d) { return !!(d.twitter && d.twitter.trim()); },
+      label: 'comunicativo',
+      tier: 'social-twitter',
+      svg: '<svg class="ps-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+        + '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'
+        + '</svg>',
+    },
+  ];
+
+  function renderSocialBadgesHtml(data) {
+    var parts = [];
+    SOCIAL_BADGE_DEFS.forEach(function(b) {
+      if (b.connected(data)) {
+        parts.push(
+          '<div class="ps-badge-item" data-tier="' + b.tier + '" title="' + b.label + '">'
+          + b.svg
+          + '<span class="ps-badge-label">' + b.label + '</span>'
+          + '</div>'
+        );
+      }
+    });
     return parts.join('');
   }
 
@@ -235,7 +299,7 @@
     if (!socials) return;
 
     var serviceMap = {
-      email:     { key: 'email',     url: null },
+      email:     { key: 'email_connected', url: null, boolCheck: true },
       github:    { key: 'github',    url: 'https://github.com/' },
       instagram: { key: 'instagram', url: 'https://instagram.com/' },
       twitter:   { key: 'twitter',   url: 'https://x.com/' },
@@ -247,7 +311,7 @@
       if (!conf) return;
 
       var val      = data[conf.key];
-      var hasValue = !!(val && val.trim && val.trim());
+      var hasValue = conf.boolCheck ? !!val : !!(val && val.trim && val.trim());
 
       btn.dataset.active = hasValue ? 'true' : 'false';
 
@@ -397,7 +461,7 @@
     document.getElementById('pc-comments').textContent = String(comments);
     document.getElementById('pc-upvotes').textContent  = String(upvotes);
 
-    // Badges
+    // Badges de reputação/atividade
     var badgesEl = document.getElementById('pc-badges');
     if (badgesEl) {
       badgesEl.innerHTML = renderBadgesHtml({
@@ -407,6 +471,12 @@
         upvotes:          upvotes,
         first_seen:       data.first_seen        || null,
       });
+    }
+
+    // Badges de redes sociais conectadas
+    var socialBadgesEl = document.getElementById('pc-social-badges');
+    if (socialBadgesEl) {
+      socialBadgesEl.innerHTML = renderSocialBadgesHtml(data);
     }
 
     // Social icons
@@ -420,76 +490,38 @@
     document.getElementById('profile-card').hidden     = false;
     document.title = '@' + username;
 
-    // ── Log completo do perfil (síncrono) ─────────────────────────────────
+    // ── Log de atividade (síncrono: monta container + entrada de first_seen) ──
     var section = document.getElementById('profile-activity-section');
     if (section) {
-      var device    = detectDevice();
-      var fpShort   = fingerprint ? fingerprint.substring(0, 16) + '…' : '—';
-      var firstFull = formatDateFull(data.first_seen);
-      var genderMap = { m: 'masculino', f: 'feminino', nb: 'não-binário' };
-      var genderStr = data.gender ? (genderMap[data.gender] || data.gender) : '—';
-      var geo2      = [data.city, data.country].filter(Boolean).join(', ') || '—';
+      var browser = detectBrowser();
+      var osLabel = detectOSLabel();
+      var city    = data.city || 'local desconhecido';
 
-      // Linha de entrada: chave · valor
-      function row(key, val) {
-        return '<div class="pal-sys-entry">'
-          + '<span class="pal-sys-key t-gray">' + esc(key) + '</span>'
-          + '<span class="pal-sys-sep t-gray">·</span>'
-          + '<span class="pal-sys-val">'        + esc(String(val)) + '</span>'
-          + '</div>';
-      }
+      var firstSeenDate = data.first_seen ? new Date(data.first_seen) : null;
+      var fpTs = firstSeenDate
+        ? firstSeenDate.toLocaleString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }).replace(',', '')
+        : '--';
 
-      // Cabeçalho de seção
-      function sec(label) {
-        return '<div class="pal-section t-gray"># ' + label + '</div>';
-      }
+      var tailCmd = '<div class="pal-cmd">'
+        + '<span class="t-user">fxlip</span>'
+        + '<span class="t-gray">@</span><span class="t-host">www</span>'
+        + '<span class="t-gray">:</span><span class="t-path">~</span>'
+        + '<span class="t-gray">$</span>'
+        + ' <span class="t-cmd">tail /home/' + esc(username) + '/action.log</span>'
+        + '</div>';
 
-      // Prompt de comando do terminal
-      function cmd(command) {
-        return '<div class="pal-cmd">'
-          + '<span class="t-user">fxlip</span>'
-          + '<span class="t-gray">@</span><span class="t-host">www</span>'
-          + '<span class="t-gray">:</span><span class="t-path">~</span>'
-          + '<span class="t-gray">$</span> <span class="t-cmd">' + command + '</span>'
-          + '</div>';
-      }
+      var fingerprintEntry = '<div class="profile-activity-item">'
+        + '<span class="pal-ts t-gray">[' + esc(fpTs) + ']</span>'
+        + '<span class="pal-content">'
+        + '<span class="pal-verb">fingerprint</span>'
+        + ' entrou usando um ' + esc(browser) + ' no ' + esc(osLabel) + ' em ' + esc(city)
+        + '</span>'
+        + '<span class="pal-type-icon">⌁</span>'
+        + '</div>';
 
-      // Conquistas: rep + badges
-      var badgeStats = {
-        visits:           data.visits_count     || 0,
-        total_time_spent: data.total_time_spent || 0,
-        comments:         comments,
-        upvotes:          upvotes,
-        first_seen:       data.first_seen       || null,
-      };
-      var rep = computeReputation(badgeStats);
-      var earnedLabels = BADGE_DEFS
-        .filter(function(b) { return b.test(badgeStats); })
-        .map(function(b) { return b.label; });
-      var allBadges = (rep > 0 ? ['rep(' + rep + ')'] : []).concat(earnedLabels);
-
-      var profileHtml = cmd('cat /home/' + esc(username) + '/.profile')
-        + sec('identidade')
-        + row('username',     '@' + username)
-        + row('local',        geo2)
-        + row('gênero',       genderStr)
-        + row('membro desde', firstFull)
-        + row('plataforma',   device)
-        + row('fingerprint',  fpShort)
-        + sec('atividade')
-        + row('visitas',      (data.visits_count || 0).toLocaleString('pt-BR'))
-        + row('tempo no site', formatTime(data.total_time_spent))
-        + row('comentários',  String(comments))
-        + row('upvotes',      String(upvotes))
-        + sec('redes sociais')
-        + row('email',        (data.email     && data.email.trim())    || '—')
-        + row('github',       data.github    ? '@' + data.github    : '—')
-        + row('instagram',    data.instagram ? '@' + data.instagram : '—')
-        + row('twitter',      data.twitter   ? '@' + data.twitter   : '—')
-        + sec('conquistas')
-        + row('badges',       allBadges.length ? allBadges.join('  ') : '—');
-
-      section.innerHTML = '<div class="profile-activity-log" id="pc-log">' + profileHtml + '</div>';
+      section.innerHTML = '<div class="profile-activity-log" id="pc-log">'
+        + tailCmd + fingerprintEntry
+        + '</div>';
     }
 
     // ── Atividade recente (async) ──────────────────────────────────────────
@@ -504,14 +536,6 @@
 
           var typeIcon  = { comment: '›', like: '♥', upvote: '▲' };
           var typeLabel = { comment: 'comentou', like: 'curtiu', upvote: 'upvotou' };
-
-          var tailCmd = '<div class="pal-cmd" style="margin-top:10px">'
-            + '<span class="t-user">fxlip</span>'
-            + '<span class="t-gray">@</span><span class="t-host">www</span>'
-            + '<span class="t-gray">:</span><span class="t-path">~</span>'
-            + '<span class="t-gray">$</span>'
-            + ' <span class="t-cmd">tail /home/' + esc(username) + '/action.log</span>'
-            + '</div>';
 
           var items = acts.map(function(a) {
             var d     = a.created_at ? new Date(a.created_at) : null;
@@ -533,7 +557,7 @@
               + '</div>';
           }).join('');
 
-          log.insertAdjacentHTML('beforeend', tailCmd + items);
+          log.insertAdjacentHTML('beforeend', items);
         }).catch(function() {});
     }
   }
