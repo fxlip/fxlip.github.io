@@ -10,17 +10,8 @@
   var NAME_KEY    = 'fxlip_visitor_name';
   var USERNAME_RE = /^[a-z0-9à-ú][a-z0-9à-ú-]{0,28}[a-z0-9à-ú]?$/;
 
-  // Avatar padrão — ghost SVG em base64 (mais confiável como src de <img>)
-  var DEFAULT_AVATAR_SRC = (function () {
-    var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="80" height="80">'
-      + '<path fill="#1e1d2e" d="M0 0h400v400H0z"/>'
-      + '<path fill="#c5c6d0" d="M315.23 188.67c0 66.58 27.24 83.98 27.24 115 0 17.4-37.07 4.54-52.2 13.62-14.38 7.56-8.32 19.67-28 27.23-15.13 6.06-34.04-19.67-53.71-19.67-16.65 0-46.15 21.94-59.77 15.13-13.62-6.81-12.86-30.26-34.05-31.77-15.89-2.27-56.74 20.43-56.74 3.02 0-21.94 24.97-45.39 24.97-122.56 0-74.14 52.2-134.67 116.51-134.67 63.55 0 115.75 60.53 115.75 134.67zm-154.34-68.09c-15.88 0-27.99 14.37-27.99 32.53 0 17.4 12.11 32.53 27.99 32.53 12.11 0 21.94-9.08 26.48-21.18 3.79 12.1 14.38 21.18 26.48 21.18 15.14 0 28-15.13 28-32.53 0-18.16-12.86-32.53-28-32.53-12.1 0-22.69 8.32-26.48 20.43-4.54-12.11-14.37-20.43-26.48-20.43zm24.97 82.46c-31.02 0-12.86 41.62 0 41.62 15.89 0 31.78-41.62 0-41.62z"/>'
-      + '</svg>';
-    return 'data:image/svg+xml;base64,' + btoa(svg);
-  }());
-
   function makeDefaultAvatar() {
-    return DEFAULT_AVATAR_SRC;
+    return '/assets/img/user.svg';
   }
 
   var pathSegment = location.pathname.slice(1).split('/')[0].toLowerCase();
@@ -530,9 +521,12 @@
       var picker = document.getElementById('pf-gender-picker');
       if (picker) {
         picker.querySelectorAll('.ps-gender-btn').forEach(function(btn) {
-          if (btn.dataset.value === data.gender) btn.classList.add('selected');
+          if (btn.dataset.value === data.gender) {
+            btn.classList.add('selected');
+          } else {
+            btn.style.display = 'none';
+          }
         });
-        picker.classList.add('ps-gender-collapsed', 'ps-gender-no-anim');
         picker.hidden = false;
       }
     }
@@ -560,7 +554,7 @@
         + '<span class="t-gray">@</span><span class="t-host">www</span>'
         + '<span class="t-gray">:</span><span class="t-path">~</span>'
         + '<span class="t-gray">$</span>'
-        + ' <span class="t-cmd">tail /home/' + esc(username) + '/action.log</span>'
+        + ' <span class="t-cmd">tail -f /home/' + esc(username) + '/action.log</span>'
         + '</div>';
 
       var fingerprintEntry = '<div class="profile-activity-item">'
@@ -584,7 +578,7 @@
         .then(function(actData) {
           var log  = document.getElementById('pc-log');
           if (!log) return;
-          var acts = (actData.activities || []).slice(0, 10);
+          var acts = (actData.activities || []).slice(0, 10).reverse();
           if (!acts.length) return;
 
           var typeIcon  = { comment: '›', like: '♥', upvote: '▲' };
