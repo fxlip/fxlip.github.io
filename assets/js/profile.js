@@ -484,18 +484,35 @@
     // ── Log de atividade (síncrono: monta container + entrada de first_seen) ──
     var section = document.getElementById('profile-activity-section');
     if (section) {
-      var browser  = data.ua_browser     || 'navegador desconhecido';
-      var osLabel  = data.ua_os          || 'sistema desconhecido';
-      var device   = data.ua_device_type || '';
-      var city     = data.city           || 'local desconhecido';
-      var fpShort  = data.fp_short       || '????????';
+      var city    = data.city     || 'local desconhecido';
+      var fpShort = data.fp_short || '????????';
 
-      var deviceSuffix = (device === 'mobile' || device === 'tablet') ? ' (' + device + ')' : '';
+      function buildDeviceLabel(uaOs, uaDevice, uaRaw) {
+        var raw = uaRaw || '';
+        if (uaDevice === 'mobile' || uaDevice === 'tablet') {
+          var iphone = raw.match(/iPhone OS (\d+)/);
+          if (iphone) return 'iPhone ' + iphone[1];
+          var ipad = raw.match(/OS (\d+)[_.].*?like Mac OS X/);
+          if (ipad && /iPad/.test(raw)) return 'iPad ' + ipad[1];
+          if (/Android/i.test(raw)) return 'Android';
+        }
+        return uaOs || 'dispositivo desconhecido';
+      }
+
+      var deviceLabel = buildDeviceLabel(data.ua_os, data.ua_device_type, data.ua_raw);
+
+      function fmtLogTs(d) {
+        if (!d) return '--';
+        var D  = String(d.getDate()).padStart(2, '0');
+        var M  = String(d.getMonth() + 1).padStart(2, '0');
+        var Y  = d.getFullYear();
+        var h  = String(d.getHours()).padStart(2, '0');
+        var mi = String(d.getMinutes()).padStart(2, '0');
+        return D + '-' + M + '-' + Y + '|' + h + ':' + mi;
+      }
 
       var firstSeenDate = data.first_seen ? new Date(data.first_seen) : null;
-      var fpTs = firstSeenDate
-        ? firstSeenDate.toLocaleString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }).replace(',', '')
-        : '--';
+      var fpTs = fmtLogTs(firstSeenDate);
 
       var tailCmd = '<div class="pal-cmd">'
         + '<span class="t-user">fxlip</span>'
@@ -509,7 +526,7 @@
         + '<span class="pal-ts t-gray">[' + esc(fpTs) + ']</span>'
         + '<span class="pal-content">'
         + '<span class="pal-verb">' + esc(fpShort) + '</span>'
-        + ' entrou usando um ' + esc(browser) + ' no ' + esc(osLabel) + esc(deviceSuffix) + ' em ' + esc(city)
+        + ' entrou usando um ' + esc(deviceLabel) + ', de ' + esc(city)
         + '</span>'
         + '<span class="pal-type-icon">⌁</span>'
         + '</div>';
@@ -533,7 +550,7 @@
 
           var items = acts.map(function(a) {
             var d     = a.created_at ? new Date(a.created_at) : null;
-            var ts    = d ? d.toLocaleString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }).replace(',', '') : '--';
+            var ts    = fmtLogTs(d);
             var icon  = typeIcon[a.type]  || '·';
             var verb  = typeLabel[a.type] || a.type;
             var quote = a.content
