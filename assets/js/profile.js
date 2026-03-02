@@ -239,12 +239,14 @@
           }
         });
 
-        requestAnimationFrame(function() {
+        btn.classList.add('ps-gender-pulsing');
+        setTimeout(function() {
+          btn.classList.remove('ps-gender-pulsing');
           btn.classList.add('selected');
           selected = val;
           picker.classList.add('ps-gender-collapsed');
           saveGender(username, fingerprint, val);
-        });
+        }, 380);
       });
     });
   }

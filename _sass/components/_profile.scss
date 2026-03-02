@@ -235,6 +235,47 @@
   100% { transform: scale(1); }
 }
 
+// Cores por gênero — estado selecionado
+.ps-gender-btn.selected[data-value="m"] {
+  color: #bd93f9; border-color: #bd93f9;
+  background: rgba(189, 147, 249, 0.1);
+  box-shadow: 0 0 10px rgba(189, 147, 249, 0.25);
+  &::after { border-color: #bd93f9; }
+}
+.ps-gender-btn.selected[data-value="f"] {
+  color: #ff79c6; border-color: #ff79c6;
+  background: rgba(255, 121, 198, 0.1);
+  box-shadow: 0 0 10px rgba(255, 121, 198, 0.25);
+  &::after { border-color: #ff79c6; }
+}
+.ps-gender-btn.selected[data-value="nb"] {
+  color: #d98af7; border-color: #d98af7;
+  background: linear-gradient(135deg, rgba(255, 121, 198, 0.07), rgba(189, 147, 249, 0.07));
+  box-shadow: 0 0 10px rgba(217, 138, 247, 0.25);
+  &::after { border-color: #d98af7; }
+}
+
+// Pulso ao selecionar
+.ps-gender-btn.ps-gender-pulsing[data-value="m"]  { animation: ps-gender-pulse-m  0.42s ease-out; }
+.ps-gender-btn.ps-gender-pulsing[data-value="f"]  { animation: ps-gender-pulse-f  0.42s ease-out; }
+.ps-gender-btn.ps-gender-pulsing[data-value="nb"] { animation: ps-gender-pulse-nb 0.42s ease-out; }
+
+@keyframes ps-gender-pulse-m {
+  0%   { box-shadow: 0 0 0 0   rgba(189, 147, 249, 0.65); }
+  55%  { box-shadow: 0 0 0 11px rgba(189, 147, 249, 0.2); }
+  100% { box-shadow: 0 0 0 16px rgba(189, 147, 249, 0);   }
+}
+@keyframes ps-gender-pulse-f {
+  0%   { box-shadow: 0 0 0 0   rgba(255, 121, 198, 0.65); }
+  55%  { box-shadow: 0 0 0 11px rgba(255, 121, 198, 0.2); }
+  100% { box-shadow: 0 0 0 16px rgba(255, 121, 198, 0);   }
+}
+@keyframes ps-gender-pulse-nb {
+  0%   { box-shadow: 0 0 0 0   rgba(217, 138, 247, 0.65); }
+  55%  { box-shadow: 0 0 0 11px rgba(217, 138, 247, 0.2); }
+  100% { box-shadow: 0 0 0 16px rgba(217, 138, 247, 0);   }
+}
+
 // ── Social icons — linha horizontal de ícones maiores ─────────────────
 
 .ps-socials {
