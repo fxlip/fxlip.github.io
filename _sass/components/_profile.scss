@@ -10,7 +10,8 @@
   gap: 12px;
   white-space: normal; // reset white-space herdado do .t-out (pre-wrap)
 }
-.ps[hidden] { display: none; }
+.ps[hidden],
+.ps-gender-picker[hidden] { display: none; }
 
 // ── Identity (grid 2 colunas: avatar | info+sociais) ──────────────────
 
