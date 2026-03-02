@@ -490,10 +490,8 @@
       function buildDeviceLabel(uaOs, uaDevice, uaRaw) {
         var raw = uaRaw || '';
         if (uaDevice === 'mobile' || uaDevice === 'tablet') {
-          var iphone = raw.match(/iPhone OS (\d+)/);
-          if (iphone) return 'iPhone ' + iphone[1];
-          var ipad = raw.match(/OS (\d+)[_.].*?like Mac OS X/);
-          if (ipad && /iPad/.test(raw)) return 'iPad ' + ipad[1];
+          if (/iPhone/.test(raw)) return 'iPhone';
+          if (/iPad/.test(raw))   return 'iPad';
           if (/Android/i.test(raw)) return 'Android';
         }
         return uaOs || 'dispositivo desconhecido';
@@ -548,9 +546,31 @@
           var typeIcon  = { comment: '›', like: '♥', upvote: '▲' };
           var typeLabel = { comment: 'comentou', like: 'curtiu', upvote: 'upvotou' };
 
+          var genderLabel = { m: 'masculino', f: 'feminino', nb: 'não-binário' };
+          var profileVerb = {
+            name_set:      function(c) { return 'definiu o nome como <span class="t-cmd">@' + esc(c) + '</span>'; },
+            name_updated:  function(c) { return 'atualizou o nome para <span class="t-cmd">@' + esc(c) + '</span>'; },
+            gender_set:    function(c) { return 'definiu o gênero como <span class="t-cmd">' + esc(genderLabel[c] || c) + '</span>'; },
+            gender_updated:function(c) { return 'atualizou o gênero para <span class="t-cmd">' + esc(genderLabel[c] || c) + '</span>'; },
+            oauth_google:  function()  { return 'conectou o <span class="t-cmd">Google</span>'; },
+            oauth_github:  function(c) { return 'conectou o <span class="t-cmd">GitHub</span>' + (c ? ' como <span class="t-cmd">@' + esc(c) + '</span>' : ''); },
+            oauth_twitter: function(c) { return 'conectou o <span class="t-cmd">Twitter</span>' + (c ? ' como <span class="t-cmd">@' + esc(c) + '</span>' : ''); },
+          };
+
           var items = acts.map(function(a) {
-            var d     = a.created_at ? new Date(a.created_at) : null;
-            var ts    = fmtLogTs(d);
+            var d  = a.created_at ? new Date(a.created_at) : null;
+            var ts = fmtLogTs(d);
+
+            if (a.source === 'profile') {
+              var pfVerb = profileVerb[a.type];
+              var pfHtml = pfVerb ? pfVerb(a.content || '') : esc(a.type);
+              return '<div class="profile-activity-item pal-profile-event">'
+                + '<span class="pal-ts t-gray">[' + esc(ts) + ']</span>'
+                + '<span class="pal-content">' + pfHtml + '</span>'
+                + '<span class="pal-type-icon">◈</span>'
+                + '</div>';
+            }
+
             var icon  = typeIcon[a.type]  || '·';
             var verb  = typeLabel[a.type] || a.type;
             var quote = a.content
