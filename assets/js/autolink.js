@@ -203,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function() {
               let name = null;
               try { const s = localStorage.getItem('fxlip_visitor_name'); if (s && s.trim()) name = s.trim(); } catch (_) {}
               if (!name) return `<span class="t-user">visitante</span>`;
-              return `<a href="/${escapeHtml(name)}" class="mention-link profile-mention">@${escapeHtml(name)}</a>`;
+              return `<a href="/${escapeHtml(name)}" class="mention-link">@${escapeHtml(name)}</a>`;
             }
             const safePath = escapeHtml(path);
             const url = `/${safePath}`;
