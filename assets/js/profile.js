@@ -435,7 +435,27 @@
     }
 
     // Localidade + desde
-    document.getElementById('pc-meta').textContent  = geo;
+    var metaEl = document.getElementById('pc-meta');
+    metaEl.textContent = geo;
+    if (isMine && geo === '?' && WORKER_URL && fingerprint) {
+      var refreshLink = document.createElement('a');
+      refreshLink.textContent = '[atualizar]';
+      refreshLink.className   = 'file-link';
+      refreshLink.style.marginLeft = '6px';
+      refreshLink.style.fontSize   = '0.8em';
+      refreshLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        refreshLink.textContent = '[atualizando...]';
+        refreshLink.style.pointerEvents = 'none';
+        fetch(WORKER_URL + '/api/refresh', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ fingerprint: fingerprint }),
+        }).then(function() { location.reload(); })
+          .catch(function() { refreshLink.textContent = '[erro]'; });
+      });
+      metaEl.appendChild(refreshLink);
+    }
     document.getElementById('pc-since').textContent = 'desde ' + since;
 
     // Stats

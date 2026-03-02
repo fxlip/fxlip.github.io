@@ -268,10 +268,10 @@ document.addEventListener("DOMContentLoaded", function() {
           }
           try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
           setHelloCache(data);
-          renderGreeting(data);
+          renderGreeting(data, true);
         }).catch(function() {
           try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
-          renderGreeting({ name: val });
+          renderGreeting({ name: val }, true);
         });
     });
   }
@@ -288,7 +288,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // =======================================================================
   // 6. RENDER: RETURNING VISITOR
   // =======================================================================
-  function renderGreeting(data) {
+  function renderGreeting(data, isNew) {
     var prev = document.getElementById("greeting-input-line");
     if (prev) prev.remove();
 
@@ -300,10 +300,14 @@ document.addEventListener("DOMContentLoaded", function() {
     var line;
     if (data.name) {
       var nameLink = '<a href="/' + esc(data.name) + '" class="file-link">@' + esc(data.name) + '</a>';
-      line = nameLink
-        + (ago
-            ? ', seu último login foi ' + esc(ago) + ', de ' + esc(city) + '.'
-            : ', primeiro acesso.');
+      if (isNew) {
+        line = 'Bem-vindo, ' + nameLink + '. Agora você tem um perfil.';
+      } else {
+        line = nameLink
+          + (ago
+              ? ', seu último login foi ' + esc(ago) + ', de ' + esc(city) + '.'
+              : ', primeiro acesso.');
+      }
     } else {
       line = ago
         ? esc('Último login: ' + ago + ', de ' + city)
