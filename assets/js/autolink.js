@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const url = `/${safePath}`;
             if (path.match(/\.(jpg|jpeg|png|gif|svg)$/i)) return `<span class="embed-image-wrapper"><img src="${url}" class="embed-image" alt="${safePath}" onerror="this.style.display='none'"><span class="embed-caption">./${safePath}</span></span>`;
             if (path.match(/\.(sh|js|py|rb|txt|md|yml|json)$/i)) return `<div class="terminal-box embedded-terminal" data-src="${url}"><div class="terminal-header"><div class="terminal-controls"><span style="font-size:12px; color:#bd93f9; margin-right:10px;">./${safePath}</span></div></div><div class="terminal-body"><div class="embedded-loading"><span class="cursor-blink">█</span> loading...</div></div></div>`;
-            const mentionClass = MENTIONS_BLACKLIST.has(path.toLowerCase()) ? 'mention-link' : 'mention-link profile-mention';
+            const mentionClass = MENTIONS_BLACKLIST.has(path.toLowerCase()) ? 'mention-link' : 'mention-link';
             return `<a href="${url}" class="${mentionClass}" title="./${safePath}">${escapeHtml(match)}</a>`;
           });
       }
