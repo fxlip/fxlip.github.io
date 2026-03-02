@@ -200,9 +200,10 @@ document.addEventListener("DOMContentLoaded", function() {
           regex.lastIndex = 0;
           area.innerHTML = area.innerHTML.replace(regex, function(match, path) {
             if (path === 'USER') {
-              let name = 'visitante';
+              let name = null;
               try { const s = localStorage.getItem('fxlip_visitor_name'); if (s && s.trim()) name = s.trim(); } catch (_) {}
-              return `<span class="t-user">${escapeHtml(name)}</span>`;
+              if (!name) return `<span class="t-user">visitante</span>`;
+              return `<a href="/${escapeHtml(name)}" class="mention-link profile-mention">@${escapeHtml(name)}</a>`;
             }
             const safePath = escapeHtml(path);
             const url = `/${safePath}`;
