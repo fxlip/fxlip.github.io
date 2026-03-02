@@ -455,17 +455,40 @@
         const item = document.createElement('div');
         item.className = 'cmt-item';
 
+        // Avatar
+        const avatarEl = document.createElement('div');
+        avatarEl.className = 'cmt-avatar';
+        const avatarSrc = c.oauth_avatar_url ||
+          (c.has_avatar && c.name && c.name !== 'anon'
+            ? `${WORKER_URL}/api/user/${encodeURIComponent(c.name)}/avatar`
+            : null);
+        if (avatarSrc) {
+          const img = document.createElement('img');
+          img.src = avatarSrc;
+          img.alt = c.name;
+          img.loading = 'lazy';
+          avatarEl.appendChild(img);
+        } else {
+          avatarEl.textContent = (c.name || '?')[0].toUpperCase();
+        }
+
+        const body = document.createElement('div');
+        body.className = 'cmt-body';
+
         const meta = document.createElement('div');
         meta.className = 'cmt-meta';
-        meta.innerHTML =
-          `<span class="cmt-name">${escapeHtml(c.name)}</span>` +
-          `<span class="cmt-time">${timeAgo(c.created_at)}</span>`;
+        const isAnon = !c.name || c.name === 'anon';
+        const namePart = isAnon
+          ? `<span class="cmt-name">anon</span>`
+          : `<a href="/${escapeHtml(c.name)}" class="cmt-name">@${escapeHtml(c.name)}</a>`;
+        meta.innerHTML = namePart + `<span class="cmt-time">${timeAgo(c.created_at)}</span>`;
 
         const text = document.createElement('div');
         text.className = 'cmt-text';
         text.textContent = c.content;
 
-        item.append(meta, text);
+        body.append(meta, text);
+        item.append(avatarEl, body);
         wrap.appendChild(item);
 
         if (idx < comments.length - 1) wrap.appendChild(document.createElement('hr'));
