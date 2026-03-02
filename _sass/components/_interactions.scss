@@ -205,18 +205,18 @@
 }
 
 .cmt-avatar {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   flex-shrink: 0;
-  overflow: hidden;
+ /* overflow: hidden; 
   background: #282a36;
+  border: 1px solid rgba(139, 233, 253, 0.15);*/
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 12px;
   color: var(--accent-cyan);
-  border: 1px solid rgba(139, 233, 253, 0.15);
 
   img {
     width: 100%;
