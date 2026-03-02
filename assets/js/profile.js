@@ -282,6 +282,11 @@
       var val      = data[conf.key];
       var hasValue = conf.boolCheck ? !!val : !!(val && val.trim && val.trim());
 
+      if (!hasValue && !isMine) {
+        btn.style.display = 'none';
+        return;
+      }
+
       btn.dataset.active = hasValue ? 'true' : 'false';
 
       // Preenche o span de info (lado direito)
@@ -289,10 +294,8 @@
       if (infoEl) {
         if (hasValue) {
           infoEl.textContent = (svc === 'email') ? val : '@' + val;
-        } else if (isMine) {
-          infoEl.textContent = 'conectar';
         } else {
-          infoEl.textContent = '—';
+          infoEl.textContent = 'conectar';
         }
       }
 
