@@ -462,15 +462,11 @@
           (c.has_avatar && c.name && c.name !== 'anon'
             ? `${WORKER_URL}/api/user/${encodeURIComponent(c.name)}/avatar`
             : null);
-        if (avatarSrc) {
-          const img = document.createElement('img');
-          img.src = avatarSrc;
-          img.alt = c.name;
-          img.loading = 'lazy';
-          avatarEl.appendChild(img);
-        } else {
-          avatarEl.textContent = (c.name || '?')[0].toUpperCase();
-        }
+        const img = document.createElement('img');
+        img.src = avatarSrc || '/assets/img/user.svg';
+        img.alt = c.name;
+        img.loading = 'lazy';
+        avatarEl.appendChild(img);
 
         const body = document.createElement('div');
         body.className = 'cmt-body';
