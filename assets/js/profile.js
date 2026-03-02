@@ -48,33 +48,6 @@
       + '?s=' + (size || 80) + '&d=identicon';
   }
 
-  // ── Detecção de dispositivo/OS/browser ────────────────────────────────────
-
-  function detectOSLabel() {
-    var ua = navigator.userAgent || '';
-    var pf = navigator.platform  || '';
-
-    if (/iPhone/i.test(ua))                                                    return 'iPhone';
-    if (/iPad/i.test(ua) || (/Mac/i.test(ua) && navigator.maxTouchPoints > 1)) return 'iPad';
-    if (/Android/i.test(ua))                                                   return 'Android';
-    if (/Windows/i.test(ua) || /Win/i.test(pf))                               return 'Windows';
-    if (/Mac OS X/i.test(ua) || /Mac/i.test(pf))                              return 'macOS';
-    if (/Linux/i.test(ua)   || /Linux/i.test(pf))                             return 'Linux';
-    return 'dispositivo';
-  }
-
-  function detectBrowser() {
-    var ua = navigator.userAgent || '';
-    if (/Firefox\//i.test(ua))                                                           return 'Firefox';
-    if (/Edg\//i.test(ua))                                                               return 'Edge';
-    if (/OPR\/|Opera/i.test(ua))                                                         return 'Opera';
-    if (/SamsungBrowser/i.test(ua))                                                      return 'Samsung';
-    if (/Chrome\//i.test(ua) && !/Chromium/i.test(ua) && !/Edg/i.test(ua) && !/OPR/i.test(ua)) return 'Chrome';
-    if (/Chromium/i.test(ua))                                                            return 'Chromium';
-    if (/Safari\//i.test(ua) && !/Chrome/i.test(ua))                                    return 'Safari';
-    return 'navegador';
-  }
-
   // ── Badges ────────────────────────────────────────────────────────────────
 
   var BADGE_DEFS = [
@@ -511,10 +484,13 @@
     // ── Log de atividade (síncrono: monta container + entrada de first_seen) ──
     var section = document.getElementById('profile-activity-section');
     if (section) {
-      var browser  = detectBrowser();
-      var osLabel  = detectOSLabel();
-      var city     = data.city || 'local desconhecido';
-      var fpShort  = fingerprint ? fingerprint.substring(0, 8) : '????????';
+      var browser  = data.ua_browser     || 'navegador desconhecido';
+      var osLabel  = data.ua_os          || 'sistema desconhecido';
+      var device   = data.ua_device_type || '';
+      var city     = data.city           || 'local desconhecido';
+      var fpShort  = data.fp_short       || '????????';
+
+      var deviceSuffix = (device === 'mobile' || device === 'tablet') ? ' (' + device + ')' : '';
 
       var firstSeenDate = data.first_seen ? new Date(data.first_seen) : null;
       var fpTs = firstSeenDate
@@ -533,7 +509,7 @@
         + '<span class="pal-ts t-gray">[' + esc(fpTs) + ']</span>'
         + '<span class="pal-content">'
         + '<span class="pal-verb">' + esc(fpShort) + '</span>'
-        + ' entrou usando um ' + esc(browser) + ' no ' + esc(osLabel) + ' em ' + esc(city)
+        + ' entrou usando um ' + esc(browser) + ' no ' + esc(osLabel) + esc(deviceSuffix) + ' em ' + esc(city)
         + '</span>'
         + '<span class="pal-type-icon">⌁</span>'
         + '</div>';
