@@ -277,11 +277,14 @@
       if (isMine) btn.classList.add('ps-social-owner');
 
       btn.addEventListener('click', function() {
-        if (hasValue && conf.url) {
-          window.open(conf.url + encodeURIComponent(val), '_blank', 'noopener');
-        } else if (hasValue && svc === 'email') {
-          window.location.href = 'mailto:' + val;
-        } else if (isMine && !hasValue) {
+        if (hasValue && isMine) {
+          // Dono clica em ícone ativo → desvincula
+          var label = svc === 'email' ? 'Google' : svc === 'twitter' ? 'X' : svc.charAt(0).toUpperCase() + svc.slice(1);
+          if (!confirm('Desvincular ' + label + ' do seu perfil?')) return;
+          var provider = svc === 'email' ? 'google' : svc;
+          unlinkProvider(provider, fingerprint, btn, infoEl);
+        } else if (!hasValue && isMine) {
+          // Dono clica em ícone inativo → inicia OAuth/link
           if (svc === 'email') {
             startOAuth('google', fingerprint);
           } else if (svc === 'github') {
@@ -292,6 +295,7 @@
             showInstagramInput(btn, fingerprint, socials);
           }
         }
+        // público: clique não faz nada
       });
     });
   }
@@ -319,6 +323,33 @@
       .catch(function(err) {
         if (btn) btn.dataset.connecting = 'false';
         console.warn('[profile] auth/start failed', err);
+      });
+  }
+
+  // ── Desvincular provider OAuth ────────────────────────────────────────────
+
+  function unlinkProvider(provider, fingerprint, btn, infoEl) {
+    if (!WORKER_URL || !fingerprint) return;
+    if (btn) btn.dataset.connecting = 'true';
+    fetch(WORKER_URL + '/api/profile/unlink', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ fingerprint: fingerprint, provider: provider }),
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(res) {
+        if (res.ok) {
+          if (btn) {
+            btn.dataset.active      = 'false';
+            btn.dataset.connecting  = 'false';
+          }
+          if (infoEl) infoEl.textContent = 'conectar';
+        } else {
+          if (btn) btn.dataset.connecting = 'false';
+        }
+      })
+      .catch(function() {
+        if (btn) btn.dataset.connecting = 'false';
       });
   }
 
@@ -572,9 +603,12 @@
             name_updated:  function(c) { return 'atualizou o nome para <span class="t-cmd">@' + esc(c) + '</span>'; },
             gender_set:    function(c) { return 'definiu o gênero como <span class="t-cmd">' + esc(genderLabel[c] || c) + '</span>'; },
             gender_updated:function(c) { return 'atualizou o gênero para <span class="t-cmd">' + esc(genderLabel[c] || c) + '</span>'; },
-            oauth_google:  function()  { return 'conectou o <span class="t-cmd">Google</span>'; },
-            oauth_github:  function(c) { return 'conectou o <span class="t-cmd">GitHub</span>' + (c ? ' como <span class="t-cmd">@' + esc(c) + '</span>' : ''); },
-            oauth_twitter: function(c) { return 'conectou o <span class="t-cmd">Twitter</span>' + (c ? ' como <span class="t-cmd">@' + esc(c) + '</span>' : ''); },
+            oauth_google:  function(c) { return 'se autenticou como <span class="t-cmd">' + esc(c || 'Google') + '</span>'; },
+            oauth_github:  function(c) { return 'conectou o <span class="t-cmd">GitHub</span>' + (c ? ' como <a href="https://github.com/' + esc(c) + '" class="mention-link" target="_blank" rel="noopener">@' + esc(c) + '</a>' : ''); },
+            oauth_twitter: function(c) { return 'conectou o <span class="t-cmd">X</span>' + (c ? ' como <a href="https://x.com/' + esc(c) + '" class="mention-link" target="_blank" rel="noopener">@' + esc(c) + '</a>' : ''); },
+            oauth_google_unlinked:  function() { return 'se desconectou'; },
+            oauth_github_unlinked:  function() { return 'desvinculou o <span class="t-cmd">GitHub</span>'; },
+            oauth_twitter_unlinked: function() { return 'desvinculou o <span class="t-cmd">X</span>'; },
             exam_result:   function(c) {
               var parts = (c || '').split(':');
               if (parts.length !== 3) return esc(c);
