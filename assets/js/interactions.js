@@ -475,7 +475,7 @@
         meta.className = 'cmt-meta';
         const isAnon = !c.name || c.name === 'anon';
         const namePart = isAnon
-          ? `<span class="cmt-name">anon</span>`
+          ? `<span class="cmt-name cmt-name--anon">anônimo</span>`
           : `<a href="/${escapeHtml(c.name)}" class="cmt-name">@${escapeHtml(c.name)}</a>`;
         meta.innerHTML = namePart + `<span class="cmt-time">${timeAgo(c.created_at)}</span>`;
 

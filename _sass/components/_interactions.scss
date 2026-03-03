@@ -243,6 +243,13 @@
   text-decoration: none;
 
   &:hover { text-decoration: underline; }
+
+  &--anon {
+    color: var(--muted-color);
+    cursor: default;
+    pointer-events: none;
+    &:hover { text-decoration: none; }
+  }
 }
 
 .cmt-time {
