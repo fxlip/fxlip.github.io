@@ -317,3 +317,417 @@
     - "GDMSESSION"
   answer: 2
   comment: "O editor padrão pode ser definido por usuário/sessão, através da variável de ambiente EDITOR. #editor"
+
+- id: "103-027"
+  topic: "103.1"  
+  question: "Após descompactar o código-fonte de um pacote de software GNU, você deseja compilá-lo e instalá-lo em seu sistema. Qual das seguintes linhas poderia ser usada?"
+  options:
+    - "make configure; make all; make install"
+    - "./configure; make; make install"
+    - "make config; make; make install"
+    - "configure; make; make install"
+    - "./configure; make; install"
+  answer: 2
+  comment: "Este é o fluxo clássico de compilação: ./configure verifica as dependências e prepara o ambiente, make compila o código em binários e make install copia os arquivos para os diretórios do sistema. #configure"
+
+- id: "103-028"
+  topic: "103.2"  
+  question: "Como você pode descrever a função dos seguintes comandos? foo | bar > foobar"
+  options:
+    - "O comando foobar recebe sua entrada do comando bar"
+    - "O comando bar escreve sua saída no arquivo foobar"
+    - "O comando foo escreve sua saída no arquivo bar"
+    - "O comando foo redireciona sua saída para o comando bar"
+    - "O STDIN de foo está conectado ao STDOUT de bar"
+  answer: [2, 4]
+  comment: "O pipe (|) conecta o STDOUT (saída padrão) de foo ao STDIN (entrada padrão) de bar. O caractere > redireciona o STDOUT final de bar para o arquivo físico foobar. #redirection"
+
+- id: "103-029"
+  topic: "103.1"  
+  question: "Como você descreveria a seguinte linha de comando? foo &| bar"
+  options:
+    - "O comando foo é iniciado em segundo plano e redireciona sua saída para o comando bar."
+    - "O comando bar só é processado se o comando foo não retornar erro."
+    - "O comando bar só é processado se o comando foo retornar um erro."
+    - "O comando bar é processado após o comando foo, independentemente de erros."
+    - "Esta não é uma linha de comando válida."
+  answer: 5
+  comment: "A combinação &| não é um operador válido no Bash ou SH. O & envia um comando para o background e encerra sua definição lógica, enquanto o pipe | exige um comando à sua esquerda para redirecionar o fluxo de dados. O operador correto para redirecionar stdout e stderr simultaneamente seria |&. #bash"
+
+- id: "103-030"
+  topic: "103.3"  
+  question: "O que o seguinte comando resultaria? cp $(find . -size -12k) /tmp"
+  options:
+    - "O arquivo com o nome armazenado na variável \"$(find . -size -12k)\" será copiado para /tmp."
+    - "Todos os arquivos no diretório atual que são menores que 12 KByte serão copiados para /tmp."
+    - "Todos os arquivos no diretório atual e em todos os subdiretórios incluídos que são menores que 12 KByte serão copiados para /tmp."
+    - "Todos os arquivos no diretório atual e em todos os subdiretórios incluídos que são menores que 12 KByte serão copiados para /tmp. A estrutura de diretórios também será copiada."
+    - "Esta não é uma linha de comando válida."
+  answer: 3
+  comment: "O comando usa a substituição de comando $(...) para passar a saída do find como argumentos para o cp. O find busca recursivamente (diretório atual e subdiretórios) por arquivos menores que 12KB (-size -12k). O cp apenas copia os arquivos para a raiz de /tmp, sem recriar a estrutura de pastas original. #find"
+
+- id: "103-031"
+  topic: "103.2"  
+  question: "Como você poderia obter a seguinte informação: Qual GID pertence ao grupo padrão do usuário foo?"
+  options:
+    - "defgrp foo"
+    - "defgrp -n foo"
+    - "grep foo /etc/passwd | cut -d: -f4"
+    - "getuserinfo -gid foo"
+    - "grep foo /etc/group | cut -d: -f3"
+  answer: 3
+  comment: "O arquivo /etc/passwd estrutura os dados do usuário em campos separados por dois-pontos (:). O quarto campo é, por definição, o GID (Group ID) do grupo primário/padrão do usuário. O comando filtra a linha do usuário e isola esse valor. #etc-passwd"
+
+- id: "103-032"
+  topic: "103.2"
+  type: "discursive"
+  question: "Qual comando é usado para conectar linhas de diferentes arquivos de texto em uma linha, sem se preocupar com campos comuns (apenas o comando - sem opções)?"
+  answer: "paste"
+  comment: "O comando paste funde linhas de vários arquivos horizontalmente, lado a lado, usando tabulações como separador padrão, sem realizar buscas por chaves ou campos correlacionados. #paste"
+
+- id: "103-033"
+  topic: "103.3"  
+  question: "Qual seria o resultado do seguinte comando? cp *.* /tmp"
+  options:
+    - "Todos os arquivos no diretório atual seriam copiados para /tmp"
+    - "Todos os arquivos no diretório atual que possuem exatamente um ponto (.) em seus nomes seriam copiados para /tmp"
+    - "Todos os arquivos no diretório atual que possuem um ou mais pontos (.) em qualquer lugar de seus nomes, mas não no início, seriam copiados para /tmp"
+    - "Todos os arquivos no diretório atual que possuem um ou mais pontos (.) em seus nomes — mas nem no início nem no fim do nome — seriam copiados para /tmp"
+    - "Este é um comando DOS — não tem significado no Linux"
+  answer: 3
+  comment: "Diferente do DOS/Windows onde *.* significa \"todos os arquivos\", no Linux o shell interpreta os curingas literalmente. O primeiro * não casa com o ponto inicial de arquivos ocultos (como .bashrc). Portanto, o comando copia apenas arquivos que contêm um ponto em seu nome, desde que esse ponto não seja o primeiro caractere. #cp"
+
+- id: "103-034"
+  topic: "103.5"  
+  question: "Qual é o efeito do comando foo &?"
+  options:
+    - "O comando foo é iniciado em foreground"
+    - "O comando foo é iniciado em background"
+    - "O comando foo conecta seu STDOUT e STDERR"
+    - "O comando foo escreve seu código de erro na variável ERR"
+    - "O comando foo será iniciado repetidamente até retornar o valor 0"
+  answer: 2
+  comment: "O caractere & ao final de um comando instrui o shell a executá-lo de forma assíncrona. O processo é movido para o background, permitindo que o usuário continue utilizando o terminal imediatamente sem esperar o término da execução. #bg #jobs"
+
+- id: "103-035"
+  topic: "103.5"  
+  question: "O que é um processo daemon?"
+  options:
+    - "Um processo travado que se recusa a aceitar entrada do teclado"
+    - "Um processo que já concluiu seu trabalho, mas não conseguiu morrer por outros motivos"
+    - "Um processo sem terminal próprio"
+    - "Um processo que não é alcançável por nenhum sinal"
+    - "Um processo que não é alcançável por nenhum sinal exceto o sinal KILL"
+  answer: 3
+  comment: "Daemons são processos que rodam em segundo plano (background) para executar tarefas de sistema ou serviços (como SSH, logs ou servidores web). Eles se desconectam da sessão do usuário e não possuem um terminal de controle (TTY). #daemons"
+
+- id: "103-036"
+  topic: "103.6"
+  type: "discursive"
+  question: "Qual comando inicia processos com prioridade maior ou menor?"
+  answer: "nice"
+  comment: "O comando nice altera o valor de \"gentileza\" (niceness) de um processo no momento de sua criação. O intervalo vai de -20 (máxima prioridade, menos gentil) a 19 (mínima prioridade, muito gentil). O valor padrão  é 0. #nice"
+
+- id: "103-037"
+  topic: "103.7"  
+  question: "O que significa a seguinte construção dentro de uma expressão regular? [^A-Z][!A-Z]"
+  options:
+    - "O início de uma linha, seguido por uma letra maiúscula, seguido por uma letra não maiúscula."
+    - "Ou o início de uma linha ou uma letra maiúscula seguida por uma letra não maiúscula."
+    - "Uma letra não maiúscula seguida por um \"!\" ou por uma letra maiúscula."
+    - "Uma letra não maiúscula no início de uma palavra seguida por uma letra não maiúscula."
+    - "Uma letra maiúscula no início de uma palavra seguida por uma letra não maiúscula."
+  answer: 3
+  comment: "Em expressões regulares (RegEx), [^...] nega o conjunto, casando com qualquer caractere que não esteja na lista (neste caso, qualquer coisa que não seja A-Z maiúsculo). Já o segundo colchete [!A-Z] é interpretado literalmente: o ! não tem função de negação dentro de colchetes em RegEx padrão (diferente do globbing do shell), então ele busca o caractere ! ou qualquer letra de A a Z. #regex"
+
+- id: "103-038"
+  topic: "103.3"  
+  question: "Qual afirmação sobre o seguinte curinga (wildcard) está correta? A[0-9]*"
+  options:
+    - "Todos os arquivos começando com a letra A e seguidos de 0 a 9 letras."
+    - "Todos os arquivos começando com a letra A seguidos por qualquer quantidade de números."
+    - "Todos os arquivos começando com a letra A seguidos por qualquer uma das letras 0, - ou 9."
+    - "Todos os arquivos começando com a letra A seguidos por um número."
+    - "Todos os arquivos com números em seus nomes."
+  answer: 4
+  comment: "No globbing do Shell (curingas), A é o literal, [0-9] exige obrigatoriamente um dígito numérico logo após o 'A', e o * representa qualquer sequência de caracteres (ou nenhuma) que venha depois. #globbing"
+
+- id: "103-039"
+  topic: "103.8"  
+  question: "Você está trabalhando com o vi, escrevendo um arquivo de texto. Após sair do modo de inserção com Esc, você deseja salvar e sair. Qual comando é válido?"
+  options:
+    - "x"
+    - ":s"
+    - ":x"
+    - ":q"
+    - ":q!"
+  answer: 3
+  comment: "No modo de comando do vi, o comando :x (e também o :wq) é usado para salvar as alterações e fechar o editor. A diferença técnica é que o :x só grava o arquivo se houver alterações pendentes, enquanto o :wq força a gravação e atualiza o timestamp do arquivo mesmo que nada tenha mudado. #vi #vim"
+
+- id: "103-040"
+  topic: "103.1"
+  question: "Qual variável ambiental indica o caminho do seu diretório HOME?"
+  options:
+    - "BLENDERDIR"
+    - "PWD"
+    - "HOME"
+    - "BASH_ENV"
+  answer: 3
+  comment: "A variável de ambiente $HOME armazena o caminho absoluto do diretório do usuário atual. É o destino padrão do shell quando o comando 'cd' é executado sem argumentos. #env #home"
+
+- id: "101-032"
+  topic: "101.3"
+  question: "Qual o processo com com PID 1?"
+  options:
+    - "it varies"
+    - "nenhum"
+    - "init"
+    - "kernel"
+    - "bash"
+  answer: 3
+  comment: "O processo com PID 1 é o primeiro processo de espaço de usuário executado pelo kernel logo após o boot. Historicamente é o daemon init (SysVinit). Em distribuições modernas, o systemd assume o PID 1, mas geralmente mantém um link simbólico chamado 'init' para retrocompatibilidade. Ele é o pai ou avô de todos os outros processos no sistema. #init #pid"
+
+- id: "103-041"
+  topic: "103.1"
+  question: "Ricardo está trabalhando atualmente em um diretório que contém só um arquivo chamado faq.txt. O que é exibido logo depois que os comandos seguintes são executados no bash? Selecione a opção correta. # MYVAR=ls# echo $MYVAR \"$MYVAR\" ’$MYVAR’ `$MYVAR`"
+  options:
+    - "ls faq.txt faq.txt faq.txt"
+    - "lsls faq.txt faq.txt"
+    - "ls ls $MYVAR faq.txt"
+    - "ls ls ls $MYVAR"
+    - "faq.txt faq.txt faq.txt faq.txt"
+  answer: 3
+  comment: "A expansão no Bash funciona com regras rígidas de aspas. $MYVAR solto ou em aspas duplas (\"$MYVAR\") expande para o valor da variável ('ls'). Em aspas simples ('$MYVAR'), o Bash trata como texto literal (não expande). E entre crases (`$MYVAR`), ocorre a substituição de comando: o Bash executa 'ls', e como só existe faq.txt no diretório, esse é o resultado impresso. #bash #quotes"
+
+- id: "103-042"
+  topic: "103.1"
+  question: "O que é descrito pelas variáveis PS1 e PS2?"
+  options:
+    - "Power Save Mode"
+    - "Prompt normal e prompt estendido."
+    - "Aliases para \"ps\" and \"ps uax\""
+    - "Postscript Level 1 e Level 2 capabilities"
+    - "Link simbólico para um mouse"
+  answer: 2
+  comment: "PS1 (Prompt String 1) define o prompt principal interativo do shell. PS2 define o prompt secundário, exibido quando um comando incompleto requer mais linhas de entrada. #bash #ps1 #ps2"
+
+- id: "103-043"
+  topic: "103.1"
+  question: "Qual o comando você usaria para determinar qual o shell você está usando?"
+  options:
+    - "echo SHELL"
+    - "echo $SHELL"
+    - "shell"
+    - "echo $MYSHEL"
+  answer: 2
+  comment: "A variável de ambiente $SHELL armazena o caminho completo do shell de login do usuário atual (ex: /bin/bash). O comando 'echo $SHELL' exibe esse valor no terminal. #shell #env"
+
+- id: "103-044"
+  topic: "103.1"
+  question: "Como você pode ler os conteúdos da variável PATH no bash shell?"
+  options:
+    - "print $PATH"
+    - "echo %PATH%"
+    - "print PATH"
+    - "echo PATH"
+    - "echo $PATH"
+  answer: 5
+  comment: "No Bash, variáveis são referenciadas com o prefixo '$'. O comando 'echo $PATH' imprime a lista de diretórios onde o shell busca executáveis, separados por dois-pontos (:). O formato %PATH% é exclusivo do Windows/DOS. #bash #path #env"
+
+- id: "103-045"
+  topic: "103.1"
+  question: "Toda vez que você tenta deletar um arquivo usando o rm, o sistema pergunta por confirmação. Você sabe que esta não é o comportamento padrão do rm. O que há de diferente para ele fazer isto?"
+  options:
+    - "Este é o comportamento normal do comando"
+    - "um link simbólico foi criado errado."
+    - "A versão do rm está incorreta"
+    - "foi criado um alias do rm para rm -i"
+  answer: 4
+  comment: "O comando rm por padrão não pede confirmação (comportamento silencioso). Muitas distribuições (como RHEL/CentOS) criam um 'alias rm=\"rm -i\"' nos arquivos de perfil do bash (~/.bashrc) para evitar deleções acidentais. O parâmetro -i ativa o modo interativo. #alias #bash #rm"
+
+- id: "103-046"
+  topic: "103.1"
+  question: "Você ficou sem espaço no seu diretório home. Ao vasculhar pelo que apagar você encontrou o arquivo .bash_history muito grande e o apagou. Dias depois o arquivo ficou grande novamente. O que fazer para que este arquivo não cresça muito?"
+  options:
+    - "Alterar a variável HISTAPPEND como true"
+    - "Alterar a variável NOHISTFILE como true"
+    - "Alterar a variável HISTFILESIZE para um valor menor."
+    - "Alterar a variável HISTSIZE para um valor menor."
+  answer: 3
+  comment: "A variável HISTFILESIZE define o número máximo de linhas mantidas no arquivo de histórico em disco (.bash_history). Já a variável HISTSIZE controla apenas quantas linhas são mantidas na memória (RAM) durante a sessão atual. Para evitar que o arquivo físico consuma muito espaço, deve-se reduzir o HISTFILESIZE. #bash #history #env"
+
+- id: "103-047"
+  topic: "103.1"
+  question: "Qual dos comandos a seguir é equivalente ao comando # chmod 754 ~/arquivo1 para o usuário João cujo diretório home é /home/joao?"
+  options:
+    - "chmod u=7,g=5,o=4 ~/file1"
+    - "chmod 754 homejoaofile1"
+    - "chmod ugo=rwx ~/file1"
+    - "chmod u=rwx,g=rx,o=r /home/joao/file1"
+    - "chmod 754 /usr/joao/file1"
+  answer: 4
+  comment: "A permissão octal 754 converte-se em: rwx (7) para o dono (u), r-x (5) para o grupo (g) e r-- (4) para outros (o). O símbolo ~ (til) expande para o diretório home do usuário (/home/joao). O modo simbólico 'u=rwx,g=rx,o=r' reflete exatamente esses bits de permissão. #chmod #permissions"
+
+- id: "103-048"
+  topic: "103.2"
+  question: "Como você pode descrever o comando a seguir? $ tail -f /var/log/messages"
+  options:
+    - "Corta as últimas 10 linhas do arquivo /var/log/messages para STDOUT."
+    - "Muda o período de acesso para o arquivo /var/log/messages para agora."
+    - "Escreve os conteúdos do arquivo /var/log/messages em ordem invertida para STDOUT."
+    - "Exibe toda linha nova do arquivo /var/log/messages enquanto este arquivo está crescendo."
+    - "Muda o tempo de modificação pelo arquivo /var/log/messages para agora."
+  answer: 4
+  comment: "A flag -f (follow) do comando tail faz com que o utilitário não termine após ler o fim do arquivo, mas sim aguarde e exiba novas linhas que forem adicionadas em tempo real. É a ferramenta padrão para monitoramento de logs. #tail #logs"
+
+- id: "103-049"
+  topic: "103.1"
+  question: "Você está digitando uma linha de comando grande e complexa e você alcançou o fim da tela. Você quer continuar digitando, mas na linha abaixo. Quais as teclas que permitem isso?"
+  options:
+    - "/, Enter"
+    - "esc, /, ctrl-d"
+    - "Esc, /, Enter"
+    - "ctrl-d, enter"
+  answer: 1
+  comment: "No Bash, a barra invertida (\\) seguida de Enter funciona como um caractere de continuação de linha. Isso indica ao shell que o comando ainda não terminou e que a próxima linha deve ser tratada como parte da mesma instrução. O prompt geralmente muda para '>' (PS2) para indicar a continuação. #bash #multiline"
+
+- id: "103-050"
+  topic: "103.3"
+  question: "Qual expressão regular a seguir pode ser capaz de filtrar as palavras \"Linux\" e \"linux\", mas não \"linux.com\" e \"TurboLinux\"?"
+  options:
+    - "[Ll]inux"
+    - "?inux"
+    - "\\L\\linux"
+    - "[L/linux]"
+    - "[Ll]inux?"
+  answer: 1
+  comment: "A expressão [Ll]inux utiliza uma classe de caracteres para aceitar tanto 'L' maiúsculo quanto 'l' minúsculo no início. Importante notar que, em ferramentas como o grep, para evitar 'linux.com' ou 'TurboLinux', seriam necessários delimitadores de borda de palavra (como \\b), mas entre as opções dadas, [Ll]inux é a única sintaticamente correta para alternância de caixa. #regex #grep"
+
+- id: "103-050"
+  topic: "103.1"
+  question: "Você precisa procurar em todos os diretórios para localizar um determinado arquivo. Como você fará isto e ainda continuar a chamar outros comandos?"
+  options:
+    - "bg find / -name filename"
+    - "find / -name filename &"
+    - "find / -name filename"
+    - "&find / -name filename &"
+  answer: 2
+  comment: "O caractere '&' no final de um comando instrui o shell a executá-lo em segundo plano (background). Isso libera o prompt imediatamente para que o usuário continue digitando outros comandos enquanto o 'find' processa a busca pesada no sistema de arquivos. #jobs #background"
+
+- id: "103-051"
+  topic: "103.1"
+  question: "Qual o programa que interpreta suas ações e comandos no sistema operacional?"
+  options:
+    - "Utility"
+    - "Application"
+    - "Shell"
+    - "Command"
+  answer: 3
+  comment: "O Shell atua como a camada de interface entre o usuário e o Kernel. Ele lê os comandos digitados, interpreta a sintaxe, expande variáveis e executa os programas correspondentes. Exemplos comuns incluem Bash, Zsh e Fish. #shell #interface"
+
+- id: "103-052"
+  topic: "103.2"
+  question: "Que comando pode exibir os conteúdos de um arquivo binário em uma forma de hexadecimal legível? Selecione a opção correta."
+  options:
+    - "Xd"
+    - "dump"
+    - "od"
+    - "xd"
+    - "hd"
+  answer: 3
+  comment: "O comando 'od' (octal dump) é o padrão POSIX para exibir arquivos em diversos formatos, incluindo hexadecimal (-x ou -t x1). Embora utilitários como 'hexdump' ou 'xxd' sejam comuns, o 'od' é a ferramenta base presente em praticamente qualquer sistema Unix/Linux. #od #binary #hex"
+
+- id: "103-053"
+  topic: "103.1"
+  question: "No bash shell, executar o comando !! tem o mesmo efeito de qual dos seguintes comandos?"
+  options:
+    - "!2"
+    - "Ctrl-P e Enter"
+    - "Ctrl-N e Enter"
+    - "Ctrl-U e Enter"
+    - "!-2"
+  answer: 2
+  comment: "O comando !! (bang-bang) é um atalho de histórico que repete o último comando executado. No modo de edição padrão do Bash (Emacs), o atalho de teclado Ctrl-P (Previous) navega para o comando anterior no histórico, e o Enter o executa, produzindo o mesmo resultado. #bash #history #shortcuts"
+
+- id: "103-054"
+  topic: "103.3"
+  question: "Qual comando copiaria a árvore de diretório inteira, enquanto inclui todos os subdiretórios abaixo de /home/gpaula para /tmp?"
+  options:
+    - "xcp -s /home/gpaula /tmp"
+    - "cp /home/gpaula /tmp"
+    - "cp -a /home/gpaula /tmp"
+    - "cp -r /home/gpaula /tmp"
+    - "mv -cr /home/gpaula /tmp"
+  answer: 4
+  comment: "A opção -r (recursive) do comando cp é usada para copiar diretórios e todo o seu conteúdo, incluindo subdiretórios e arquivos. Embora a opção -a (archive) também funcione (pois inclui a recursividade), o enunciado foca especificamente na ação de incluir subdiretórios, o que é a função primária do -r. #cp #recursive #directories"
+
+- id: "103-055"
+  topic: "103.1"
+  question: "O seguinte shell é executado pelo cron regularmente:\nx=$(find /home -name .rhost 2>/dev/null)\nfor i in $x; do\ny=$(echo $i | cut -d/ -f3);z=\"$z $y\"\nrm $i;done\necho \"Notice: $z\" | mail root@example.com\nO que este script faz?"
+  options:
+    - "Notifica o root da existência de todos os arquivos .rhost."
+    - "Acha os arquivos .rhosts em locais errados e os remove."
+    - "Verifica se os arquivos .rhost existem nos diretórios home dos usuários e os remove."
+    - "Verifica se os arquivos .rhost existem nos diretórios home dos usuários e os remove e notifica o root com os nomes dos usuários."
+    - "Remove todos os arquivos .rhosts e notifica todos os usuários."
+  answer: 4
+  comment: "O script localiza arquivos .rhost (risco de segurança), extrai o nome do usuário do caminho (terceiro campo do path /home/usuario/), acumula esses nomes na variável $z, remove o arquivo físico e, ao final, envia um e-mail ao root com a lista de usuários afetados. #scripting #security #find"
+
+- id: "103-056"
+  topic: "103.5"
+  question: "Qual o resultado do comando ps ef?"
+  options:
+    - "Lista de todos os processos do sistema em execução em forma de árvore"
+    - "Lista de processos dos usuários em execução em forma de árvore"
+    - "Lista de processos parados."
+    - "Lista de todos os processos em execução em forma de árvore"
+  answer: 4
+  comment: "O comando 'ps' com as opções 'e' (everyone/all) e 'f' (full-format/forest) exibe todos os processos em execução no sistema, organizando-os visualmente em uma estrutura de árvore que mostra a hierarquia de processos pai e filho. #ps #processos #forest"
+
+- id: "103-057"
+  topic: "103.2"
+  question: "Qual comando exibirá as últimas linhas do arquivo texto arquivo1.txt? Selecione a opção correta."
+  options:
+    - "head -b arquivo1.txt"
+    - "head --bottom arquivo1.txt"
+    - "tail arquivo1.txt"
+    - "tail -n 1 arquivo1.txt"
+    - "head -v arquivo1.txt"
+  answer: 3
+  comment: "O comando tail, por padrão, exibe as últimas 10 linhas de um arquivo. A opção 'tail -n 1' exibiria apenas a última linha, mas 'tail' sozinho é a resposta correta para a ação genérica de exibir as últimas linhas. #tail #file #text"
+
+- id: "103-058"
+  topic: "103.5"
+  question: "Você digitou o comando 'cat MyFile | sort > DirList &' e o sistema respondeu com '[4] 3499'. O que isso significa?"
+  options:
+    - "O job é 4 e o PID do sort é 3499."
+    - "O job é 4 e o PID do cat é 3499."
+    - "O job é 4 e o PID do job é 3499."
+    - "O job é 3499 e o PID do cat é 4."
+  answer: 2
+  comment: "Quando um pipeline é enviado para o background, o shell retorna o número do job entre colchetes [n] e o PID do último processo da cadeia (neste caso, o sort). No entanto, o comportamento padrão do Bash ao reportar o PID de um pipeline em background é focar no último comando da sequência, que coordena o fluxo de saída. #jobs #background #pipeline"
+
+- id: "103-059"
+  topic: "103.3"
+  question: "Utilizando os conceitos de expressões regulares, descreva um metacharacter."
+  options:
+    - "Metacharacters não são usados em expressões regulares."
+    - "Eles são caracteres de controle especiais usados na expressão regular."
+    - "Eles são usados pela shell para exibir gráficos."
+    - "Eles são usados para exibir resultados depois de usar uma expressão regular."
+    - "Eles são caracteres de texto padrão, usados na expressão regular."
+  answer: 2
+  comment: "Metacaracteres são símbolos que possuem um significado especial para o motor de busca de expressões regulares (como '.', '*', '+', '?', '^', '$'). Em vez de serem interpretados como texto literal, eles instruem o motor a realizar funções como repetição, alternância ou ancoragem. #regex #metacharacters"
+
+- id: "103-060"
+  topic: "103.1"
+  question: "O que acontece quando o caractere '&' é adicionado ao término de um comando? Selecione a opção correta."
+  options:
+    - "permite que outro comando seja adicionado na mesma linha."
+    - "coloca o processo em segundo plano"
+    - "pára o processo."
+    - "reinicia um processo parado."
+    - "coloca o processo no primeiro plano."
+  answer: 2
+  comment: "O caractere '&' é o operador de controle do shell para execução assíncrona. Ele envia o comando para o 'background' (segundo plano), permitindo que o shell exiba o prompt imediatamente para novos comandos sem esperar o término do anterior. #bash #background #jobs"
+

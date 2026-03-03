@@ -81,6 +81,17 @@
   pointer-events: none;
 }
 
+/* Multi-select: selecionado antes de confirmar */
+.quiz-multi ol li.quiz-selected {
+  color: var(--accent-cyan);
+}
+.quiz-multi ol li.quiz-selected::before {
+  content: "[++]";
+  color: var(--accent-cyan);
+  opacity: 1;
+  text-shadow: 0 0 8px rgba(139, 233, 253, 0.4);
+}
+
 /* Card de explicação — oculto até responder */
 .quiz-explanation {
   display: none;
@@ -146,6 +157,76 @@
   font-weight: normal;
   margin-left: 0.4em;
   opacity: 0.9;
+}
+
+/* ==========================================================================
+   QUESTÃO DISCURSIVA
+   ========================================================================== */
+
+/* Li que contém a textarea */
+.quiz-disc-input-li {
+  cursor: text !important;
+
+  /* Sem [>>] no hover — só quando focused via JS */
+  &:hover::before {
+    content: "[--]" !important;
+    color: var(--muted-color) !important;
+    opacity: 0.5 !important;
+    text-shadow: none !important;
+  }
+
+  /* Focused: ativa o [>>] */
+  &.quiz-disc-focused::before {
+    content: "[>>]" !important;
+    color: var(--accent-cyan) !important;
+    opacity: 1 !important;
+    text-shadow: 0 0 8px rgba(139, 233, 253, 0.5) !important;
+  }
+}
+
+.quiz-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1em;
+  line-height: 1.5;
+  padding: 0;
+  resize: none;
+  outline: none;
+  display: block;
+  overflow: hidden;
+
+  &:disabled { opacity: 0.45; cursor: default; }
+}
+
+/* Gabarito revelado */
+.quiz-model-answer {
+  display: none;
+  margin-top: 10px;
+  padding: 12px 15px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  line-height: 1.6;
+
+  &.visible {
+    display: block;
+    animation: quiz-explain-in 0.25s ease forwards;
+  }
+
+  &.visible.quiz-disc-correct {
+    color: var(--green);
+    background: rgba(80, 250, 123, 0.04);
+    border: 1px solid rgba(80, 250, 123, 0.3);
+  }
+
+  &.visible.quiz-disc-wrong {
+    color: #ff5555;
+    background: rgba(255, 85, 85, 0.04);
+    border: 1px solid rgba(255, 85, 85, 0.3);
+  }
 }
 
 /* A Falange: Grid estrutural para as linhas do Quiz */

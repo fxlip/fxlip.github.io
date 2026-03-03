@@ -1,0 +1,84 @@
+- id: "102-001"
+  topic: "102.1"
+  type: "discursive"
+  question: "Qual é o ID de partição de uma partição Swap do Linux?"
+  answer: "82"
+  comment: "No esquema de particionamento MBR (Master Boot Record), cada tipo de partição possui um identificador hexadecimal; o código 82 reserva o espaço para a memória virtual (Swap) do Linux. #fdisk"
+
+- id: "102-002"
+  topic: "102.2"  
+  question: "Quando você precisa executar novamente o comando grub-install?"
+  options:
+    - "Após cada inicialização"
+    - "Após cada modificação do arquivo de configuração do grub"
+    - "Após instalar um novo kernel com um novo nome em /boot"
+    - "Após sobrescrever o kernel antigo em /boot por um novo"
+    - "Apenas a primeira vez após a instalação do GRUB"
+  answer: 5
+  comment: "O grub-install é usado para instalar os binários do GRUB no setor de boot (MBR ou partição EFI). Mudanças de configuração ou novos kernels exigem apenas o grub-mkconfig (ou update-grub), pois o \"carregador\" físico já está no lugar. #grub-install"
+
+- id: "102-003"
+  topic: "102.3"
+  type: "discursive"
+  question: "Qual programa é usado para determinar quais bibliotecas compartilhadas são usadas por um programa específico?"
+  answer: "ldd"
+  comment: "O comando ldd (List Dynamic Dependencies) imprime as bibliotecas compartilhadas exigidas por cada programa ou biblioteca compartilhada especificada na linha de comando. #ldd"
+
+- id: "102-004"
+  topic: "102.4"  
+  question: "Você deseja desinstalar um pacote deb chamado foobar do seu sistema. Qual seria o comando apropriado?"
+  options:
+    - "remove foobar"
+    - "remove foobar.deb"
+    - "dpkg -r foobar"
+    - "dselect foobar"
+    - "apt-get remove foobar"
+  answer: [3, 5]
+  comment: "O dpkg -r (remove) opera em baixo nível diretamente no banco de dados local, enquanto o apt-get remove é uma interface de alto nível que também resolve dependências. Nunca use o nome do arquivo .deb para desinstalar, apenas o nome do pacote. #apt-get #dpkg"
+
+- id: "102-005"
+  topic: "102.5"  
+  question: "Qual comando você usaria para listar todos os pacotes rpm instalados no seu sistema?"
+  options:
+    - "rpm --all"
+    - "rpm --show-all"
+    - "rpm -q all"
+    - "rpm -qa"
+    - "rpm -la"
+  answer: 4
+  comment: "O comando rpm com a flag -q (query) inicia uma consulta ao banco de dados, e a flag -a (all) instrui o sistema a retornar todos os pacotes atualmente instalados. #rpm"
+
+- id: "102-006"
+  topic: "102.4"  
+  question: "Qual comando NÃO é utilizável para instalar pacotes Debian?"
+  options:
+    - "dpkg"
+    - "dselect"
+    - "apt-get"
+    - "dinst"
+  answer: 4
+  comment: "Enquanto dpkg (ferramenta de base), apt-get (gerenciador moderno) e dselect (interface de menu antiga) são ferramentas reais do ecossistema Debian, o comando dinst não existe nesse contexto. #dpkg"
+
+- id: "102-007"
+  topic: "102.1"
+  question: "Qual dos comandos seguintes seria o ideal para melhor montar um CD-ROM que contém uma distribuição de Linux, sem depender de qualquer arquivo de configuração?"
+  options:
+    - "mount -t linux /dev/cdrom /mnt/cdrom"
+    - "mount -t iso9660 /mnt/cdrom /dev/cdrom"
+    - "mount -t iso9660 /dev/cdrom /mnt/cdrom"
+    - "mount /dev/cdrom /dev/hdc"
+    - "mount -f linux /dev/hdc /mnt/cdrom"
+  answer: 3
+  comment: "Para montar sem depender do /etc/fstab, você deve especificar explicitamente o tipo do sistema de arquivos (-t iso9660), o dispositivo de origem (/dev/cdrom) e o ponto de montagem de destino (/mnt/cdrom). #mount #iso9660 #cdrom"
+
+- id: "102-008"
+  topic: "102.1"
+  question: "Qual comando é usado para desmontar um sistema de arquivos montado anteriormente?"
+  options:
+    - "unmount /dev/sdb1"
+    - "umount /mnt/backup"
+    - "detach /dev/sdb1"
+    - "remount -u /mnt/backup"
+  answer: 2
+  comment: "O comando correto é 'umount' (sem a letra 'n'). Ele pode receber tanto o nome do dispositivo quanto o ponto de montagem como argumento. É comum o erro de grafia 'unmount', mas o binário do sistema ignora o 'n' extra. #umount #filesystem #storage"
+

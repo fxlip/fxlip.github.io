@@ -1,0 +1,40 @@
+- id: "109-001"
+  topic: "109.2"
+  question: "Para uma estação de trabalho de Internet com uma única interface de rede, que rotas devem ser adicionadas para conectar eth0 depois que seja inicializado?"
+  options:
+    - "Interface, local network e default gateway"
+    - "Nenhum"
+    - "Interface e default gateway"
+    - "Interface"
+  answer: 1
+  comment: "Para a conectividade total em uma estação, o kernel precisa de três informações na tabela de roteamento: a rota da própria interface (para saber quem ele é), a rota da rede local (para falar com vizinhos na mesma sub-rede) e o gateway padrão (default gateway) para encaminhar pacotes para fora da rede local (Internet). #network #routing #gateway"
+
+- id: "109-000"
+  topic: "109.X"  
+  question: "xxx"
+  options:
+    - "xxx"
+    - "xxx"
+    - "xxx"
+    - "xxx"
+    - "xxx"
+  answer: 3
+  comment: "xxx"
+
+- id: "109-001"
+  topic: "109.X"
+  question: "xxx"
+  options:
+    - "xxx"
+    - "xxx"
+    - "xxx"
+    - "xxx"
+  answer: [2, 4]
+  comment: "xxx"
+
+- id: "109-002"
+  topic: "109.X"
+  type: "discursive"
+  question: "xxx"
+  answer: "/etc"
+  comment: "xxx"

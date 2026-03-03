@@ -253,7 +253,14 @@ begin
             title_raw  = parts.last.to_s
             slug       = slugify(title_raw)
             date       = DateTime.now
-            filepath   = File.join(POSTS_DIR, collection, category, tag, "#{date.strftime('%Y-%m-%d')}-#{slug}.md")
+            linux_group = if collection == 'linux'
+              exam_num = category.to_i
+              if (105..110).include?(exam_num)    then '102-500'
+              elsif (101..104).include?(exam_num) then '101-500'
+              end
+            end
+            base_dir = linux_group ? File.join(POSTS_DIR, collection, linux_group) : File.join(POSTS_DIR, collection)
+            filepath = File.join(base_dir, category, tag, "#{date.strftime('%Y-%m-%d')}-#{slug}.md")
             FileUtils.mkdir_p(File.dirname(filepath))
             fm = {
               'layout'      => 'page',

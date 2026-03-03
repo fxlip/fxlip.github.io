@@ -99,8 +99,15 @@
   function shuffleOptions(options, answer) {
     const tagged   = options.map((text, i) => ({ text, correct: i === answer - 1 }));
     const shuffled = shuffle(tagged);
-    const newAnswer = shuffled.findIndex(o => o.correct) + 1; // volta para 1-based
+    const newAnswer = shuffled.findIndex(o => o.correct) + 1;
     return { options: shuffled.map(o => o.text), answer: newAnswer };
+  }
+
+  function shuffleMultiOptions(options, answers) {
+    const tagged   = options.map((text, i) => ({ text, correct: answers.includes(i + 1) }));
+    const shuffled = shuffle(tagged);
+    const newAnswers = shuffled.reduce((acc, o, i) => { if (o.correct) acc.push(i + 1); return acc; }, []);
+    return { options: shuffled.map(o => o.text), answers: newAnswers };
   }
 
   // --------------------------------------------------------------------------
@@ -108,13 +115,39 @@
   // --------------------------------------------------------------------------
 
   function renderQuestion(q) {
-    const { options, answer } = shuffleOptions(q.options, q.answer);
     const questionHtml = escapeHtml(q.question).replace(/\n/g, '<br>');
-    const optionsHtml  = options
-      .map(opt => `<li>${escapeHtml(opt)}</li>`)
-      .join('');
-    const commentHtml  = escapeHtml(q.comment).replace(/\n/g, '<br>');
+    const commentHtml  = escapeHtml(q.comment || '').replace(/\n/g, '<br>');
 
+    if (q.type === 'discursive') {
+      const answerHtml = escapeHtml(q.answer || '').replace(/\n/g, '<br>');
+      return (
+        `<div class="quiz-q quiz-discursive" data-topic="${escapeHtml(q.topic)}" data-disc-answer="${escapeHtml(q.answer || '')}">` +
+          `<p>${questionHtml}</p>` +
+          `<ol>` +
+            `<li class="quiz-disc-input-li"><textarea class="quiz-textarea" placeholder="digite apenas o comando" rows="1"></textarea></li>` +
+          `</ol>` +
+          `<div class="quiz-model-answer">${answerHtml}</div>` +
+          `<div class="quiz-explanation">${commentHtml}</div>` +
+        `</div>` +
+        `<hr>`
+      );
+    }
+
+    if (Array.isArray(q.answer)) {
+      const { options, answers } = shuffleMultiOptions(q.options, q.answer);
+      const optionsHtml = options.map(opt => `<li>${escapeHtml(opt)}</li>`).join('');
+      return (
+        `<div class="quiz-q quiz-multi" data-answers="${answers.join(',')}" data-topic="${escapeHtml(q.topic)}">` +
+          `<p>${questionHtml}</p>` +
+          `<ol>${optionsHtml}</ol>` +
+          `<div class="quiz-explanation">${commentHtml}</div>` +
+        `</div>` +
+        `<hr>`
+      );
+    }
+
+    const { options, answer } = shuffleOptions(q.options, q.answer);
+    const optionsHtml = options.map(opt => `<li>${escapeHtml(opt)}</li>`).join('');
     return (
       `<div class="quiz-q" data-answer="${answer}" data-topic="${escapeHtml(q.topic)}">` +
         `<p>${questionHtml}</p>` +
@@ -142,6 +175,7 @@
 
     // Estado do simulado
     const total    = questions.length;
+    const mcTotal  = questions.filter(q => q.type !== 'discursive').length || 1;
     let answered   = 0;
     let correct    = 0;
     let timerSecs  = 0;
@@ -192,7 +226,7 @@
         clearInterval(timerInterval);
         if (!scoreEl || !headerBody) return;
 
-        const pct  = Math.round((correct / total) * 100);
+        const pct  = Math.round((correct / mcTotal) * 100);
         const pass = pct >= 70;
 
         scoreEl.innerHTML +=
@@ -280,6 +314,74 @@
 
           updateScore();
         });
+      });
+    });
+
+    // Questões multi-select
+    container.querySelectorAll('.quiz-multi[data-answers]').forEach(qEl => {
+      const topic       = qEl.dataset.topic || null;
+      const correctIdxs = qEl.dataset.answers.split(',').map(n => parseInt(n, 10) - 1);
+      const items       = Array.from(qEl.querySelectorAll('ol li'));
+
+      if (topic) {
+        if (!topics[topic]) topics[topic] = { correct: 0, total: 0 };
+        topics[topic].total++;
+      }
+
+      const submit = () => {
+        if (qEl.classList.contains('quiz-answered')) return;
+        qEl.classList.add('quiz-answered');
+
+        let allCorrect = true;
+        items.forEach((li, idx) => {
+          const shouldSelect = correctIdxs.includes(idx);
+          const didSelect    = li.classList.contains('quiz-selected');
+          li.classList.remove('quiz-selected');
+          if (shouldSelect && didSelect)       { li.classList.add('quiz-correct'); }
+          else if (!shouldSelect && didSelect) { li.classList.add('quiz-wrong');   allCorrect = false; }
+          else if (shouldSelect && !didSelect) { li.classList.add('quiz-reveal');  allCorrect = false; }
+        });
+
+        answered++;
+        qEl.querySelector('.quiz-explanation')?.classList.add('visible');
+        if (allCorrect) { correct++; if (topic) topics[topic].correct++; }
+        updateScore();
+      };
+
+      items.forEach(li => {
+        li.addEventListener('click', () => {
+          if (qEl.classList.contains('quiz-answered')) return;
+          li.classList.toggle('quiz-selected');
+          if (qEl.querySelectorAll('li.quiz-selected').length === correctIdxs.length) submit();
+        });
+      });
+    });
+
+    // Questões discursivas (Enter envia, Esc tira foco)
+    container.querySelectorAll('.quiz-discursive').forEach(qEl => {
+      const textarea = qEl.querySelector('.quiz-textarea');
+      const inputLi  = qEl.querySelector('.quiz-disc-input-li');
+      const modelAns = qEl.querySelector('.quiz-model-answer');
+      const explain  = qEl.querySelector('.quiz-explanation');
+      const discAns  = (qEl.dataset.discAnswer || '').trim().toLowerCase();
+
+      textarea.addEventListener('focus', () => inputLi.classList.add('quiz-disc-focused'));
+      textarea.addEventListener('blur',  () => inputLi.classList.remove('quiz-disc-focused'));
+
+      textarea.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { e.preventDefault(); textarea.blur(); return; }
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        if (qEl.classList.contains('quiz-answered')) return;
+
+        qEl.classList.add('quiz-answered');
+        textarea.disabled = true;
+
+        const isCorrect = textarea.value.trim().toLowerCase() === discAns;
+        modelAns.classList.add('visible', isCorrect ? 'quiz-disc-correct' : 'quiz-disc-wrong');
+        if (explain && explain.textContent.trim()) explain.classList.add('visible');
+        answered++;
+        updateScore();
       });
     });
   }

@@ -1,7 +1,17 @@
 ---
 layout: default
 ---
-{%- assign bank = site.data.questions[page.exam] -%}
+{%- if page.exams -%}
+  {%- assign bank = "" | split: "" -%}
+  {%- for e in page.exams -%}
+    {%- assign part = site.data.questions[e] -%}
+    {%- if part -%}
+      {%- assign bank = bank | concat: part -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- else -%}
+  {%- assign bank = site.data.questions[page.exam] -%}
+{%- endif -%}
 <script>
 window.__questionBank  = {{ bank | jsonify }};
 window.__quizConfig    = {{ page.config | jsonify }};

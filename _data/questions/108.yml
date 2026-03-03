@@ -1,0 +1,29 @@
+- id: "108-000"
+  topic: "108.X"  
+  question: "xxx"
+  options:
+    - "xxx"
+    - "xxx"
+    - "xxx"
+    - "xxx"
+    - "xxx"
+  answer: 3
+  comment: "xxx"
+
+- id: "108-001"
+  topic: "108.X"
+  question: "xxx"
+  options:
+    - "xxx"
+    - "xxx"
+    - "xxx"
+    - "xxx"
+  answer: [2, 4]
+  comment: "xxx"
+
+- id: "108-002"
+  topic: "108.X"
+  type: "discursive"
+  question: "xxx"
+  answer: "/etc"
+  comment: "xxx"

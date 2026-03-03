@@ -1,0 +1,194 @@
+- id: "104-001"
+  topic: "104.1"  
+  question: "Como você poderia verificar a integridade de um sistema de arquivos não montado /dev/hdb7, mesmo que ele tenha uma marcação de \"limpo\" (cleanflag) válida?"
+  options:
+    - "chkdsk /dev/hdb7"
+    - "fsck /dev/hdb7"
+    - "hdcheck --force /dev/hdb7"
+    - "fsck -f /dev/hdb7"
+    - "fschk -f /dev/hdb7"
+  answer: 4
+  comment: "O comando fsck por padrão ignora sistemas de arquivos marcados como \"limpos\" para economizar tempo. A flag -f (force) ignora o estado do cleanflag e realiza uma verificação completa e minuciosa de toda a estrutura de inodes e blocos. #fsck"
+
+- id: "104-002"
+  topic: "104.3"  
+  question: "Você criou um novo diretório chamado /foo e copiou dois arquivos, bar e foobar, para dentro dele. Agora, você monta um disquete em /foo usando o comando mount /dev/fd0 /foo. O que acontece com os arquivos se você usar o comando rm -rf /foo/* e depois umount /foo?"
+  options:
+    - "Eles são removidos."
+    - "Eles são removidos, mas você pode restaurá-los."
+    - "Não é possível montar um disquete em um diretório que não esteja vazio."
+    - "Nada. Eles ainda estão lá."
+    - "Os nomes aparecem no diretório, mas os inodes são excluídos."
+  answer: 4
+  comment: "Quando você monta um sistema de arquivos em um diretório que já contém arquivos, o conteúdo original fica \"mascarado\" (escondido) pelo novo sistema de arquivos. O comando rm -rf /foo/* deletará apenas o que está no disquete. Ao desmontar, os arquivos originais reaparecem intactos. #mount"
+
+- id: "104-003"
+  topic: "104.4"  
+  question: "Como você poderia obter a informação de qual tipo de cota está ativada para o usuário foo?"
+  options:
+    - "repquota foo"
+    - "repquota --user foo"
+    - "quota foo"
+    - "quota --user foo"
+    - "quotainfo foo"
+  answer: 3
+  comment: "O comando quota exibe os limites e o uso atual de disco para um usuário ou grupo. Ao passar o nome do usuário como argumento (quota foo), o sistema reporta as restrições impostas a essa conta específica em todos os sistemas de arquivos montados com suporte a cotas. #quota"
+
+- id: "104-004"
+  topic: "104.5"
+  type: "discursive"
+  question: "Qual o valor numérico do modo de permissão -rwxr-sr--?"
+  answer: "2754"
+  comment: "As permissões padrão são 754 (rwx=7, r-x=5, r--=4). O \"s\" no campo do grupo indica o bit especial SetGID ativado sobre uma permissão de execução (s minúsculo = x presente). O SetGID tem valor 2 no primeiro dígito da representação de quatro oitais. #chmod"
+
+- id: "104-005"
+  topic: "104.5"  
+  question: "Como você poderia ajudar os usuários a criarem arquivos com permissões de arquivo rigorosas?"
+  options:
+    - "Ensinar os usuários a usar o chmod."
+    - "Usar uma configuração de umask rigorosa no perfil do usuário."
+    - "Alterar as permissões de diretório do usuário."
+    - "Usar o cron para alterar as permissões dos arquivos dos usuários uma vez por dia."
+    - "Usar substitutos para as ferramentas padrão do Unix que criam arquivos seguros."
+  answer: 2
+  comment: "O umask (User Mask) define as permissões padrão que serão subtraídas (mascaradas) no momento da criação de qualquer novo arquivo ou diretório. Configurar um umask como 0077 no .bash_profile ou /etc/profile, por exemplo, garante que apenas o dono tenha acesso aos arquivos criados, sem depender de ação manual posterior. #umask"
+
+- id: "104-006"
+  topic: "104.5"  
+  question: "Como você poderia alterar o proprietário do arquivo foobar para o usuário foo?"
+  options:
+    - "chown foo:foobar"
+    - "chown foobar foo"
+    - "chown foo foobar"
+    - "chmod --user foo foobar"
+    - "chperm --user foo --file foobar"
+  answer: 3
+  comment: "O comando chown (change owner) segue a sintaxe básica chown [NOVO_DONO] [ARQUIVO]. Ele permite alterar o proprietário e, opcionalmente, o grupo de um arquivo ou diretório. Somente o superusuário (root) pode alterar o dono de um arquivo para outro usuário. #chown"
+
+- id: "104-007"
+  topic: "104.6"  
+  question: "No diretório /home/foo existe um arquivo chamado bar que é um link simbólico para o arquivo foobar no mesmo diretório, criado com o comando ln -s foobar bar. Se você copiar o link para /tmp usando o comando cp -d /home/foo/bar /tmp, o que aconteceria?"
+  options:
+    - "A destino /tmp/bar é um link simbólico para /tmp/foobar"
+    - "A destino /tmp/bar é um link simbólico para /home/foo/foobar"
+    - "A destino /tmp/bar é um arquivo regular com o mesmo conteúdo que /home/foo/foobar"
+    - "A destino /tmp/bar é um hardlink usando o mesmo inode que /home/foo/foobar"
+    - "A destino /tmp/bar é um hardlink usando o mesmo inode que /home/foo/bar"
+  answer: 1
+  comment: "O comando ln -s foobar bar cria um link simbólico relativo. O arquivo bar contém apenas a string \"foobar\". A opção -d (ou --no-dereference) do comando cp garante que o link seja copiado como um link, preservando seu conteúdo literal. Como o conteúdo é \"foobar\", ao ser movido para /tmp, o sistema tentará resolver esse nome dentro do novo diretório. #symlink"
+
+- id: "104-008"
+  topic: "104.7"
+  type: "discursive"
+  question: "Qual diretório contém a maioria dos arquivos de configuração do sistema? Insira o caminho completo."
+  answer: "/etc"
+  comment: "De acordo com o FHS (Filesystem Hierarchy Standard), o diretório /etc é o local centralizado para todos os arquivos de configuração estáticos do sistema. Ele não deve conter binários executáveis. #etc #fhs"
+
+- id: "104-009"
+  topic: "104.2"
+  question: "Que afirmativa sobre o comando \"du\" é verdadeira?"
+  options:
+    - "Dump User - backup dos arquivos dos usuários."
+    - "DOS to Unix - Muda os arquivos do formato MS-DOS para UNIX"
+    - "Dos Utility - Ferramenta para acesso de discos MS-DOS."
+    - "Disk Usage - Mostra a quantidade de disco utilizada"
+    - "Dir User - Mostra os diretórios dos usuários."
+  answer: 4
+  comment: "O comando du (Disk Usage) estima e exibe o espaço em disco usado por arquivos e diretórios específicos. Diferente do df, que lê os blocos livres do sistema de arquivos, o du percorre a árvore de diretórios somando o tamanho de cada arquivo recursivamente. #du #diskusage"
+
+- id: "104-010"
+  topic: "104.7"
+  question: "Em um sistema com partições separadas /, /usr, /var, /tmp, quais delas podem seguramente ser montadas como somente leitura?"
+  options:
+    - "/usr"
+    - "/usr, /, /tmp"
+    - "/var"
+    - "/tmp"
+    - "/var, /usr"
+  answer: 1
+  comment: "De acordo com o FHS (Filesystem Hierarchy Standard), o diretório /usr contém dados estáticos do sistema compartilháveis e imutáveis durante a operação normal (como binários e bibliotecas). Portanto, pode ser montado como read-only (ro) na rede ou localmente por segurança. Já partições como /var (logs, spools) e /tmp (arquivos temporários) exigem gravação constante (rw). #fhs #mount"
+
+- id: "104-011"
+  topic: "104.2"
+  question: "Considere a linha seguinte. Deseja-se saber qual o comando que a produziu: /dev/hda8 1.9G 559M 1.2G 30% /home"
+  options:
+    - "df -m"
+    - "du -k"
+    - "df -h"
+    - "df -k"
+    - "du -s"
+  answer: 3
+  comment: "A saída apresenta sufixos de unidade como 'G' (Gigabytes) e 'M' (Megabytes), o que caracteriza o uso da flag -h (human-readable). O comando df (disk free) é o responsável por exibir o uso de espaço por sistema de arquivos montado, incluindo o ponto de montagem (/home). #df #storage"
+
+- id: "104-012"
+  topic: "104.2"
+  question: "Qual dos comandos seguintes pode ser usado para conferir um sistema de arquivos ext2? Selecione todas as alternativas que sejam aplicáveis."
+  options:
+    - "fsck /dev/hda5"
+    - "fsck.ext2 /dev/hda5"
+    - "fsck -ext2 /dev/hda5"
+    - "e2fsck /dev/hda5"
+    - "fsck.linux /dev/hda5"
+  answer: [1, 2, 4]
+  comment: "O utilitário fsck funciona como um wrapper que identifica o tipo de sistema de arquivos e chama o binário específico (fsck.ext2). O comando e2fsck é o utilitário nativo específico para a família ext (ext2/3/4). #fsck #ext2 #e2fsck"
+
+- id: "104-013"
+  topic: "104.1"
+  question: "Você quer alterar as cotas de um usuário. Como fazer isso?"
+  options:
+    - "Usar o comando addquota usuário"
+    - "Usar o comando edquota usuário"
+    - "Usar o comando repquota"
+    - "Editar a linha /home em /etc/fstab"
+    - "Editar o arquivo /home/quota.user"
+  answer: 2
+  comment: "O comando edquota (Edit Quota) abre o editor de texto padrão (geralmente vi ou nano) com os limites de blocos e inodes do usuário específico, permitindo a alteração manual das cotas soft e hard. #quota #edquota #limits"
+
+- id: "104-014"
+  topic: "104.1"
+  question: "Qual das opções seguintes corresponde aos resultados comando: # chmod g+s /home/software?"
+  options:
+    - "O bit SGID será habilitado para /home/software para manter as permissões do grupo do diretório consistente para todos os arquivos criados."
+    - "O sticky bit será habilitado para /home/software."
+    - "O bit SGID será habilitado para /home/software, prevenindo acesso por não membros do grupo de software."
+    - "O sticky bit será aplicado a todos os arquivos dentro de /home/software."
+    - "O bit SUID será habilitado para /home/software."
+  answer: 1
+  comment: "Quando o bit SGID (Set Group ID) é aplicado a um diretório (g+s), todos os novos arquivos e subdiretórios criados dentro dele herdarão automaticamente o grupo proprietário do diretório pai, em vez do grupo primário do usuário que o criou. Isso é fundamental para diretórios de colaboração. #permissions #sgid #chmod"
+
+- id: "104-015"
+  topic: "104.1"
+  question: "Qual o comando utilizado para criar uma partição de swap?"
+  options:
+    - "activeswap"
+    - "swapon"
+    - "mkswap"
+    - "mkfs -t swap"
+    - "initswap"
+  answer: 3
+  comment: "O comando 'mkswap' (make swap) é o responsável por preparar uma partição ou arquivo para ser utilizado como área de troca (swap), gravando a assinatura necessária. O comando 'swapon' apenas ativa uma área que já foi preparada pelo mkswap. #swap #mkswap #memory"
+
+- id: "104-016"
+  topic: "104.1"
+  question: "O comando umask 027 configura qual permissão padrão para criação de novos arquivos?"
+  options:
+    - "1640"
+    - "1027"
+    - "640"
+    - "750"
+    - "27"
+  answer: 3
+  comment: "A máscara umask subtrai permissões da permissão base (666 para arquivos, 777 para diretórios). Para um arquivo: 666 - 027 resulta em 640 (rw-r-----). O dono tem leitura/escrita, o grupo apenas leitura e outros não têm acesso. #umask #permissions #640"
+
+- id: "104-017"
+  topic: "104.1"
+  question: "Um sistema de arquivos ext2 é configurado com cotas de usuário habilitadas. O limite soft é fixo em 100 MB por usuário, o limite hard é fixo em 110 MB por usuário, e o período de graça é de sete dias. O usuário João já possui 90 MB dos dados armazenados no sistema. O que acontecerá quando o João tentar gravar um arquivo novo de tamanho 30 M?"
+  options:
+    - "A gravação terá sucesso, mas o arquivo será truncado permanentemente."
+    - "A gravação terá sucesso, mas o arquivo estará disponível apenas durante sete dias."
+    - "A gravação falhará, e o arquivo será truncado permanentemente."
+    - "A gravação terá sucesso, mas o arquivo será truncado em sete dias."
+    - "A gravação falhará, mas o root pode recuperar o arquivo inteiro dentro de sete dias."
+  answer: 3
+  comment: "João tem 90 MB e tenta gravar 30 MB, totalizando 120 MB. Como o limite 'hard' é de 110 MB, o sistema interrompe a escrita assim que esse teto é atingido. O resultado é uma falha de gravação (Disk quota exceeded) e o arquivo fica truncado com apenas 20 MB (o espaço que restava até os 110 MB). #quotas #hardlimit #ext2"
+

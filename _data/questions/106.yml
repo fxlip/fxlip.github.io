@@ -1,0 +1,30 @@
+- id: "106-001"
+  topic: "106.1"  
+  question: "Qual programa é usado para ajustar as configurações da tela após instalar o X11?"
+  options:
+    - "tuneX"
+    - "xvidtune"
+    - "video"
+    - "vconfig"
+    - "vtune"
+  answer: 2
+  comment: "O xvidtune é uma ferramenta legada para ajustar as \"modelines\" de vídeo no servidor X11. Ele permite sintonizar finamente as frequências de sincronização vertical e horizontal para alinhar a imagem perfeitamente no monitor. #X11 #xvidtune"
+
+- id: "106-002"
+  topic: "106.1"  
+  question: "Você deseja conectar um terminal X11 ao seu servidor. Mas toda vez que você tenta conectar, a tela do seu terminal continua preta. Quais arquivos no servidor você editaria para resolver o problema?"
+  options:
+    - "/etc/X11/XF86Config"
+    - "/etc/X11/xdm/x-terminals"
+    - "/etc/X11/xdm/xdm-config"
+    - "/etc/X11/xdm/Xwilling"
+    - "/etc/X11/xdm/Xaccess"
+  answer: [3, 5]
+  comment: "Para que um terminal remoto use o XDMCP (X Display Manager Control Protocol), o servidor precisa estar ouvindo. No xdm-config, você deve comentar a linha que desativa o listen (geralmente DisplayManager.requestPort: 0). No Xaccess, você define quais hosts têm permissão para solicitar uma tela de login. #XDMCP #X11"
+
+- id: "106-003"
+  topic: "106.1"
+  type: "discursive"
+  question: "Você deseja executar uma aplicação X na sua máquina local, mas ela deve ser exibida no primeiro servidor de exibição de foo. O comando é \"xapplication -display __________\" (Não use números de tela)"
+  answer: "foo:0"
+  comment: "A sintaxe do display no X11 segue o padrão hostname:display_number.screen_number. Como a questão pede o primeiro servidor de exibição (0) e proíbe o número da tela (o que vem depois do ponto), o preenchimento correto é apenas o nome do host seguido de :0. #X11 #display"

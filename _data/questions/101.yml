@@ -1,14 +1,409 @@
-# Banco de questões do exam 101 — adicione aqui
-# Formato: id, topic, question, options (lista), answer (1-based), comment
-
 - id: "101-001"
   topic: "101.1"
-  question: "placeholder"
+  question: "Qual ferramenta você utilizaria para desabilitar o hardware de som diretamente na placa-mãe do computador utilizado?"
   options:
-    - "0"
+    - "lspci"
+    - "modprobe"
+    - "O firmware da placa-mãe"
+    - "rmmod"
+  answer: 3
+  comment: "A BIOS/UEFI é o firmware gerenciador da placa mãe, em que podem ser realizados diversos ajustes sobre o funcionamento dos dispositivos de hardware. #bios"
+
+- id: "101-002"
+  topic: "101.1"
+  question: "Qual a principal função do udev?"
+  options:
+    - "Descarregar módulos do Linux"
+    - "Gerenciar o diretório /dev"
+    - "Gerenciar a inicialização dos processos no Linux"
+    - "Criar logs do processo de boot"
+    - "Checar o funcionamento dos dispositivos de armazenamento"
+  answer: 2
+  comment: "O udev é o processo responsável pelo gerenciamento dos dispositivos no /dev. Regras adicionais e específicas podem ser inseridas através de arquivos no diretório /etc/udev/rules.d/. #udev"
+
+- id: "101-003"
+  topic: "101.1"
+  question: "Qual comando pode ser utilizado para carregar um módulo e todos módulos do qual ele depende automaticamente?"
+  options:
+    - "start <nome-do-modulo>"
+    - "insmod"
+    - "modprobe"
+    - "modinfo"
+    - "Através de uma configuração no /etc/modules"
+  answer: 3
+  comment: "O comando modprobe é utilizado para carregar e remover módulos do sistema, trabalhando com os arquivos presentes no /lib/modules consegue identificar as dependência de cada módulo. O insmod é usado para carregar um modo diretamente, mas não há tratamento de dependências. O lsmod é usado para listar os módulos carregados. #modprobe"
+
+- id: "101-004"
+  topic: "101.2"
+  question: "Em um sistema que utiliza a BIOS, em que local ficam armazenadas as informações utilizadas durante a primeira fase do processo de boot?"
+  options:
+    - "Na memória RAM"
+    - "No Firmware"
+    - "Na partição /boot"
+    - "Na MBR"
+    - "No initramfs"
+  answer: 4
+  comment: "A BIOS localiza e executa o MBR, o MBR carrega o Bootloader (GRUB), o Bootloader selecione e executa o kernel e o initrd, o kernel executa o processo do Init, e o Init inicia os serviços e programas de acordo com o runlevel/target configurado. #mbr"
+
+- id: "101-005"
+  topic: "101.3"
+  question: "Em um sistema que utiliza o initi/SystemV, qual o comando utilizado para iniciar o processo httpd?"
+  options:
+    - "systemctl start httpd"
+    - "systemctl httpd start"
+    - "start httpd"
+    - "/etc/init.d/httpd start"
+  answer: 4
+  comment: "Com o SysV, todo serviço tem um script no diretório /etc/init.d/ e esse script é quem define como o serviço é iniciado no sistema, e parado. Além disso, cada runlevel tem um diretório /etc/rc*.d/ e nesse diretório há links que indicam quais serviços devem ser iniciados e parados nesse runlevel específico. #sysv"
+
+- id: "101-006"
+  topic: "101.3"
+  question: "Em um sistema Linux que utiliza o systemd, qual comando pode ser utilizado para parar o serviço httpd?"
+  options:
+    - "stop httpd"
+    - "systemctl stop httpd.service"
+    - "systemctl halt httpd.service"
+    - "systemctl isolate httpd"
+    - "systemd kill httpd"
+  answer: 2
+  comment: "O systemctl é o principal comando utilizada na administração dos serviços via systemd. Entre os principais comandos estão o stop, start e status. #systemctl"
+
+- id: "101-007"
+  topic: "101.3"
+  question: "Qual dos comandos abaixo não irá reiniciar o Linux?"
+  options:
+    - "shutdown -r now"
+    - "reboot"
+    - "restart"
+    - "systemctl reboot"
+    - "init 6"
+  answer: 3
+  comment: "O comando restart não existe, mas todas as outras alternativas podem ser utilizadas para reiniciar o sistema."
+
+- id: "101-008"
+  topic: "101.1"
+  question: "Qual IRQ é por padrão associado ao teclado?"
+  options:
     - "1"
-    - "10"
-    - "11"
-    - "100"
+    - "2"
+    - "3"
+    - "4"
+    - "7"
   answer: 1
-  comment: "placeholder"
+  comment: "IRQ é a sigla de Interrupt Request Line, ou Requisição de Interrupção. Essas informações ficam registradas no arquivo dinâmico /proc/interrupts. Por padrão, o sistema reserva o IRQ 1 para o teclado. #irq"
+
+- id: "101-009"
+  topic: "101.3"
+  question: "Qual o comando envia uma mensagem a todos os usuários logados no sistema Linux?"
+  options:
+    - "halt"
+    - "telinit 'mensagem'"
+    - "wall \"mensagem\""
+    - "message \"mensagem\""
+    - " send \"mensagem\""
+  answer: 3
+  comment: "O comando wall irá enviar a mensagem que seguir o comando diretamente para o terminal de todos os usuários conectados no sistema. #wall"
+
+- id: "101-010"
+  topic: "101.1"
+  question: "Qual dos comandos abaixo pode ser utilizado para listar informações sobre dispositivos SCSI?"
+  options:
+    - "cat /proc/scsi"
+    - "cat /proc/scsi/scsi"
+    - "cat /sys/scsi"
+    - "man /dev/scsi"
+    - "modinfo scsi"
+  answer: 2
+  comment: "As informações referentes aos dispositivos SCSI podem ser verificadas através do arquivo /proc/scsi/scsi. #scsi"
+
+- id: "101-011"
+  topic: "101.1"
+  question: "Qual comando pode listar os dispositivos USB conectados ao computador?"
+  options:
+    - "lspci"
+    - "lsusb"
+    - "usbstatus"
+    - "cat /proc/usb"
+    - "lsmod"
+  answer: 2
+  comment: "O comando lsusb é usado para listar os dispositivos conectados aos barramentos USB, a opção -s é utilizada para ver os detalhes baseados nos valores do Bus e Device, a opção -d é utilizada com os valores que seguem o “ID”, sempre em conjunto com a opção -v para exibir os detalhes. #lsusb"
+
+- id: "101-012"
+  topic: "101.3"
+  question: "Qual o daemon responsável por tratar eventos relacionados ao gerenciamento de energia do hardware utilizado?"
+  options:
+    - "EFI"
+    - "acpid"
+    - "systemd-journal"
+    - "dbus"
+    - "hald"
+  answer: 2
+  comment: "Computadores modernos dão suporte à Advanced Configuration and Power Interface, que permite o gerenciamento inteligente de energia em seu sistema e consulta ao estado das baterias e da configuração. O daemon acpid monitora esses eventos tomando as ações relacionadas às suas regras e configurações internas. #acpid"
+
+- id: "101-013"
+  topic: "101.2"
+  question: "Como é possível visualizar os logs de boot do sistema armazenados no systemd-journal?"
+  options:
+    - "journalctl -b"
+    - "systemd-journal –boot"
+    - "dmesg"
+    - "bzcat"
+    - "systemd-boot "
+  answer: 1
+  comment: "O serviço systemd possui um registro de logs específico chamado de journal e o comando journalctl é a ferramenta desenhada especificamente para consultar esses registros sendo que pela opção -b são exibidos apenas os registros relacionados ao processo de boot. #journalctl"
+
+- id: "101-014"
+  topic: "101.1"  
+  question: "Você deseja instalar um servidor Linux sem teclado. Qual das seguintes opções é necessária para evitar mensagens de erro durante a inicialização?"
+  options:
+    - "Criar um arquivo vazio /etc/nokeyb"
+    - "Carregar o módulo nokeyb.o"
+    - "Configurar o \"Halt on\" no CMOS-Setup para \"All but keyboard\" (Tudo, exceto teclado)"
+    - "Inserir uma entrada \"alias keyboard off\" em /etc/modules.conf"
+    - "Nada"
+  answer: 3
+  comment: "O erro de teclado é disparado pelo BIOS/UEFI (hardware) antes do Linux iniciar. Alterar o \"Halt on\" no CMOS ignora essa checagem física, permitindo o boot de servidores headless. #bios"
+
+- id: "101-015"
+  topic: "101.1"  
+  question: "Como você poderia obter o endereço físico SCSI de /dev/sda?"
+  options:
+    - "Usando o comando scsi-info /dev/sda"
+    - "Usando o comando scsi_info /dev/sda"
+    - "Usando o comando scsiinfo /dev/sda"
+    - "Usando o comando get_scsi_info /dev/sda"
+    - "Usando o comando lsscsi"
+  answer: 5
+  comment: "O comando lsscsi lista dispositivos SCSI (ou dispositivos que utilizam a camada SCSI, como discos SATA e USB no Linux) e seus atributos, mapeando a relação entre o endereço físico (H:C:T:L) e o nó de dispositivo em /dev. #lsscsi"
+
+- id: "101-016"
+  topic: "101.1"  
+  question: "Você detecta um controlador USB Compaq em seu computador. Qual módulo USB você carregaria para usar este controlador?"
+  options:
+    - "usb-via"
+    - "usb-ohci"
+    - "usb-uhci"
+    - "usb-intel"
+    - "usb-compaq"
+  answer: 2
+  comment: "O padrão OHCI (Open Host Controller Interface) é o protocolo genérico usado por controladores USB 1.1 da Compaq, Opti, SiS, ALi e outros, enquanto o UHCI é usado majoritariamente pela Intel e VIA. #ohci"
+
+- id: "101-017"
+  topic: "101.1"
+  type: "discursive"
+  question: "/dev/____ é a primeira partição lógica do mestre no primeiro canal IDE."
+  answer: "hda5"
+  comment: "No esquema de nomeação IDE legado, o primeiro disco (master no canal 1) é hda. As partições 1 a 4 são reservadas para partições primárias ou estendidas. As partições lógicas começam obrigatoriamente a partir do número 5, independentemente de quantas partições primárias existam. #hda5"
+
+- id: "101-018"
+  topic: "101.1"
+  question: "O comando cat /proc/cpuinfo lista informações sobre:"
+  options:
+    - "Portas IRQ"
+    - "Consumo de memória"
+    - "Processador(es) encontrado(s) pelo sistema;"
+    - "Endereços de I/O"
+  answer: 3
+  comment: "O sistema de arquivos virtual /proc mapeia o estado do kernel em tempo real na RAM. O cpuinfo exibe a topologia, arquitetura, flags e núcleos físicos/lógicos do processador. #cpuinfo #proc"
+
+- id: "101-019"
+  topic: "101.1"
+  question: "Dispositivos hotplug são dispositivos:"
+  options:
+    - "Mais caros, de melhor desempenho."
+    - "Que aquecem, prejudicando o funcionamento da máquina."
+    - "Que devem ser conectados com a máquina desligada."
+    - "Que podem ser conectados com a máquina em funcionamento."
+  answer: 4
+  comment: "Hotplug refere-se à capacidade de conectar e desconectar dispositivos físicos (como USB, SATA, PCIe) com o sistema operacional e o hardware em plena execução, sem necessidade de reinicializar. O kernel detecta a mudança de estado e o udev cria os nós de dispositivo dinamicamente no /dev. #hotplug #udev"
+
+- id: "101-020"
+  topic: "101.1"
+  question: "Qual comando é utilizado para verificar dispositivos usb conectados ao computador ?"
+  options:
+    - "cat /dev/usb"
+    - "lsusb"
+    - "cat /proc/devices"
+    - "lspci"
+  answer: 2
+  comment: "O comando lsusb consulta o barramento USB e exibe os dispositivos conectados lendo os dados do /dev/bus/usb/ (ou /proc/bus/usb em sistemas muito antigos). Ele mostra o ID do Vendor e do Produto, cruciais para diagnosticar drivers ausentes. #lsusb #usb"
+
+- id: "101-021"
+  topic: "101.2"
+  question: "O MBR - Master Boot Record é a região do disco (Hard Disk) que compreende os seus primeiros 512 bytes que é usado pelo GRUB ou LILO para carregar o sistema operacional."
+  options:
+    - "Verdadeiro"
+    - "Falso"
+  answer: 1
+  comment: "O MBR ocupa o primeiro setor do disco (512 bytes), dividido estritamente em: 446 bytes para o bootloader (Estágio 1 do GRUB/LILO), 64 bytes para a tabela de partições e 2 bytes para a assinatura mágica de boot (0x55AA). #mbr #grub"
+
+- id: "101-022"
+  topic: "101.2"
+  question: "Onde o GRUB irá armazenar suas informações de boot?"
+  options:
+    - "Inicialização da ROM"
+    - "Inicialização da RAM"
+    - "Master Boot Record (MBR)"
+    - "Partição /root"
+  answer: 3
+  comment: "Em arquiteturas BIOS tradicionais, o estágio 1 do GRUB (o código executável inicial) é gravado diretamente nos primeiros 446 bytes do MBR do disco rígido. Ele serve como um apontador para carregar os estágios posteriores que estão no sistema de arquivos (/boot). #grub #mbr"
+
+- id: "101-023"
+  topic: "101.3"
+  question: "Para realizar o start do servidor web apache em sistemas que utilizam o sysvinit utilizamos o comando; service httpd start. Como seria realizado este procedimento em um sistema que utiliza o systemd ?"
+  options:
+    - "/etc/init.d/httpd start"
+    - "httpdctl start"
+    - "service apache2 init"
+    - "systemctl start httpd.service"
+  answer: 4
+  comment: "O utilitário central do systemd é o systemctl. A sintaxe moderna exige o formato 'systemctl [AÇÃO] [UNIDADE]'. Embora o sufixo '.service' seja assumido por padrão se omitido, incluí-lo é a prática rigorosa para evitar conflitos com outros tipos de units (sockets, timers, targets). #systemd #systemctl"
+
+- id: "101-024"
+  topic: "101.3"
+  question: "Qual dos comandos abaixo é utilizado para mostrar as unidades e suas dependências (systemd)?"
+  options:
+    - "show --dependencies"
+    - "chkconfig --dependencies"
+    - "systemctl list-dependencies"
+    - "show unit-dependencies"
+  answer: 3
+  comment: "O comando systemctl list-dependencies exibe uma árvore hierárquica mostrando quais units precisam ser iniciadas para que a unit especificada (ou o default.target) funcione. Ele mapeia as diretivas Wants e Requires do systemd. #systemd #systemctl"
+
+- id: "101-022"
+  topic: "101.2"
+  question: "Onde o GRUB irá armazenar suas informações de boot?"
+  options:
+    - "Inicialização da ROM"
+    - "Inicialização da RAM"
+    - "Master Boot Record (MBR)"
+    - "Partição /root"
+  answer: 3
+  comment: "Em arquiteturas BIOS tradicionais, o estágio 1 do GRUB (o código executável inicial) é gravado diretamente nos primeiros 446 bytes do MBR do disco rígido. Ele serve como um apontador para carregar os estágios posteriores que estão no sistema de arquivos (/boot). #grub #mbr"
+
+- id: "101-025"
+  topic: "101.3"
+  question: "Qual target dá suporte a login gráfico ?"
+  options:
+    - "runlevel5.target ou graphical.target"
+    - "runlevel4.target"
+    - "runlevel0.target ou X.target"
+    - "gdm.target"
+  answer: 1
+  comment: "No systemd, o graphical.target é o equivalente ao antigo runlevel 5 do SysVinit, inicializando um ambiente multiusuário completo com interface gráfica. O runlevel5.target é apenas um link simbólico para manter a compatibilidade com scripts e comandos legados. #systemd #runlevel5"
+
+- id: "101-026"
+  topic: "101.2"
+  question: "Qual o arquivo no /proc informa os parâmetros passados ao Kernel durante o processo de boot?"
+  options:
+    - "/proc/apm"
+    - "/proc/stat"
+    - "/proc/kmsg"
+    - "/froc/sys/kernel/sysrq"
+    - "/proc/cmdline"
+  answer: 5
+  comment: "O arquivo /proc/cmdline contém a string exata que o bootloader (como o GRUB) passou para o kernel no momento da inicialização. Isso inclui parâmetros críticos como a localização do rootfs (root=/dev/sda1), modo de leitura (ro/rw), ou opções de init (init=/bin/bash). #cmdline #boot"
+
+- id: "101-027"
+  topic: "101.3"
+  question: "Qual dos comandos abaixo podem ser usados para efetuar um desligamento do Sistema ? (Selecione 3 respostas)"
+  options:
+    - "telinit"
+    - "halt"
+    - "kill"
+    - "shutdown"
+  answer: [1, 2, 4]
+  comment: "O shutdown é o padrão para desligamento seguro. O halt paralisa o sistema (e aciona o poweroff via ACPI). O telinit 0 instrui o init a mudar para o runlevel 0, que é o estado de desligamento. O kill envia sinais a processos individuais, não ao sistema. #shutdown #halt #telinit"
+
+- id: "101-028"
+  topic: "101.3"
+  question: "Quais targets podem ser utilizados para definir o runlevel multi-usuário?"
+  options:
+    - "runlevel0.target e runlevel6.target"
+    - "runlevel1.target e multi-user.target"
+    - "runlevel2.target, runlevel6.target e rescue.target"
+    - "runlevel2.target, runlevel3.target, runlevel4.target ou multi-user.target"
+  answer: 4
+  comment: "No systemd, o estado multiusuário em modo texto é representado pelo multi-user.target. Para manter a compatibilidade com o SysVinit legado, os runlevels 2, 3 e 4 foram mapeados como links simbólicos (runlevel2.target, runlevel3.target e runlevel4.target) que apontam diretamente para o multi-user.target. #systemd #runlevels"
+
+- id: "101-029"
+  topic: "101.1"
+  question: "Quais dos dispositivos abaixo são considerados HOTPLUG ? (Selecione 2 respostas)"
+  options:
+    - "Placas PCI"
+    - "USB"
+    - "Dispositivos IDE"
+    - "Disco Rígido do tipo SCSI"
+  answer: [2, 4]
+  comment: "O padrão USB nasceu nativamente para hotplug. No escopo de servidores e data centers (o alvo histórico da LPI), discos SCSI com conectores SCA (Single Connector Attachment) são o padrão da indústria para troca a quente em gavetas RAID. Barramentos IDE convencionais queimam eletricamente se desconectados com o sistema ligado. #hotplug #usb #scsi"
+
+- id: "101-030"
+  topic: "101.2"
+  question: "Qual é o principal arquivo de log de um Sistema GNU/Linux ?"
+  options:
+    - "/var/log/messages"
+    - "/var/log/secure"
+    - "/var/log/kern.log"
+    - "/var/log/syslog"
+  answer: 1
+  comment: "Historicamente (e na família Red Hat/CentOS), /var/log/messages é o log global do sistema. Na família Debian/Ubuntu, a função é exercida pelo /var/log/syslog. Simulados legados da LPI geralmente assumem 'messages' como o padrão universal pré-systemd. #messages #syslog"
+
+- id: "101-031"
+  topic: "101.1"
+  question: "Qual o arquivo diz em qual frequencia o processador está funcionando?"
+  options:
+    - "/proc/speed"
+    - "/proc/bogomips"
+    - "/proc/frequency"
+    - "/proc/cpuinfo"
+    - "/proc/mhz"
+  answer: 4
+  comment: "O arquivo /proc/cpuinfo exibe a linha 'cpu MHz' (ou similar, dependendo da arquitetura) para cada núcleo lógico detectado pelo kernel. Ele também mostra o BogoMIPS, que é uma medição interna de temporização do kernel, mas não a frequência real do relógio. #cpuinfo #proc"
+
+- id: "101-032"
+  topic: "101.2"
+  question: "Qual o arquivo no /proc informa os parâmetros passados ao Kernel durante o processo de boot?"
+  options:
+    - "/proc/cmdline"
+    - "/froc/sys/kernel/sysrq"
+    - "/proc/stat"
+    - "/proc/apm"
+    - "/proc/kmsg"
+  answer: 1
+  comment: "O arquivo /proc/cmdline contém a string de argumentos enviada pelo bootloader (como o GRUB) para o kernel. É essencial para verificar parâmetros como o dispositivo raiz (root=), modo de segurança ou configurações de console. #cmdline #kernel #boot"
+
+- id: "101-033"
+  topic: "101.1"
+  question: "Quantos dispositivos de IDE podem ser instalados simultaneamente em um sistema Intel típico?"
+  options:
+    - "5"
+    - "2"
+    - "1"
+    - "3"
+    - "4"
+  answer: 5
+  comment: "Em uma arquitetura PC/Intel clássica (padrão LPI), existem dois canais IDE (Primary e Secondary). Cada canal suporta até dois dispositivos (Master e Slave), totalizando 4 dispositivos endereçáveis pelo BIOS/Kernel. #ide #hardware #lpi"
+
+- id: "101-034"
+  topic: "101.2"
+  question: "Como você verifica a versão do kernel no diretório /usr/src/linux?"
+  options:
+    - "head -4 /usr/src/linux/Makefile"
+    - "cat /usr/src/linux/VERSION"
+    - "Look in the README"
+    - "cat /usr/src/linux/.version"
+  answer: 1
+  comment: "No código-fonte do kernel Linux, as primeiras linhas do arquivo 'Makefile' definem as variáveis VERSION, PATCHLEVEL, SUBLEVEL e EXTRAVERSION. Ler o topo deste arquivo é a forma mais direta de identificar a versão exata do fonte. #kernel #makefile #linux-src"
+
+- id: "101-035"
+  topic: "101.1"
+  question: "Qual o arquivo informa quais os IRQs usados por diferentes dispositivos de hardware?"
+  options:
+    - "/proc/irqs"
+    - "/proc/irq"
+    - "/proc/ints"
+    - "/proc/interrupts"
+    - "/proc/int"
+  answer: 4
+  comment: "O arquivo /proc/interrupts registra o número de interrupções por IRQ em cada CPU, além de listar o dispositivo de hardware associado a cada uma. É a fonte primária para depurar conflitos de interrupção no kernel. #proc #irq #hardware"
+
