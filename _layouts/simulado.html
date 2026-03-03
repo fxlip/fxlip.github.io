@@ -16,6 +16,10 @@ layout: default
 window.__questionBank  = {{ bank | jsonify }};
 window.__quizConfig    = {{ page.config | jsonify }};
 window.__topicTitles   = {{ page.topic_titles | jsonify }};
+window.__examMeta      = {
+  type:  '{% if page.exams %}prova{% else %}topico{% endif %}',
+  label: '{% if page.exams %}{{ page.tags | first }}{% else %}{{ page.exam }}{% endif %}'
+};
 </script>
 
 <article class="post">

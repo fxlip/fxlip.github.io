@@ -575,6 +575,14 @@
             oauth_google:  function()  { return 'conectou o <span class="t-cmd">Google</span>'; },
             oauth_github:  function(c) { return 'conectou o <span class="t-cmd">GitHub</span>' + (c ? ' como <span class="t-cmd">@' + esc(c) + '</span>' : ''); },
             oauth_twitter: function(c) { return 'conectou o <span class="t-cmd">Twitter</span>' + (c ? ' como <span class="t-cmd">@' + esc(c) + '</span>' : ''); },
+            exam_result:   function(c) {
+              var parts = (c || '').split(':');
+              if (parts.length !== 3) return esc(c);
+              var type  = parts[0], label = parts[1], pct = parseInt(parts[2], 10);
+              var cls   = pct >= 70 ? 'quiz-pass' : 'quiz-fail';
+              var prep  = type === 'prova' ? 'da prova' : 'do tópico';
+              return 'acertou <span class="' + cls + '">' + pct + '%</span> ' + prep + ' <span class="t-cmd">' + esc(label) + '</span>';
+            },
           };
 
           var items = acts.map(function(a) {

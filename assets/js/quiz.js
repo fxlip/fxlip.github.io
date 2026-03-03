@@ -239,6 +239,20 @@
         const examId = Object.keys(topics)[0]?.split('.')[0];
         if (examId) saveExamScores(examId, topics);
 
+        // Registra resultado no perfil do usuário (se logado)
+        try {
+          const fp   = localStorage.getItem('fxlip_fp');
+          const wUrl = document.body.dataset.workerUrl || '';
+          const meta = window.__examMeta;
+          if (fp && wUrl && meta && meta.label) {
+            fetch(wUrl + '/api/exam-result', {
+              method:  'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body:    JSON.stringify({ fingerprint: fp, type: meta.type, label: meta.label, pct: pct })
+            }).catch(function() {});
+          }
+        } catch (_) {}
+
         // Desempenho por tópico — ordenado do pior para o melhor
         if (Object.keys(topics).length > 0) {
           const sorted = Object.entries(topics).sort(
