@@ -226,11 +226,16 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     requestAnimationFrame(animatePlaceholder);
 
-    // Máscara: lowercase, espaço→hífen, sem caracteres especiais
+    // Máscara: lowercase, espaço→hífen, só [a-z0-9à-ú-], sem traço inicial nem duplo
     input.addEventListener("input", function() {
       var pos = input.selectionStart;
       var original = input.value;
-      var masked = original.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9à-ú\-]/g, "").replace(/-{2,}/g, "-");
+      var masked = original
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9à-ú-]/g, "")
+        .replace(/^-+/, "")
+        .replace(/-{2,}/g, "-");
       if (masked !== original) {
         input.value = masked;
         input.selectionStart = input.selectionEnd = Math.min(pos, masked.length);
@@ -240,8 +245,9 @@ document.addEventListener("DOMContentLoaded", function() {
     input.addEventListener("keydown", function(e) {
       if (e.key !== "Enter") return;
       e.preventDefault();
-      var val = input.value.trim();
-      if (!val) return;
+      var val = input.value.replace(/^-+|-+$/g, "").trim();
+      if (!val || val.length < 2) return;
+      input.value = val;
 
       input.disabled = true;
       input.style.opacity = "0.5";
@@ -252,7 +258,7 @@ document.addEventListener("DOMContentLoaded", function() {
         body: JSON.stringify({ fingerprint: fp, name: val }),
       }).then(function(res) { return res.json(); })
         .then(function(data) {
-          if (data.error === 'name_taken') {
+          if (data.error === 'name_taken' || data.error === 'registration_limit') {
             input.disabled = false;
             input.style.opacity = '1';
             var existing = document.getElementById('greeting-name-error');
@@ -261,9 +267,11 @@ document.addEventListener("DOMContentLoaded", function() {
             errEl.id = 'greeting-name-error';
             errEl.className = 't-out';
             errEl.style.cssText = 'color:var(--link-color);margin-top:0.2em';
-            errEl.textContent = 'esse nick já existe. tenta outro?';
+            errEl.textContent = data.error === 'registration_limit'
+              ? 'ta com sabor de spam'
+              : 'esse nick já existe. tenta outro?';
             inputLine.appendChild(errEl);
-            input.focus();
+            if (data.error === 'name_taken') input.focus();
             return;
           }
           try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
