@@ -607,8 +607,8 @@
             oauth_github:  function(c) { return 'conectou o <span class="t-cmd">GitHub</span>' + (c ? ' como <a href="https://github.com/' + esc(c) + '" class="mention-link" target="_blank" rel="noopener">@' + esc(c) + '</a>' : ''); },
             oauth_twitter: function(c) { return 'conectou o <span class="t-cmd">X</span>' + (c ? ' como <a href="https://x.com/' + esc(c) + '" class="mention-link" target="_blank" rel="noopener">@' + esc(c) + '</a>' : ''); },
             oauth_google_unlinked:  function() { return 'se desconectou'; },
-            oauth_github_unlinked:  function() { return 'desvinculou o <span class="t-cmd">GitHub</span>'; },
-            oauth_twitter_unlinked: function() { return 'desvinculou o <span class="t-cmd">X</span>'; },
+            oauth_github_unlinked:  function() { return 'desconectou o <span class="t-cmd">GitHub</span>'; },
+            oauth_twitter_unlinked: function() { return 'desconectou o <span class="t-cmd">X</span>'; },
             exam_result:   function(c) {
               var parts = (c || '').split(':');
               if (parts.length !== 3) return esc(c);
