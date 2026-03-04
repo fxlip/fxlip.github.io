@@ -577,7 +577,6 @@
         + '<span class="pal-verb">' + esc(fpShort) + '</span>'
         + ' entrou usando um ' + esc(deviceLabel) + ', de ' + esc(city)
         + '</span>'
-        + '<span class="pal-type-icon">⌁</span>'
         + '</div>';
 
       section.innerHTML = '<div class="profile-activity-log" id="pc-log">'
@@ -594,7 +593,6 @@
           if (!log) return;
           var acts = (actData.activities || []).slice(0, 10);
 
-          var typeIcon  = { comment: '›', like: '♥', upvote: '▲' };
           var typeLabel = { comment: 'comentou', like: 'curtiu', upvote: 'upvotou' };
 
           var genderLabel = { m: 'masculino', f: 'feminino', nb: 'não-binário' };
@@ -629,11 +627,9 @@
               return '<div class="profile-activity-item pal-profile-event">'
                 + '<span class="pal-ts t-gray">[' + esc(ts) + ']</span>'
                 + '<span class="pal-content">' + pfHtml + '</span>'
-                + '<span class="pal-type-icon">◈</span>'
                 + '</div>';
             }
 
-            var icon  = typeIcon[a.type]  || '·';
             var verb  = typeLabel[a.type] || a.type;
             var quote = a.content
               ? ' <span class="pal-quote">"' + esc(a.content.substring(0, 55)) + (a.content.length > 55 ? '…' : '') + '"</span>'
@@ -646,7 +642,6 @@
               + '<a href="/' + esc(a.target_slug) + '" class="file-link">/' + esc(a.target_slug) + '</a>'
               + quote
               + '</span>'
-              + '<span class="pal-type-icon">' + icon + '</span>'
               + '</div>';
           }).join('');
 
