@@ -568,7 +568,7 @@
         + '<span class="t-gray">@</span><span class="t-host">www</span>'
         + '<span class="t-gray">:</span><span class="t-path">~</span>'
         + '<span class="t-gray">$</span>'
-        + ' <span class="t-cmd">tail -f /home/' + esc(username) + '/action.log</span>'
+        + ' <span class="t-cmd">tail /home/' + esc(username) + '/action.log</span>'
         + '</div>';
 
       var fingerprintEntry = '<div class="profile-activity-item" id="pc-fingerprint-entry">'
