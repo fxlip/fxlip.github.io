@@ -429,9 +429,9 @@
   gap: 3px;
   padding: 10px;
   border-radius: 10px;
-  width: 52px;
-  height: 52px;
-  min-width: 52px;
+  width: 80px;
+  height: 80px;
+  min-width: 80px;
   cursor: default;
   position: relative;
   overflow: hidden;
@@ -440,8 +440,8 @@
   box-sizing: border-box;
 
   .ps-badge-icon {
-    width: 26px;
-    height: 26px;
+    width: 42px;
+    height: 42px;
     flex-shrink: 0;
     position: relative;
     z-index: 1;
@@ -542,7 +542,7 @@
 
   .ps-badge-label {
     display: block;
-    font-size: 0.6em;
+    font-size: 10px;
     font-weight: 700;
     line-height: 1;
     color: var(--link-hover-color);
