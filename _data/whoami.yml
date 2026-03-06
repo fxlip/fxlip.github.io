@@ -5,7 +5,8 @@
 # entrada onde rep >= min.
 #
 # Variáveis disponíveis: {{name}}, {{visits}}, {{time}}, {{city}},
-#                        {{comments}}, {{upvotes}}, {{rep}}, {{days}}
+#                        {{comments}}, {{upvotes}}, {{rep}}, {{days}},
+#                        {{last_login}}
 # Gênero: use % como sufixo (obrigad% → obrigado/obrigada/obrigade)
 # @mentions são processadas automaticamente.
 
@@ -15,6 +16,7 @@ messages:
       Escrevo sobre @linux e @infosec.
       Também dou meus 2kb de opinião.
 
+      @{{name}}, seu último login foi {{last_login}}, de {{city}}.
       {{days}} dias · {{visits}} visitas · {{time}} lendo.
       {{comments}} comentários · {{upvotes}} upvotes.
       Veteran% de carteirinha.
@@ -24,6 +26,7 @@ messages:
       Escrevo sobre @linux e @infosec.
       Também dou meus 2kb de opinião.
 
+      @{{name}}, seu último login foi {{last_login}}, de {{city}}.
       {{days}} dias, {{visits}} visitas e mais de {{time}} lendo.
       {{comments}} comentários e {{upvotes}} upvotes dados.
       Sinistro.
@@ -33,6 +36,7 @@ messages:
       Escrevo sobre @linux e @infosec.
       Também dou meus 2kb de opinião.
 
+      @{{name}}, seu último login foi {{last_login}}, de {{city}}.
       {{visits}} visitas com {{time}} logado.
       Claramente viciad%. Sem julgamentos.
 
@@ -41,6 +45,7 @@ messages:
       Escrevo sobre @linux e @infosec.
       Também dou meus 2kb de opinião.
 
+      @{{name}}, seu último login foi {{last_login}}.
       {{visits}} visitas. Já tá virando frequentador%.
       Você veio de {{city}} — ta frio aí?
 

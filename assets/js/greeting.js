@@ -186,14 +186,15 @@ document.addEventListener("DOMContentLoaded", function() {
     var days        = firstSeenMs ? Math.floor((Date.now() - firstSeenMs) / 86400000) : 0;
 
     var vars = {
-      name:     data.name  || '',
-      visits:   visits,
-      time:     formatTimeSecs(total_time_spent),
-      city:     data.city  || '',
-      comments: comments,
-      upvotes:  upvotes,
-      rep:      rep,
-      days:     days,
+      name:       data.name  || '',
+      visits:     visits,
+      time:       formatTimeSecs(total_time_spent),
+      city:       data.city  || '',
+      comments:   comments,
+      upvotes:    upvotes,
+      rep:        rep,
+      days:       days,
+      last_login: data.lastSeen ? timeAgo(data.lastSeen) : 'primeiro acesso',
     };
 
     var template = selectMessage(whoami.messages, rep);
@@ -386,29 +387,11 @@ document.addEventListener("DOMContentLoaded", function() {
     var prev = document.getElementById("greeting-input-line");
     if (prev) prev.remove();
 
-    greetingBlock.style.display = "block";
-
-    var ago  = data.lastSeen ? timeAgo(data.lastSeen) : null;
-    var city = data.city || "desconhecido";
-
-    var line;
-    if (data.name) {
+    if (isNew && data.name) {
       var nameLink = '<a href="/' + esc(data.name) + '" class="file-link">@' + esc(data.name) + '</a>';
-      if (isNew) {
-        line = 'Bem-vindo, ' + nameLink + '. Agora você tem um perfil.';
-      } else {
-        line = nameLink
-          + (ago
-              ? ', seu último login foi ' + esc(ago) + ', de ' + esc(city) + '.'
-              : ', primeiro acesso.');
-      }
-    } else {
-      line = ago
-        ? esc('Último login: ' + ago + ', de ' + city)
-        : esc('Último login: primeiro acesso');
+      greetingBlock.style.display = "block";
+      greetingBlock.innerHTML = '<div class="t-gray">' + applyGender('Bem-vind%', data.gender) + ', ' + nameLink + '. Agora você tem um perfil.</div>';
     }
-
-    greetingBlock.innerHTML = '<div class="t-gray">' + line + '</div>';
 
     renderDogTxt(data);
   }
