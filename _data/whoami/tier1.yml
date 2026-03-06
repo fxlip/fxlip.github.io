@@ -1,0 +1,23 @@
+# Tier 1 — rep 0–14
+# Visitante novo. Poucas visitas, sem interações, ainda sem nome.
+# Tratamento: acolhedor, curioso, sem pressão.
+
+label: "visitante novo"
+rep_min: 0
+rep_max: 14
+
+# Saída do "whoami" — exibida no #greeting-output (onde fica o nome/login)
+# Disponível apenas se o usuário não tiver nome registrado ainda.
+# Se tiver nome ({{name}}), o greeting.js já cuida da saudação — dog_txt complementa.
+whoami: "visitante"
+
+# Saída do "cat dog.txt" — substitui o bloco estático de "Escrevo sobre..."
+# Variáveis disponíveis: {{name}}, {{visits}}, {{time}}, {{city}}, {{comments}}, {{upvotes}}, {{rep}}, {{days}}
+# Gênero: use % como sufixo (obrigad% → obrigado/obrigada/obrigade)
+# @mentions serão processadas automaticamente pelo autolink.js
+dog_txt: |
+  Escrevo sobre @linux e @infosec.
+  Também dou meus 2kb de opinião.
+
+  Primeira vez por aqui? Seja bem-vind%.
+  Dá uma olhada no @feed — tem coisa boa.

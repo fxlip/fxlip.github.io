@@ -120,7 +120,101 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =======================================================================
-  // 3. BADGES
+  // 3. WHOAMI TIERS
+  // =======================================================================
+
+  var TIER_THRESHOLDS = [
+    { tier: 5, min: 350 },
+    { tier: 4, min: 150 },
+    { tier: 3, min: 60  },
+    { tier: 2, min: 15  },
+    { tier: 1, min: 0   },
+  ];
+
+  function selectTier(rep) {
+    rep = rep || 0;
+    for (var i = 0; i < TIER_THRESHOLDS.length; i++) {
+      if (rep >= TIER_THRESHOLDS[i].min) return TIER_THRESHOLDS[i].tier;
+    }
+    return 1;
+  }
+
+  function resolveGender(gender) {
+    if (gender === 'f')  return 'a';
+    if (gender === 'nb') return 'e';
+    return 'o';
+  }
+
+  function applyGender(text, gender) {
+    if (!text) return '';
+    return text.replace(/%/g, resolveGender(gender));
+  }
+
+  function applyVars(text, vars) {
+    if (!text) return '';
+    vars = vars || {};
+    return text.replace(/\{\{(\w+)\}\}/g, function(match, key) {
+      var val = vars[key];
+      return (val !== undefined && val !== null && val !== '') ? String(val) : match;
+    });
+  }
+
+  function formatTimeSecs(secs) {
+    if (!secs) return '0min';
+    var h = Math.floor(secs / 3600);
+    var m = Math.floor((secs % 3600) / 60);
+    if (h > 0) return h + 'h' + (m > 0 ? ' ' + m + 'min' : '');
+    return m + 'min';
+  }
+
+  function renderDogTxt(data) {
+    var tiersEl = document.getElementById('whoami-tiers-data');
+    if (!tiersEl) return;
+    var tiers;
+    try { tiers = JSON.parse(tiersEl.textContent); } catch (_) { return; }
+
+    var dogEl = document.getElementById('whoami-dog-txt');
+    if (!dogEl) return;
+
+    var visits           = data.visits            || 0;
+    var total_time_spent = data.total_time_spent   || 0;
+    var comments         = data.comments          || 0;
+    var upvotes          = data.upvotes           || 0;
+
+    var rep = Math.floor(
+      visits * 1 +
+      Math.floor(total_time_spent / 3600) * 2 +
+      comments * 10 +
+      upvotes  * 3
+    );
+
+    var firstSeenMs = data.first_seen ? new Date(data.first_seen).getTime() : null;
+    var days = firstSeenMs ? Math.floor((Date.now() - firstSeenMs) / 86400000) : 0;
+
+    var vars = {
+      name:     data.name     || '',
+      visits:   visits,
+      time:     formatTimeSecs(total_time_spent),
+      city:     data.city     || '',
+      comments: comments,
+      upvotes:  upvotes,
+      rep:      rep,
+      days:     days,
+    };
+
+    var tier     = selectTier(rep);
+    var tierData = tiers['tier' + tier];
+    if (!tierData || !tierData.dog_txt) return;
+
+    var text = applyGender(applyVars(tierData.dog_txt, vars), data.gender || null);
+
+    dogEl.textContent = text;
+
+    if (window.applyMentions) window.applyMentions(dogEl);
+  }
+
+  // =======================================================================
+  // 4. BADGES
   // =======================================================================
   var BADGE_DEFS = [
     {
@@ -323,6 +417,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     greetingBlock.innerHTML = '<div class="t-gray">' + line + '</div>';
+
+    renderDogTxt(data);
   }
 
   // =======================================================================

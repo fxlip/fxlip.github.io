@@ -425,13 +425,13 @@ async function handleHello(request, env) {
   }
 
   // Busca stats do D1 + verifica se o perfil foi deletado pelo admin
-  let stats = { total_time_spent: 0, first_seen: null, comments: 0, upvotes: 0 };
+  let stats = { total_time_spent: 0, first_seen: null, comments: 0, upvotes: 0, gender: null };
   let accountDeleted = false;
 
   if (env.DB) {
     try {
       const row = await env.DB.prepare(`
-        SELECT p.total_time_spent, p.first_seen,
+        SELECT p.total_time_spent, p.first_seen, p.gender,
           SUM(CASE WHEN i.type = 'comment'           THEN 1 ELSE 0 END) AS comments,
           SUM(CASE WHEN i.type IN ('upvote','like')  THEN 1 ELSE 0 END) AS upvotes
         FROM profiles p
@@ -445,6 +445,7 @@ async function handleHello(request, env) {
         stats.first_seen       = row.first_seen       || null;
         stats.comments         = row.comments         || 0;
         stats.upvotes          = row.upvotes          || 0;
+        stats.gender           = row.gender           || null;
       }
 
       // Detectar exclusão: havia nome no KV mas D1 não tem display_name
@@ -468,6 +469,7 @@ async function handleHello(request, env) {
     first_seen:       stats.first_seen,
     comments:         stats.comments,
     upvotes:          stats.upvotes,
+    gender:           stats.gender,
     account_deleted:  accountDeleted || undefined,
   });
 }
