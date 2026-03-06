@@ -17,6 +17,7 @@ fxlip.sh
 
 # Segredos
 .env
+*.pem
 workers/
 
 # IDE

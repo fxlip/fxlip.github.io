@@ -43,6 +43,7 @@ exclude:
   - vendor/
   - README.md
   - LICENSE
+  - "*.pem"
 
 # Visitor API (Cloudflare Worker)
 worker_url: "https://fxlip-visitor-api.fxlip.workers.dev"
