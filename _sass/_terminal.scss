@@ -27,7 +27,7 @@
 
 /* [DEFAULT] Link Killer: Mata links padrão para evitar cliques acidentais */
 /* ADICIONEI: .sys-hash-link e .action-btn na lista de exceções (Whitelist) */
-.terminal-box a:not(.mention-link):not(.link-card):not(.file-link):not(.sys-hash-link):not(.action-btn):not(.quiz-fail):not(.quiz-pass):not(.sys-date-link) {
+.terminal-box a:not(.mention-link):not(.link-card):not(.file-link):not(.sys-hash-link):not(.action-btn):not(.quiz-fail):not(.quiz-pass):not(.sys-date-link):not(.post-content a) {
   color: inherit !important;
   text-decoration: none !important;
   pointer-events: none; /* <--- Isso que estava bloqueando o clique */
@@ -101,12 +101,12 @@
 .terminal-box .post-content a:not(.mention-link):not(.link-card) {
   pointer-events: auto !important;
   cursor: pointer !important;
-  color: var(--link-color) !important;
+  color: var(--accent-cyan) !important;
   border-bottom: 1px solid transparent !important;
 }
 .terminal-box .post-content a:not(.mention-link):not(.link-card):hover {
-  color: var(--link-hover-color) !important;
-  border-bottom-color: var(--link-hover-color) !important;
+  color: var(--accent-cyan-bright) !important;
+  border-bottom-color: var(--accent-cyan-bright) !important;
 }
 
 /* --- 5.3. HEADER & CONTROLS --- */
