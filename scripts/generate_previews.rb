@@ -191,7 +191,7 @@ TARGET_DIRS.each do |dir_name|
     link = nil
     if content =~ /^link_url:\s*"?([^"\n]+)"?/
       link = $1
-    elsif content =~ /https?:\/\/[^\s"'>\])]+/
+    elsif content =~ /(?<!\]\()https?:\/\/[^\s"'>\])]+/
       link = $&
     end
     link = link.gsub(/[>\]).,]+$/, '') if link
