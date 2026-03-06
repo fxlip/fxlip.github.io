@@ -19,3 +19,8 @@ group :automation do
   gem "net-imap", "~> 0.2"
   gem "nokogiri", "~> 1.15"
 end
+
+# --- Testes (CI) ---
+group :test do
+  gem "html-proofer", "~> 5.0"
+end

@@ -9,8 +9,8 @@
     base-uri 'self';
     form-action 'none';
     img-src 'self' data: https: https://img.youtube.com https://i.ytimg.com;
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    font-src 'self' https://fonts.gstatic.com data:;
+    style-src 'self' 'unsafe-inline';
+    font-src 'self' data:;
     media-src 'self';
     object-src 'none';
     child-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com;
@@ -106,13 +106,20 @@
       <span class="sys-icon">✔</span>
       <span class="sys-msg">LINK COPIADO</span>
     </div>
-    <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{})}</script>
+    <script defer src="{{ '/assets/js/sw-register.js' | relative_url }}?x={{ sig_main }}"></script>
     <script defer src="{{ '/assets/js/autolink.js' | relative_url }}?x={{ sig_lnk }}"></script>
     <script defer src="{{ '/assets/js/autoterm.js' | relative_url }}?x={{ sig_trm }}"></script>
     <script defer src="{{ '/assets/js/syntax.js' | relative_url }}?x={{ sig_syn }}"></script>
     <script defer src="{{ '/assets/js/greeting.js' | relative_url }}?x={{ sig_main }}"></script>
     <script defer src="{{ '/assets/js/main.js' | relative_url }}?x={{ sig_main }}"></script>
+    {%- if page.layout == 'simulado' -%}
     <script defer src="{{ '/assets/js/quiz.js' | relative_url }}?x={{ sig_quiz }}"></script>
+    {%- endif -%}
+    {%- unless page.layout == 'simulado' -%}
     <script defer src="{{ '/assets/js/interactions.js' | relative_url }}?x={{ sig_int }}"></script>
+    {%- endunless -%}
+    {%- if page.layout == 'post' or page.url == '/auth/callback/' -%}
+    <script defer src="{{ '/assets/js/auth-callback.js' | relative_url }}?x={{ sig_main }}"></script>
+    {%- endif -%}
   </body>
 </html>

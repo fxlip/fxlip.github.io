@@ -1,28 +1,56 @@
 name: system-deploy
 
 on:
-  # Roda sempre que houver um push na branch principal (incluindo commits dos seus bots)
   push:
     branches: ["master", "main"]
-
-  # Permite disparo manual na aba Actions
   workflow_dispatch:
 
-# Permissões necessárias para o GITHUB_TOKEN escrever no Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# [CRÍTICO] Isso resolve o erro "Artifact count is 3"
-# Se um novo build começar enquanto outro roda, o antigo é cancelado imediatamente.
+# Cancela build anterior se um novo push chegar antes de terminar
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
 jobs:
-  # Job de Construção
+
+  # ===========================================================================
+  # Job 1: Lint + Testes — gateia build e deploy
+  # Só usa Node (sem Ruby), é o job mais rápido
+  # ===========================================================================
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependências Node
+        run: npm install
+
+      - name: Lint JS (ESLint — falha em errors, passa em warnings)
+        run: npm run lint
+
+      - name: Testes JS (funções puras + DOM)
+        run: npm run test:js
+
+      - name: Testes Worker (kill switch, rate limiting, endpoints)
+        run: npm run test:worker
+
+  # ===========================================================================
+  # Job 2: Build + Validação HTML — só roda se lint e testes passarem
+  # Jekyll roda UMA vez; HTMLProofer valida o artefato real de produção
+  # ===========================================================================
   build:
+    needs: lint-and-test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,7 +59,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1' # Versão estável fixa. Sem matrizes.
+          ruby-version: '3.1'
           bundler-cache: true
 
       - name: Setup Pages
@@ -43,10 +71,15 @@ jobs:
           source: ./
           destination: ./_site
 
+      - name: HTMLProofer — valida links e HTML do artefato de produção
+        run: bundle exec ruby scripts/htmlproofer.rb ./_site
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
-  # Job de Publicação
+  # ===========================================================================
+  # Job 3: Deploy — só roda após build aprovado
+  # ===========================================================================
   deploy:
     environment:
       name: github-pages

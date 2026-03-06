@@ -1,0 +1,66 @@
+name: workers-deploy
+
+on:
+  push:
+    branches: ["master", "main"]
+    paths:
+      - "workers/**"
+  workflow_dispatch:
+
+# Evita deploys simultâneos do mesmo Worker
+concurrency:
+  group: "workers-deploy"
+  cancel-in-progress: true
+
+jobs:
+
+  # ===========================================================================
+  # Job 1: Testes do Worker antes de qualquer deploy
+  # ===========================================================================
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependências Node
+        run: npm install
+
+      - name: Testes Worker
+        run: npm run test:worker
+
+  # ===========================================================================
+  # Job 2: Deploy para Cloudflare — só após testes passarem
+  #
+  # Requer secret CLOUDFLARE_API_TOKEN no repositório GitHub:
+  #   Settings → Secrets → Actions → New repository secret
+  #   Nome: CLOUDFLARE_API_TOKEN
+  #   Valor: token de API da Cloudflare com permissão "Workers Scripts: Edit"
+  # ===========================================================================
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependências Node
+        run: npm install
+
+      - name: Deploy Worker (Cloudflare)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken:   ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: workers/visitor-api

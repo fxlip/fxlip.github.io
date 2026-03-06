@@ -44,6 +44,13 @@ exclude:
   - README.md
   - LICENSE
   - "*.pem"
+  - tests/
+  - package.json
+  - package-lock.json
+  - vitest.config.js
+  - vitest.worker.config.js
+  - eslint.config.js
+  - node_modules/
 
 # Visitor API (Cloudflare Worker)
 worker_url: "https://fxlip-visitor-api.fxlip.workers.dev"

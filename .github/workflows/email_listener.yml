@@ -2,10 +2,15 @@ name: email-listener-protocol
 
 on:
   repository_dispatch:
-    types: [incoming-email] 
+    types: [incoming-email]
   schedule:
     - cron: '0 * * * *' # Checagem a cada hora
-  workflow_dispatch: # Gatilho manual
+  workflow_dispatch:
+
+# Evita execuções sobrepostas (dois crons simultâneos, por ex.)
+concurrency:
+  group: "email-listener"
+  cancel-in-progress: false  # Não cancelar em progresso — pode perder e-mails
 
 jobs:
   check_emails_and_generate:
@@ -21,39 +26,34 @@ jobs:
           token: ${{ secrets.RW_TOKEN }}
           persist-credentials: true
 
-      - name: Setup Ruby with Cache
+      - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
-          bundler-cache: true
 
-      - name: Create Gemfile
-        run: |
-          echo "source 'https://rubygems.org'" > Gemfile
-          echo "gem 'mail'" >> Gemfile
-          echo "gem 'net-imap', '~> 0.4.18'" >> Gemfile
-          echo "gem 'nokogiri'" >> Gemfile
-
-      - name: Install Dependencies
+      - name: Instalar dependências dos scripts
         run: bundle install
-      
-      - name: Run Protocol (Email + Previews)
         env:
+          BUNDLE_GEMFILE: scripts/Gemfile
+
+      - name: Run Protocol (Email + Previews + Sync)
+        env:
+          BUNDLE_GEMFILE: ${{ github.workspace }}/scripts/Gemfile
           EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
           ALLOWED_SENDER: ${{ secrets.ALLOWED_SENDER }}
-          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
-          WORKER_URL: "https://fxlip-visitor-api.fxlip.workers.dev"
+          ADMIN_TOKEN:    ${{ secrets.ADMIN_TOKEN }}
+          WORKER_URL:     "https://fxlip-visitor-api.fxlip.workers.dev"
           TZ: 'America/Sao_Paulo'
         run: |
           echo ">>> 1. Verificando E-mails..."
           bundle exec ruby scripts/email_to_post.rb
-          
+
           echo ">>> 2. Atualizando Link Cards..."
           bundle exec ruby scripts/generate_previews.rb
 
           echo ">>> 3. Sincronizando Visitantes..."
-          ruby scripts/sync_visitors.rb
+          bundle exec ruby scripts/sync_visitors.rb
 
       - name: Commit and Push
         env:
@@ -61,10 +61,9 @@ jobs:
         run: |
           git config user.name "kernel-bot"
           git config user.email "bot@fxlip.com"
-          
-          # Adiciona arquivos novos (files, posts, paginas)
+
           git add _posts/ _root/ _data/previews.yml _data/visitors.yml files/
-          
+
           if git diff --staged --quiet; then
             echo "Nenhuma alteração detectada. Encerrando."
           else
@@ -75,12 +74,13 @@ jobs:
             else
                MSG="auto-update via smtp"
             fi
-            
+
             echo "Committing: $MSG"
             git commit -m "$MSG"
             git push
 
             echo ">>> Disparando Pings..."
-            ruby scripts/index_now.rb || echo "WARNING: IndexNow falhou, mas o deploy segue vivo."
-
+            bundle exec ruby scripts/index_now.rb || echo "WARNING: IndexNow falhou, mas o deploy segue vivo."
           fi
+        env:
+          BUNDLE_GEMFILE: ${{ github.workspace }}/scripts/Gemfile

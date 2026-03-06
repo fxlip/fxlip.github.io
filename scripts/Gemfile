@@ -1,0 +1,7 @@
+source 'https://rubygems.org'
+
+# Dependências exclusivas dos scripts de automação (email, previews, sync)
+# Usado em CI via: BUNDLE_GEMFILE=scripts/Gemfile bundle install
+gem 'mail',      '~> 2.8'
+gem 'net-imap',  '~> 0.4'
+gem 'nokogiri',  '~> 1.15'

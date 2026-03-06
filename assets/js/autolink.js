@@ -85,23 +85,49 @@ document.addEventListener("DOMContentLoaded", function() {
   
   // Progress Bars [10/100]
   window.processProgressBars = function(context = document) {
-    const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .entry-content, .terminal-window p, .terminal-window div, .post-item, article, main');
-    const regex = /\[\s*(\d+)\/(\d+)(?:\s+(.*?))?\s*\]/g;
+    const areas = (context === document)
+      ? Array.from(document.querySelectorAll('.post-content, .post-excerpt, .entry-content, .terminal-window p, .terminal-window div, .post-item, article, main'))
+      : [context];
 
-    contentAreas.forEach(area => {
+    const splitRe  = /(\[\s*\d+\/\d+(?:\s+[^\]]+)?\s*\])/g;
+    const matchRe  = /^\[\s*(\d+)\/(\d+)(?:\s+(.*?))?\s*\]$/;
+
+    areas.forEach(area => {
       if (area.tagName === 'PRE' || area.tagName === 'CODE') return;
-      regex.lastIndex = 0;
-      if (regex.test(area.innerHTML)) {
-        regex.lastIndex = 0;
-        area.innerHTML = area.innerHTML.replace(regex, (match, current, total, label) => {
-          const cur = parseInt(current);
-          const tot = parseInt(total);
-          if (tot === 0) return match;
-          const pct = Math.round((cur / tot) * 100);
-          const fmtPct = pct < 10 ? `0${pct}` : pct;
-          return `<div class="sys-load-wrapper" title="${cur}/${tot} Completed"><div class="sys-load-track"><div class="sys-load-bar" style="width: 0%" data-width="${pct}%"><div class="sys-load-head"></div></div></div><div class="sys-load-data"><span class="sys-load-pct">${fmtPct}%</span></div></div>`;
-        });
+
+      const walker = document.createTreeWalker(area, NodeFilter.SHOW_TEXT, null, false);
+      const nodes = [];
+      let node;
+      while ((node = walker.nextNode())) {
+        const tag = node.parentElement && node.parentElement.tagName;
+        if (!tag) continue;
+        if (['PRE', 'CODE', 'SCRIPT', 'STYLE'].includes(tag)) continue;
+        if (node.parentElement.closest('pre, code')) continue;
+        splitRe.lastIndex = 0;
+        if (splitRe.test(node.nodeValue)) nodes.push(node);
       }
+
+      nodes.forEach(n => {
+        const fragment = document.createDocumentFragment();
+        n.nodeValue.split(splitRe).forEach(part => {
+          const m = part.match(matchRe);
+          if (m) {
+            const cur = parseInt(m[1]);
+            const tot = parseInt(m[2]);
+            if (tot === 0) { fragment.appendChild(document.createTextNode(part)); return; }
+            const pct    = Math.round((cur / tot) * 100);
+            const fmtPct = pct < 10 ? `0${pct}` : String(pct);
+            const wrapper = document.createElement('div');
+            wrapper.className = 'sys-load-wrapper';
+            wrapper.title = `${cur}/${tot} Completed`;
+            wrapper.innerHTML = `<div class="sys-load-track"><div class="sys-load-bar" style="width: 0%" data-width="${pct}%"><div class="sys-load-head"></div></div></div><div class="sys-load-data"><span class="sys-load-pct">${fmtPct}%</span></div>`;
+            fragment.appendChild(wrapper);
+          } else {
+            fragment.appendChild(document.createTextNode(part));
+          }
+        });
+        n.parentNode.replaceChild(fragment, n);
+      });
     });
     requestAnimationFrame(() => { document.querySelectorAll('.sys-load-bar').forEach(bar => { if (bar.dataset.width) bar.style.width = bar.dataset.width; }); });
   };
@@ -190,46 +216,107 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Menções (@usuario)
   window.applyMentions = function(context = document) {
-    const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .terminal-window p, .terminal-window div, .t-out');
-    contentAreas.forEach(area => {
+    const areas = (context === document)
+      ? Array.from(document.querySelectorAll('.post-content, .post-excerpt, .terminal-window p, .terminal-window div, .t-out'))
+      : [context];
+
+    const splitRe = /(@[a-zA-Z0-9_\-\/\.]+)/g;
+    const matchRe = /^@([a-zA-Z0-9_\-\/\.]+)$/;
+
+    areas.forEach(area => {
       if (area.dataset.mentionsProcessed) return;
       if (area.querySelector('input, textarea, select')) return;
-      const regex = /@([a-zA-Z0-9_\-\/\.]+)/g;
-      regex.lastIndex = 0;
-      if (regex.test(area.innerHTML)) {
-          regex.lastIndex = 0;
-          area.innerHTML = area.innerHTML.replace(regex, function(match, path) {
-            if (path === 'USER') {
-              let name = null;
-              try { const s = localStorage.getItem('fxlip_visitor_name'); if (s && s.trim()) name = s.trim(); } catch (_) {}
-              if (!name) return `<span class="t-user">visitante</span>`;
-              return `<a href="/${escapeHtml(name)}" class="mention-link">@${escapeHtml(name)}</a>`;
-            }
-            const safePath = escapeHtml(path);
-            const url = `/${safePath}`;
-            if (path.match(/\.(jpg|jpeg|png|gif|svg)$/i)) return `<span class="embed-image-wrapper"><img src="${url}" class="embed-image" alt="${safePath}" onerror="this.style.display='none'"><span class="embed-caption">./${safePath}</span></span>`;
-            if (path.match(/\.(sh|js|py|rb|txt|md|yml|json)$/i)) return `<div class="terminal-box embedded-terminal" data-src="${url}"><div class="terminal-header"><div class="terminal-controls"><span style="font-size:12px; color:#bd93f9; margin-right:10px;">./${safePath}</span></div></div><div class="terminal-body"><div class="embedded-loading"><span class="cursor-blink">█</span> loading...</div></div></div>`;
-            const mentionClass = MENTIONS_BLACKLIST.has(path.toLowerCase()) ? 'mention-link' : 'mention-link';
-            return `<a href="${url}" class="${mentionClass}" title="./${safePath}">${escapeHtml(match)}</a>`;
-          });
+
+      const walker = document.createTreeWalker(area, NodeFilter.SHOW_TEXT, null, false);
+      const nodes = [];
+      let node;
+      while ((node = walker.nextNode())) {
+        const tag = node.parentElement && node.parentElement.tagName;
+        if (!tag) continue;
+        if (['A', 'CODE', 'PRE', 'SCRIPT', 'STYLE', 'TEXTAREA'].includes(tag)) continue;
+        if (node.parentElement.closest('a, code, pre')) continue;
+        splitRe.lastIndex = 0;
+        if (splitRe.test(node.nodeValue)) nodes.push(node);
       }
-      area.dataset.mentionsProcessed = "true";
-    });
-    // Carrega terminais embutidos
-    context.querySelectorAll('.embedded-terminal[data-src]').forEach(terminal => {
-       const url = terminal.dataset.src;
-       const body = terminal.querySelector('.terminal-body');
-       terminal.removeAttribute('data-src');
-       fetch(url).then(r => r.ok?r.text():Promise.reject("404")).then(text => {
-           const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-           body.innerHTML = `<pre>${safeText}</pre>`;
-       }).catch(err => { body.innerHTML = `<div class="t-out" style="color:#ff5555">Erro: ${err}</div>`; });
+
+      nodes.forEach(n => {
+        const fragment = document.createDocumentFragment();
+        n.nodeValue.split(splitRe).forEach(part => {
+          const m = part.match(matchRe);
+          if (!m) { fragment.appendChild(document.createTextNode(part)); return; }
+
+          const path     = m[1];
+          const safePath = escapeHtml(path);
+          const url      = `/${safePath}`;
+
+          if (path === 'USER') {
+            let name = null;
+            try { const s = localStorage.getItem('fxlip_visitor_name'); if (s && s.trim()) name = s.trim(); } catch (_) {}
+            if (!name) {
+              const span = document.createElement('span');
+              span.className = 't-user';
+              span.textContent = 'visitante';
+              fragment.appendChild(span);
+            } else {
+              const a = document.createElement('a');
+              a.href = '/' + escapeHtml(name);
+              a.className = 'mention-link';
+              a.textContent = '@' + name;
+              fragment.appendChild(a);
+            }
+            return;
+          }
+
+          if (path.match(/\.(jpg|jpeg|png|gif|svg)$/i)) {
+            const wrapper = document.createElement('span');
+            wrapper.className = 'embed-image-wrapper';
+            const img = document.createElement('img');
+            img.src = url; img.className = 'embed-image'; img.alt = safePath;
+            img.setAttribute('onerror', "this.style.display='none'");
+            const caption = document.createElement('span');
+            caption.className = 'embed-caption'; caption.textContent = './' + safePath;
+            wrapper.appendChild(img); wrapper.appendChild(caption);
+            fragment.appendChild(wrapper);
+            return;
+          }
+
+          if (path.match(/\.(sh|js|py|rb|txt|md|yml|json)$/i)) {
+            const box = document.createElement('div');
+            box.className = 'terminal-box embedded-terminal';
+            box.dataset.src = url;
+            box.innerHTML = `<div class="terminal-header"><div class="terminal-controls"><span style="font-size:12px; color:#bd93f9; margin-right:10px;">./${safePath}</span></div></div><div class="terminal-body"><div class="embedded-loading"><span class="cursor-blink">█</span> loading...</div></div>`;
+            fragment.appendChild(box);
+            return;
+          }
+
+          const a = document.createElement('a');
+          a.href = url; a.className = 'mention-link'; a.title = './' + safePath;
+          a.textContent = part;
+          fragment.appendChild(a);
+        });
+        n.parentNode.replaceChild(fragment, n);
+      });
+
+      area.dataset.mentionsProcessed = 'true';
+
+      // Carrega terminais embutidos
+      area.querySelectorAll('.embedded-terminal[data-src]').forEach(terminal => {
+        const url  = terminal.dataset.src;
+        const body = terminal.querySelector('.terminal-body');
+        terminal.removeAttribute('data-src');
+        fetch(url).then(r => r.ok ? r.text() : Promise.reject('404')).then(text => {
+          const safeText = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          body.innerHTML = `<pre>${safeText}</pre>`;
+        }).catch(err => { body.innerHTML = `<div class="t-out" style="color:#ff5555">Erro: ${err}</div>`; });
+      });
     });
   };
 
 // Hash-Menções (#cmd → link para busca)
   window.applyHashMentions = function(context = document) {
-    const contentAreas = context.querySelectorAll('.post-content, .post-excerpt, .t-out');
+    const contentAreas = (context === document)
+      ? document.querySelectorAll('.post-content, .post-excerpt, .t-out')
+      : [context];
     // Suporta: #cmd  #.bash_history  #$HISTFILE  #/etc/fstab
     const regex = /#([\.\$\/]?[a-zA-Z][a-zA-Z0-9_\-\.\/]*)/g;
 

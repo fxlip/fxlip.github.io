@@ -533,6 +533,16 @@
     document.title = '@' + username;
 
     // ── Log de atividade (síncrono: monta container + entrada de first_seen) ──
+    function fmtLogTs(d) {
+      if (!d) return '--';
+      var D  = String(d.getDate()).padStart(2, '0');
+      var M  = String(d.getMonth() + 1).padStart(2, '0');
+      var Y  = d.getFullYear();
+      var h  = String(d.getHours()).padStart(2, '0');
+      var mi = String(d.getMinutes()).padStart(2, '0');
+      return D + '-' + M + '-' + Y + '|' + h + ':' + mi;
+    }
+
     var section = document.getElementById('profile-activity-section');
     if (section) {
       var city    = data.city     || 'local desconhecido';
@@ -549,16 +559,6 @@
       }
 
       var deviceLabel = buildDeviceLabel(data.ua_os, data.ua_device_type, data.ua_raw);
-
-      function fmtLogTs(d) {
-        if (!d) return '--';
-        var D  = String(d.getDate()).padStart(2, '0');
-        var M  = String(d.getMonth() + 1).padStart(2, '0');
-        var Y  = d.getFullYear();
-        var h  = String(d.getHours()).padStart(2, '0');
-        var mi = String(d.getMinutes()).padStart(2, '0');
-        return D + '-' + M + '-' + Y + '|' + h + ':' + mi;
-      }
 
       var firstSeenDate = data.first_seen ? new Date(data.first_seen) : null;
       var fpTs = fmtLogTs(firstSeenDate);
