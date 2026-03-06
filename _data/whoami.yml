@@ -10,6 +10,9 @@
 # Gênero: use % como sufixo (obrigad% → obrigado/obrigada/obrigade)
 # @mentions são processadas automaticamente.
 
+# Reputação mínima para o usuário poder mudar de nick
+rename_min: 15
+
 messages:
   - min: 350
     dog_txt: |

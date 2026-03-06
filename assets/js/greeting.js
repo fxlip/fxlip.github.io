@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
   var NAME_KEY       = "fxlip_visitor_name";
   var HELLO_CACHE_KEY = "fxlip_hello_cache";
   var HELLO_TTL       = 10 * 60 * 1000; // 10 minutos
+  var currentFp      = null;
 
   function getHelloCache() {
     try {
@@ -200,10 +201,41 @@ document.addEventListener("DOMContentLoaded", function() {
     var template = selectMessage(whoami.messages, rep);
     if (!template) return;
 
+    var existing = document.getElementById('rename-line');
+    if (existing) existing.remove();
+
     dogEl.textContent = applyGender(applyVars(template, vars), data.gender || null);
 
     dogEl.removeAttribute('data-mentions-processed');
     if (window.applyMentions) window.applyMentions(dogEl);
+
+    var renameMin = whoami.rename_min;
+    if (data.name && typeof renameMin === 'number' && rep >= renameMin && currentFp) {
+      injectRenameTrigger();
+    }
+  }
+
+  function injectRenameTrigger() {
+    var line = document.createElement('div');
+    line.id = 'rename-line';
+    line.innerHTML =
+      '<span class="t-user">fxlip</span>' +
+      '<span class="t-gray">@</span>' +
+      '<span class="t-host">www</span>' +
+      '<span class="t-gray">:</span>' +
+      '<span class="t-path">~/feed</span>' +
+      '<span class="t-gray">$</span> ' +
+      '<span class="t-cmd">export USER=</span>' +
+      '<a class="file-link" id="rename-trigger">[mudar nick]</a>';
+
+    var dogEl = document.getElementById('whoami-dog-txt');
+    if (dogEl) dogEl.insertAdjacentElement('afterend', line);
+
+    document.getElementById('rename-trigger').addEventListener('click', function(e) {
+      e.preventDefault();
+      line.remove();
+      injectNameInput(currentFp, true);
+    });
   }
 
   // =======================================================================
@@ -276,7 +308,10 @@ document.addEventListener("DOMContentLoaded", function() {
   // =======================================================================
   // 4. HELPER: INJETA O INPUT DE NOME NO DOM
   // =======================================================================
-  function injectNameInput(fp) {
+  function injectNameInput(fp, isRename) {
+    var prev = document.getElementById('greeting-input-line');
+    if (prev) prev.remove();
+
     var inputLine = document.createElement("div");
     inputLine.id = "greeting-input-line";
     inputLine.innerHTML =
@@ -289,11 +324,11 @@ document.addEventListener("DOMContentLoaded", function() {
       '<span class="t-cmd">export USER=</span>' +
       '<input type="text" id="greeting-input" class="greeting-input" ' +
         'maxlength="30" autocomplete="off" spellcheck="false" ' +
-        'placeholder="qual seu nome?">';
+        'placeholder="' + (isRename ? 'novo nick' : 'qual seu nome?') + '">';
 
-    var siteDesc = greetingBlock.nextElementSibling;
-    if (siteDesc && siteDesc.classList.contains('t-out')) {
-      siteDesc.insertAdjacentElement('afterend', inputLine);
+    var dogEl = document.getElementById('whoami-dog-txt');
+    if (dogEl) {
+      dogEl.insertAdjacentElement('afterend', inputLine);
     } else {
       greetingBlock.appendChild(inputLine);
     }
@@ -363,10 +398,10 @@ document.addEventListener("DOMContentLoaded", function() {
           }
           try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
           setHelloCache(data);
-          renderGreeting(data, true);
+          renderGreeting(data, !isRename);
         }).catch(function() {
           try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
-          renderGreeting({ name: val }, true);
+          renderGreeting({ name: val }, !isRename);
         });
     });
   }
@@ -375,9 +410,8 @@ document.addEventListener("DOMContentLoaded", function() {
   // 5. RENDER: FIRST VISIT (Prompt de nome)
   // =======================================================================
   function renderNamePrompt(fp) {
-    greetingBlock.style.display = "block";
-    greetingOutput.textContent = "Primeiro acesso detectado.";
-    injectNameInput(fp);
+    renderDogTxt({});
+    injectNameInput(fp, false);
   }
 
   // =======================================================================
@@ -404,6 +438,7 @@ document.addEventListener("DOMContentLoaded", function() {
     try { storedName = localStorage.getItem(NAME_KEY); } catch (_) {}
 
     getFingerprint().then(function(fp) {
+      currentFp = fp;
       if (!storedName) {
         // Mostra prompt imediatamente
         renderNamePrompt(fp);
