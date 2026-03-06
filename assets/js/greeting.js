@@ -120,23 +120,17 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =======================================================================
-  // 3. WHOAMI TIERS
+  // 3. WHOAMI
   // =======================================================================
 
-  var TIER_THRESHOLDS = [
-    { tier: 5, min: 350 },
-    { tier: 4, min: 150 },
-    { tier: 3, min: 60  },
-    { tier: 2, min: 15  },
-    { tier: 1, min: 0   },
-  ];
-
-  function selectTier(rep) {
+  function selectMessage(messages, rep) {
     rep = rep || 0;
-    for (var i = 0; i < TIER_THRESHOLDS.length; i++) {
-      if (rep >= TIER_THRESHOLDS[i].min) return TIER_THRESHOLDS[i].tier;
+    if (!messages || !messages.length) return null;
+    var sorted = messages.slice().sort(function(a, b) { return (b.min || 0) - (a.min || 0); });
+    for (var i = 0; i < sorted.length; i++) {
+      if (rep >= (sorted[i].min || 0) && sorted[i].dog_txt) return sorted[i].dog_txt;
     }
-    return 1;
+    return null;
   }
 
   function resolveGender(gender) {
@@ -168,18 +162,18 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function renderDogTxt(data) {
-    var tiersEl = document.getElementById('whoami-tiers-data');
-    if (!tiersEl) return;
-    var tiers;
-    try { tiers = JSON.parse(tiersEl.textContent); } catch (_) { return; }
+    var dataEl = document.getElementById('whoami-data');
+    if (!dataEl) return;
+    var whoami;
+    try { whoami = JSON.parse(dataEl.textContent); } catch (_) { return; }
 
     var dogEl = document.getElementById('whoami-dog-txt');
     if (!dogEl) return;
 
-    var visits           = data.visits            || 0;
-    var total_time_spent = data.total_time_spent   || 0;
-    var comments         = data.comments          || 0;
-    var upvotes          = data.upvotes           || 0;
+    var visits           = data.visits           || 0;
+    var total_time_spent = data.total_time_spent  || 0;
+    var comments         = data.comments         || 0;
+    var upvotes          = data.upvotes          || 0;
 
     var rep = Math.floor(
       visits * 1 +
@@ -189,27 +183,25 @@ document.addEventListener("DOMContentLoaded", function() {
     );
 
     var firstSeenMs = data.first_seen ? new Date(data.first_seen).getTime() : null;
-    var days = firstSeenMs ? Math.floor((Date.now() - firstSeenMs) / 86400000) : 0;
+    var days        = firstSeenMs ? Math.floor((Date.now() - firstSeenMs) / 86400000) : 0;
 
     var vars = {
-      name:     data.name     || '',
+      name:     data.name  || '',
       visits:   visits,
       time:     formatTimeSecs(total_time_spent),
-      city:     data.city     || '',
+      city:     data.city  || '',
       comments: comments,
       upvotes:  upvotes,
       rep:      rep,
       days:     days,
     };
 
-    var tier     = selectTier(rep);
-    var tierData = tiers['tier' + tier];
-    if (!tierData || !tierData.dog_txt) return;
+    var template = selectMessage(whoami.messages, rep);
+    if (!template) return;
 
-    var text = applyGender(applyVars(tierData.dog_txt, vars), data.gender || null);
+    dogEl.textContent = applyGender(applyVars(template, vars), data.gender || null);
 
-    dogEl.textContent = text;
-
+    dogEl.removeAttribute('data-mentions-processed');
     if (window.applyMentions) window.applyMentions(dogEl);
   }
 

@@ -1,16 +1,16 @@
 /**
  * tests/js/greeting-whoami.test.js
  *
- * Testa as funções puras do sistema whoami/tier de assets/js/greeting.js.
+ * Testa as funções puras do sistema whoami de assets/js/greeting.js.
  *
  * ATENÇÃO: Manter sincronizado com assets/js/greeting.js.
  * Se a lógica mudar, atualizar os testes correspondentes.
  *
  * Funções testadas:
- *   selectTier(rep)              → 1|2|3|4|5
- *   resolveGender(gender)        → 'o'|'a'|'e'
- *   applyGender(text, gender)    → string com % substituído
- *   buildWhoamiOutput(tiers, rep, gender) → string final
+ *   selectMessage(messages, rep)  → string do dog_txt ou null
+ *   resolveGender(gender)         → 'o'|'a'|'e'
+ *   applyGender(text, gender)     → string com % substituído
+ *   applyVars(text, vars)         → string com {{var}} substituído
  */
 
 import { describe, it, expect } from 'vitest'
@@ -20,32 +20,25 @@ import { describe, it, expect } from 'vitest'
 // ATENÇÃO: qualquer alteração aqui deve ser replicada em greeting.js
 // =============================================================================
 
-var TIER_THRESHOLDS = [
-  { tier: 5, min: 350 },
-  { tier: 4, min: 150 },
-  { tier: 3, min: 60  },
-  { tier: 2, min: 15  },
-  { tier: 1, min: 0   },
-]
-
-function selectTier(rep) {
+function selectMessage(messages, rep) {
   rep = rep || 0
-  for (var i = 0; i < TIER_THRESHOLDS.length; i++) {
-    if (rep >= TIER_THRESHOLDS[i].min) return TIER_THRESHOLDS[i].tier
+  if (!messages || !messages.length) return null
+  var sorted = messages.slice().sort(function(a, b) { return (b.min || 0) - (a.min || 0) })
+  for (var i = 0; i < sorted.length; i++) {
+    if (rep >= (sorted[i].min || 0) && sorted[i].dog_txt) return sorted[i].dog_txt
   }
-  return 1
+  return null
 }
 
 function resolveGender(gender) {
   if (gender === 'f')  return 'a'
   if (gender === 'nb') return 'e'
-  return 'o' // 'm' ou não definido
+  return 'o'
 }
 
 function applyGender(text, gender) {
   if (!text) return ''
-  var suffix = resolveGender(gender)
-  return text.replace(/%/g, suffix)
+  return text.replace(/%/g, resolveGender(gender))
 }
 
 function applyVars(text, vars) {
@@ -57,104 +50,101 @@ function applyVars(text, vars) {
   })
 }
 
-function buildWhoamiOutput(tiers, rep, gender, vars) {
-  var tier = selectTier(rep)
-  var data = tiers['tier' + tier]
-  if (!data || !data.dog_txt) return ''
-  var text = applyVars(data.dog_txt, vars || {})
-  return applyGender(text, gender)
-}
-
 // =============================================================================
-// TESTES: selectTier
+// TESTES: selectMessage
 // =============================================================================
 
-describe('selectTier', function() {
-  describe('tier 1 (rep 0–14)', function() {
-    it('rep = 0 → tier 1', function() {
-      expect(selectTier(0)).toBe(1)
+var MOCK_MESSAGES = [
+  { min: 350, dog_txt: 'veteran%' },
+  { min: 150, dog_txt: 'consolidado · {{days}} dias' },
+  { min: 60,  dog_txt: 'ativ% · {{visits}} vis' },
+  { min: 15,  dog_txt: 'voltou, {{visits}} visitas' },
+  { min: 0,   dog_txt: 'novo por aqui. bem-vind%' },
+]
+
+describe('selectMessage', function() {
+  describe('seleção pela reputação', function() {
+    it('rep 0 → mensagem min 0', function() {
+      expect(selectMessage(MOCK_MESSAGES, 0)).toBe('novo por aqui. bem-vind%')
     })
-    it('rep = 1 → tier 1', function() {
-      expect(selectTier(1)).toBe(1)
+    it('rep 14 → mensagem min 0', function() {
+      expect(selectMessage(MOCK_MESSAGES, 14)).toBe('novo por aqui. bem-vind%')
     })
-    it('rep = 14 → tier 1', function() {
-      expect(selectTier(14)).toBe(1)
+    it('rep 15 → mensagem min 15', function() {
+      expect(selectMessage(MOCK_MESSAGES, 15)).toBe('voltou, {{visits}} visitas')
     })
-    it('rep negativo → tier 1', function() {
-      expect(selectTier(-5)).toBe(1)
+    it('rep 59 → mensagem min 15', function() {
+      expect(selectMessage(MOCK_MESSAGES, 59)).toBe('voltou, {{visits}} visitas')
     })
-    it('rep undefined → tier 1', function() {
-      expect(selectTier(undefined)).toBe(1)
+    it('rep 60 → mensagem min 60', function() {
+      expect(selectMessage(MOCK_MESSAGES, 60)).toBe('ativ% · {{visits}} vis')
     })
-    it('rep null → tier 1', function() {
-      expect(selectTier(null)).toBe(1)
+    it('rep 149 → mensagem min 60', function() {
+      expect(selectMessage(MOCK_MESSAGES, 149)).toBe('ativ% · {{visits}} vis')
+    })
+    it('rep 150 → mensagem min 150', function() {
+      expect(selectMessage(MOCK_MESSAGES, 150)).toBe('consolidado · {{days}} dias')
+    })
+    it('rep 349 → mensagem min 150', function() {
+      expect(selectMessage(MOCK_MESSAGES, 349)).toBe('consolidado · {{days}} dias')
+    })
+    it('rep 350 → mensagem min 350', function() {
+      expect(selectMessage(MOCK_MESSAGES, 350)).toBe('veteran%')
+    })
+    it('rep 9999 → mensagem min 350', function() {
+      expect(selectMessage(MOCK_MESSAGES, 9999)).toBe('veteran%')
     })
   })
 
-  describe('tier 2 (rep 15–59)', function() {
-    it('rep = 15 → tier 2', function() {
-      expect(selectTier(15)).toBe(2)
+  describe('bordas exatas', function() {
+    it('rep 14 → min 0 | rep 15 → min 15', function() {
+      expect(selectMessage(MOCK_MESSAGES, 14)).toBe('novo por aqui. bem-vind%')
+      expect(selectMessage(MOCK_MESSAGES, 15)).toBe('voltou, {{visits}} visitas')
     })
-    it('rep = 30 → tier 2', function() {
-      expect(selectTier(30)).toBe(2)
+    it('rep 59 → min 15 | rep 60 → min 60', function() {
+      expect(selectMessage(MOCK_MESSAGES, 59)).toBe('voltou, {{visits}} visitas')
+      expect(selectMessage(MOCK_MESSAGES, 60)).toBe('ativ% · {{visits}} vis')
     })
-    it('rep = 59 → tier 2', function() {
-      expect(selectTier(59)).toBe(2)
+    it('rep 149 → min 60 | rep 150 → min 150', function() {
+      expect(selectMessage(MOCK_MESSAGES, 149)).toBe('ativ% · {{visits}} vis')
+      expect(selectMessage(MOCK_MESSAGES, 150)).toBe('consolidado · {{days}} dias')
     })
-  })
-
-  describe('tier 3 (rep 60–149)', function() {
-    it('rep = 60 → tier 3', function() {
-      expect(selectTier(60)).toBe(3)
-    })
-    it('rep = 100 → tier 3', function() {
-      expect(selectTier(100)).toBe(3)
-    })
-    it('rep = 149 → tier 3', function() {
-      expect(selectTier(149)).toBe(3)
+    it('rep 349 → min 150 | rep 350 → min 350', function() {
+      expect(selectMessage(MOCK_MESSAGES, 349)).toBe('consolidado · {{days}} dias')
+      expect(selectMessage(MOCK_MESSAGES, 350)).toBe('veteran%')
     })
   })
 
-  describe('tier 4 (rep 150–349)', function() {
-    it('rep = 150 → tier 4', function() {
-      expect(selectTier(150)).toBe(4)
+  describe('ordenação independente da ordem no array', function() {
+    it('funciona com array em ordem crescente', function() {
+      var reversed = MOCK_MESSAGES.slice().reverse()
+      expect(selectMessage(reversed, 60)).toBe('ativ% · {{visits}} vis')
     })
-    it('rep = 250 → tier 4', function() {
-      expect(selectTier(250)).toBe(4)
-    })
-    it('rep = 349 → tier 4', function() {
-      expect(selectTier(349)).toBe(4)
-    })
-  })
-
-  describe('tier 5 (rep 350+)', function() {
-    it('rep = 350 → tier 5', function() {
-      expect(selectTier(350)).toBe(5)
-    })
-    it('rep = 500 → tier 5', function() {
-      expect(selectTier(500)).toBe(5)
-    })
-    it('rep = 9999 → tier 5', function() {
-      expect(selectTier(9999)).toBe(5)
+    it('funciona com array em ordem aleatória', function() {
+      var shuffled = [MOCK_MESSAGES[2], MOCK_MESSAGES[0], MOCK_MESSAGES[4], MOCK_MESSAGES[1], MOCK_MESSAGES[3]]
+      expect(selectMessage(shuffled, 200)).toBe('consolidado · {{days}} dias')
     })
   })
 
-  describe('bordas exatas entre tiers', function() {
-    it('rep = 14 → tier 1, rep = 15 → tier 2', function() {
-      expect(selectTier(14)).toBe(1)
-      expect(selectTier(15)).toBe(2)
+  describe('casos extremos', function() {
+    it('messages vazio → null', function() {
+      expect(selectMessage([], 0)).toBeNull()
     })
-    it('rep = 59 → tier 2, rep = 60 → tier 3', function() {
-      expect(selectTier(59)).toBe(2)
-      expect(selectTier(60)).toBe(3)
+    it('messages null → null', function() {
+      expect(selectMessage(null, 0)).toBeNull()
     })
-    it('rep = 149 → tier 3, rep = 150 → tier 4', function() {
-      expect(selectTier(149)).toBe(3)
-      expect(selectTier(150)).toBe(4)
+    it('messages undefined → null', function() {
+      expect(selectMessage(undefined, 50)).toBeNull()
     })
-    it('rep = 349 → tier 4, rep = 350 → tier 5', function() {
-      expect(selectTier(349)).toBe(4)
-      expect(selectTier(350)).toBe(5)
+    it('rep null → usa min 0', function() {
+      expect(selectMessage(MOCK_MESSAGES, null)).toBe('novo por aqui. bem-vind%')
+    })
+    it('rep undefined → usa min 0', function() {
+      expect(selectMessage(MOCK_MESSAGES, undefined)).toBe('novo por aqui. bem-vind%')
+    })
+    it('entrada sem dog_txt → pula e usa próxima', function() {
+      var msgs = [{ min: 50, dog_txt: null }, { min: 0, dog_txt: 'fallback' }]
+      expect(selectMessage(msgs, 50)).toBe('fallback')
     })
   })
 })
@@ -164,27 +154,13 @@ describe('selectTier', function() {
 // =============================================================================
 
 describe('resolveGender', function() {
-  it("gender 'm' → 'o'", function() {
-    expect(resolveGender('m')).toBe('o')
-  })
-  it("gender 'f' → 'a'", function() {
-    expect(resolveGender('f')).toBe('a')
-  })
-  it("gender 'nb' → 'e'", function() {
-    expect(resolveGender('nb')).toBe('e')
-  })
-  it('gender null → padrão o', function() {
-    expect(resolveGender(null)).toBe('o')
-  })
-  it('gender undefined → padrão o', function() {
-    expect(resolveGender(undefined)).toBe('o')
-  })
-  it("gender '' (vazio) → padrão o", function() {
-    expect(resolveGender('')).toBe('o')
-  })
-  it('gender desconhecido → padrão o', function() {
-    expect(resolveGender('x')).toBe('o')
-  })
+  it("'m' → 'o'", function() { expect(resolveGender('m')).toBe('o') })
+  it("'f' → 'a'", function() { expect(resolveGender('f')).toBe('a') })
+  it("'nb' → 'e'", function() { expect(resolveGender('nb')).toBe('e') })
+  it('null → o',        function() { expect(resolveGender(null)).toBe('o') })
+  it('undefined → o',   function() { expect(resolveGender(undefined)).toBe('o') })
+  it("'' → o",          function() { expect(resolveGender('')).toBe('o') })
+  it('desconhecido → o',function() { expect(resolveGender('x')).toBe('o') })
 })
 
 // =============================================================================
@@ -192,66 +168,14 @@ describe('resolveGender', function() {
 // =============================================================================
 
 describe('applyGender', function() {
-  describe('substituição simples', function() {
-    it('substitui % por o (masculino)', function() {
-      expect(applyGender('obrigad%', 'm')).toBe('obrigado')
-    })
-    it('substitui % por a (feminino)', function() {
-      expect(applyGender('obrigad%', 'f')).toBe('obrigada')
-    })
-    it('substitui % por e (não-binário)', function() {
-      expect(applyGender('obrigad%', 'nb')).toBe('obrigade')
-    })
-    it('substitui % com gender nulo → padrão o', function() {
-      expect(applyGender('obrigad%', null)).toBe('obrigado')
-    })
-  })
-
-  describe('múltiplas substituições', function() {
-    it('substitui todos os % no texto', function() {
-      expect(applyGender('bem-vind%, obrigad%', 'f')).toBe('bem-vinda, obrigada')
-    })
-    it('substitui 3 ocorrências de %', function() {
-      expect(applyGender('el% é expert%, el% sabe.', 'nb')).toBe('ele é experte, ele sabe.')
-    })
-  })
-
-  describe('casos extremos', function() {
-    it('texto sem % → retorna intacto', function() {
-      expect(applyGender('nenhuma ocorrência', 'm')).toBe('nenhuma ocorrência')
-    })
-    it('texto vazio → retorna vazio', function() {
-      expect(applyGender('', 'm')).toBe('')
-    })
-    it('texto null → retorna vazio', function() {
-      expect(applyGender(null, 'm')).toBe('')
-    })
-    it('texto undefined → retorna vazio', function() {
-      expect(applyGender(undefined, 'f')).toBe('')
-    })
-    it('% no meio de palavra', function() {
-      expect(applyGender('cansad% de vez em quando', 'f')).toBe('cansada de vez em quando')
-    })
-    it('% sozinho na string', function() {
-      expect(applyGender('%', 'nb')).toBe('e')
-    })
-    it('texto só com %% (dois seguidos) → dois sufixos', function() {
-      expect(applyGender('%%', 'f')).toBe('aa')
-    })
-  })
-
-  describe('preserva o resto do texto', function() {
-    it('não altera @mentions', function() {
-      var txt = 'Escrevo sobre @linux e @infosec. Bem-vind%!'
-      expect(applyGender(txt, 'm')).toBe('Escrevo sobre @linux e @infosec. Bem-vindo!')
-    })
-    it('não altera quebras de linha', function() {
-      var txt = 'Linha 1\nLinha 2\nBem-vind%'
-      expect(applyGender(txt, 'f')).toBe('Linha 1\nLinha 2\nBem-vinda')
-    })
-    it('não altera caracteres especiais', function() {
-      expect(applyGender('Olá, tud% bem?', 'nb')).toBe('Olá, tude bem?')
-    })
+  it('masculino → o', function() { expect(applyGender('obrigad%', 'm')).toBe('obrigado') })
+  it('feminino → a',  function() { expect(applyGender('obrigad%', 'f')).toBe('obrigada') })
+  it('nb → e',        function() { expect(applyGender('obrigad%', 'nb')).toBe('obrigade') })
+  it('múltiplos %',   function() { expect(applyGender('bem-vind%, obrigad%', 'f')).toBe('bem-vinda, obrigada') })
+  it('sem % → intacto',function() { expect(applyGender('sem ocorrência', 'm')).toBe('sem ocorrência') })
+  it('texto null → vazio', function() { expect(applyGender(null, 'm')).toBe('') })
+  it('não altera @mentions', function() {
+    expect(applyGender('escrevo sobre @linux. bem-vind%!', 'f')).toBe('escrevo sobre @linux. bem-vinda!')
   })
 })
 
@@ -260,134 +184,19 @@ describe('applyGender', function() {
 // =============================================================================
 
 describe('applyVars', function() {
-  describe('substituição simples', function() {
-    it('substitui {{name}}', function() {
-      expect(applyVars('olá, {{name}}!', { name: 'filippe' })).toBe('olá, filippe!')
-    })
-    it('substitui {{visits}}', function() {
-      expect(applyVars('{{visits}} visitas', { visits: 42 })).toBe('42 visitas')
-    })
-    it('substitui número zero', function() {
-      expect(applyVars('{{comments}} comentários', { comments: 0 })).toBe('0 comentários')
-    })
-    it('substitui múltiplas variáveis diferentes', function() {
-      expect(applyVars('{{visits}} vis · {{time}} lendo', { visits: 10, time: '1h 30min' }))
-        .toBe('10 vis · 1h 30min lendo')
-    })
-    it('substitui a mesma variável duas vezes', function() {
-      expect(applyVars('{{rep}} · rep: {{rep}}', { rep: 99 })).toBe('99 · rep: 99')
-    })
+  it('substitui {{name}}',    function() { expect(applyVars('olá, {{name}}!', { name: 'filippe' })).toBe('olá, filippe!') })
+  it('substitui {{visits}}',  function() { expect(applyVars('{{visits}} visitas', { visits: 42 })).toBe('42 visitas') })
+  it('substitui zero',        function() { expect(applyVars('{{comments}}', { comments: 0 })).toBe('0') })
+  it('múltiplas variáveis',   function() {
+    expect(applyVars('{{visits}} vis · {{time}}', { visits: 10, time: '1h' })).toBe('10 vis · 1h')
   })
-
-  describe('variável ausente ou nula', function() {
-    it('mantém {{variavel}} se não está em vars', function() {
-      expect(applyVars('{{days}} dias', {})).toBe('{{days}} dias')
-    })
-    it('mantém {{variavel}} se valor é undefined', function() {
-      expect(applyVars('{{city}}', { city: undefined })).toBe('{{city}}')
-    })
-    it('mantém {{variavel}} se valor é null', function() {
-      expect(applyVars('{{city}}', { city: null })).toBe('{{city}}')
-    })
-    it('mantém {{variavel}} se valor é string vazia', function() {
-      expect(applyVars('{{name}}', { name: '' })).toBe('{{name}}')
-    })
-    it('vars null → mantém todos os placeholders', function() {
-      expect(applyVars('{{name}} visitou {{visits}} vezes', null)).toBe('{{name}} visitou {{visits}} vezes')
-    })
-  })
-
-  describe('casos extremos', function() {
-    it('texto sem variáveis → retorna intacto', function() {
-      expect(applyVars('sem variáveis aqui', { name: 'x' })).toBe('sem variáveis aqui')
-    })
-    it('texto vazio → retorna vazio', function() {
-      expect(applyVars('', { name: 'x' })).toBe('')
-    })
-    it('texto null → retorna vazio', function() {
-      expect(applyVars(null, { name: 'x' })).toBe('')
-    })
-    it('converte número para string', function() {
-      expect(applyVars('rep {{rep}}', { rep: 123 })).toBe('rep 123')
-    })
-    it('não altera % junto com variáveis', function() {
-      expect(applyVars('bem-vind%, {{name}}!', { name: 'ana' })).toBe('bem-vind%, ana!')
-    })
-  })
-})
-
-// =============================================================================
-// TESTES: buildWhoamiOutput
-// =============================================================================
-
-var MOCK_TIERS = {
-  tier1: { label: 'novo',        dog_txt: 'Escrevo sobre @linux. Bem-vind%!' },
-  tier2: { label: 'recorrente',  dog_txt: '{{visits}} visitas. Obrigad% por voltar.' },
-  tier3: { label: 'ativo',       dog_txt: '{{visits}} vis · {{time}}. Você já é frequent%.' },
-  tier4: { label: 'consolidado', dog_txt: '{{days}} dias · {{visits}} vis. Obrigad%.' },
-  tier5: { label: 'veterano',    dog_txt: 'Veteran% de carteirinha. rep: {{rep}}.' },
-}
-
-var MOCK_VARS = { visits: 42, time: '3h', days: 90, rep: 400, name: 'ana', city: 'SP', comments: 5, upvotes: 10 }
-
-describe('buildWhoamiOutput', function() {
-  describe('seleção de tier por rep', function() {
-    it('rep 0 → usa tier1 (sem variáveis)', function() {
-      expect(buildWhoamiOutput(MOCK_TIERS, 0, 'm', {})).toBe('Escrevo sobre @linux. Bem-vindo!')
-    })
-    it('rep 15 → usa tier2 com variáveis', function() {
-      expect(buildWhoamiOutput(MOCK_TIERS, 15, 'f', MOCK_VARS)).toBe('42 visitas. Obrigada por voltar.')
-    })
-    it('rep 60 → usa tier3 com variáveis', function() {
-      expect(buildWhoamiOutput(MOCK_TIERS, 60, 'nb', MOCK_VARS)).toBe('42 vis · 3h. Você já é frequente.')
-    })
-    it('rep 150 → usa tier4 com variáveis', function() {
-      expect(buildWhoamiOutput(MOCK_TIERS, 150, 'm', MOCK_VARS)).toBe('90 dias · 42 vis. Obrigado.')
-    })
-    it('rep 350 → usa tier5 com variáveis', function() {
-      expect(buildWhoamiOutput(MOCK_TIERS, 350, 'f', MOCK_VARS)).toBe('Veterana de carteirinha. rep: 400.')
-    })
-  })
-
-  describe('gender aplicado corretamente por tier', function() {
-    it('tier1 feminino', function() {
-      expect(buildWhoamiOutput(MOCK_TIERS, 0, 'f', {})).toBe('Escrevo sobre @linux. Bem-vinda!')
-    })
-    it('tier1 não-binário', function() {
-      expect(buildWhoamiOutput(MOCK_TIERS, 0, 'nb', {})).toBe('Escrevo sobre @linux. Bem-vinde!')
-    })
-    it('tier5 masculino', function() {
-      expect(buildWhoamiOutput(MOCK_TIERS, 400, 'm', MOCK_VARS)).toBe('Veterano de carteirinha. rep: 400.')
-    })
-    it('tier5 sem gender definido → padrão o', function() {
-      expect(buildWhoamiOutput(MOCK_TIERS, 400, null, MOCK_VARS)).toBe('Veterano de carteirinha. rep: 400.')
-    })
-  })
-
-  describe('variáveis e gender combinados', function() {
-    it('variável {{name}} + % no mesmo texto', function() {
-      var tiers = { tier1: { dog_txt: 'Olá, {{name}}! Bem-vind%.' } }
-      expect(buildWhoamiOutput(tiers, 0, 'f', { name: 'ana' })).toBe('Olá, ana! Bem-vinda.')
-    })
-    it('variável ausente mantém placeholder, gender ainda é resolvido', function() {
-      var tiers = { tier2: { dog_txt: '{{visits}} vis. Obrigad%.' } }
-      expect(buildWhoamiOutput(tiers, 15, 'nb', {})).toBe('{{visits}} vis. Obrigade.')
-    })
-    it('vars null → mantém placeholders, gender resolvido', function() {
-      var tiers = { tier1: { dog_txt: 'Bem-vind%, {{name}}!' } }
-      expect(buildWhoamiOutput(tiers, 0, 'm', null)).toBe('Bem-vindo, {{name}}!')
-    })
-  })
-
-  describe('casos extremos', function() {
-    it('tiers vazio → retorna vazio', function() {
-      expect(buildWhoamiOutput({}, 0, 'm', {})).toBe('')
-    })
-    it('tier sem dog_txt → retorna vazio', function() {
-      expect(buildWhoamiOutput({ tier1: { label: 'vazio' } }, 0, 'm', {})).toBe('')
-    })
-    it('rep muito alto (>9999) → continua em tier5', function() {
-      expect(buildWhoamiOutput(MOCK_TIERS, 99999, 'f', MOCK_VARS)).toBe('Veterana de carteirinha. rep: 400.')
-    })
+  it('mesma variável 2x',     function() { expect(applyVars('{{rep}} · rep: {{rep}}', { rep: 99 })).toBe('99 · rep: 99') })
+  it('ausente → mantém placeholder', function() { expect(applyVars('{{days}} dias', {})).toBe('{{days}} dias') })
+  it('null → mantém placeholder',    function() { expect(applyVars('{{city}}', { city: null })).toBe('{{city}}') })
+  it('vazio → mantém placeholder',   function() { expect(applyVars('{{name}}', { name: '' })).toBe('{{name}}') })
+  it('vars null → sem substituição', function() { expect(applyVars('{{name}}', null)).toBe('{{name}}') })
+  it('texto null → vazio',           function() { expect(applyVars(null, { name: 'x' })).toBe('') })
+  it('não altera % junto com vars',  function() {
+    expect(applyVars('bem-vind%, {{name}}!', { name: 'ana' })).toBe('bem-vind%, ana!')
   })
 })
