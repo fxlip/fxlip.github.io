@@ -1,0 +1,25 @@
+name = "fxlip-visitor-api"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ALLOWED_ORIGIN = "https://fxlip.com"
+
+# Secrets (set via: wrangler secret put <NAME>)
+# SALT
+# GOOGLE_CLIENT_ID
+# GOOGLE_CLIENT_SECRET
+# GITHUB_CLIENT_ID
+# GITHUB_CLIENT_SECRET
+# TWITTER_CLIENT_ID
+# TWITTER_CLIENT_SECRET
+
+[[kv_namespaces]]
+binding = "VISITORS"
+id = "e9f5319c0f0649cea324ecbda234ccfb"
+
+[[d1_databases]]
+binding       = "DB"
+database_name = "fxlip-audience"
+database_id   = "8cac2642-bcfd-4957-9426-6bf238d91bec"            # wrangler d1 create fxlip-audience
