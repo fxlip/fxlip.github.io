@@ -6,7 +6,6 @@ on:
     paths:
       - "_posts/**"
       - "_root/**"
-      - "_data/previews.yml"
   workflow_dispatch:
 
 # Evita conflitos de commit quando múltiplos pushes chegam juntos
