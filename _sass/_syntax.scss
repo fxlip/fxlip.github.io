@@ -82,7 +82,7 @@ code[class*="c-"]:hover, code.tag:hover {
 .t-out { 
   color: #bfbfbf; 
   display: block; 
-  white-space: preserve-spaces; 
+  white-space: pre-wrap;
   
   /* [RESTAURADO] 14px aqui também para alinhar */
   font-family: 'JetBrains Mono', monospace !important;
