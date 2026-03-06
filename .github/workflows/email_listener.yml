@@ -78,6 +78,7 @@ jobs:
 
             echo "Committing: $MSG"
             git commit -m "$MSG"
+            git pull --rebase origin master
             git push
 
             echo ">>> Disparando Pings..."
