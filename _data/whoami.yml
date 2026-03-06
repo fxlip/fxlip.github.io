@@ -15,29 +15,26 @@ messages:
       Escrevo sobre @linux e @infosec.
       Também dou meus 2kb de opinião.
 
-      {{days}} dias · {{visits}} visitas · {{time}} aqui dentro.
+      {{days}} dias · {{visits}} visitas · {{time}} lendo.
       {{comments}} comentários · {{upvotes}} upvotes.
-      Veteran% de carteirinha. Respeito.
-      rep: {{rep}}
+      Veteran% de carteirinha.
 
   - min: 150
     dog_txt: |
       Escrevo sobre @linux e @infosec.
       Também dou meus 2kb de opinião.
 
-      {{days}} dias · {{visits}} visitas · {{time}} lendo.
-      {{comments}} comentários · {{upvotes}} upvotes dados.
-      Você virou parte disso. Obrigad%.
-      rep: {{rep}}
+      {{days}} dias, {{visits}} visitas e mais de {{time}} lendo.
+      {{comments}} comentários e {{upvotes}} upvotes dados.
+      Sinistro.
 
   - min: 60
     dog_txt: |
       Escrevo sobre @linux e @infosec.
       Também dou meus 2kb de opinião.
 
-      {{visits}} visitas · {{time}} aqui dentro.
-      Claramente vici%. Sem julgamentos.
-      rep: {{rep}}
+      {{visits}} visitas com {{time}} logado.
+      Claramente viciad%. Sem julgamentos.
 
   - min: 15
     dog_txt: |
@@ -45,12 +42,12 @@ messages:
       Também dou meus 2kb de opinião.
 
       {{visits}} visitas. Já tá virando frequentador%.
-      Você veio de {{city}} — bom gosto.
+      Você veio de {{city}} — ta frio aí?
 
   - min: 0
     dog_txt: |
-      Escrevo sobre @linux e @infosec.
-      Também dou meus 2kb de opinião.
-
       Primeira vez por aqui? Seja bem-vind%.
-      Dá uma olhada no @feed — tem coisa boa.
+      Informe seu nome ou nick e vamos interagir.
+
+      Nesse feed eu dou meus 2kb de opinião.
+      E escrevo sobre @linux e @infosec.
