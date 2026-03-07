@@ -19,8 +19,8 @@ welcome_new: "Bem-vind%, @{{name}}. Agora você tem um perfil."
 
 # Texto do prompt de nome exibido no input "export USER=..."
 prompt_cmd: "export USER="
-prompt_new: "[qual-seu-nick?]"
-prompt_rename: "[novo-nick]"
+prompt_new: "qual-seu-usuário?"
+prompt_rename: "atualizar-usuário?"
 
 messages:
   - min: 350
@@ -63,8 +63,8 @@ messages:
 
   - min: 0
     dog_txt: |
-      Primeira vez por aqui? Seja bem-vind%.
-      Informe seu nome ou nick e vamos interagir.
+      Primeira vez por aqui? Seja bem-vindx!
+      Informe seu nome de usuário e vamos interagir.
 
-      Nesse feed eu dou meus 2kb de opinião.
-      E escrevo sobre @linux e @infosec.
+      Escrevo sobre @linux e @infosec.
+      E aqui embaixo dou meus 2kb de opinião.

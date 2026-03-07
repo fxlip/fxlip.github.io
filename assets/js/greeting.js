@@ -121,21 +121,26 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =======================================================================
-  // 3. HELPER: DIGITAÇÃO TERMINAL (cobre o delay do KV/D1)
+  // 3. HELPER: DIGITAÇÃO TERMINAL — réplica do padrão de main.js
   // =======================================================================
-  function typeInto(el, text, speed, onDone) {
-    if (el._typer) clearInterval(el._typer);
-    var i = 0;
-    el.textContent = '';
-    if (!text) { if (onDone) onDone(); return; }
-    el._typer = setInterval(function() {
-      el.textContent += text[i++];
-      if (i >= text.length) {
-        clearInterval(el._typer);
-        el._typer = null;
-        if (onDone) onDone();
-      }
-    }, speed || 10);
+  var TYPING_SPEED   = 45;  // ms/char (main.js usa 70ms × 9 chars ≈ mesmo feel)
+  var SUSPENSE_DELAY = 500; // ms de pausa pós-digitação antes do output
+
+  // Digita texto no elemento e retorna Promise (idêntico ao typeCommand de main.js)
+  function typeCmd(el, text) {
+    return new Promise(function(resolve) {
+      if (el._typer) clearInterval(el._typer);
+      el.textContent = '';
+      var i = 0;
+      el._typer = setInterval(function() {
+        el.textContent += text[i++];
+        if (i >= text.length) {
+          clearInterval(el._typer);
+          el._typer = null;
+          resolve();
+        }
+      }, TYPING_SPEED);
+    });
   }
 
   // =======================================================================
@@ -225,13 +230,30 @@ document.addEventListener("DOMContentLoaded", function() {
     var finalText = applyGender(applyVars(template, vars), data.gender || null);
     var renameMin = whoami.rename_min;
 
-    typeInto(dogEl, finalText, 10, function() {
+    // Encontra o .t-cmd do "whoami && cat dog.txt" no mesmo terminal-body
+    var termBody = dogEl.parentElement;
+    var cmdEl = termBody ? termBody.querySelector('.t-cmd') : null;
+    // Salva o texto original na primeira chamada (evita reler o DOM alterado)
+    if (cmdEl && !cmdEl._origText) cmdEl._origText = cmdEl.textContent.trim();
+    var cmdText = cmdEl ? cmdEl._origText : '';
+
+    var afterOutput = function() {
       dogEl.removeAttribute('data-mentions-processed');
       if (window.applyMentions) window.applyMentions(dogEl);
       if (data.name && typeof renameMin === 'number' && rep >= renameMin && currentFp) {
         injectRenameTrigger();
       }
-    });
+    };
+
+    // Anima apenas quando há dados reais (visita com nome ou contagem)
+    if ((data.name || data.visits) && cmdEl && cmdText) {
+      typeCmd(cmdEl, cmdText)
+        .then(function() { return new Promise(function(r) { setTimeout(r, SUSPENSE_DELAY); }); })
+        .then(function() { dogEl.textContent = finalText; afterOutput(); });
+    } else {
+      dogEl.textContent = finalText;
+      afterOutput();
+    }
   }
 
   function injectRenameTrigger() {
@@ -462,13 +484,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
       var welcomeDiv = document.createElement('div');
       welcomeDiv.className = 't-gray';
+      welcomeDiv.textContent = welcomeText;
       greetingBlock.style.display = 'block';
       greetingBlock.innerHTML = '';
       greetingBlock.appendChild(welcomeDiv);
-
-      typeInto(welcomeDiv, welcomeText, 10, function() {
-        if (window.applyMentions) window.applyMentions(greetingBlock);
-      });
+      if (window.applyMentions) window.applyMentions(greetingBlock);
     }
 
     renderDogTxt(data);
