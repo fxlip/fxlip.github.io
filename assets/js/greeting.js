@@ -375,8 +375,8 @@ document.addEventListener("DOMContentLoaded", function() {
       cursor.className = 'cursor-blink';
       cursor.textContent = '█';
 
-      // Input sempre expandido; █ sempre visível depois do texto; caret do browser oculto
-      input.size = 1;
+      // Input colado ao =; █ visível depois do texto; caret do browser oculto
+      input.style.width      = '0ch';
       input.style.caretColor = 'transparent';
       inputLine.appendChild(input);
       inputLine.appendChild(cursor);
@@ -402,7 +402,7 @@ document.addEventListener("DOMContentLoaded", function() {
           input.value = masked;
           input.selectionStart = input.selectionEnd = Math.min(pos, masked.length);
         }
-        input.size = Math.max(input.value.length, 1);
+        input.style.width = input.value.length + 'ch';
       });
 
       input.addEventListener("keydown", function(e) {
