@@ -258,6 +258,10 @@ document.addEventListener("DOMContentLoaded", function() {
           afterOutput();
         });
     } else {
+      // Oculta o cursor do whoami (ramo sem animação) para evitar briga visual
+      var whoamiCursorElse = cmdEl && cmdEl.parentElement
+        ? cmdEl.parentElement.querySelector('.cursor-blink') : null;
+      if (whoamiCursorElse) whoamiCursorElse.style.display = 'none';
       dogEl.textContent = finalText;
       afterOutput();
     }
@@ -418,24 +422,36 @@ document.addEventListener("DOMContentLoaded", function() {
       cursor.textContent = '█';
 
       if (isRename && currentName) {
-        // Rename: mostra nome atual pré-preenchido, cursor piscando no final
+        // Rename: nome pré-preenchido, cursor piscando ao final do texto
         input.value = currentName;
         input.size = currentName.length || 1;
         input.style.caretColor = 'transparent';
+        inputLine.appendChild(input);
+        inputLine.appendChild(cursor);
       } else {
-        // Primeira vez: cursor representa a posição de digitação
-        input.size = 1;
+        // Novo usuário: cursor colado ao USER=; input colapsado até receber foco
+        input.style.width   = '0';
+        input.style.minWidth = '0';
+        input.style.padding = '0';
+        inputLine.appendChild(cursor); // cursor antes do input no DOM
+        inputLine.appendChild(input);
       }
-
-      inputLine.appendChild(input);
-      inputLine.appendChild(cursor);
 
       input.addEventListener('focus', function() {
         input.style.caretColor = '';
         cursor.style.display = 'none';
+        input.style.width    = '';
+        input.style.minWidth = '';
+        input.style.padding  = '';
+        if (!input.size) input.size = 1;
       });
       input.addEventListener('blur', function() {
-        if (!input.value) cursor.style.display = '';
+        if (!input.value) {
+          cursor.style.display = '';
+          input.style.width    = '0';
+          input.style.minWidth = '0';
+          input.style.padding  = '0';
+        }
       });
 
       input.focus();

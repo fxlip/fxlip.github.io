@@ -50,7 +50,7 @@ messages:
 
   - min: 1
     dog_txt: |
-      Quer começar por @linux ou @infosec?
+      @{{name}}, quer começar por @linux ou @infosec?
 
   - min: 0
     dog_txt: |
