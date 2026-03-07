@@ -329,6 +329,40 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   // ==========================================================================
+  // 2b. SEQUÊNCIA nvdd.sh — disparada após whoami terminar
+  // ==========================================================================
+  var nvddFired = false;
+
+  function runNvddSequence() {
+    if (nvddFired) return;
+    nvddFired = true;
+
+    var nvddPrompt  = document.getElementById('nvdd-prompt');
+    var feedContent = document.getElementById('feed-content');
+    if (!nvddPrompt || !feedContent) return;
+
+    var cmdEl   = nvddPrompt.querySelector('.t-cmd');
+    var cmdText = './nvdd.sh';
+
+    nvddPrompt.style.display = '';
+
+    if (!cmdEl) { feedContent.style.display = ''; return; }
+
+    var i = 0;
+    var interval = setInterval(function() {
+      cmdEl.textContent += cmdText[i++];
+      if (i >= cmdText.length) {
+        clearInterval(interval);
+        setTimeout(function() { feedContent.style.display = ''; }, 800);
+      }
+    }, 70);
+  }
+
+  document.addEventListener('whoami:ready', runNvddSequence);
+  // Fallback: se o Worker não estiver disponível, abre o feed após espera máxima
+  setTimeout(runNvddSequence, 4000);
+
+  // ==========================================================================
   // 3. HEADER ADAPTATIVO (TERMINAL MODE)
   // ==========================================================================
   const header = document.querySelector('header');

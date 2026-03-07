@@ -15,13 +15,12 @@ hide_footer: true
 
           <div class="terminal-body">
             <div>
-              <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span class="t-cmd">whoami && cat dog.txt</span>
+              <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span class="t-cmd">whoami</span>
             </div>
             <div id="greeting-block" style="display:none">
               <div class="t-out" id="greeting-output"></div>
             </div>
-            <div class="t-out" id="whoami-dog-txt">Escrevo sobre @linux e @infosec‎.
-Também dou meus 2kb de opnião.<!--
+            <div class="t-out" id="whoami-dog-txt"><!--
 ⡟⠛⠛⠛⠛⢛⣛⣛⣛⣿⣿⣿⣛⣛⣛⡛⠛⠛⠛⠛⢛
 ⡇⢀⣠⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣄⡀⢐
 ⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶
@@ -37,11 +36,10 @@ Também dou meus 2kb de opnião.<!--
 ⡇⠄⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⠄⢸
 ⡇⠄⠄⠄⠈⠛⢿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠄⠄⠄⢨
 ⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄--></div>
-            <div>
-              <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span class="t-cmd">./nvdd.sh</span>
+            <div id="nvdd-prompt" style="display:none">
+              <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span class="t-cmd"></span>
             </div>
-            <div class="t-out">
-            </div>
+            <div id="feed-content" style="display:none">
             <hr class="post-list__divider" style="margin: 10px 0 35px 0;">
             {%- if site.posts.size > 0 -%}
               {%- assign pinned_post = site.posts | where: "pin", true | first -%}
@@ -87,5 +85,5 @@ Também dou meus 2kb de opnião.<!--
                       <div style="margin-top: 10px;">
                         <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/feed</span><span class="t-gray">$</span> <span class="cursor-blink">█</span>
                       </div>
-              {% endif %}</div>
-        {%- endif -%}</div> 
+              {% endif %}</div></div>
+        {%- endif -%}</div>

@@ -243,6 +243,7 @@ document.addEventListener("DOMContentLoaded", function() {
       if (data.name && typeof renameMin === 'number' && rep >= renameMin && currentFp) {
         injectRenameTrigger();
       }
+      document.dispatchEvent(new CustomEvent('whoami:ready'));
     };
 
     // Anima apenas quando há dados reais (visita com nome ou contagem)
