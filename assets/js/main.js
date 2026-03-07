@@ -353,14 +353,27 @@ document.addEventListener("DOMContentLoaded", function() {
       cmdEl.textContent += cmdText[i++];
       if (i >= cmdText.length) {
         clearInterval(interval);
-        setTimeout(function() { feedContent.style.display = ''; }, 800);
+        setTimeout(function() {
+          var nvddCursor = nvddPrompt.querySelector('.cursor-blink');
+          if (nvddCursor) nvddCursor.style.display = 'none';
+          // Aplica animação staggerada em cada post antes de revelar o feed
+          var posts = feedContent.querySelectorAll('article.post-item');
+          posts.forEach(function(post, i) {
+            post.style.animation =
+              'post-deal 0.45s cubic-bezier(0.22, 1, 0.36, 1) ' + (i * 90) + 'ms both';
+          });
+          feedContent.style.display = '';
+        }, 800);
       }
     }, 70);
   }
 
   document.addEventListener('whoami:ready', runNvddSequence);
-  // Fallback: se o Worker não estiver disponível, abre o feed após espera máxima
-  setTimeout(runNvddSequence, 4000);
+  // Fallback: sem WORKER_URL (greeting.js não roda) ou usuário já cadastrado
+  // Novo usuário sem nome salvo aguarda o registro — sem fallback automático
+  var _hasSavedName = false;
+  try { _hasSavedName = !!localStorage.getItem('fxlip_visitor_name'); } catch (_) {}
+  if (!WORKER_URL || _hasSavedName) setTimeout(runNvddSequence, 4000);
 
   // ==========================================================================
   // 3. HEADER ADAPTATIVO (TERMINAL MODE)

@@ -3,6 +3,18 @@
    (hash links, footer, embeds, answer reveal, actions, toast, view counter)
    ========================================================================== */
 
+/* --- EFEITO DE ENTRADA DO FEED (primeira carga do ./nvdd.sh) --- */
+@keyframes post-deal {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* --- HASH LINKS (.html links) --- */
 .sys-hash-link {
   font-family: 'JetBrains Mono', monospace;

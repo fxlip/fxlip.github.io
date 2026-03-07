@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // 3. HELPER: DIGITAÇÃO TERMINAL — réplica do padrão de main.js
   // =======================================================================
   var TYPING_SPEED   = 45;  // ms/char (main.js usa 70ms × 9 chars ≈ mesmo feel)
-  var SUSPENSE_DELAY = 500; // ms de pausa pós-digitação antes do output
+  var SUSPENSE_DELAY = 800; // ms de pausa pós-digitação antes do output (= main.js)
 
   // Digita texto no elemento e retorna Promise (idêntico ao typeCommand de main.js)
   function typeCmd(el, text) {
@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", function() {
     return m + 'min';
   }
 
-  function renderDogTxt(data) {
+  function renderDogTxt(data, skipAnimation) {
     var dataEl = document.getElementById('whoami-data');
     if (!dataEl) return;
     var whoami;
@@ -241,23 +241,29 @@ document.addEventListener("DOMContentLoaded", function() {
       dogEl.removeAttribute('data-mentions-processed');
       if (window.applyMentions) window.applyMentions(dogEl);
       if (data.name && typeof renameMin === 'number' && rep >= renameMin && currentFp) {
-        injectRenameTrigger();
+        injectRenameTrigger(data.name);
       }
-      document.dispatchEvent(new CustomEvent('whoami:ready'));
+      // Novo usuário: evento só dispara após renderDogTxt com nome real
+      if (data.name) document.dispatchEvent(new CustomEvent('whoami:ready'));
     };
 
-    // Anima apenas quando há dados reais (visita com nome ou contagem)
-    if ((data.name || data.visits) && cmdEl && cmdText) {
+    // Anima apenas quando há dados reais e animação não foi suprimida
+    if (!skipAnimation && (data.name || data.visits) && cmdEl && cmdText) {
       typeCmd(cmdEl, cmdText)
         .then(function() { return new Promise(function(r) { setTimeout(r, SUSPENSE_DELAY); }); })
-        .then(function() { dogEl.textContent = finalText; afterOutput(); });
+        .then(function() {
+          var whoamiCursor = cmdEl.parentElement ? cmdEl.parentElement.querySelector('.cursor-blink') : null;
+          if (whoamiCursor) whoamiCursor.style.display = 'none';
+          dogEl.textContent = finalText;
+          afterOutput();
+        });
     } else {
       dogEl.textContent = finalText;
       afterOutput();
     }
   }
 
-  function injectRenameTrigger() {
+  function injectRenameTrigger(currentName) {
     var rtDataEl = document.getElementById('whoami-data');
     var rtWhoami = {};
     try { rtWhoami = JSON.parse(rtDataEl.textContent); } catch (_) {}
@@ -272,16 +278,30 @@ document.addEventListener("DOMContentLoaded", function() {
       '<span class="t-gray">:</span>' +
       '<span class="t-path">~/feed</span>' +
       '<span class="t-gray">$</span> ' +
-      '<span class="t-cmd">' + esc(rtCmd) + '</span>' +
-      '<a class="file-link" id="rename-trigger">[mudar nick]</a>';
+      '<span class="t-cmd"></span>';
 
     var dogEl = document.getElementById('whoami-dog-txt');
     if (dogEl) dogEl.insertAdjacentElement('afterend', line);
 
-    document.getElementById('rename-trigger').addEventListener('click', function(e) {
-      e.preventDefault();
-      line.remove();
-      injectNameInput(currentFp, true);
+    var rtCmdSpan = line.querySelector('.t-cmd');
+    typeCmd(rtCmdSpan, rtCmd).then(function() {
+      var triggerLink = document.createElement('a');
+      triggerLink.className = 'file-link';
+      triggerLink.id = 'rename-trigger';
+      triggerLink.textContent = '[mudar nick]';
+
+      var cursor = document.createElement('span');
+      cursor.className = 'cursor-blink';
+      cursor.textContent = '█';
+
+      line.appendChild(triggerLink);
+      line.appendChild(cursor);
+
+      triggerLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        line.remove();
+        injectNameInput(currentFp, true, currentName);
+      });
     });
   }
 
@@ -355,20 +375,17 @@ document.addEventListener("DOMContentLoaded", function() {
   // =======================================================================
   // 4. HELPER: INJETA O INPUT DE NOME NO DOM
   // =======================================================================
-  function injectNameInput(fp, isRename) {
+  function injectNameInput(fp, isRename, currentName) {
     var prev = document.getElementById('greeting-input-line');
     if (prev) prev.remove();
 
-    var inputLine = document.createElement("div");
-    inputLine.id = "greeting-input-line";
     var niDataEl = document.getElementById('whoami-data');
     var niWhoami = {};
     try { niWhoami = JSON.parse(niDataEl.textContent); } catch (_) {}
     var niCmd = niWhoami.prompt_cmd || 'export USER=';
-    var niPlaceholder = isRename
-      ? (niWhoami.prompt_rename || 'novo nick')
-      : (niWhoami.prompt_new   || 'qual seu nome?');
 
+    var inputLine = document.createElement("div");
+    inputLine.id = "greeting-input-line";
     inputLine.innerHTML =
       '<span class="t-user">fxlip</span>' +
       '<span class="t-gray">@</span>' +
@@ -376,10 +393,7 @@ document.addEventListener("DOMContentLoaded", function() {
       '<span class="t-gray">:</span>' +
       '<span class="t-path">~/feed</span>' +
       '<span class="t-gray">$</span> ' +
-      '<span class="t-cmd">' + esc(niCmd) + '</span>' +
-      '<input type="text" id="greeting-input" class="greeting-input" ' +
-        'maxlength="30" autocomplete="off" spellcheck="false" ' +
-        'placeholder="' + esc(niPlaceholder) + '">';
+      '<span class="t-cmd"></span>';
 
     var dogEl = document.getElementById('whoami-dog-txt');
     if (dogEl) {
@@ -388,76 +402,104 @@ document.addEventListener("DOMContentLoaded", function() {
       greetingBlock.appendChild(inputLine);
     }
 
-    var input = document.getElementById("greeting-input");
+    var cmdSpan = inputLine.querySelector('.t-cmd');
 
-    // Respiração do placeholder
-    var phStyle = document.createElement("style");
-    document.head.appendChild(phStyle);
-    var phStart = performance.now();
-    function animatePlaceholder(ts) {
-      if (!document.getElementById("greeting-input")) { phStyle.remove(); return; }
-      var v = (Math.sin((ts - phStart) / 2800 * Math.PI * 2) + 1) / 2;
-      var a = (0.12 + v * 0.28).toFixed(3);
-      phStyle.textContent = "#greeting-input::placeholder{color:rgba(92,95,119," + a + ")}";
-      requestAnimationFrame(animatePlaceholder);
-    }
-    requestAnimationFrame(animatePlaceholder);
+    typeCmd(cmdSpan, niCmd).then(function() {
+      var input = document.createElement('input');
+      input.type = 'text';
+      input.id = 'greeting-input';
+      input.className = 'greeting-input';
+      input.maxLength = 30;
+      input.autocomplete = 'off';
+      input.spellcheck = false;
 
-    // Máscara: lowercase, espaço→hífen, só [a-z0-9à-ú-], sem traço inicial nem duplo
-    input.addEventListener("input", function() {
-      var pos = input.selectionStart;
-      var original = input.value;
-      var masked = original
-        .toLowerCase()
-        .replace(/\s+/g, "-")
-        .replace(/[^a-z0-9à-ú-]/g, "")
-        .replace(/^-+/, "")
-        .replace(/-{2,}/g, "-");
-      if (masked !== original) {
-        input.value = masked;
-        input.selectionStart = input.selectionEnd = Math.min(pos, masked.length);
+      var cursor = document.createElement('span');
+      cursor.className = 'cursor-blink';
+      cursor.textContent = '█';
+
+      if (isRename && currentName) {
+        // Rename: mostra nome atual pré-preenchido, cursor piscando no final
+        input.value = currentName;
+        input.size = currentName.length || 1;
+        input.style.caretColor = 'transparent';
+      } else {
+        // Primeira vez: cursor representa a posição de digitação
+        input.size = 1;
       }
-    });
 
-    input.addEventListener("keydown", function(e) {
-      if (e.key !== "Enter") return;
-      e.preventDefault();
-      var val = input.value.replace(/^-+|-+$/g, "").trim();
-      if (!val || val.length < 2) return;
-      input.value = val;
+      inputLine.appendChild(input);
+      inputLine.appendChild(cursor);
 
-      input.disabled = true;
-      input.style.opacity = "0.5";
+      input.addEventListener('focus', function() {
+        input.style.caretColor = '';
+        cursor.style.display = 'none';
+      });
+      input.addEventListener('blur', function() {
+        if (!input.value) cursor.style.display = '';
+      });
 
-      fetchWithTimeout(WORKER_URL + "/api/hello", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fingerprint: fp, name: val }),
-      }).then(function(res) { return res.json(); })
-        .then(function(data) {
-          if (data.error === 'name_taken' || data.error === 'registration_limit') {
-            input.disabled = false;
-            input.style.opacity = '1';
-            var existing = document.getElementById('greeting-name-error');
-            if (existing) existing.remove();
-            var errEl = document.createElement('div');
-            errEl.id = 'greeting-name-error';
-            errEl.className = 't-out';
-            errEl.style.cssText = 'color:var(--link-color);margin-top:0.2em';
-            errEl.textContent = data.error === 'registration_limit'
-              ? 'ta com sabor de spam'
-              : 'esse nick já existe. tenta outro?';
-            inputLine.appendChild(errEl);
-            if (data.error === 'name_taken') input.focus();
-            return;
-          }
-          try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
-          setHelloCache(data);
-          renderGreeting(data, !isRename);
-        }).catch(function() {
-          try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
-          renderGreeting({ name: val }, !isRename);
-        });
+      input.focus();
+      if (isRename && currentName) {
+        input.setSelectionRange(input.value.length, input.value.length);
+      }
+
+      // Máscara: lowercase, espaço→hífen, só [a-z0-9à-ú-], sem traço inicial nem duplo
+      input.addEventListener("input", function() {
+        var pos = input.selectionStart;
+        var original = input.value;
+        var masked = original
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[^a-z0-9à-ú-]/g, "")
+          .replace(/^-+/, "")
+          .replace(/-{2,}/g, "-");
+        if (masked !== original) {
+          input.value = masked;
+          input.selectionStart = input.selectionEnd = Math.min(pos, masked.length);
+        }
+        input.size = Math.max(input.value.length, 1);
+      });
+
+      input.addEventListener("keydown", function(e) {
+        if (e.key !== "Enter") return;
+        e.preventDefault();
+        var val = input.value.replace(/^-+|-+$/g, "").trim();
+        if (!val || val.length < 2) return;
+        input.value = val;
+
+        input.disabled = true;
+        input.style.opacity = "0.5";
+
+        fetchWithTimeout(WORKER_URL + "/api/hello", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ fingerprint: fp, name: val }),
+        }).then(function(res) { return res.json(); })
+          .then(function(data) {
+            if (data.error === 'name_taken' || data.error === 'registration_limit') {
+              input.disabled = false;
+              input.style.opacity = '1';
+              var existing = document.getElementById('greeting-name-error');
+              if (existing) existing.remove();
+              var errEl = document.createElement('div');
+              errEl.id = 'greeting-name-error';
+              errEl.className = 't-out';
+              errEl.style.cssText = 'color:var(--link-color);margin-top:0.2em';
+              errEl.textContent = data.error === 'registration_limit'
+                ? 'ta com sabor de spam'
+                : 'esse nick já existe. tenta outro?';
+              inputLine.appendChild(errEl);
+              if (data.error === 'name_taken') input.focus();
+              return;
+            }
+            try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
+            setHelloCache(data);
+            renderGreeting(data, !isRename);
+          }).catch(function() {
+            try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
+            renderGreeting({ name: val }, !isRename);
+          });
+      });
     });
   }
 
@@ -480,7 +522,7 @@ document.addEventListener("DOMContentLoaded", function() {
       var welcomeDataEl = document.getElementById('whoami-data');
       var welcomeWhoami = {};
       try { welcomeWhoami = JSON.parse(welcomeDataEl.textContent); } catch (_) {}
-      var welcomeTemplate = welcomeWhoami.welcome_new || 'Bem-vind%, @{{name}}. Agora você tem um perfil.';
+      var welcomeTemplate = welcomeWhoami.welcome_new || 'Legal, @{{name}}. Agora você tem um perfil.';
       var welcomeText = applyGender(applyVars(welcomeTemplate, { name: esc(data.name) }), data.gender);
 
       var welcomeDiv = document.createElement('div');
@@ -492,7 +534,8 @@ document.addEventListener("DOMContentLoaded", function() {
       if (window.applyMentions) window.applyMentions(greetingBlock);
     }
 
-    renderDogTxt(data);
+    // isNew=true: output instantâneo (whoami não reanima), evento disparado no afterOutput
+    renderDogTxt(data, isNew);
   }
 
   // =======================================================================

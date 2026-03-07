@@ -15,7 +15,7 @@ rename_min: 15
 
 # Mensagem exibida quando o visitante informa o nome pela primeira vez.
 # Suporta % (gênero) e {{name}} (substituído pelo link @nick).
-welcome_new: "Bem-vind%, @{{name}}. Agora você tem um perfil."
+welcome_new: "Legal @{{name}}, agora você tem um perfil."
 
 # Texto do prompt de nome exibido no input "export USER=..."
 prompt_cmd: "export USER="
@@ -46,14 +46,13 @@ messages:
   - min: 15
     dog_txt: |
       @{{name}}, seu último login foi {{last_login}}.
-      {{visits}} visitas. Ta curtindo?
-      Seu interesse foi por @linux ou @infosec?
+      Já foram {{visits}} visitas. Você ta com {{rep}} de reputação.
 
   - min: 1
     dog_txt: |
-      Legal @{{name}}, agora você tem um perfil.
+      Quer começar por @linux ou @infosec?
 
   - min: 0
     dog_txt: |
-      Primeira vez por aqui? Seja bem-vindx!
+      Primeira vez por aqui? Seja bem-vindo!
       Informe seu nome de usuário e vamos interagir.
