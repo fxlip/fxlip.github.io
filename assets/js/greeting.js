@@ -228,7 +228,6 @@ document.addEventListener("DOMContentLoaded", function() {
     if (existing) existing.remove();
 
     var finalText = applyGender(applyVars(template, vars), data.gender || null);
-    var renameMin = whoami.rename_min;
 
     // Encontra o .t-cmd do "whoami && cat dog.txt" no mesmo terminal-body
     var termBody = dogEl.parentElement;
@@ -240,9 +239,6 @@ document.addEventListener("DOMContentLoaded", function() {
     var afterOutput = function() {
       dogEl.removeAttribute('data-mentions-processed');
       if (window.applyMentions) window.applyMentions(dogEl);
-      if (data.name && typeof renameMin === 'number' && rep >= renameMin && currentFp) {
-        injectRenameTrigger(data.name);
-      }
       // Novo usuário: evento só dispara após renderDogTxt com nome real
       if (data.name) document.dispatchEvent(new CustomEvent('whoami:ready'));
     };
@@ -265,48 +261,6 @@ document.addEventListener("DOMContentLoaded", function() {
       dogEl.textContent = finalText;
       afterOutput();
     }
-  }
-
-  function injectRenameTrigger(currentName) {
-    var rtDataEl = document.getElementById('whoami-data');
-    var rtWhoami = {};
-    try { rtWhoami = JSON.parse(rtDataEl.textContent); } catch (_) {}
-    var rtCmd = rtWhoami.prompt_cmd || 'export USER=';
-
-    var line = document.createElement('div');
-    line.id = 'rename-line';
-    line.innerHTML =
-      '<span class="t-user">fxlip</span>' +
-      '<span class="t-gray">@</span>' +
-      '<span class="t-host">www</span>' +
-      '<span class="t-gray">:</span>' +
-      '<span class="t-path">~/feed</span>' +
-      '<span class="t-gray">$</span> ' +
-      '<span class="t-cmd"></span>';
-
-    var dogEl = document.getElementById('whoami-dog-txt');
-    if (dogEl) dogEl.insertAdjacentElement('afterend', line);
-
-    var rtCmdSpan = line.querySelector('.t-cmd');
-    typeCmd(rtCmdSpan, rtCmd).then(function() {
-      var triggerLink = document.createElement('a');
-      triggerLink.className = 'file-link';
-      triggerLink.id = 'rename-trigger';
-      triggerLink.textContent = '[mudar nick]';
-
-      var cursor = document.createElement('span');
-      cursor.className = 'cursor-blink';
-      cursor.textContent = '█';
-
-      line.appendChild(triggerLink);
-      line.appendChild(cursor);
-
-      triggerLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        line.remove();
-        injectNameInput(currentFp, true, currentName);
-      });
-    });
   }
 
   // =======================================================================
@@ -379,7 +333,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // =======================================================================
   // 4. HELPER: INJETA O INPUT DE NOME NO DOM
   // =======================================================================
-  function injectNameInput(fp, isRename, currentName) {
+  function injectNameInput(fp) {
     var prev = document.getElementById('greeting-input-line');
     if (prev) prev.remove();
 
@@ -421,21 +375,12 @@ document.addEventListener("DOMContentLoaded", function() {
       cursor.className = 'cursor-blink';
       cursor.textContent = '█';
 
-      if (isRename && currentName) {
-        // Rename: nome pré-preenchido, cursor piscando ao final do texto
-        input.value = currentName;
-        input.size = currentName.length || 1;
-        input.style.caretColor = 'transparent';
-        inputLine.appendChild(input);
-        inputLine.appendChild(cursor);
-      } else {
-        // Novo usuário: cursor colado ao USER=; input colapsado até receber foco
-        input.style.width   = '0';
-        input.style.minWidth = '0';
-        input.style.padding = '0';
-        inputLine.appendChild(cursor); // cursor antes do input no DOM
-        inputLine.appendChild(input);
-      }
+      // Cursor colado ao USER=; input colapsado até receber foco
+      input.style.width    = '0';
+      input.style.minWidth = '0';
+      input.style.padding  = '0';
+      inputLine.appendChild(cursor);
+      inputLine.appendChild(input);
 
       input.addEventListener('focus', function() {
         input.style.caretColor = '';
@@ -454,10 +399,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       });
 
+      // Clicar no █ reativa o input
+      cursor.style.cursor = 'text';
+      cursor.addEventListener('click', function() { input.focus(); });
+
       input.focus();
-      if (isRename && currentName) {
-        input.setSelectionRange(input.value.length, input.value.length);
-      }
 
       // Máscara: lowercase, espaço→hífen, só [a-z0-9à-ú-], sem traço inicial nem duplo
       input.addEventListener("input", function() {
@@ -510,10 +456,10 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
             setHelloCache(data);
-            renderGreeting(data, !isRename);
+            renderGreeting(data, true);
           }).catch(function() {
             try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
-            renderGreeting({ name: val }, !isRename);
+            renderGreeting({ name: val }, true);
           });
       });
     });
@@ -524,7 +470,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // =======================================================================
   function renderNamePrompt(fp) {
     renderDogTxt({});
-    injectNameInput(fp, false);
+    injectNameInput(fp);
   }
 
   // =======================================================================
@@ -542,16 +488,22 @@ document.addEventListener("DOMContentLoaded", function() {
       var welcomeText = applyGender(applyVars(welcomeTemplate, { name: esc(data.name) }), data.gender);
 
       var welcomeDiv = document.createElement('div');
-      welcomeDiv.className = 't-gray';
+      welcomeDiv.className = 't-out';
       welcomeDiv.textContent = welcomeText;
       greetingBlock.style.display = 'block';
       greetingBlock.innerHTML = '';
       greetingBlock.appendChild(welcomeDiv);
       if (window.applyMentions) window.applyMentions(greetingBlock);
+
+      // Limpa o dog_txt do estado de primeiro acesso e dispara o nvdd.sh
+      var wDogEl = document.getElementById('whoami-dog-txt');
+      if (wDogEl) wDogEl.textContent = '';
+      document.dispatchEvent(new CustomEvent('whoami:ready'));
+      return;
     }
 
-    // isNew=true: output instantâneo (whoami não reanima), evento disparado no afterOutput
-    renderDogTxt(data, isNew);
+    // Usuário retornando: dog_txt com animação normal
+    renderDogTxt(data, false);
   }
 
   // =======================================================================

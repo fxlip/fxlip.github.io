@@ -3,6 +3,31 @@
    Layout: 3-col identity grid (avatar | info | socials), log com sys info.
    ========================================================================== */
 
+// Nome editável (dono do perfil)
+.pc-name-editable {
+  cursor: pointer;
+  &:hover { opacity: 0.85; }
+}
+
+.pc-name-input {
+  background:  transparent;
+  border:      none;
+  border-bottom: 1px solid var(--purple);
+  color:       inherit;
+  font:        inherit;
+  padding:     0;
+  outline:     none;
+  min-width:   1ch;
+  caret-color: var(--purple);
+}
+
+.pc-name-error {
+  font-size:   12px;
+  color:       var(--link-color);
+  margin-top:  4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
 // Wrapper
 .ps {
   display: flex;

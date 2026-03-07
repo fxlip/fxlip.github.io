@@ -10,9 +10,6 @@
 # Gênero: use % como sufixo (obrigad% → obrigado/obrigada/obrigade)
 # @mentions são processadas automaticamente.
 
-# Reputação mínima para o usuário poder mudar de nick
-rename_min: 15
-
 # Mensagem exibida quando o visitante informa o nome pela primeira vez.
 # Suporta % (gênero) e {{name}} (substituído pelo link @nick).
 welcome_new: "Legal @{{name}}, agora você tem um perfil."
@@ -20,7 +17,6 @@ welcome_new: "Legal @{{name}}, agora você tem um perfil."
 # Texto do prompt de nome exibido no input "export USER=..."
 prompt_cmd: "export USER="
 prompt_new: "qual-seu-usuário?"
-prompt_rename: "atualizar-usuário?"
 
 messages:
   - min: 350
@@ -45,12 +41,11 @@ messages:
 
   - min: 15
     dog_txt: |
-      @{{name}}, seu último login foi {{last_login}}.
-      Já foram {{visits}} visitas. Você ta com {{rep}} de reputação.
+      Seu último login foi {{last_login}}.
 
   - min: 1
     dog_txt: |
-      @{{name}}, quer começar por @linux ou @infosec?
+      Quer começar por @linux ou @infosec?
 
   - min: 0
     dog_txt: |

@@ -463,6 +463,104 @@
       badge.className   = 'profile-badge';
       badge.textContent = '[você]';
       nameEl.appendChild(badge);
+
+      // Click-to-edit inline para trocar de nick
+      nameEl.title  = 'clique para mudar de nick';
+      nameEl.classList.add('pc-name-editable');
+      nameEl.addEventListener('click', function() {
+        if (nameEl.querySelector('input')) return; // já editando
+
+        var currentUsername = nameEl.firstChild && nameEl.firstChild.nodeType === 3
+          ? nameEl.firstChild.textContent.replace('@', '').trim()
+          : username;
+
+        nameEl.textContent = '@';
+
+        var input = document.createElement('input');
+        input.type        = 'text';
+        input.value       = currentUsername;
+        input.className   = 'pc-name-input';
+        input.maxLength   = 30;
+        input.autocomplete = 'off';
+        input.spellcheck  = false;
+        input.size        = Math.max(currentUsername.length, 1);
+        nameEl.appendChild(input);
+
+        var errEl = null;
+
+        function cancelEdit() {
+          if (!nameEl.querySelector('input')) return;
+          nameEl.textContent = '@' + currentUsername;
+          var nb = document.createElement('span');
+          nb.className   = 'profile-badge';
+          nb.textContent = '[você]';
+          nameEl.appendChild(nb);
+          if (errEl) { errEl.remove(); errEl = null; }
+        }
+
+        function submitEdit() {
+          var val = input.value.replace(/^-+|-+$/g, '').trim();
+          if (!val || val.length < 2 || !USERNAME_RE.test(val) || val === currentUsername) {
+            cancelEdit();
+            return;
+          }
+          input.disabled = true;
+          fetch(WORKER_URL + '/api/hello', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ fingerprint: fingerprint, name: val }),
+          }).then(function(r) { return r.json(); })
+            .then(function(res) {
+              if (res.error === 'name_taken' || res.error === 'registration_limit') {
+                input.disabled = false;
+                input.focus();
+                if (!errEl) {
+                  errEl = document.createElement('div');
+                  errEl.className = 'pc-name-error';
+                  nameEl.insertAdjacentElement('afterend', errEl);
+                }
+                errEl.textContent = res.error === 'name_taken'
+                  ? 'esse nick já existe'
+                  : 'ta com sabor de spam';
+                return;
+              }
+              try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
+              nameEl.textContent = '@' + val;
+              var nb2 = document.createElement('span');
+              nb2.className   = 'profile-badge';
+              nb2.textContent = '[você]';
+              nameEl.appendChild(nb2);
+              document.title = '@' + val;
+              history.replaceState(null, '', '/' + encodeURIComponent(val));
+              if (errEl) { errEl.remove(); errEl = null; }
+            })
+            .catch(cancelEdit);
+        }
+
+        input.addEventListener('input', function() {
+          var pos      = input.selectionStart;
+          var original = input.value;
+          var masked   = original
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^a-z0-9à-ú-]/g, '')
+            .replace(/^-+/, '')
+            .replace(/-{2,}/g, '-');
+          if (masked !== original) {
+            input.value = masked;
+            input.selectionStart = input.selectionEnd = Math.min(pos, masked.length);
+          }
+          input.size = Math.max(input.value.length, 1);
+        });
+
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter')  { e.preventDefault(); submitEdit(); }
+          if (e.key === 'Escape') { cancelEdit(); }
+        });
+
+        input.focus();
+        input.setSelectionRange(input.value.length, input.value.length);
+      });
     }
 
     // Localidade + desde
