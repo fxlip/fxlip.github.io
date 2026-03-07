@@ -428,8 +428,7 @@ document.addEventListener("DOMContentLoaded", function() {
               if (existing) existing.remove();
               var errEl = document.createElement('div');
               errEl.id = 'greeting-name-error';
-              errEl.className = 't-out';
-              errEl.style.cssText = 'color:var(--link-color);margin-top:0.2em';
+              errEl.className = 'greeting-error-card';
               errEl.textContent = data.error === 'registration_limit'
                 ? 'ta com sabor de spam'
                 : 'esse nick já existe. tenta outro?';
