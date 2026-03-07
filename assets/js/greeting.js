@@ -121,7 +121,25 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =======================================================================
-  // 3. WHOAMI
+  // 3. HELPER: DIGITAÇÃO TERMINAL (cobre o delay do KV/D1)
+  // =======================================================================
+  function typeInto(el, text, speed, onDone) {
+    if (el._typer) clearInterval(el._typer);
+    var i = 0;
+    el.textContent = '';
+    if (!text) { if (onDone) onDone(); return; }
+    el._typer = setInterval(function() {
+      el.textContent += text[i++];
+      if (i >= text.length) {
+        clearInterval(el._typer);
+        el._typer = null;
+        if (onDone) onDone();
+      }
+    }, speed || 10);
+  }
+
+  // =======================================================================
+  // 4. WHOAMI
   // =======================================================================
 
   function selectMessage(messages, rep) {
@@ -204,18 +222,24 @@ document.addEventListener("DOMContentLoaded", function() {
     var existing = document.getElementById('rename-line');
     if (existing) existing.remove();
 
-    dogEl.textContent = applyGender(applyVars(template, vars), data.gender || null);
-
-    dogEl.removeAttribute('data-mentions-processed');
-    if (window.applyMentions) window.applyMentions(dogEl);
-
+    var finalText = applyGender(applyVars(template, vars), data.gender || null);
     var renameMin = whoami.rename_min;
-    if (data.name && typeof renameMin === 'number' && rep >= renameMin && currentFp) {
-      injectRenameTrigger();
-    }
+
+    typeInto(dogEl, finalText, 10, function() {
+      dogEl.removeAttribute('data-mentions-processed');
+      if (window.applyMentions) window.applyMentions(dogEl);
+      if (data.name && typeof renameMin === 'number' && rep >= renameMin && currentFp) {
+        injectRenameTrigger();
+      }
+    });
   }
 
   function injectRenameTrigger() {
+    var rtDataEl = document.getElementById('whoami-data');
+    var rtWhoami = {};
+    try { rtWhoami = JSON.parse(rtDataEl.textContent); } catch (_) {}
+    var rtCmd = rtWhoami.prompt_cmd || 'export USER=';
+
     var line = document.createElement('div');
     line.id = 'rename-line';
     line.innerHTML =
@@ -225,7 +249,7 @@ document.addEventListener("DOMContentLoaded", function() {
       '<span class="t-gray">:</span>' +
       '<span class="t-path">~/feed</span>' +
       '<span class="t-gray">$</span> ' +
-      '<span class="t-cmd">export USER=</span>' +
+      '<span class="t-cmd">' + esc(rtCmd) + '</span>' +
       '<a class="file-link" id="rename-trigger">[mudar nick]</a>';
 
     var dogEl = document.getElementById('whoami-dog-txt');
@@ -314,6 +338,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var inputLine = document.createElement("div");
     inputLine.id = "greeting-input-line";
+    var niDataEl = document.getElementById('whoami-data');
+    var niWhoami = {};
+    try { niWhoami = JSON.parse(niDataEl.textContent); } catch (_) {}
+    var niCmd = niWhoami.prompt_cmd || 'export USER=';
+    var niPlaceholder = isRename
+      ? (niWhoami.prompt_rename || 'novo nick')
+      : (niWhoami.prompt_new   || 'qual seu nome?');
+
     inputLine.innerHTML =
       '<span class="t-user">fxlip</span>' +
       '<span class="t-gray">@</span>' +
@@ -321,10 +353,10 @@ document.addEventListener("DOMContentLoaded", function() {
       '<span class="t-gray">:</span>' +
       '<span class="t-path">~/feed</span>' +
       '<span class="t-gray">$</span> ' +
-      '<span class="t-cmd">export USER=</span>' +
+      '<span class="t-cmd">' + esc(niCmd) + '</span>' +
       '<input type="text" id="greeting-input" class="greeting-input" ' +
         'maxlength="30" autocomplete="off" spellcheck="false" ' +
-        'placeholder="' + (isRename ? 'novo nick' : 'qual seu nome?') + '">';
+        'placeholder="' + esc(niPlaceholder) + '">';
 
     var dogEl = document.getElementById('whoami-dog-txt');
     if (dogEl) {
@@ -422,9 +454,21 @@ document.addEventListener("DOMContentLoaded", function() {
     if (prev) prev.remove();
 
     if (isNew && data.name) {
-      var nameLink = '<a href="/' + esc(data.name) + '" class="file-link">@' + esc(data.name) + '</a>';
-      greetingBlock.style.display = "block";
-      greetingBlock.innerHTML = '<div class="t-gray">' + applyGender('Bem-vind%', data.gender) + ', ' + nameLink + '. Agora você tem um perfil.</div>';
+      var welcomeDataEl = document.getElementById('whoami-data');
+      var welcomeWhoami = {};
+      try { welcomeWhoami = JSON.parse(welcomeDataEl.textContent); } catch (_) {}
+      var welcomeTemplate = welcomeWhoami.welcome_new || 'Bem-vind%, @{{name}}. Agora você tem um perfil.';
+      var welcomeText = applyGender(applyVars(welcomeTemplate, { name: esc(data.name) }), data.gender);
+
+      var welcomeDiv = document.createElement('div');
+      welcomeDiv.className = 't-gray';
+      greetingBlock.style.display = 'block';
+      greetingBlock.innerHTML = '';
+      greetingBlock.appendChild(welcomeDiv);
+
+      typeInto(welcomeDiv, welcomeText, 10, function() {
+        if (window.applyMentions) window.applyMentions(greetingBlock);
+      });
     }
 
     renderDogTxt(data);

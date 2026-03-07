@@ -13,6 +13,15 @@
 # Reputação mínima para o usuário poder mudar de nick
 rename_min: 15
 
+# Mensagem exibida quando o visitante informa o nome pela primeira vez.
+# Suporta % (gênero) e {{name}} (substituído pelo link @nick).
+welcome_new: "Bem-vind%, @{{name}}. Agora você tem um perfil."
+
+# Texto do prompt de nome exibido no input "export USER=..."
+prompt_cmd: "export USER="
+prompt_new: "[qual-seu-nick?]"
+prompt_rename: "[novo-nick]"
+
 messages:
   - min: 350
     dog_txt: |
