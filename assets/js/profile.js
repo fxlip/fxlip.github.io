@@ -480,7 +480,7 @@
         input.type        = 'text';
         input.value       = currentUsername;
         input.className   = 'pc-name-input';
-        input.maxLength   = 30;
+        input.maxLength   = 23;
         input.autocomplete = 'off';
         input.spellcheck  = false;
         input.size        = Math.max(currentUsername.length, 1);

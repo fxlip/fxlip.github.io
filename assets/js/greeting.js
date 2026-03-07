@@ -349,7 +349,7 @@ document.addEventListener("DOMContentLoaded", function() {
       '<span class="t-gray">@</span>' +
       '<span class="t-host">www</span>' +
       '<span class="t-gray">:</span>' +
-      '<span class="t-path">~/feed</span>' +
+      '<span class="t-path">~</span>' +
       '<span class="t-gray">$</span> ' +
       '<span class="t-cmd"></span>';
 
@@ -367,7 +367,7 @@ document.addEventListener("DOMContentLoaded", function() {
       input.type = 'text';
       input.id = 'greeting-input';
       input.className = 'greeting-input';
-      input.maxLength = 30;
+      input.maxLength = 23;
       input.autocomplete = 'off';
       input.spellcheck = false;
 
