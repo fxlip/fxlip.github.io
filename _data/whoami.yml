@@ -41,11 +41,11 @@ messages:
 
   - min: 15
     dog_txt: |
-      Seu último login foi {{last_login}}.
+      @{{name}}, seu último login foi {{last_login}}.
 
   - min: 1
     dog_txt: |
-      Quer começar por @linux ou @infosec?
+      @{{name}}, quer começar por @linux ou @infosec?
 
   - min: 0
     dog_txt: |

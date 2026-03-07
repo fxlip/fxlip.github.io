@@ -375,33 +375,16 @@ document.addEventListener("DOMContentLoaded", function() {
       cursor.className = 'cursor-blink';
       cursor.textContent = '█';
 
-      // Cursor colado ao USER=; input colapsado até receber foco
-      input.style.width    = '0';
-      input.style.minWidth = '0';
-      input.style.padding  = '0';
-      inputLine.appendChild(cursor);
+      // Input sempre expandido; █ sempre visível depois do texto; caret do browser oculto
+      input.size = 1;
+      input.style.caretColor = 'transparent';
       inputLine.appendChild(input);
+      inputLine.appendChild(cursor);
 
-      input.addEventListener('focus', function() {
-        input.style.caretColor = '';
-        cursor.style.display = 'none';
-        input.style.width    = '';
-        input.style.minWidth = '';
-        input.style.padding  = '';
-        if (!input.size) input.size = 1;
-      });
+      // Sticky focus: nunca perde o foco, mesmo clicando fora
       input.addEventListener('blur', function() {
-        if (!input.value) {
-          cursor.style.display = '';
-          input.style.width    = '0';
-          input.style.minWidth = '0';
-          input.style.padding  = '0';
-        }
+        requestAnimationFrame(function() { input.focus(); });
       });
-
-      // Clicar no █ reativa o input
-      cursor.style.cursor = 'text';
-      cursor.addEventListener('click', function() { input.focus(); });
 
       input.focus();
 
