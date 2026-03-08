@@ -247,9 +247,9 @@ async function handleHello(request, env) {
     if (cleanName) visitor.name = cleanName;
   }
 
-  // Auto-nick após 100 visitas sem nome (baseado em cidade + fingerprint)
-  if (!visitor.name && visitor.visits >= 100) {
-    visitor.name = cityToNick(visitor.city, fingerprint);
+  // Visitantes sem nome não são registrados — o site não desbloqueia sem identificação
+  if (!visitor.name) {
+    return jsonResponse({ name: null, visits: visitor.visits });
   }
 
   // Nomes reservados — espelha o BLACKLIST do profile.js + rotas do worker
@@ -472,52 +472,6 @@ async function handleHello(request, env) {
     gender:           stats.gender,
     account_deleted:  accountDeleted || undefined,
   });
-}
-
-function cityToNick(city, fp) {
-  const suffix = (parseInt(fp.substring(0, 4), 16) % 90 + 10).toString();
-
-  if (!city) return `anonimo${suffix}`;
-
-  const normalized = city.toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9\-]/g, "");
-
-  const demonyms = {
-    "brasilia": "brasiliense",
-    "sao-paulo": "saopaulino",
-    "rio-de-janeiro": "carioca",
-    "porto-alegre": "gaucho",
-    "belo-horizonte": "mineiro",
-    "salvador": "soteropolitano",
-    "curitiba": "curitibano",
-    "manaus": "manauense",
-    "fortaleza": "fortalezense",
-    "recife": "recifense",
-    "goiania": "goianense",
-    "belem": "belenense",
-    "florianopolis": "florianopolitano",
-    "natal": "natalense",
-    "maceio": "maceioense",
-    "teresina": "teresinense",
-    "campo-grande": "campo-grandense",
-    "joao-pessoa": "pessoense",
-    "aracaju": "aracajuano",
-    "porto-velho": "portovelhense",
-    "macapa": "macapense",
-    "palmas": "palmense",
-    "boa-vista": "boa-vistense",
-    "rio-branco": "rio-branquense",
-    "vitoria": "capixaba",
-    "campinas": "campineiro",
-    "sao-luis": "ludovicense",
-    "ribeirao-preto": "ribeirãopretano",
-  };
-
-  const demonym = demonyms[normalized] || normalized;
-  return `${demonym}${suffix}`;
 }
 
 

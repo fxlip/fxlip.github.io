@@ -157,8 +157,6 @@ Voltar pro @feed
   </div>
 </div>
 
----
-
 > PROGRESSO ATÉ A CONCLUSÃO
 
 [0/360]

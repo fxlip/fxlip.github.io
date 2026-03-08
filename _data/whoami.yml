@@ -42,6 +42,8 @@ messages:
   - min: 15
     dog_txt: |
       @{{name}}, seu último login foi {{last_login}}.
+      >> @linux 
+      >> @infosec 
 
   - min: 1
     dog_txt: |
