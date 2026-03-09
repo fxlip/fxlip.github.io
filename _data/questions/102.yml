@@ -171,7 +171,7 @@
   question: "Em um sistema Linux que utiliza pacotes .rpm, qual comando pode ser utilizado para instalar o pacote provalpi-1.1.1-2.x86_64.rpm?"
   options:
     - "rpm -qi provalpi-1.1.1-2.x86_64.rpm"
-    - "rpm -Uh provalpi-1.1.1-2.x86_64.rpm" X
+    - "rpm -Uh provalpi-1.1.1-2.x86_64.rpm"
     - "rpm -e provalpi-1.1.1-2.x86_64.rpm"
     - "yum -ivh provalpi-1.1.1-2.x86_64.rpm"
     - "dpkg -i provalpi-1.1.1-2.x86_64.rpm"
