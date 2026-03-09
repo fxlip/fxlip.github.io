@@ -196,7 +196,7 @@
   options:
       - "Definir a variável de ambiente LD_LIBRARY_PATH com o diretório desejado"
       - "Executar o comando \"ldconfig <diretorio>\""
-      - "Incluir o diretório no arquivo /etc/ld.so.cache e executar o comando ldconfig""
+      - "Incluir o diretório no arquivo /etc/ld.so.cache e executar o comando ldconfig"
       - "Incluir o diretório no arquivo /etc/ld.so.conf e executar o comando ldconfig"
       - "Criar um arquivo que contenha o diretório desejado em /etc/ld.so.conf.d/ e executar o comando ldd"
   answer: 4
