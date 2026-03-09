@@ -12,7 +12,7 @@
 
 # Mensagem exibida quando o visitante informa o nome pela primeira vez.
 # Suporta % (gênero) e {{name}} (substituído pelo link @nick).
-welcome_new: "Legal @{{name}}, agora você tem um perfil."
+welcome_new: "Legal @{{name}}, criei um perfil pra você.\nEscrevo sobre @linux e @infosec.\nE aqui em baixo dou meus 2kb de opinão."
 
 # Texto do prompt de nome exibido no input "export USER=..."
 prompt_cmd: "export USER="
@@ -31,7 +31,7 @@ messages:
       @{{name}}, seu último login foi {{last_login}}, de {{city}}.
       {{days}} dias, {{visits}} visitas e mais de {{time}} lendo.
       {{comments}} comentários e {{upvotes}} upvotes dados.
-      Sinistro.
+      Sinistr#.
 
   - min: 60
     dog_txt: |
@@ -42,6 +42,8 @@ messages:
   - min: 15
     dog_txt: |
       @{{name}}, seu último login foi {{last_login}}.
+      >> @linux 
+      >> @infosec 
 
   - min: 1
     dog_txt: |
@@ -49,5 +51,5 @@ messages:
 
   - min: 0
     dog_txt: |
-      Primeira vez por aqui? Seja bem-vindo!
-      Informe seu nome de usuário e vamos interagir.
+      Primeira vez por aqui? Bem-vindo!
+      Informe um nome de usuário para continuar.
