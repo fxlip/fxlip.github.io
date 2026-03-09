@@ -509,8 +509,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }).then(function(res) { return res.json(); })
           .then(function(data) {
             if (data.name) {
+              // Auto-nick atribuído pelo Worker — salva localmente mas mantém o prompt
+              // visível para o usuário escolher o próprio nome nesta visita.
+              // Na próxima recarga o storedName estará preenchido e seguirá o fluxo normal.
               try { localStorage.setItem(NAME_KEY, data.name); } catch (_) {}
-              renderGreeting(data);
             }
             // Sem nome → mantém prompt, sem mensagem de visitas
           })

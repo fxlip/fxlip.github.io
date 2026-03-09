@@ -82,3 +82,194 @@
   answer: 2
   comment: "O comando correto é 'umount' (sem a letra 'n'). Ele pode receber tanto o nome do dispositivo quanto o ponto de montagem como argumento. É comum o erro de grafia 'unmount', mas o binário do sistema ignora o 'n' extra. #umount #filesystem #storage"
 
+- id: "102-009"
+  topic: "102.1"
+  question: "Em um computador com o sistema Linux instalado, que está utilizando o sistema de particionamento MBR e possui a seguinte lista de partições:\n\n/dev/sda1\n/dev/sda2\n/dev/sda5\n/dev/sda6\n\nQuais das seguintes afirmações é verdadeira?"
+  options:
+    - "Tanto /dev/sda1 quanto /dev/sda2 são partições lógicas"
+    - "Ao adicionar um /dev/sda3, /dev/sda5 irá se tornar /dev/sda6 e /dev/sda6 irá se tornar /dev/sda7"
+    - "Há algum erro na tabela de partições, deveria existir um /dev/sda3 e um /dev/sda4 antes do /dev/sda5"
+    - "O disco contém 2 partições primárias e duas estendidas"
+    - "Ou /dev/sda1 ou /dev/sda2 é uma partição estendida"
+  answer: 5
+  comment: "No particionamento MBR, há um limite de 4 partições primárias ou 3 primárias e 1 estendida na qual serão associadas as partições lógicas. As partições primárias e estendidas serão sempre de 1 a 4 (sda1, sda2, sda3 e sda4) e as partições lógicas a partir de 5 (sda5 e etc). #mbr"
+
+- id: "102-010"
+  topic: "102.2"
+  question: "Qual é o parâmetro de configuração do gerenciador de boot GRUB LEAGACY que indica um determinado kernel a ser carregado ?"
+  options:
+    - "initrd"
+    - "kernel"
+    - "linux"
+    - "root"
+    - "BOOT_IMAGE"
+  answer: 2
+  comment: "No GRUB Legacy, o parâmetro para indicar o kernel a ser utilizado é o “kernel”, já no GRUB 2 o parâmetro é o “linux”. #grub-legacy #grub2"
+
+- id: "102-011"
+  topic: "102.2"
+  question: "No GRUB 2, qual arquivo deve ser alterado para se ajustar o tempo de exibição do menu de boot?"
+  options:
+    - "/etc/inittab"
+    - "/boot/grub/menu.lst"
+    - "/etc/default/grub"
+    - "/etc/grub.conf"
+    - "/boot/grub/default"
+  answer: 3
+  comment: "As configurações são normalmente realizadas no /etc/default/grub, em seguida deve ser utilizado o comando update-grub ou grub-mkconfig para que seja gerado um novo /boot/grub/grub.cfg que é o arquivo efetivamente utilizado pelo GRUB. #grub2 #default"
+
+- id: "102-012"
+  topic: "102.4"
+  question: "Qual comando exibe uma lista de todos os pacotes instalados em um sistema Debian?"
+  options:
+    - "dpkg -i"
+    - "apt-get cache"
+    - "apt-get list"
+    - "dpkg -l"
+    - "rpm -q"
+  answer: 4
+  comment: "O comando dpkg faz operações e consultas diretamente nos pacotes .deb. Dentre as diversas opções, o -l ou –list exibe os pacotes presentes no sistema. O apt-get é uma ferramenta de alto nível que lida com dependências e repositórios, e não tem uma opção direta para listar pacotes instalados. O rpm é específico para sistemas baseados em Red Hat. #dpkg #apt-get #rpm"
+
+- id: "102-013"
+  topic: "102.3"
+  question: "O que acontece quando o comando ldconfig é executado?"
+  options:
+    - "O arquivo /etc/ld.so.cache, responsável por manter o índice das bibliotecas do sistema é reconstruído."
+    - "O processo ld.so é reiniciado"
+    - "Todas os vínculos entre as aplicações e bibliotecas são refeitos"
+    - "Todos os módulos do sistema são recompilados"
+    - "Nada, o comando ldconfig exige parâmetros"
+  answer: 1
+  comment: "O ldconfig é utilizado para atualizar a base de diretórios em que as bibliotecas compartilhadas podem ser encontradas, na prática o ldconfig atualiza o arquivo /etc/ld.so.cache com base nas configurações do /etc/ld.so.conf. #ldconfig"
+
+- id: "102-014"
+  topic: "102.4"
+  question: "Qual comando irá atualizar todos os pacotes de uma distribuição Debian-based?"
+  options:
+    - "yum upgrade"
+    - "apt-get upgrade"
+    - "apt-get update"
+    - "dpkg –update-all"
+    - "aptitude update"
+  answer: 2
+  comment: "O “apt-get upgrade” atualiza todos os pacotes atualmente instalados no sistema. O “apt-get update” apenas sincroniza a base local com as informações contidas nas fontes de pacotes. #apt-get #update"
+
+- id: "102-015"
+  topic: "102.4"
+  question: "Um administrador de sistemas precisa reconfigurar as definições de timezone de um servidor Linux. Qual o comando pode ser utilizado para realizar esta operação?"
+  options:
+    - "apt-get reinstall tzdata"
+    - "dpkg configure tzdata"
+    - "dpkg-reconfigure tzdata"
+    - "dselect tzdata"
+    - "apt-get clean tzdata"
+  answer: 3
+  comment: "O comando dpkg-reconfigure pode ser utilizado para reconfigurar um pacote já instalado como por exemplo as configurações do teclado com o “dkpg-reconfigure keyboard-configuration”. #dpkg-reconfigure"
+
+- id: "102-016"
+  topic: "102.5"
+  question: "Em um sistema Linux que utiliza pacotes .rpm, qual comando pode ser utilizado para instalar o pacote provalpi-1.1.1-2.x86_64.rpm?"
+  options:
+    - "rpm -qi provalpi-1.1.1-2.x86_64.rpm"
+    - "rpm -Uh provalpi-1.1.1-2.x86_64.rpm" X
+    - "rpm -e provalpi-1.1.1-2.x86_64.rpm"
+    - "yum -ivh provalpi-1.1.1-2.x86_64.rpm"
+    - "dpkg -i provalpi-1.1.1-2.x86_64.rpm"
+  answer: 2
+  comment: "A opção -U do comando rpm pode ser utilizada tanto atualizar um pacote já instalado quanto para instalar um novo pacote. #rpm"
+
+- id: "102-017"
+  topic: "102.5"
+  question: "Qual das opções a seguir é falsa com relação aos comandos yum e rpm?"
+  options:
+    - "O yum faz automaticamente o download e instalação de todos os pacotes que o programa que se deseja instalar depende."
+    - "O comando rpm exige que seja informado o nome completo do pacote .rpm."
+    - "O comando yum permite atualizar todos os pacotes do sistema com um único comando."
+    - "O comando rpm pode ser utilizado para informar todas as dependências de um pacote."
+    - "O comando rpm pode ser utilizado para fazer o download de um determinado pacote."
+  answer: 5
+  comment: "O download de pacotes pode ser feito pelo comando yumdownloader ou pelo yum com a opção –downloadonly. #yum #rpm"
+
+- id: "102-018"
+  topic: "102.3"
+  question: "Qual a melhor opção para adicionar um novo diretório como fonte de bibliotecas para todos os usuários?"
+  options:
+      - "Definir a variável de ambiente LD_LIBRARY_PATH com o diretório desejado"
+      - "Executar o comando \"ldconfig <diretorio>\""
+      - "Incluir o diretório no arquivo /etc/ld.so.cache e executar o comando ldconfig""
+      - "Incluir o diretório no arquivo /etc/ld.so.conf e executar o comando ldconfig"
+      - "Criar um arquivo que contenha o diretório desejado em /etc/ld.so.conf.d/ e executar o comando ldd"
+  answer: 4
+  comment: "O ldconfig é utilizado para atualizar a base de diretórios em que as bibliotecas compartilhadas podem ser encontradas, na prática o ldconfig atualiza o arquivo /etc/ld.so.cache com base nas configurações do /etc/ld.so.conf. #ldconfig"
+
+- id: "102-019"
+  topic: "102.4"
+  question: "Em um sistema que utiliza pacotes Debian, qual comando pode ser utilizado para remover por completo um pacote, incluindo seus arquivos de configuração e todas suas referências na base de pacotes?"
+  options:
+    - "dpkg -r <nome-do-pacote>"
+    - "apt-get erase <nome-do-pacote>"
+    - "dpkg -P <nome-do-pacote>"
+    - "apt-get clear <nome-do-pacote>"
+    - "rpm -e <nome-do-pacote>"
+  answer: 3
+  comment: "As opções “–remove” e “-r” removem o pacote mas os arquivos de configuração serão mantidos. As opções “-P” e “–purge” removerem a aplicação e seus arquivos de configuração. #dpkg #apt-get"
+
+- id: "102-020"
+  topic: "102.5"
+  question: "Qual dos comandos “yum” abaixo pode ser utilizado para pesquisar por pacotes?"
+  options:
+    - "yum locate"
+    - "yum search [x]"
+    - "yum find"
+    - "yum –search"
+    - "yum -s"
+  answer: 2
+  comment: "A opção search do yum procura por pacotes que tenham relação com a string informada, baseado no nome dos pacotes, seu sumário e descrição. #yum"
+
+- id: "102-021"
+  topic: "102.2"
+  question: "Qual dos comandos abaixo irá instalar as informações do GRUB na MBR do disco /dev/sda?"
+  options:
+    - "grub-mkconfig /dev/sda"
+    - "grub-install /dev/sda"
+    - "grub-config /dev/sda"
+    - "update-grub /dev/sda"
+    - "grub"
+  answer: 2
+  comment: "O grub-install tem a função de instalar os arquivos do boot loader no dispositivo indicado. #grub-install"
+
+- id: "102-022"
+  topic: "102.1"
+  question: "Para que um sistema UEFI consiga carregar os bootloaders disponíveis, qual tipo de partição deve ser utilizada no ESP?"
+  options:
+    - "EFI"
+    - "ext4"
+    - "GPT"
+    - "FAT"
+    - "btrfs"
+  answer: 4
+  comment: "Sistemas que utilizam o UEFI como firmware possuem uma partição especial chamada ESP (EFI System Partition), que é montada no diretório /boot/efi/. Nesse diretório estão localizados os bootloaders que serão utilizados no processo de boot. Essa partição deve ser sempre do tipo FAT. #efi"
+
+- id: "102-023"
+  topic: "102.5"
+  question: "Qual o tipo de pacotes utilizados pelo gerenciador de pacotes Zypper?"
+  options:
+    - "zip"
+    - "zypper"
+    - "rpm"
+    - "deb"
+    - "tgz"
+  answer: 3
+  comment: "O zypper é o gerenciador de pacotes rpm utilizado em sistemas OpenSuse. As opções são semelhantes ao yum, porém não iguais. Em geral há uma opção longa, por exemplo \“zypper install ksh\” ou curta, \“zypper in ksh\”"
+
+- id: "102-024"
+  topic: "102.6"
+  question: "Qual recurso tem como principal funcionalidade melhorar a performance e a integração do sistema operacional convidado (guest) em uma máquina virtual?"
+  options:
+    - "Hypervisor"
+    - "Guest Driver"
+    - "Host Keys"
+    - "KVM"
+    - "dbus"
+  answer: 2
+  comment: "Os Guest/Device Drivers são instalados nos Sistemas Operacionais Hosts das máquinas virtuais para melhorar sua performance e usabilidade. Como exemplos tempos o “Guest Additions” no VirtualBox e o “Vmware Tools” no VMWare. #guest-driver"
