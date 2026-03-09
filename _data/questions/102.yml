@@ -260,7 +260,7 @@
     - "deb"
     - "tgz"
   answer: 3
-  comment: "O zypper é o gerenciador de pacotes rpm utilizado em sistemas OpenSuse. As opções são semelhantes ao yum, porém não iguais. Em geral há uma opção longa, por exemplo \“zypper install ksh\” ou curta, \“zypper in ksh\”"
+  comment: "O zypper é o gerenciador de pacotes rpm utilizado em sistemas OpenSuse. As opções são semelhantes ao yum, porém não iguais. Em geral há uma opção longa, por exemplo “zypper install ksh” ou curta, “zypper in ksh”"
 
 - id: "102-024"
   topic: "102.6"
