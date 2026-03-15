@@ -249,3 +249,51 @@ describe('selectQuestions', () => {
     expect(result).toHaveLength(0)
   })
 })
+
+// =============================================================================
+// buildCodeBlock — duplicada de assets/js/quiz.js para teste isolado
+// =============================================================================
+
+function buildCodeBlock(code) {
+  if (!code) return ''
+  return `<pre class="quiz-code"><code>${escapeHtml(code)}</code></pre>`
+}
+
+// =============================================================================
+// Testes: buildCodeBlock
+// =============================================================================
+
+describe('buildCodeBlock', () => {
+  it('retorna string vazia para null', () => {
+    expect(buildCodeBlock(null)).toBe('')
+  })
+
+  it('retorna string vazia para undefined', () => {
+    expect(buildCodeBlock(undefined)).toBe('')
+  })
+
+  it('retorna string vazia para string vazia', () => {
+    expect(buildCodeBlock('')).toBe('')
+  })
+
+  it('envolve o código em <pre class="quiz-code"><code>', () => {
+    const result = buildCodeBlock('echo hello')
+    expect(result).toBe('<pre class="quiz-code"><code>echo hello</code></pre>')
+  })
+
+  it('escapa caracteres HTML no código', () => {
+    const result = buildCodeBlock('<script>alert("xss")</script>')
+    expect(result).toContain('&lt;script&gt;')
+    expect(result).toContain('&lt;/script&gt;')
+  })
+
+  it('preserva quebras de linha no código', () => {
+    const result = buildCodeBlock('linha1\nlinha2')
+    expect(result).toContain('linha1\nlinha2')
+  })
+
+  it('escapa aspas duplas', () => {
+    const result = buildCodeBlock('z="$z $y"')
+    expect(result).toContain('&quot;')
+  })
+})

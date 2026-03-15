@@ -114,15 +114,22 @@
   // Renderização de HTML
   // --------------------------------------------------------------------------
 
+  function buildCodeBlock(code) {
+    if (!code) return '';
+    return `<pre class="quiz-code"><code>${escapeHtml(code)}</code></pre>`;
+  }
+
   function renderQuestion(q) {
     const questionHtml = escapeHtml(q.question).replace(/\n/g, '<br>');
     const commentHtml  = escapeHtml(q.comment || '').replace(/\n/g, '<br>');
+    const codeHtml     = buildCodeBlock(q.code);
 
     if (q.type === 'discursive') {
       const answerHtml = escapeHtml(q.answer || '').replace(/\n/g, '<br>');
       return (
         `<div class="quiz-q quiz-discursive" data-topic="${escapeHtml(q.topic)}" data-disc-answer="${escapeHtml(q.answer || '')}">` +
           `<p>${questionHtml}</p>` +
+          codeHtml +
           `<ol>` +
             `<li class="quiz-disc-input-li"><textarea class="quiz-textarea" placeholder="digite apenas o comando" rows="1"></textarea></li>` +
           `</ol>` +
@@ -139,6 +146,7 @@
       return (
         `<div class="quiz-q quiz-multi" data-answers="${answers.join(',')}" data-topic="${escapeHtml(q.topic)}">` +
           `<p>${questionHtml}</p>` +
+          codeHtml +
           `<ol>${optionsHtml}</ol>` +
           `<div class="quiz-explanation">${commentHtml}</div>` +
         `</div>` +
@@ -151,6 +159,7 @@
     return (
       `<div class="quiz-q" data-answer="${answer}" data-topic="${escapeHtml(q.topic)}">` +
         `<p>${questionHtml}</p>` +
+        codeHtml +
         `<ol>${optionsHtml}</ol>` +
         `<div class="quiz-explanation">${commentHtml}</div>` +
       `</div>` +

@@ -92,6 +92,26 @@
   text-shadow: 0 0 8px rgba(139, 233, 253, 0.4);
 }
 
+/* Bloco de código embutido na questão */
+.quiz-code {
+  margin: 14px 0 18px;
+  padding: 14px 16px;
+  background: rgba(189, 147, 249, 0.04);
+  border: 1px solid rgba(189, 147, 249, 0.25);
+  border-radius: 6px;
+  overflow-x: auto;
+  white-space: pre;
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88em;
+    color: var(--accent-cyan);
+    background: none;
+    padding: 0;
+    border: none;
+  }
+}
+
 /* Card de explicação — oculto até responder */
 .quiz-explanation {
   display: none;

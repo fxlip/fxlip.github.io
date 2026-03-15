@@ -663,7 +663,8 @@
 
 - id: "103-055"
   topic: "103.1"
-  question: "O seguinte shell é executado pelo cron regularmente:\nx=$(find /home -name .rhost 2>/dev/null)\nfor i in $x; do\ny=$(echo $i | cut -d/ -f3);z=\"$z $y\"\nrm $i;done\necho \"Notice: $z\" | mail root@example.com\nO que este script faz?"
+  question: "O seguinte shell é executado pelo cron regularmente. O que este script faz?"
+  code: "x=$(find /home -name .rhost 2>/dev/null)\nfor i in $x; do\n  y=$(echo $i | cut -d/ -f3);z=\"$z $y\"\n  rm $i\ndone\necho \"Notice: $z\" | mail root@example.com"
   options:
     - "Notifica o root da existência de todos os arquivos .rhost."
     - "Acha os arquivos .rhosts em locais errados e os remove."
