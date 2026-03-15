@@ -118,7 +118,7 @@
     {%- unless page.layout == 'simulado' -%}
     <script defer src="{{ '/assets/js/interactions.js' | relative_url }}?x={{ sig_int }}"></script>
     {%- endunless -%}
-    {%- if page.layout == 'post' or page.url == '/auth/callback/' -%}
+    {%- if page.url == '/auth/callback/' -%}
     <script defer src="{{ '/assets/js/auth-callback.js' | relative_url }}?x={{ sig_main }}"></script>
     {%- endif -%}
   </body>
