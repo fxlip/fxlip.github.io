@@ -434,7 +434,7 @@ document.addEventListener("DOMContentLoaded", function() {
               var errOut = document.createElement('div');
               errOut.className = 't-out';
               errOut.textContent = data.error === 'registration_limit'
-                ? 'bash: USER=' + val + ': ta com sabor de spam'
+                ? 'bash: USER=' + val + ': ta com sabor de spam, marca um dez'
                 : 'bash: USER=' + val + ': usuário já em uso';
               inputLine.insertAdjacentElement('afterend', errOut);
 
