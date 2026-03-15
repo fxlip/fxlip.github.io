@@ -425,6 +425,8 @@ document.addEventListener("DOMContentLoaded", function() {
           .then(function(data) {
             if (data.error === 'name_taken' || data.error === 'registration_limit') {
               // Congela a linha atual: remove input e cursor, deixa o texto digitado estático
+              // Remove o id para que injectNameInput não apague esta linha do histórico
+              inputLine.removeAttribute('id');
               cursor.remove();
               input.replaceWith(document.createTextNode(val));
 
