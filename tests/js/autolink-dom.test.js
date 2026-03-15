@@ -225,4 +225,37 @@ describe('applyHashMentions', () => {
     window.applyHashMentions(area)
     expect(area.querySelector('code').querySelector('a')).toBeNull()
   })
+
+  it('converte #hashtag em .quiz-explanation quando container é passado como contexto', () => {
+    const container = document.createElement('div')
+    container.id = 'quiz-container'
+    container.innerHTML =
+      '<div class="quiz-q">' +
+        '<p>Qual comando?</p>' +
+        '<div class="quiz-explanation">Use #bash e #scripting para isso. #find também funciona.</div>' +
+      '</div>'
+    document.body.appendChild(container)
+
+    window.applyHashMentions(container)
+
+    const links = container.querySelectorAll('a.mention-link')
+    expect(links).toHaveLength(3)
+    expect(links[0].getAttribute('href')).toContain('bash')
+    expect(links[1].getAttribute('href')).toContain('scripting')
+    expect(links[2].getAttribute('href')).toContain('find')
+
+    container.remove()
+  })
+
+  it('múltiplas hashtags na mesma explicação são todas convertidas', () => {
+    const container = document.createElement('div')
+    container.innerHTML =
+      '<div class="quiz-explanation">#cp #recursive #directories</div>'
+    document.body.appendChild(container)
+
+    window.applyHashMentions(container)
+
+    expect(container.querySelectorAll('a.mention-link')).toHaveLength(3)
+    container.remove()
+  })
 })

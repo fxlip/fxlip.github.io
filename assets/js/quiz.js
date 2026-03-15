@@ -182,6 +182,9 @@
     const questions = selectQuestions(bank, config);
     container.innerHTML = questions.map(renderQuestion).join('');
 
+    // Processa hashtags nos comentários das questões (#bash, #find, etc.)
+    if (window.applyHashMentions) window.applyHashMentions(container);
+
     // Estado do simulado
     const total    = questions.length;
     const mcTotal  = questions.filter(q => q.type !== 'discursive').length || 1;
