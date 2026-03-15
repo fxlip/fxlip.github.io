@@ -333,7 +333,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // =======================================================================
   // 4. HELPER: INJETA O INPUT DE NOME NO DOM
   // =======================================================================
-  function injectNameInput(fp) {
+  function injectNameInput(fp, afterEl) {
     var prev = document.getElementById('greeting-input-line');
     if (prev) prev.remove();
 
@@ -354,7 +354,9 @@ document.addEventListener("DOMContentLoaded", function() {
       '<span class="t-cmd"></span>';
 
     var dogEl = document.getElementById('whoami-dog-txt');
-    if (dogEl) {
+    if (afterEl) {
+      afterEl.insertAdjacentElement('afterend', inputLine);
+    } else if (dogEl) {
       dogEl.insertAdjacentElement('afterend', inputLine);
     } else {
       greetingBlock.appendChild(inputLine);
@@ -429,14 +431,13 @@ document.addEventListener("DOMContentLoaded", function() {
               // Linha de output de erro no estilo terminal
               var errOut = document.createElement('div');
               errOut.className = 't-out';
-              errOut.style.color = 'var(--red, #ff5555)';
               errOut.textContent = data.error === 'registration_limit'
-                ? 'bash: USER=' + val + ': too many requests'
-                : 'bash: USER=' + val + ': nome já em uso';
+                ? 'bash: USER=' + val + ': ta com sabor de spam'
+                : 'bash: USER=' + val + ': usuário já em uso';
               inputLine.insertAdjacentElement('afterend', errOut);
 
-              // Nova linha de input para tentar de novo
-              injectNameInput(fp);
+              // Nova linha de input ancorada depois do erro
+              injectNameInput(fp, errOut);
               return;
             }
             try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
