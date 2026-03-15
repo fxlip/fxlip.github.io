@@ -422,18 +422,21 @@ document.addEventListener("DOMContentLoaded", function() {
         }).then(function(res) { return res.json(); })
           .then(function(data) {
             if (data.error === 'name_taken' || data.error === 'registration_limit') {
-              input.disabled = false;
-              input.style.opacity = '1';
-              var existing = document.getElementById('greeting-name-error');
-              if (existing) existing.remove();
-              var errEl = document.createElement('div');
-              errEl.id = 'greeting-name-error';
-              errEl.className = 'greeting-error-card';
-              errEl.textContent = data.error === 'registration_limit'
-                ? 'ta com sabor de spam'
-                : 'esse nick já existe. tenta outro?';
-              inputLine.appendChild(errEl);
-              if (data.error === 'name_taken') input.focus();
+              // Congela a linha atual: remove input e cursor, deixa o texto digitado estático
+              cursor.remove();
+              input.replaceWith(document.createTextNode(val));
+
+              // Linha de output de erro no estilo terminal
+              var errOut = document.createElement('div');
+              errOut.className = 't-out';
+              errOut.style.color = 'var(--red, #ff5555)';
+              errOut.textContent = data.error === 'registration_limit'
+                ? 'bash: USER=' + val + ': too many requests'
+                : 'bash: USER=' + val + ': nome já em uso';
+              inputLine.insertAdjacentElement('afterend', errOut);
+
+              // Nova linha de input para tentar de novo
+              injectNameInput(fp);
               return;
             }
             try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
