@@ -191,15 +191,17 @@
 
 .greeting-error-card {
   margin-top: 12px;
-  padding: 12px 15px;
+  padding: 15px;
+  background: var(--card-bg);
   background-color: rgba(255, 121, 198, 0.03);
   border: 1px solid rgba(255, 121, 198, 0.5);
   border-radius: 6px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3),
               0 0 0 1px rgba(255, 121, 198, 0.05);
   font-size: 0.9em;
-  color: var(--link-color);
+  color: var(--base-color);
   line-height: 1.6;
+  animation: quiz-explain-in 0.25s ease forwards;
 }
 
 .greeting-input::placeholder {
