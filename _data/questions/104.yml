@@ -192,3 +192,204 @@
   answer: 3
   comment: "João tem 90 MB e tenta gravar 30 MB, totalizando 120 MB. Como o limite 'hard' é de 110 MB, o sistema interrompe a escrita assim que esse teto é atingido. O resultado é uma falha de gravação (Disk quota exceeded) e o arquivo fica truncado com apenas 20 MB (o espaço que restava até os 110 MB). #quotas #hardlimit #ext2"
 
+- id: "104-018"
+  topic: "104.1"
+  question: "Você realizou modificações em sua tabela de partições usando o comando fdisk, porém antes de sair você percebeu que fez alterações no disco errado. O que pode ser feito para resolver o problema?"
+  options:
+    - "Digitar t para desfazer todas as mudanças"
+    - "Digitar w para sair do fdisk sem salvar as mudanças no disco"
+    - "Digitar q para sair do fdisk sem salvar as mudanças no disco"
+    - "Digitar u várias vezes para desfazer as mudanças"
+    - "Não há como recuperar as alterações já realizadas no disco"
+  answer: 3
+  comment: "As alterações realizadas dentro da interface do fdisk só serão efetivadas ao se sair da ferramenta, salvando as alterações com a opção “w”. Da mesma forma, é possível sair da interface sem que as alterações sejam efetivadas através da opção “q”. #fdisk #partitions"
+
+- id: "104-019"
+  topic: "104.1"
+  question: "O que o comando abaixo faz?"
+  code: "# mkfs -t ext3 /dev/sda2"
+  options:
+    - "Converte um sistema de arquivos ext3 para um sistema de arquivos ext2"
+    - "Cria um novo sistema de arquivos ext3 no /dev/sda2, sobrescrevendo qualquer sistema de arquivos e dados existentes."
+    - "Define o código do tipo da tabela de partições de /dev/sda2 para ext3"
+    - "Converte uma partição FAT em ext3fs, sem corromper os arquivos existentes na partição"
+    - "Nada, a opção -t não é válida"
+  answer: 2
+  comment: "A opção -t do mkfs é utilizada para definir o tipo de filesystem a ser utilizado, se não for informado o padrão é ext2. Além disso pode ser utilizado diretamente o mkfs.ext3, sem argumentos. A opção -j do mke2fs cria um sistema de arquivos com journal, que na prática é o ext3. #mkfs #ext3"
+
+- id: "104-020"
+  topic: "104.1"
+  question: "Dentro da interface do comando parted, qual das instruções abaixo pode ser usada para diminuir o tamanho de uma partição?"
+  options:
+    - "resizepart"
+    - rescue"
+    - "reducepart"
+    - "disk_resize"
+    - "Não é possível reduzir o tamanho de uma partição"
+  answer: 1
+  comment: "No “parted”, o comando “resizepart” vai alterar o final da partição, dessa forma pode ser utilizado para aumentá-la ou diminuí-la."
+
+- id: "104-021"
+  topic: "104.2"
+  question: "Entre as opções abaixo, indique o comando que deu origem à saída:"
+  code: "/dev/sda1    7,3G     5,6G     1,7G     78% /home"
+  options:
+    - "du -h"
+    - df -m"
+    - "ls -lh"
+    - "du -s"
+    - "df -h"
+  answer: 5
+  comment: "O comando df é utilizado para verificar a utilização de uma partição, ao se utilizar a opção -h os números são exibidos em formato “human-readable”, ou “humanamente legível”, ou seja, a informação é exibida em MB, GB ao invés do padrão bytes. #df #diskusage"
+
+- id: "104-022"
+  topic: "104.3"
+  question: "Qual dos comandos abaixo pode ser utilizado para se obter o UUID de uma partição para que o valor seja utilizado na configuração do arquivo /etc/fstab?"
+  options:
+    - "df -U"
+    - "du -sh"
+    - "blkid"
+    - "mount -l"
+  answer: 3
+  comment: "Os comandos “blkid” e “lsblk -f” exibirão todas as partições e seus respectivos valores de UUID, Label e diversas outras informações."
+
+- id: "104-023"
+  topic: "104.3"
+  question: "Qual da seguinte entrada no /etc/fstab irá montar o /dev/sdc2 no diretório /var no momento do boot?"
+  options:
+    - "/var         /dev/sdc2    defaults     ext4        0    0"
+    - "/dev/sdc2    /var         ext4         defaults    0    0"
+    - "/dev/sdc2    /var         auto         ext4        0    0"
+    - "ext4         /dev/sdc2    ext4         auto"
+    - "/dev/sdc2    /var         ext4         noauto      0    0 "
+  answer: 2
+  comment: "Cada linha do arquivo /etc/fstab deve conter 6 campos, são eles: <file system>    <mount point>    <type>    <options>    <dump>    <pass>"
+
+- id: "104-024"
+  topic: "104.5"
+  question: "Qual das alternativas listadas abaixo é equivalente ao seguinte comando ?"
+  code: "chmod 754 arquivo1"
+  options:
+    - "chown 754 arquivo1"
+    - "chmod ugo=rwx arquivo1"
+    - "chmod u=rwx,g=rx,o=r arquivo1"
+    - "chmod u=7,g=5,o=4 arquivo1"
+    - "chattr 754 arquivo1"
+  answer: 3
+  comment: "O chmod aceita as definições de permissões em dois modos, o modo octal utilizado na pergunta, e o modo com o uso de opções como a seguir:
+
+    u : Define as permissões para o usuário dono do arquivo.
+    g : Define as permissões para o grupo dono do arquivo.
+    o : Define as permissões para os demais usuários que não são donos nem fazem parte do grupo dono do arquivo.
+    a : Define as permissões para todos os usuários.
+    +r / -r : Adiciona/Remove a permissão de leitura.
+    +w / -w : Adiciona/Remove a permissão de escrita.
+    +x / -x : Adiciona/Remove a permissão de execução.
+  "
+
+- id: "104-025"
+  topic: "104.5"
+  question: "Em uma sessão em que o valor do umask é 0002, qual a permissão padrão da criação de um arquivo?"
+  options:
+    - "rw-rw-r–"
+    - "rwxrwxrw-"
+    - "rw-r–r–"
+    - "rw-rw-rw-"
+    - "r-xr-xr–"
+  answer: 1
+  comment: "As permissões são definidas subtraindo o valor do umask do valor 666 para aquivos e 777 para diretórios. Dessa forma, o valor 022, que também pode aparecer como 0022, será 777 – 022 = 755 (rwxr-xr-x). #umask #permissions"
+
+- id: "104-026"
+  topic: "104.5"
+  question: "O administrador deseja definir que o arquivo SimuladoLPI tenha como dono o usuário Prova1 e o grupo LPI. Qual dos comandos, ou sequência deles, não causará o resultado esperado?"
+  options:
+    - "chown Prova1:LPI SimuladoLPI"
+    - "chown Prova1 LPI SimuladoLPI"
+    - "chown Prova1.LPI SimuladoLPI"
+    - "chown Prova1 SimuladoLPI; chgrp LPI SimuladoLPI"
+    - "chown Prova1 SimuladoLPI; chown :LPI SimuladoLPI"
+  answer: 2
+  comment: "O chown pode ser utilizado para definir o usuário e o grupo proprietário, aceitando as seguintes sintaxes: chown <usuario>:<grupo> <arquivo> ou chown <usuario>.<grupo> <arquivo> , sendo que o <grupo> pode ser omitido caso não se deseje alterá-lo. #chown"
+
+- id: "104-027"
+  topic: "104.6"
+  question: "Com relação aos links físicos e simbólicos, qual das afirmações abaixo não é verdadeira?"
+  options:
+    - "Um hard link não pode ter como origem um arquivo de uma partição diferente"
+    - "Um link físico e seu arquivo de origem compartilham o mesmo inode inicial"
+    - "O tamanho de um arquivo de link simbólico é exatamente o tamanho do caminho para o arquivo que ele aponta"
+    - "Um link simbólico pode apontar para um diretório"
+    - "Ao apagar o arquivo origem de um link físico, não será mais possível acessar a informação através do arquivo de link."
+  answer: 5
+  comment: "Diferentemente de um link físico, não há nenhum problema do link simbólico apontar para um arquivo/diretório em uma partição diferente da qual está criado. Os links físicos possuem o mesmo inode que o arquivo destino. Um link físico é um outro arquivo que referencia o mesmo conjunto de dados, então após criados os arquivos são independes e podem ser renomeados e até apagados. Apenas o link simbólico utiliza o sinal -> para indicar seu destino. #links #symlink #hardlink"
+
+- id: "104-028"
+  topic: "104.7"
+  question: "Segundo o padrão FHS, em qual diretório deve estar localizado o comando “fsck”?"
+  options:
+    - "/bin/fsck"
+    - "/usr/lib/fsck"
+    - "/opt/fsck"
+    - "/sbin/fsck"
+    - "/usr/local/sbin/fsck"
+  answer: 4
+  comment: "O fsck é um comando crítico, utilizado para recuperar partições corrompidas, e somente pode ser utilizado pelo usuário root (sysadmin), por isso está presente do diretório /sbin. Você também pode utilizar o diretório /usr/sbin, visto que o /sbin é sempre um link para o /usr/sbin. #fhs #fsck"
+
+- id: "104-029"
+  topic: "104.7"
+  question: "Qual comando deve ser utilizado para atualizar a base de dados utilizada pelo comando locate?"
+  options:
+    - "updateconfig"
+    - "updatedb"
+    - "dbupdate"
+    - "fsck"
+    - "O locate não utiliza nenhuma base de dados"
+  answer: 2
+  comment: "O comando locate utiliza uma base interna do Linux que contém a localização de todos os arquivos do sistema, possibilitando uma resposta rápida ao comando, no entanto essa base precisa ser atualizada pelo comando updatedb, normalmente executado na inicialização do sistema, ou regularmente por agendamento. #locate #updatedb"
+
+- id: "104-030"
+  topic: "104.1"
+  question: "Qual é a vantagem de um sistema de arquivos com Journalling sobre um filesystem sem Journalling?"
+  options:
+    - "FileSystems com Journalling gravam todas as transações, possibilitando que elas seja desfeitas"
+    - "Partições com suporte a Journalling podem definir diferentes permissões em seus arquivos, aumentando a segurança"
+    - "Partições que utilizam o Journalling nunca precisam executar o fsck"
+    - "FileSystems com Journalling requerem checagens de disco (fsck) menores e mais rápidas após uma queda de energia"
+    - "Sistemas com Journallling funcionam melhor com arquivos grandes"
+  answer: 4
+  comment: "O journal apenas as últimas operações de escrita e mudanças na partição, tornando a recuperação de uma falha no disco mais rápida e evitando corrompimentos durante quedas de energia ou desligamentos abruptos. O recurso do journaling foi implementado no filesystem ext3, sendo a única diferença com relação ao ext2. #journaling #ext3"
+
+- id: "104-031"
+  topic: "104.1"
+  question: "Qual sistema de arquivos tem como principais características ser leve e suportar arquivo maiores que 4GB, sendo recomendado e muito utilizado em cartões SDXC?"
+  options:
+    - "FAT32"
+    - "exFAT"
+    - "NTFS"
+    - "btrfs"
+  answer: 2
+  comment: "O exFAT permite arquivos individuais maiores que 4 GiB, facilitando a gravação contínua de vídeos em HD longos que pode exceder o limite de 4 GiB em menos de uma hora. O exFAT foi adotado pela SD Card Association como o sistema de arquivos padrão para cartões SDXC maiores que 32 GiB. #exfat #sdxc"
+
+- id: "104-032"
+  topic: "104.2"
+  question: "Qual comando deve ser utilizado para se reparar falhas em uma partição que utiliza o sistema de arquivos XFS?"
+  options:
+    - "xfs_repair"
+    - "xfs_admin"
+    - "xfs_check"
+    - "xfsrestore"
+    - "xfs_fsr"
+  answer: 1
+  comment: "O xfs_repair repara sistemas de arquivos XFS corrompidos ou danificados O e2fsck é apenas para ext2, ext3 e ext4. xfs_fsr é o reorganizador do sistema de arquivos do XFS. A sintaxe do fsck está incorreta, mas mesmo usando o fsck.xfs ou o fsck -t xfs, o comando indicará o uso do xfs_repair. #xfs #xfs_repair"
+
+- id: "104-033"
+  topic: "104.3"
+  question: "Na configuração de um ponto de montagem de partição via systemd, no arquivo de configuração, qual opção determina o diretório em que a partição deve ser montada?"
+  options:
+    - "Mount="
+    - "Options="
+    - "What="
+    - "Where="
+    - "FS="
+  answer: 4
+  comment: "Um ponto de montagem também pode ser configurado através de uma Unit no Systemd. Para isso basta criar um arquivo do tipo ponto-de-montagem.mount nos diretórios de configuração do systemd (/lib/systemd/system ou /etc/systemd/system/). Entre outras opções, o “What” define o dispositivo e o “Where” o ponto de montagem. #systemd #mount"
