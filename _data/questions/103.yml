@@ -158,10 +158,8 @@
 
 - id: "103-014"
   topic: "103.7"
-  question: |
-    Qual das afirmações abaixo é a mais correta sobre o resultado do comando:
-
-    grep -E "^[0-9][A-Z]" arquivo.out
+  question: "Qual das afirmações abaixo é a mais correta sobre o resultado do comando:"
+  code: "grep -E '^[0-9][A-Z]' arquivo.out"
   options:
     - "Serão retornadas todas as linhas do arquivo.out que tenham um número seguido de uma letra qualquer"
     - "Serão retornadas todas as linhas do arquivo.out, exceto aquelas que contenham um número seguido de uma letra maiúscula"
@@ -356,7 +354,8 @@
 
 - id: "103-030"
   topic: "103.3"  
-  question: "O que o seguinte comando resultaria? cp $(find . -size -12k) /tmp"
+  question: "O que o seguinte comando resultaria?"
+  code: "cp $(find . -size -12k) /tmp"
   options:
     - "O arquivo com o nome armazenado na variável \"$(find . -size -12k)\" será copiado para /tmp."
     - "Todos os arquivos no diretório atual que são menores que 12 KByte serão copiados para /tmp."
@@ -489,7 +488,8 @@
 
 - id: "103-041"
   topic: "103.1"
-  question: "Ricardo está trabalhando atualmente em um diretório que contém só um arquivo chamado faq.txt. O que é exibido logo depois que os comandos seguintes são executados no bash? Selecione a opção correta. # MYVAR=ls# echo $MYVAR \"$MYVAR\" ’$MYVAR’ `$MYVAR`"
+  question: "Ricardo está trabalhando atualmente em um diretório que contém só um arquivo chamado faq.txt. O que é exibido logo depois que os comandos seguintes são executados no bash? Selecione a opção correta."
+  code: "# MYVAR=ls# echo $MYVAR \"$MYVAR\" ’$MYVAR’ `$MYVAR`"
   options:
     - "ls faq.txt faq.txt faq.txt"
     - "lsls faq.txt faq.txt"
@@ -570,7 +570,8 @@
 
 - id: "103-048"
   topic: "103.2"
-  question: "Como você pode descrever o comando a seguir? $ tail -f /var/log/messages"
+  question: "Como você pode descrever o comando a seguir?"
+  code: "tail -f /var/log/messages"
   options:
     - "Corta as últimas 10 linhas do arquivo /var/log/messages para STDOUT."
     - "Muda o período de acesso para o arquivo /var/log/messages para agora."
