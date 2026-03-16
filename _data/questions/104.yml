@@ -276,7 +276,8 @@
     - "chmod u=7,g=5,o=4 arquivo1"
     - "chattr 754 arquivo1"
   answer: 3
-  comment: "O chmod aceita as definições de permissões em dois modos, o modo octal utilizado na pergunta, e o modo com o uso de opções como a seguir:
+  comment: |
+    O chmod aceita as definições de permissões em dois modos, o modo octal utilizado na pergunta, e o modo com o uso de opções como a seguir:
 
     u : Define as permissões para o usuário dono do arquivo.
     g : Define as permissões para o grupo dono do arquivo.
@@ -285,7 +286,6 @@
     +r / -r : Adiciona/Remove a permissão de leitura.
     +w / -w : Adiciona/Remove a permissão de escrita.
     +x / -x : Adiciona/Remove a permissão de execução.
-  "
 
 - id: "104-025"
   topic: "104.5"
