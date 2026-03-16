@@ -293,7 +293,7 @@
 
             if (bad && href) {
               const lessonHref = topicTitle
-                ? `/linux/${name.replace('.', '/')}/${topicTitle}/`
+                ? `/linux/${name.replace('.', '/')}/${topicTitle}`
                 : href;
               html += sep + `<a href="${lessonHref}" class="mention-link">${label}</a>`;
             }

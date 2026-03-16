@@ -366,3 +366,74 @@ describe('Smoke tests — endpoints GET', () => {
     expect(res.status).not.toBe(500)
   })
 })
+
+// =============================================================================
+// GET /api/exam-log
+// =============================================================================
+
+describe('GET /api/exam-log', () => {
+  const FP = 'examlog_test_fp_abcdef1234567890'
+
+  beforeAll(async () => {
+    const now = new Date().toISOString()
+    await env.DB.prepare(
+      `INSERT OR REPLACE INTO profiles (fingerprint, first_seen, last_seen, display_name, blocked)
+       VALUES (?, ?, ?, ?, 0)`
+    ).bind(FP, now, now, 'testuser').run()
+
+    await env.DB.prepare(
+      `INSERT INTO profile_events (profile_id, event_type, content, created_at) VALUES (?, ?, ?, ?)`
+    ).bind(FP, 'exam_result', 'prova:101-500:85', now).run()
+
+    await env.DB.prepare(
+      `INSERT INTO profile_events (profile_id, event_type, content, created_at) VALUES (?, ?, ?, ?)`
+    ).bind(FP, 'exam_result', 'topico:103:72', now).run()
+  })
+
+  it('retorna 200 com campo entries', async () => {
+    const res = await call('/api/exam-log')
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(Array.isArray(body.entries)).toBe(true)
+  })
+
+  it('retorna entradas com campos username, type, label, pct, created_at', async () => {
+    const res = await call('/api/exam-log')
+    const body = await res.json()
+    const entry = body.entries.find(e => e.username === 'testuser' && e.label === '101-500')
+    expect(entry).toBeDefined()
+    expect(entry.type).toBe('prova')
+    expect(entry.pct).toBe(85)
+    expect(entry.created_at).toBeDefined()
+  })
+
+  it('retorna entrada de tópico com tipo e label corretos', async () => {
+    const res = await call('/api/exam-log')
+    const body = await res.json()
+    const entry = body.entries.find(e => e.username === 'testuser' && e.label === '103')
+    expect(entry).toBeDefined()
+    expect(entry.type).toBe('topico')
+    expect(entry.pct).toBe(72)
+  })
+
+  it('não retorna entradas de usuários bloqueados', async () => {
+    const FP2 = 'examlog_blocked_fp_xyz9876543210000'
+    const now = new Date().toISOString()
+    await env.DB.prepare(
+      `INSERT OR REPLACE INTO profiles (fingerprint, first_seen, last_seen, display_name, blocked)
+       VALUES (?, ?, ?, ?, 1)`
+    ).bind(FP2, now, now, 'blocked_user').run()
+    await env.DB.prepare(
+      `INSERT INTO profile_events (profile_id, event_type, content, created_at) VALUES (?, ?, ?, ?)`
+    ).bind(FP2, 'exam_result', 'prova:101-500:90', now).run()
+
+    const res = await call('/api/exam-log')
+    const body = await res.json()
+    expect(body.entries.find(e => e.username === 'blocked_user')).toBeUndefined()
+  })
+
+  it('não expõe método POST (retorna 404)', async () => {
+    const res = await call('/api/exam-log', { method: 'POST' })
+    expect(res.status).toBe(404)
+  })
+})

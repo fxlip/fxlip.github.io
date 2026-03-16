@@ -200,9 +200,9 @@ Dúvidas na @busca
     {%- endfor -%}
     
     <div class="t-out">&nbsp;</div>
+
+      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/linux</span><span class="t-gray">$</span> <span class="t-cmd">tail /home/*/simulado.log</span>
+    <div id="exam-log-output"></div>
+    <div class="t-out">&nbsp;</div>
   </div>
 </div>
-
-> PROGRESSO ATÉ O EXAME 101-500
-
-[40/105]

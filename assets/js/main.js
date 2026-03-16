@@ -376,7 +376,62 @@ document.addEventListener("DOMContentLoaded", function() {
   if (!WORKER_URL || _hasSavedName) setTimeout(runNvddSequence, 4000);
 
   // ==========================================================================
-  // 3. HEADER ADAPTATIVO (TERMINAL MODE)
+  // 3. EXAM LOG — tail /home/*/simulado.log
+  // ==========================================================================
+
+  function formatExamLogEntry(entry) {
+    if (!entry || !entry.username || !entry.type || !entry.label) return null;
+    var user = '@' + entry.username;
+    if (entry.type === 'prova')  return user + ' acertou ' + entry.pct + '% da prova '  + entry.label;
+    if (entry.type === 'topico') return user + ' acertou ' + entry.pct + '% do tópico ' + entry.label;
+    return null;
+  }
+
+  var examLogEl = document.getElementById('exam-log-output');
+  if (examLogEl && WORKER_URL) {
+    fetch(WORKER_URL + '/api/exam-log')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var entries = (data.entries || []);
+        if (entries.length === 0) {
+          var empty = document.createElement('div');
+          empty.className = 't-out';
+          empty.textContent = '(nenhum resultado ainda)';
+          examLogEl.appendChild(empty);
+          return;
+        }
+        entries.forEach(function(e) {
+          var text = formatExamLogEntry(e);
+          if (!text) return;
+          var line = document.createElement('div');
+          line.className = 't-out';
+          // data no formato dd/mm HH:MM
+          var ts = '';
+          try {
+            var d = new Date(e.created_at);
+            ts = String(d.getDate()).padStart(2,'0') + '/' +
+                 String(d.getMonth()+1).padStart(2,'0') + ' ' +
+                 String(d.getHours()).padStart(2,'0') + ':' +
+                 String(d.getMinutes()).padStart(2,'0') + '  ';
+          } catch (_) {}
+          var span = document.createElement('span');
+          span.style.color = 'var(--comment, #6272a4)';
+          span.textContent = ts;
+          line.appendChild(span);
+          line.appendChild(document.createTextNode(text));
+          examLogEl.appendChild(line);
+        });
+      })
+      .catch(function() {
+        var err = document.createElement('div');
+        err.className = 't-out';
+        err.textContent = 'erro ao carregar log';
+        examLogEl.appendChild(err);
+      });
+  }
+
+  // ==========================================================================
+  // 4. HEADER ADAPTATIVO (TERMINAL MODE)
   // ==========================================================================
   const header = document.querySelector('header');
   const targetTerminal = document.querySelector('.feed-terminal') || document.querySelector('.terminal-window') || document.querySelector('.terminal-box');

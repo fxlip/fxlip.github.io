@@ -65,6 +65,9 @@ export default {
       if (url.pathname === '/api/exam-result' && request.method === 'POST') {
         return corsResponse(env, await handleExamResult(request, env));
       }
+      if (url.pathname === '/api/exam-log' && request.method === 'GET') {
+        return corsResponse(env, await handleExamLog(env));
+      }
       if (url.pathname === '/api/profile/unlink' && request.method === 'POST') {
         return corsResponse(env, await handleProfileUnlink(request, env));
       }
@@ -1020,6 +1023,37 @@ async function handleExamResult(request, env) {
   ).bind(fingerprint, 'exam_result', content, now).run();
 
   return jsonResponse({ ok: true });
+}
+
+// =======================================================================
+// GET /api/exam-log
+// Retorna os últimos resultados de simulado de todos os usuários
+// Resposta: { entries: [{ username, type, label, pct, created_at }] }
+// =======================================================================
+async function handleExamLog(env) {
+  if (!env.DB) return jsonResponse({ entries: [] });
+
+  const rows = await env.DB.prepare(`
+    SELECT p.display_name AS username, pe.content, pe.created_at
+    FROM profile_events pe
+    JOIN profiles p ON p.fingerprint = pe.profile_id
+    WHERE pe.event_type = 'exam_result'
+      AND p.display_name IS NOT NULL
+      AND p.display_name != ''
+      AND p.blocked = 0
+    ORDER BY pe.created_at DESC
+    LIMIT 30
+  `).all();
+
+  const entries = (rows.results || []).map(row => {
+    const parts  = (row.content || '').split(':');
+    const type   = parts[0] || '';
+    const label  = parts[1] || '';
+    const pct    = parseInt(parts[2]) || 0;
+    return { username: row.username, type, label, pct, created_at: row.created_at };
+  }).filter(e => e.type && e.label);
+
+  return jsonResponse({ entries });
 }
 
 // =======================================================================

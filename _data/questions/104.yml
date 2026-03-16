@@ -110,7 +110,8 @@
 
 - id: "104-011"
   topic: "104.2"
-  question: "Considere a linha seguinte. Deseja-se saber qual o comando que a produziu: /dev/hda8 1.9G 559M 1.2G 30% /home"
+  question: "Considere a linha seguinte. Deseja-se saber qual o comando que a produziu:"
+  code: "/dev/hda8    1.9G     559M     1,7G     30% /home"
   options:
     - "df -m"
     - "du -k"
@@ -146,7 +147,8 @@
 
 - id: "104-014"
   topic: "104.1"
-  question: "Qual das opções seguintes corresponde aos resultados comando: # chmod g+s /home/software?"
+  question: "Qual das opções seguintes corresponde aos resultados comando:"
+  code: "chmod g+s /home/software"
   options:
     - "O bit SGID será habilitado para /home/software para manter as permissões do grupo do diretório consistente para todos os arquivos criados."
     - "O sticky bit será habilitado para /home/software."
