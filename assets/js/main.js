@@ -379,6 +379,16 @@ document.addEventListener("DOMContentLoaded", function() {
   // 3. EXAM LOG — tail /home/*/simulado.log
   // ==========================================================================
 
+  function fmtLogTs(d) {
+    if (!d || isNaN(d.getTime())) return '--';
+    var D  = String(d.getDate()).padStart(2, '0');
+    var M  = String(d.getMonth() + 1).padStart(2, '0');
+    var Y  = d.getFullYear();
+    var h  = String(d.getHours()).padStart(2, '0');
+    var mi = String(d.getMinutes()).padStart(2, '0');
+    return '[' + D + '-' + M + '-' + Y + '|' + h + ':' + mi + ']';
+  }
+
   function formatExamLogEntry(entry) {
     if (!entry || !entry.username || !entry.type || !entry.label) return null;
     var user = '@' + entry.username;
@@ -403,22 +413,36 @@ document.addEventListener("DOMContentLoaded", function() {
         entries.forEach(function(e) {
           var text = formatExamLogEntry(e);
           if (!text) return;
+
           var line = document.createElement('div');
           line.className = 't-out';
-          // data no formato dd/mm HH:MM
-          var ts = '';
-          try {
-            var d = new Date(e.created_at);
-            ts = String(d.getDate()).padStart(2,'0') + '/' +
-                 String(d.getMonth()+1).padStart(2,'0') + ' ' +
-                 String(d.getHours()).padStart(2,'0') + ':' +
-                 String(d.getMinutes()).padStart(2,'0') + '  ';
-          } catch (_) {}
-          var span = document.createElement('span');
-          span.style.color = 'var(--comment, #6272a4)';
-          span.textContent = ts;
-          line.appendChild(span);
-          line.appendChild(document.createTextNode(text));
+
+          // [DD-MM-YYYY|HH:MM]
+          var tsSpan = document.createElement('span');
+          tsSpan.className = 't-gray';
+          tsSpan.textContent = fmtLogTs(e.created_at ? new Date(e.created_at) : null) + ' ';
+          line.appendChild(tsSpan);
+
+          // @usuario linkado para o perfil
+          var atLink = document.createElement('a');
+          atLink.href = '/' + e.username;
+          atLink.className = 'mention-link';
+          atLink.textContent = '@' + e.username;
+          line.appendChild(atLink);
+
+          // " acertou "
+          var prep = e.type === 'prova' ? ' da prova ' : ' do tópico ';
+          line.appendChild(document.createTextNode(' acertou '));
+
+          // pct colorido
+          var pctSpan = document.createElement('span');
+          pctSpan.className = e.pct >= 70 ? 'quiz-pass' : 'quiz-fail';
+          pctSpan.textContent = e.pct + '%';
+          line.appendChild(pctSpan);
+
+          // " da prova 101-500" ou " do tópico 103"
+          line.appendChild(document.createTextNode(prep + e.label));
+
           examLogEl.appendChild(line);
         });
       })

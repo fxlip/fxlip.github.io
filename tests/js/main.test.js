@@ -1,30 +1,61 @@
 /**
  * tests/js/main.test.js
  *
- * Testa a função pura formatExamLogEntry de assets/js/main.js.
- * Mantida em sincronismo com a implementação original.
+ * Testa funções puras de assets/js/main.js.
+ * Mantidas em sincronismo com a implementação original.
  */
 
 import { describe, it, expect } from 'vitest'
 
 // =============================================================================
-// Extração da função pura (assets/js/main.js)
+// Extração de funções puras (assets/js/main.js)
 // =============================================================================
+
+function fmtLogTs(d) {
+  if (!d || isNaN(d.getTime())) return '--';
+  var D  = String(d.getDate()).padStart(2, '0');
+  var M  = String(d.getMonth() + 1).padStart(2, '0');
+  var Y  = d.getFullYear();
+  var h  = String(d.getHours()).padStart(2, '0');
+  var mi = String(d.getMinutes()).padStart(2, '0');
+  return '[' + D + '-' + M + '-' + Y + '|' + h + ':' + mi + ']';
+}
 
 function formatExamLogEntry(entry) {
   if (!entry || !entry.username || !entry.type || !entry.label) return null;
   const user = '@' + entry.username;
-  if (entry.type === 'prova') {
-    return user + ' acertou ' + entry.pct + '% da prova ' + entry.label;
-  }
-  if (entry.type === 'topico') {
-    return user + ' acertou ' + entry.pct + '% do tópico ' + entry.label;
-  }
+  if (entry.type === 'prova')  return user + ' acertou ' + entry.pct + '% da prova '  + entry.label;
+  if (entry.type === 'topico') return user + ' acertou ' + entry.pct + '% do tópico ' + entry.label;
   return null;
 }
 
 // =============================================================================
-// Testes
+// fmtLogTs
+// =============================================================================
+
+describe('fmtLogTs', () => {
+  it('formata data no padrão [DD-MM-YYYY|HH:MM]', () => {
+    // Data fixa: 16 de março de 2026 às 01:05
+    const d = new Date(2026, 2, 16, 1, 5) // mês é 0-indexed
+    expect(fmtLogTs(d)).toBe('[16-03-2026|01:05]')
+  })
+
+  it('preenche zeros à esquerda em dia, mês, hora e minuto', () => {
+    const d = new Date(2026, 0, 5, 9, 3) // 05-01-2026 09:03
+    expect(fmtLogTs(d)).toBe('[05-01-2026|09:03]')
+  })
+
+  it('retorna "--" para data nula', () => {
+    expect(fmtLogTs(null)).toBe('--')
+  })
+
+  it('retorna "--" para data inválida', () => {
+    expect(fmtLogTs(new Date('invalida'))).toBe('--')
+  })
+})
+
+// =============================================================================
+// formatExamLogEntry
 // =============================================================================
 
 describe('formatExamLogEntry', () => {
