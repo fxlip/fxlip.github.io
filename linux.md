@@ -22,8 +22,6 @@ hide_footer: true
     <div class="t-out">
 Roadmap da certificação LPI-1
 Começa em @linux/103/1/bash
-Comentários no @feed
-Dúvidas na @busca
     </div>
     <div>
       <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/linux</span><span class="t-gray">$</span> <span class="t-cmd">tree -L 3</span>

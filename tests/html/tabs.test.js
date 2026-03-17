@@ -46,9 +46,10 @@ describe('terminal-tabs.html — estrutura', () => {
     expect(include).toContain('display:none')
   })
 
-  it('aba "/" aponta para /', () => {
+  it('aba "/" é ícone, aponta para / e tem classe terminal-tab--icon', () => {
     expect(include).toMatch(/href="\/"/)
     expect(include).toContain('>/</a>')
+    expect(include).toContain('terminal-tab--icon')
   })
 
   it('aba "linux" aponta para /linux/', () => {

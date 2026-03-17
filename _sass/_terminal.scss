@@ -116,7 +116,7 @@
   display: flex; 
   align-items: center; 
   justify-content: flex-end;
-//  border-bottom: 1px solid #2d2b3b;
+  border-bottom: 1px solid var(--code-bg);
 }
 
 .terminal-controls {
@@ -165,10 +165,10 @@
 /* --- 5.3.1. TERMINAL TABS (GNOME-style — segunda linha abaixo do header) --- */
 .terminal-tabs-bar {
   background-color: #1a1b24;
-  border-bottom: 1px solid #2d2b3b;
   display: flex;
   align-items: stretch;
   padding: 0;
+  line-height: 1.6;
 }
 
 .terminal-tabs {
@@ -193,8 +193,7 @@
   border: none;
   border-top: 2px solid transparent;
   border-right: 1px solid #2d2b3b;
-  border-bottom: none;
-  margin-bottom: -1px;
+//  border-bottom: 1px solid #2d2b3b;
   transition: color 0.2s ease, background-color 0.2s ease;
   pointer-events: auto;
   cursor: pointer;
@@ -214,7 +213,7 @@
   background-color: var(--code-bg);
   border-top-color: var(--link-color);
   border-right-color: #2d2b3b;
-  border-bottom-color: var(--code-bg);
+//  border-bottom-color: var(--code-bg);
   cursor: default;
   pointer-events: none;
 }

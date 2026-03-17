@@ -1,8 +1,8 @@
 <div class="terminal-tabs-bar">
   <nav class="terminal-tabs" aria-label="Seções do site">
-    <a id="terminal-tab-search" href="/s" class="terminal-tab terminal-tab--icon{% if page.url == '/s' %} terminal-tab--active{% endif %}"{% if page.url == '/s' %} aria-current="page"{% endif %}>?</a>
+    <a href="/" class="terminal-tab terminal-tab--icon{% if page.url == '/' %} terminal-tab--active{% endif %}"{% if page.url == '/' %} aria-current="page"{% endif %}>/</a>
     <a id="terminal-tab-profile" class="terminal-tab terminal-tab--icon" href="#" style="display:none" aria-label="Perfil">@</a>
-    <a href="/" class="terminal-tab{% if page.url == '/' %} terminal-tab--active{% endif %}"{% if page.url == '/' %} aria-current="page"{% endif %}>/</a>
+    <a id="terminal-tab-search" href="/s" class="terminal-tab terminal-tab--icon{% if page.url == '/s' %} terminal-tab--active{% endif %}"{% if page.url == '/s' %} aria-current="page"{% endif %}>?</a>
     <a href="/linux/" class="terminal-tab{% if page.url contains '/linux' %} terminal-tab--active{% endif %}"{% if page.url contains '/linux' %} aria-current="page"{% endif %}>linux</a>
     <a href="/infosec/" class="terminal-tab{% if page.url contains '/infosec' %} terminal-tab--active{% endif %}"{% if page.url contains '/infosec' %} aria-current="page"{% endif %}>infosec</a>
   </nav>

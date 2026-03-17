@@ -36,11 +36,10 @@ hide_footer: true
 
   <div class="terminal-body">
     <div>
-      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/busca</span><span class="t-gray">$</span> <span class="t-cmd">grep -h && cat dog.txt</span>
+      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/busca</span><span class="t-gray">$</span> <span class="t-cmd">grep -h</span>
     </div>
     <div class="t-out"><span class="t-gray">Uso: grep -r "alguma coisa"
 Filtra por comandos, funções, variáveis e caminhos.
-<< @feed @linux
 </span></div>
     <div>
       <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/busca</span><span class="t-gray">$</span> <span class="t-cmd">grep -r "</span><input id="search-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" size="1"><span class="t-cmd">" ~/linux/**</span>
