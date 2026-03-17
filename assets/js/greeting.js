@@ -361,6 +361,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var container = document.getElementById('id-prompt');
 
+    // Restaura o conteúdo do terminal que foi ocultado pelo injectIdPrompt
+    if (container) {
+      var termBody = container.nextElementSibling;
+      if (termBody && termBody.classList.contains('terminal-body')) {
+        termBody.style.display = '';
+      }
+    }
+
     var dataEl = document.getElementById('whoami-data');
     var whoami = {};
     try { whoami = JSON.parse(dataEl ? dataEl.textContent : '{}'); } catch (_) {}
@@ -399,6 +407,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var existing = document.getElementById('id-prompt');
     if (existing) return;
+
+    // Oculta o conteúdo do terminal enquanto não há nome identificado
+    // (captura nextElementSibling ANTES de inserir o container)
+    var termBody = tabsBar.nextElementSibling;
+    if (termBody && termBody.classList.contains('terminal-body')) {
+      termBody.style.display = 'none';
+    }
 
     var container = document.createElement('div');
     container.id = 'id-prompt';
