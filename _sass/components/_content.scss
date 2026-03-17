@@ -74,6 +74,11 @@ article.post {
   margin-top: 37px;
 }
 
+/* Sem header sticky = sem espaçamento de header. Zera para alinhar com a home. */
+body.no-header-mode article.post {
+  margin-top: 0;
+}
+
 .post-content {
   /* 1. Alinhamento Lateral: herdado do .container (padding: 0 5px) */
   padding: 0;

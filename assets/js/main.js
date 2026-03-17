@@ -376,7 +376,39 @@ document.addEventListener("DOMContentLoaded", function() {
   if (!WORKER_URL || _hasSavedName) setTimeout(runNvddSequence, 4000);
 
   // ==========================================================================
-  // 3. EXAM LOG — tail /home/*/simulado.log
+  // 3. PROFILE TAB — aba dinâmica @usuario
+  // ==========================================================================
+
+  function buildProfileTabState(name, pathname) {
+    if (!name) return { href: null, label: null, active: false };
+    var href   = '/' + name;
+    var label  = '@' + name;
+    var active = pathname === href || pathname === href + '/';
+    return { href: href, label: label, active: active };
+  }
+
+  (function initProfileTab() {
+    var tab = document.getElementById('terminal-tab-profile');
+    if (!tab) return;
+
+    var name;
+    try { name = localStorage.getItem('fxlip_visitor_name'); } catch (_) {}
+
+    var state = buildProfileTabState(name, window.location.pathname);
+    if (!state.href) return;
+
+    tab.href          = state.href;
+    tab.style.display = '';
+
+    if (state.active) {
+      tab.classList.add('terminal-tab--active');
+      tab.removeAttribute('href');
+      tab.setAttribute('aria-current', 'page');
+    }
+  }());
+
+  // ==========================================================================
+  // 4. EXAM LOG — tail /home/*/simulado.log
   // ==========================================================================
 
   function fmtLogTs(d) {

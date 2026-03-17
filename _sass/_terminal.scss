@@ -27,7 +27,7 @@
 
 /* [DEFAULT] Link Killer: Mata links padrão para evitar cliques acidentais */
 /* ADICIONEI: .sys-hash-link e .action-btn na lista de exceções (Whitelist) */
-.terminal-box a:not(.mention-link):not(.link-card):not(.file-link):not(.sys-hash-link):not(.action-btn):not(.quiz-fail):not(.quiz-pass):not(.sys-date-link):not(.post-content a) {
+.terminal-box a:not(.mention-link):not(.link-card):not(.file-link):not(.sys-hash-link):not(.action-btn):not(.quiz-fail):not(.quiz-pass):not(.sys-date-link):not(.post-content a):not(.terminal-tab) {
   color: inherit !important;
   text-decoration: none !important;
   pointer-events: none; /* <--- Isso que estava bloqueando o clique */
@@ -116,7 +116,7 @@
   display: flex; 
   align-items: center; 
   justify-content: flex-end;
-  border-bottom: 1px solid #2d2b3b;
+//  border-bottom: 1px solid #2d2b3b;
 }
 
 .terminal-controls {
@@ -162,6 +162,83 @@
 .btn-min:hover { color: var(--yellow); }   /* Amarelo Neon (Feedback UI) */
 .btn-close:hover { color: #ff5555; } /* Vermelho (Feedback UI) */
 
+/* --- 5.3.1. TERMINAL TABS (GNOME-style — segunda linha abaixo do header) --- */
+.terminal-tabs-bar {
+  background-color: #1a1b24;
+  border-bottom: 1px solid #2d2b3b;
+  display: flex;
+  align-items: stretch;
+  padding: 0;
+}
+
+.terminal-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  flex: 1;
+}
+
+.terminal-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 5px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted-color);
+  text-decoration: none;
+  background-color: transparent;
+  border: none;
+  border-top: 2px solid transparent;
+  border-right: 1px solid #2d2b3b;
+  border-bottom: none;
+  margin-bottom: -1px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.terminal-tab:last-child {
+  border-right: none;
+}
+
+.terminal-tab:hover {
+  color: var(--text-color);
+  background-color: rgba(68, 71, 90, 0.35);
+}
+
+.terminal-tab--active {
+  color: var(--link-color);
+  background-color: var(--code-bg);
+  border-top-color: var(--link-color);
+  border-right-color: #2d2b3b;
+  border-bottom-color: var(--code-bg);
+  cursor: default;
+  pointer-events: none;
+}
+
+.terminal-tab--active:hover {
+  color: var(--link-color);
+  background-color: var(--code-bg);
+}
+
+/* Abas fixadas (? e @): tamanho pelo conteúdo + visual distinto */
+.terminal-tab--icon {
+  flex: none;
+  padding: 5px 14px;
+  font-size: 13px;
+  color: #6272a4;
+  background-color: rgba(40, 42, 54, 0.5);
+  border-right-color: #252436;
+}
+
+.terminal-tab--icon:hover {
+  color: var(--text-color);
+  background-color: rgba(68, 71, 90, 0.5);
+}
+
 /* --- 5.4. BODY & CONTENT --- */
 .terminal-body {
   padding: 10px 15px; 
@@ -199,8 +276,8 @@
 
 
 /* --- 5.7. FEED LOADER & ANIMATIONS --- */
-.feed-terminal { 
-  margin-top: 30px; 
+.feed-terminal {
+  margin-top: 30px;
   margin-bottom: 60px; 
   width: 100%; 
   font-size: 14px; 

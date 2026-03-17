@@ -32,6 +32,7 @@ hide_footer: true
       <div class="win-btn btn-close" title="Close">✕</div>
     </div>
   </div>
+  {% include terminal-tabs.html %}
 
   <div class="terminal-body">
     <div>

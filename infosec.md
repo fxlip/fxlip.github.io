@@ -13,6 +13,7 @@ hide_footer: true
       <div class="win-btn btn-close" title="Close">✕</div>
     </div>
   </div>
+  {% include terminal-tabs.html %}
 
   <div class="terminal-body">
     <div>
@@ -156,7 +157,3 @@ Voltar pro @feed
     <div class="t-out">&nbsp;</div>
   </div>
 </div>
-
-> PROGRESSO ATÉ A CONCLUSÃO
-
-[0/360]

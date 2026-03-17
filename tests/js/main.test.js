@@ -11,6 +11,14 @@ import { describe, it, expect } from 'vitest'
 // Extração de funções puras (assets/js/main.js)
 // =============================================================================
 
+function buildProfileTabState(name, pathname) {
+  if (!name) return { href: null, label: null, active: false };
+  var href   = '/' + name;
+  var label  = '@' + name;
+  var active = pathname === href || pathname === href + '/';
+  return { href, label, active };
+}
+
 function fmtLogTs(d) {
   if (!d || isNaN(d.getTime())) return '--';
   var D  = String(d.getDate()).padStart(2, '0');
@@ -28,6 +36,51 @@ function formatExamLogEntry(entry) {
   if (entry.type === 'topico') return user + ' acertou ' + entry.pct + '% do tópico ' + entry.label;
   return null;
 }
+
+// =============================================================================
+// buildProfileTabState
+// =============================================================================
+
+describe('buildProfileTabState', () => {
+  it('retorna hidden quando name é null', () => {
+    const s = buildProfileTabState(null, '/')
+    expect(s.href).toBeNull()
+    expect(s.label).toBeNull()
+    expect(s.active).toBe(false)
+  })
+
+  it('retorna hidden quando name é string vazia', () => {
+    const s = buildProfileTabState('', '/fxlip')
+    expect(s.href).toBeNull()
+  })
+
+  it('monta href e label a partir do name', () => {
+    const s = buildProfileTabState('fxlip', '/')
+    expect(s.href).toBe('/fxlip')
+    expect(s.label).toBe('@fxlip')
+  })
+
+  it('ativo quando pathname bate com /name', () => {
+    expect(buildProfileTabState('fxlip', '/fxlip').active).toBe(true)
+  })
+
+  it('ativo quando pathname bate com /name/ (trailing slash)', () => {
+    expect(buildProfileTabState('fxlip', '/fxlip/').active).toBe(true)
+  })
+
+  it('não ativo em outras rotas', () => {
+    expect(buildProfileTabState('fxlip', '/').active).toBe(false)
+    expect(buildProfileTabState('fxlip', '/linux').active).toBe(false)
+    expect(buildProfileTabState('fxlip', '/infosec').active).toBe(false)
+  })
+
+  it('funciona com qualquer username', () => {
+    const s = buildProfileTabState('alice42', '/alice42')
+    expect(s.href).toBe('/alice42')
+    expect(s.label).toBe('@alice42')
+    expect(s.active).toBe(true)
+  })
+})
 
 // =============================================================================
 // fmtLogTs
