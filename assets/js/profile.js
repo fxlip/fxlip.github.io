@@ -629,6 +629,7 @@
     document.getElementById('profile-terminal').hidden = true;
     document.getElementById('profile-card').hidden     = false;
     document.title = '@' + username;
+    document.dispatchEvent(new CustomEvent('profile:shown', { detail: data }));
 
     // ── Log de atividade (síncrono: monta container + entrada de first_seen) ──
     function fmtLogTs(d) {

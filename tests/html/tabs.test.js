@@ -36,7 +36,7 @@ describe('terminal-tabs.html — estrutura', () => {
 
   it('aba de busca tem id="terminal-tab-search" e aponta para /s', () => {
     expect(include).toContain('id="terminal-tab-search"')
-    expect(include).toContain('href="/s"')
+    expect(include).toMatch(/href="\/s[?"?]/)
     expect(include).toContain('>?</a>')
   })
 

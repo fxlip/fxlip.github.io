@@ -1,31 +1,12 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-  var greetingBlock = document.getElementById("greeting-block");
-  var greetingOutput = document.getElementById("greeting-output");
-  if (!greetingBlock || !greetingOutput) return;
-
   var WORKER_URL = document.body.dataset.workerUrl;
   if (!WORKER_URL) return;
 
-  var FP_KEY         = "fxlip_fp";
-  var NAME_KEY       = "fxlip_visitor_name";
-  var HELLO_CACHE_KEY = "fxlip_hello_cache";
-  var HELLO_TTL       = 10 * 60 * 1000; // 10 minutos
-  var currentFp      = null;
+  var FP_KEY   = "fxlip_fp";
+  var NAME_KEY = "fxlip_visitor_name";
 
-  function getHelloCache() {
-    try {
-      var c = JSON.parse(localStorage.getItem(HELLO_CACHE_KEY));
-      if (c && c.ts && (Date.now() - c.ts) < HELLO_TTL) return c.data;
-    } catch (_) {}
-    return null;
-  }
-
-  function setHelloCache(data) {
-    try {
-      localStorage.setItem(HELLO_CACHE_KEY, JSON.stringify({ ts: Date.now(), data: data }));
-    } catch (_) {}
-  }
+  var currentFp = null;
 
   // =======================================================================
   // 1. FINGERPRINT (SHA-256, sem lib externa)
@@ -121,12 +102,11 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =======================================================================
-  // 3. HELPER: DIGITAÇÃO TERMINAL — réplica do padrão de main.js
+  // 3. HELPER: DIGITAÇÃO TERMINAL
   // =======================================================================
-  var TYPING_SPEED   = 45;  // ms/char (main.js usa 70ms × 9 chars ≈ mesmo feel)
-  var SUSPENSE_DELAY = 800; // ms de pausa pós-digitação antes do output (= main.js)
+  var TYPING_SPEED   = 45;
+  var SUSPENSE_DELAY = 800;
 
-  // Digita texto no elemento e retorna Promise (idêntico ao typeCommand de main.js)
   function typeCmd(el, text) {
     return new Promise(function(resolve) {
       if (el._typer) clearInterval(el._typer);
@@ -144,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =======================================================================
-  // 4. WHOAMI
+  // 4. WHOAMI (usado no perfil)
   // =======================================================================
 
   function selectMessage(messages, rep) {
@@ -224,122 +204,55 @@ document.addEventListener("DOMContentLoaded", function() {
     var template = selectMessage(whoami.messages, rep);
     if (!template) return;
 
-    var existing = document.getElementById('rename-line');
-    if (existing) existing.remove();
-
     var finalText = applyGender(applyVars(template, vars), data.gender || null);
-
-    // Encontra o .t-cmd do "whoami && cat dog.txt" no mesmo terminal-body
-    var termBody = dogEl.parentElement;
-    var cmdEl = termBody ? termBody.querySelector('.t-cmd') : null;
-    // Salva o texto original na primeira chamada (evita reler o DOM alterado)
-    if (cmdEl && !cmdEl._origText) cmdEl._origText = cmdEl.textContent.trim();
-    var cmdText = cmdEl ? cmdEl._origText : '';
 
     var afterOutput = function() {
       dogEl.removeAttribute('data-mentions-processed');
       if (window.applyMentions) window.applyMentions(dogEl);
-      // Novo usuário: evento só dispara após renderDogTxt com nome real
-      if (data.name) document.dispatchEvent(new CustomEvent('whoami:ready'));
     };
 
-    // Anima apenas quando há dados reais e animação não foi suprimida
+    var termBody = dogEl.parentElement;
+    var cmdEl = termBody ? termBody.querySelector('.t-cmd') : null;
+    if (cmdEl && !cmdEl._origText) cmdEl._origText = cmdEl.textContent.trim();
+    var cmdText = cmdEl ? cmdEl._origText : '';
+
     if (!skipAnimation && (data.name || data.visits) && cmdEl && cmdText) {
       typeCmd(cmdEl, cmdText)
         .then(function() { return new Promise(function(r) { setTimeout(r, SUSPENSE_DELAY); }); })
         .then(function() {
-          var whoamiCursor = cmdEl.parentElement ? cmdEl.parentElement.querySelector('.cursor-blink') : null;
-          if (whoamiCursor) whoamiCursor.style.display = 'none';
+          var cursor = cmdEl.parentElement ? cmdEl.parentElement.querySelector('.cursor-blink') : null;
+          if (cursor) cursor.style.display = 'none';
           dogEl.textContent = finalText;
           afterOutput();
         });
     } else {
-      // Oculta o cursor do whoami (ramo sem animação) para evitar briga visual
-      var whoamiCursorElse = cmdEl && cmdEl.parentElement
-        ? cmdEl.parentElement.querySelector('.cursor-blink') : null;
-      if (whoamiCursorElse) whoamiCursorElse.style.display = 'none';
       dogEl.textContent = finalText;
       afterOutput();
     }
   }
 
   // =======================================================================
-  // 4. BADGES
+  // 5. MASCARA DE INPUT (função pura — testada em greeting-id-prompt.test.js)
   // =======================================================================
-  var BADGE_DEFS = [
-    {
-      id:    'popular',
-      label: 'popular',
-      title: '24h+ no site · 10+ visitas · 1+ comentário · 10+ upvotes',
-      test:  function(s) {
-        return s.total_time_spent >= 86400
-            && s.visits    >= 10
-            && s.comments  >= 1
-            && s.upvotes   >= 10;
-      }
-    },
-    {
-      id:    'frequente',
-      label: 'frequente',
-      title: '50+ visitas',
-      test:  function(s) { return s.visits >= 50; }
-    },
-    {
-      id:    'engajado',
-      label: 'engajado',
-      title: '5+ comentários',
-      test:  function(s) { return s.comments >= 5; }
-    },
-    {
-      id:    'curtidor',
-      label: 'curtidor',
-      title: '20+ upvotes dados',
-      test:  function(s) { return s.upvotes >= 20; }
-    },
-    {
-      id:    'veterano',
-      label: 'veterano',
-      title: 'membro há 90+ dias',
-      test:  function(s) {
-        if (!s.first_seen) return false;
-        return (Date.now() - new Date(s.first_seen).getTime()) >= 90 * 86400 * 1000;
-      }
-    }
-  ];
-
-  function computeReputation(s) {
-    return Math.floor(
-      (s.visits             || 0) * 1  +
-      Math.floor((s.total_time_spent || 0) / 3600) * 2 +
-      (s.comments           || 0) * 10 +
-      (s.upvotes            || 0) * 3
-    );
-  }
-
-  function renderBadgesHtml(s) {
-    var parts = [];
-    BADGE_DEFS.forEach(function(b) {
-      if (b.test(s)) {
-        parts.push('<span class="badge badge-' + b.id + '" title="' + b.title + '">' + b.label + '</span>');
-      }
-    });
-    var rep = computeReputation(s);
-    if (rep > 0) {
-      parts.push('<span class="badge badge-rep" title="reputação: visitas + tempo + interações">rep ' + rep + '</span>');
-    }
-    return parts.join(' ');
+  function maskName(raw) {
+    return raw
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9à-ú-]/g, '')
+      .replace(/^-+/, '')
+      .replace(/-{2,}/g, '-');
   }
 
   // =======================================================================
-  // 4. HELPER: INJETA O INPUT DE NOME NO DOM
+  // 6. INPUT DE NOME (injetado no #id-prompt ou em posição relativa)
   // =======================================================================
-  function injectNameInput(fp, afterEl) {
+  function injectNameInput(fp, afterEl, parentEl) {
     var prev = document.getElementById('greeting-input-line');
     if (prev) prev.remove();
 
     var niDataEl = document.getElementById('whoami-data');
     var niWhoami = {};
-    try { niWhoami = JSON.parse(niDataEl.textContent); } catch (_) {}
+    try { niWhoami = JSON.parse(niDataEl ? niDataEl.textContent : '{}'); } catch (_) {}
     var niCmd = niWhoami.prompt_cmd || 'export USER=';
 
     var inputLine = document.createElement("div");
@@ -353,13 +266,13 @@ document.addEventListener("DOMContentLoaded", function() {
       '<span class="t-gray">$</span> ' +
       '<span class="t-cmd"></span>';
 
-    var dogEl = document.getElementById('whoami-dog-txt');
     if (afterEl) {
       afterEl.insertAdjacentElement('afterend', inputLine);
-    } else if (dogEl) {
-      dogEl.insertAdjacentElement('afterend', inputLine);
+    } else if (parentEl) {
+      parentEl.appendChild(inputLine);
     } else {
-      greetingBlock.appendChild(inputLine);
+      var body = document.querySelector('.terminal-body');
+      if (body) body.prepend(inputLine);
     }
 
     var cmdSpan = inputLine.querySelector('.t-cmd');
@@ -377,30 +290,21 @@ document.addEventListener("DOMContentLoaded", function() {
       cursor.className = 'cursor-blink';
       cursor.textContent = '█';
 
-      // Input colado ao =; █ visível depois do texto; caret do browser oculto
       input.style.width      = '0ch';
       input.style.caretColor = 'transparent';
       inputLine.appendChild(input);
       inputLine.appendChild(cursor);
 
-      // Sticky focus: nunca perde o foco, mesmo clicando fora
       input.addEventListener('blur', function() {
         requestAnimationFrame(function() { input.focus(); });
       });
 
       input.focus();
 
-      // Máscara: lowercase, espaço→hífen, só [a-z0-9à-ú-], sem traço inicial nem duplo
       input.addEventListener("input", function() {
         var pos = input.selectionStart;
-        var original = input.value;
-        var masked = original
-          .toLowerCase()
-          .replace(/\s+/g, "-")
-          .replace(/[^a-z0-9à-ú-]/g, "")
-          .replace(/^-+/, "")
-          .replace(/-{2,}/g, "-");
-        if (masked !== original) {
+        var masked = maskName(input.value);
+        if (masked !== input.value) {
           input.value = masked;
           input.selectionStart = input.selectionEnd = Math.min(pos, masked.length);
         }
@@ -424,13 +328,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }).then(function(res) { return res.json(); })
           .then(function(data) {
             if (data.error === 'name_taken' || data.error === 'registration_limit') {
-              // Congela a linha atual: remove input e cursor, deixa o texto digitado estático
-              // Remove o id para que injectNameInput não apague esta linha do histórico
               inputLine.removeAttribute('id');
               cursor.remove();
               input.replaceWith(document.createTextNode(val));
 
-              // Linha de output de erro no estilo terminal
               var errOut = document.createElement('div');
               errOut.className = 't-out';
               errOut.textContent = data.error === 'registration_limit'
@@ -438,127 +339,113 @@ document.addEventListener("DOMContentLoaded", function() {
                 : 'bash: USER=' + val + ': usuário já em uso';
               inputLine.insertAdjacentElement('afterend', errOut);
 
-              // Nova linha de input ancorada depois do erro
               injectNameInput(fp, errOut);
               return;
             }
             try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
-            setHelloCache(data);
-            renderGreeting(data, true);
+            renderWelcome(val, data);
           }).catch(function() {
             try { localStorage.setItem(NAME_KEY, val); } catch (_) {}
-            renderGreeting({ name: val }, true);
+            renderWelcome(val, { name: val });
           });
       });
     });
   }
 
   // =======================================================================
-  // 5. RENDER: FIRST VISIT (Prompt de nome)
+  // 7. BOAS-VINDAS (após nome ser definido)
   // =======================================================================
-  function renderNamePrompt(fp) {
-    renderDogTxt({});
-    injectNameInput(fp);
-  }
-
-  // =======================================================================
-  // 6. RENDER: RETURNING VISITOR
-  // =======================================================================
-  function renderGreeting(data, isNew) {
+  function renderWelcome(name, data) {
     var prev = document.getElementById("greeting-input-line");
     if (prev) prev.remove();
 
-    if (isNew && data.name) {
-      var welcomeDataEl = document.getElementById('whoami-data');
-      var welcomeWhoami = {};
-      try { welcomeWhoami = JSON.parse(welcomeDataEl.textContent); } catch (_) {}
-      var welcomeTemplate = welcomeWhoami.welcome_new || 'Legal, @{{name}}. Agora você tem um perfil.';
-      var welcomeText = applyGender(applyVars(welcomeTemplate, { name: esc(data.name) }), data.gender);
+    var container = document.getElementById('id-prompt');
 
+    var dataEl = document.getElementById('whoami-data');
+    var whoami = {};
+    try { whoami = JSON.parse(dataEl ? dataEl.textContent : '{}'); } catch (_) {}
+    var template = whoami.welcome_new || 'Legal, @{{name}}. Agora você tem um perfil.';
+    var welcomeText = applyGender(applyVars(template, { name: esc(name) }), data.gender);
+
+    if (container) {
+      container.innerHTML = '';
       var welcomeDiv = document.createElement('div');
       welcomeDiv.className = 't-out';
       welcomeDiv.textContent = welcomeText;
-      greetingBlock.style.display = 'block';
-      greetingBlock.innerHTML = '';
-      greetingBlock.appendChild(welcomeDiv);
-      if (window.applyMentions) window.applyMentions(greetingBlock);
-
-      // Limpa o dog_txt do estado de primeiro acesso e dispara o nvdd.sh
-      var wDogEl = document.getElementById('whoami-dog-txt');
-      if (wDogEl) wDogEl.textContent = '';
-      document.dispatchEvent(new CustomEvent('whoami:ready'));
-      return;
+      container.appendChild(welcomeDiv);
+      if (window.applyMentions) window.applyMentions(container);
     }
 
-    // Usuário retornando: dog_txt com animação normal
-    renderDogTxt(data, false);
+    // Mostra a aba @username
+    document.querySelectorAll('[id="terminal-tab-profile"]').forEach(function(tab) {
+      tab.href = '/' + name;
+      tab.style.display = '';
+    });
+
+    // Remove o prompt após exibir a boas-vindas
+    if (container) {
+      setTimeout(function() {
+        if (container.parentNode) container.parentNode.removeChild(container);
+      }, 3000);
+    }
   }
 
   // =======================================================================
-  // 7. MAIN
+  // 8. PROMPT UNIVERSAL (inject em qualquer página com terminal-tabs-bar)
+  // =======================================================================
+  function injectIdPrompt(fp) {
+    var tabsBar = document.querySelector('.terminal-tabs-bar');
+    if (!tabsBar) return;
+
+    var existing = document.getElementById('id-prompt');
+    if (existing) return;
+
+    var container = document.createElement('div');
+    container.id = 'id-prompt';
+    container.style.cssText = 'padding:10px 15px;border-bottom:1px solid #2d2b3b';
+    tabsBar.insertAdjacentElement('afterend', container);
+
+    injectNameInput(fp, null, container);
+  }
+
+  // =======================================================================
+  // 9. PERFIL — whoami do visitante na página do próprio perfil
+  // =======================================================================
+  document.addEventListener('profile:shown', function(e) {
+    var data = e.detail || {};
+    var dogEl = document.getElementById('whoami-dog-txt');
+    if (!dogEl) return;
+    // skipAnimation=true: perfil já está visível, evita re-digitar ./profile.sh
+    renderDogTxt(data, true);
+  });
+
+  // =======================================================================
+  // 10. MAIN
   // =======================================================================
   function init() {
     var storedName = null;
     try { storedName = localStorage.getItem(NAME_KEY); } catch (_) {}
 
+    if (storedName) return; // Usuário identificado — sem prompt universal
+
+    // Sem nome: injeta o prompt de identificação em qualquer página
     getFingerprint().then(function(fp) {
       currentFp = fp;
-      if (!storedName) {
-        // Mostra prompt imediatamente
-        renderNamePrompt(fp);
+      injectIdPrompt(fp);
 
-        // Consulta API para detectar auto-nick (≥100 visitas sem nome)
-        fetchWithTimeout(WORKER_URL + "/api/hello", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ fingerprint: fp }),
-        }).then(function(res) { return res.json(); })
-          .then(function(data) {
-            if (data.name) {
-              // Auto-nick atribuído pelo Worker — salva localmente mas mantém o prompt
-              // visível para o usuário escolher o próprio nome nesta visita.
-              // Na próxima recarga o storedName estará preenchido e seguirá o fluxo normal.
-              try { localStorage.setItem(NAME_KEY, data.name); } catch (_) {}
-            }
-            // Sem nome → mantém prompt, sem mensagem de visitas
-          })
-          .catch(function() {});
-        return;
-      }
-
-      // Render imediato do cache (UX instantânea) enquanto API verifica em background
-      var cachedHello = getHelloCache();
-      if (cachedHello) {
-        renderGreeting(cachedHello);
-      }
-
-      // SEMPRE consulta a API quando há nome — detecta deleção mesmo com cache válido
+      // Consulta API para detectar auto-nick (≥100 visitas sem nome)
       fetchWithTimeout(WORKER_URL + "/api/hello", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fingerprint: fp, name: storedName }),
+        body: JSON.stringify({ fingerprint: fp }),
       }).then(function(res) { return res.json(); })
         .then(function(data) {
-          // Perfil deletado pelo admin: limpa cache local e recarrega para mostrar prompt
-          if (data.account_deleted) {
-            try { localStorage.removeItem(NAME_KEY); } catch (_) {}
-            try { localStorage.removeItem(HELLO_CACHE_KEY); } catch (_) {}
-            location.reload();
-            return;
+          if (data.name) {
+            try { localStorage.setItem(NAME_KEY, data.name); } catch (_) {}
           }
-          setHelloCache(data);
-          // Só renderiza se não usou o cache (evita re-render desnecessário)
-          if (!cachedHello) renderGreeting(data);
         })
-        .catch(function() {
-          if (!cachedHello) renderGreeting({ name: storedName });
-        });
-      return;
-    }).catch(function() {
-      if (storedName) {
-        renderGreeting({ name: storedName });
-      }
-    });
+        .catch(function() {});
+    }).catch(function() {});
   }
 
   init();
