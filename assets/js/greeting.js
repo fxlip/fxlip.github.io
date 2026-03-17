@@ -75,28 +75,12 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =======================================================================
-  // 4. APÓS NOME DEFINIDO — restaura terminal, mostra aba @
+  // 4. APÓS NOME DEFINIDO — redireciona para a home
   // =======================================================================
-  function onNameSet(name) {
+  function onNameSet() {
     var prev = document.getElementById("greeting-input-line");
     if (prev) prev.remove();
-
-    var container = document.getElementById('id-prompt');
-
-    // Restaura o conteúdo do terminal que estava oculto
-    if (container) {
-      var termBody = container.nextElementSibling;
-      if (termBody && termBody.classList.contains('terminal-body')) {
-        termBody.style.display = '';
-      }
-      if (container.parentNode) container.parentNode.removeChild(container);
-    }
-
-    // Mostra a aba @username
-    document.querySelectorAll('[id="terminal-tab-profile"]').forEach(function(tab) {
-      tab.href = '/' + name;
-      tab.style.display = '';
-    });
+    window.location.href = '/';
   }
 
   // =======================================================================

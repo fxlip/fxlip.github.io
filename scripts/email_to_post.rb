@@ -194,6 +194,12 @@ begin
             send_reply(slug)
             success = true
 
+          when 'pin'
+            slug, path = create_feed_post(extract_body(email), 'pin' => true)
+            puts "   [SUCESSO] Post fixado criado: #{path}"
+            send_reply(slug)
+            success = true
+
           when /\A[0-9a-f]{16}\z/
             post_file = Dir.glob(File.join(POSTS_ROOT, "**/*-#{command}.md")).first
             if post_file.nil?

@@ -1,61 +1,14 @@
 # _data/whoami.yml
 #
-# Mensagens da home exibidas na saída de "whoami && cat dog.txt".
-# Ordenadas do maior rep para o menor — o JS seleciona a primeira
-# entrada onde rep >= min.
-#
-# Variáveis disponíveis: {{name}}, {{visits}}, {{time}}, {{city}},
-#                        {{comments}}, {{upvotes}}, {{rep}}, {{days}},
-#                        {{last_login}}
-# Gênero: use % como sufixo (obrigad% → obrigado/obrigada/obrigade)
-# @mentions são processadas automaticamente.
+# Campos usados pelo prompt de identificação universal (greeting.js).
 
-# Mensagem exibida quando o visitante informa o nome pela primeira vez.
-# Suporta % (gênero) e {{name}} (substituído pelo link @nick).
-welcome_new: "Legal @{{name}}, criei um perfil pra você.\nEscrevo sobre @linux e @infosec.\nE aqui em baixo dou meus 2kb de opinão."
-
-# Saudação inicial (cat hello_world.txt) exibida antes do prompt de nome.
+# Comando exibido antes da saudação.
 hello_cmd: "cat hello_world.txt"
+
+# Texto exibido na saída do cat. Suporta @mentions.
 hello_txt: |
-  Primeiro acesso detectado. Seja bem-vindo(a)!
-  Informe um nome de usuário pra continuar.
+  Primeiro acesso detectado. Olá usuário!
+  Informe um nome pra continuar.
 
-# Texto do prompt de nome exibido no input "export USER=..."
+# Texto do prompt de nome ("export USER=nome").
 prompt_cmd: "export USER="
-prompt_new: "qual-seu-usuário?"
-
-messages:
-  - min: 350
-    dog_txt: |
-      @{{name}}, seu último login foi {{last_login}}, de {{city}}.
-      {{days}} dias · {{visits}} visitas · {{time}} lendo.
-      {{comments}} comentários · {{upvotes}} upvotes.
-      Zerou.
-
-  - min: 150
-    dog_txt: |
-      @{{name}}, seu último login foi {{last_login}}, de {{city}}.
-      {{days}} dias, {{visits}} visitas e mais de {{time}} lendo.
-      {{comments}} comentários e {{upvotes}} upvotes dados.
-      Sinistr#.
-
-  - min: 60
-    dog_txt: |
-      @{{name}}, seu último login foi {{last_login}}, de {{city}}.
-      {{visits}} visitas com {{time}} logado.
-      Claramente viciad%. Sem julgamentos.
-
-  - min: 15
-    dog_txt: |
-      @{{name}}, seu último login foi {{last_login}}.
-      >> @linux 
-      >> @infosec 
-
-  - min: 1
-    dog_txt: |
-      @{{name}}, quer começar por @linux ou @infosec?
-
-  - min: 0
-    dog_txt: |
-      Primeira vez por aqui? Bem-vindo!
-      Informe seu nome de usuário para continuar.
