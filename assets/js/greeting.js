@@ -213,7 +213,50 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =======================================================================
-  // 6. PROMPT UNIVERSAL (inject em qualquer página com terminal-tabs-bar)
+  // 6. SEQUÊNCIA cat hello_world.txt → export USER=
+  // =======================================================================
+  function showHelloSequence(fp, container, niWhoami) {
+    var helloCmd = niWhoami.hello_cmd || 'cat hello_world.txt';
+    var helloTxt = niWhoami.hello_txt || '';
+
+    // Linha de comando: fxlip@www:~$ cat hello_world.txt
+    var cmdLine = document.createElement('div');
+    cmdLine.innerHTML =
+      '<span class="t-user">fxlip</span>' +
+      '<span class="t-gray">@</span>' +
+      '<span class="t-host">www</span>' +
+      '<span class="t-gray">:</span>' +
+      '<span class="t-path">~</span>' +
+      '<span class="t-gray">$</span> ' +
+      '<span class="t-cmd"></span>';
+    container.appendChild(cmdLine);
+
+    var cmdSpan = cmdLine.querySelector('.t-cmd');
+    var TYPING_SPEED = 45;
+
+    // Digita o comando, depois exibe o output, depois o prompt de nome
+    (function typeCmd(el, text, cb) {
+      var i = 0;
+      var id = setInterval(function() {
+        el.textContent += text[i++];
+        if (i >= text.length) { clearInterval(id); cb(); }
+      }, TYPING_SPEED);
+    }(cmdSpan, helloCmd, function() {
+      setTimeout(function() {
+        if (helloTxt) {
+          var outEl = document.createElement('div');
+          outEl.className = 't-out';
+          outEl.textContent = helloTxt.trim();
+          container.appendChild(outEl);
+          if (window.applyMentions) window.applyMentions(outEl);
+        }
+        injectNameInput(fp, null, container);
+      }, 400);
+    }));
+  }
+
+  // =======================================================================
+  // 7. PROMPT UNIVERSAL (inject em qualquer página com terminal-tabs-bar)
   // =======================================================================
   function injectIdPrompt(fp) {
     var tabsBar = document.querySelector('.terminal-tabs-bar');
@@ -232,7 +275,15 @@ document.addEventListener("DOMContentLoaded", function() {
     container.style.cssText = 'padding:10px 15px;border-bottom:1px solid #2d2b3b';
     tabsBar.insertAdjacentElement('afterend', container);
 
-    injectNameInput(fp, null, container);
+    var niDataEl = document.getElementById('whoami-data');
+    var niWhoami = {};
+    try { niWhoami = JSON.parse(niDataEl ? niDataEl.textContent : '{}'); } catch (_) {}
+
+    if (niWhoami.hello_txt) {
+      showHelloSequence(fp, container, niWhoami);
+    } else {
+      injectNameInput(fp, null, container);
+    }
   }
 
   // =======================================================================

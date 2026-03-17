@@ -14,6 +14,12 @@
 # Suporta % (gênero) e {{name}} (substituído pelo link @nick).
 welcome_new: "Legal @{{name}}, criei um perfil pra você.\nEscrevo sobre @linux e @infosec.\nE aqui em baixo dou meus 2kb de opinão."
 
+# Saudação inicial (cat hello_world.txt) exibida antes do prompt de nome.
+hello_cmd: "cat hello_world.txt"
+hello_txt: |
+  Primeiro acesso detectado. Seja bem-vindo(a)!
+  Informe um nome de usuário pra continuar.
+
 # Texto do prompt de nome exibido no input "export USER=..."
 prompt_cmd: "export USER="
 prompt_new: "qual-seu-usuário?"
