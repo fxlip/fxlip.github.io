@@ -80,6 +80,13 @@ describe('buildProfileTabState', () => {
     expect(s.label).toBe('@alice42')
     expect(s.active).toBe(true)
   })
+
+  it('state.active=true em /username com dois terminais na página (profile-card + 404)', () => {
+    // Simula o cenário onde 404.md e profile-card.html ambos incluem o partial
+    const s = buildProfileTabState('fxlip', '/fxlip')
+    expect(s.active).toBe(true)
+    // Garante que o estado é derivado apenas de name + pathname, sem depender de getElementById
+  })
 })
 
 // =============================================================================

@@ -388,8 +388,8 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   (function initProfileTab() {
-    var tab = document.getElementById('terminal-tab-profile');
-    if (!tab) return;
+    var tabs = document.querySelectorAll('[id="terminal-tab-profile"]');
+    if (!tabs.length) return;
 
     var name;
     try { name = localStorage.getItem('fxlip_visitor_name'); } catch (_) {}
@@ -397,14 +397,16 @@ document.addEventListener("DOMContentLoaded", function() {
     var state = buildProfileTabState(name, window.location.pathname);
     if (!state.href) return;
 
-    tab.href          = state.href;
-    tab.style.display = '';
+    tabs.forEach(function(tab) {
+      tab.href          = state.href;
+      tab.style.display = '';
 
-    if (state.active) {
-      tab.classList.add('terminal-tab--active');
-      tab.removeAttribute('href');
-      tab.setAttribute('aria-current', 'page');
-    }
+      if (state.active) {
+        tab.classList.add('terminal-tab--active');
+        tab.removeAttribute('href');
+        tab.setAttribute('aria-current', 'page');
+      }
+    });
   }());
 
   // ==========================================================================
