@@ -15,7 +15,7 @@ header {
   /* Geometria Full Width (Herda do Container) */
   width: 100%;          
   max-width: 100%;    
-  padding: 20px 0 0 0;
+  padding: 24px 0 0 0;
   
   box-sizing: border-box; 
   background-color: var(--background-color); 
@@ -120,6 +120,7 @@ header a.active {
 }
 
 header .terminal-box {
+    margin-top: 0;
     border-bottom: 1px solid var(--border-dark);
 
     border-bottom-left-radius: 0 !important;

@@ -7,13 +7,7 @@
                 <div class="win-btn btn-close" title="Close">✕</div>
               </div>
             </div>
-            <div class="terminal-body">
-              <div>
-                <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">./header.sh</span>
-              </div>
-              <div class="t-out">Todo material em {% if page.url contains 'infosec' %}@infosec{% else %}@linux{% endif %}
-Comentários no @feed</div>
-            </div>
+            {% include terminal-tabs.html %}
           </div>
         </nav>
       </header>
