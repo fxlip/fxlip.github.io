@@ -23,6 +23,19 @@ import worker from '../../workers/visitor-api/worker.js'
 // =============================================================================
 
 const SCHEMA = `
+CREATE TABLE IF NOT EXISTS page_views (
+  slug        TEXT PRIMARY KEY,
+  view_count  INTEGER NOT NULL DEFAULT 0,
+  updated_at  TEXT
+);
+
+CREATE TABLE IF NOT EXISTS page_view_ips (
+  slug     TEXT NOT NULL,
+  ip_hash  TEXT NOT NULL,
+  date     TEXT NOT NULL,
+  PRIMARY KEY (slug, ip_hash, date)
+);
+
 CREATE TABLE IF NOT EXISTS profiles (
   fingerprint      TEXT PRIMARY KEY,
   first_seen       TEXT NOT NULL,
@@ -131,16 +144,6 @@ beforeAll(async () => {
   }
 })
 
-// Helper: janela de rate limit atual
-function rateWindow() {
-  return Math.floor(Date.now() / 60_000)
-}
-
-// Helper: chave de rate limit para um IP
-function rateKey(ip) {
-  return `rate:${ip}:${rateWindow()}`
-}
-
 // Helper: faz uma requisição através do Worker
 async function call(path, options = {}) {
   const url = `http://localhost${path}`
@@ -190,78 +193,63 @@ describe('Kill Switch', () => {
 })
 
 // =============================================================================
-// Rate Limiting
+// Rate Limiting (in-memory — globalThis._rl)
 // =============================================================================
 
-describe('Rate Limiting', () => {
-  afterEach(async () => {
-    // Limpa chaves de rate limit usadas nos testes
-    const ips = ['10.10.0.1', '10.10.0.2', '10.10.0.3', '10.10.0.4', '10.10.0.5']
-    await Promise.all(ips.map(ip => env.VISITORS.delete(rateKey(ip))))
+describe('Rate Limiting (in-memory)', () => {
+  afterEach(() => {
+    if (globalThis._rl) globalThis._rl.clear()
   })
 
   it('bloqueia após 30 requisições por minuto (rota geral)', async () => {
     const ip  = '10.10.0.1'
-    const key = rateKey(ip)
+    const win = Math.floor(Date.now() / 60_000)
+    if (!globalThis._rl) globalThis._rl = new Map()
+    globalThis._rl.set(`${ip}:${win}`, 30) // já no limite
 
-    // Pré-popula contador no limite
-    await env.VISITORS.put(key, '30', { expirationTtl: 90 })
-
-    const res = await call('/api/views', {
-      headers: { 'CF-Connecting-IP': ip },
-    })
+    const res = await call('/api/views', { headers: { 'CF-Connecting-IP': ip } })
     expect(res.status).toBe(429)
   })
 
   it('permite requisição quando contador está abaixo do limite', async () => {
     const ip = '10.10.0.2'
     // Sem pré-população → começa do zero
-
-    const res = await call('/api/views', {
-      headers: { 'CF-Connecting-IP': ip },
-    })
+    const res = await call('/api/views', { headers: { 'CF-Connecting-IP': ip } })
     expect(res.status).not.toBe(429)
   })
 
   it('bloqueia /api/exam-result após 10 requisições por minuto', async () => {
     const ip  = '10.10.0.3'
-    const key = rateKey(ip)
-
-    // Limite do simulado é 10
-    await env.VISITORS.put(key, '10', { expirationTtl: 90 })
+    const win = Math.floor(Date.now() / 60_000)
+    if (!globalThis._rl) globalThis._rl = new Map()
+    globalThis._rl.set(`${ip}:${win}`, 10) // já no limite do simulado
 
     const res = await call('/api/exam-result', {
       method: 'POST',
-      headers: {
-        'CF-Connecting-IP': ip,
-        'Content-Type': 'application/json',
-      },
+      headers: { 'CF-Connecting-IP': ip, 'Content-Type': 'application/json' },
       body: JSON.stringify({}),
     })
     expect(res.status).toBe(429)
   })
 
-  it('limite diferenciado: 10 req no contador não bloqueia rotas gerais (limite 30)', async () => {
+  it('limite diferenciado: 10 no contador não bloqueia rotas gerais (limite 30)', async () => {
     const ip  = '10.10.0.4'
-    const key = rateKey(ip)
+    const win = Math.floor(Date.now() / 60_000)
+    if (!globalThis._rl) globalThis._rl = new Map()
+    globalThis._rl.set(`${ip}:${win}`, 10) // abaixo do limite geral
 
-    // Com 10 no contador, rota geral (limite 30) ainda deve funcionar
-    await env.VISITORS.put(key, '10', { expirationTtl: 90 })
-
-    const res = await call('/api/views', {
-      headers: { 'CF-Connecting-IP': ip },
-    })
+    const res = await call('/api/views', { headers: { 'CF-Connecting-IP': ip } })
     expect(res.status).not.toBe(429)
   })
 
-  it('incrementa o contador a cada requisição bem-sucedida', async () => {
+  it('incrementa o contador a cada requisição', async () => {
     const ip  = '10.10.0.5'
-    const key = rateKey(ip)
+    const win = Math.floor(Date.now() / 60_000)
 
     await call('/api/views', { headers: { 'CF-Connecting-IP': ip } })
     await call('/api/views', { headers: { 'CF-Connecting-IP': ip } })
 
-    const count = parseInt(await env.VISITORS.get(key) ?? '0')
+    const count = globalThis._rl?.get(`${ip}:${win}`) || 0
     expect(count).toBe(2)
   })
 })
@@ -435,5 +423,181 @@ describe('GET /api/exam-log', () => {
   it('não expõe método POST (retorna 404)', async () => {
     const res = await call('/api/exam-log', { method: 'POST' })
     expect(res.status).toBe(404)
+  })
+})
+
+// =============================================================================
+// Camada 2 — POST /api/view e GET /api/views via D1
+// =============================================================================
+
+describe('POST /api/view — D1', () => {
+  it('registra view e retorna contagem correta', async () => {
+    const res = await call('/api/view', {
+      method: 'POST',
+      headers: { 'CF-Connecting-IP': '3.0.0.1', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: 'slug-d1-basic' }),
+    })
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body.views).toBe(1)
+  })
+
+  it('não duplica view do mesmo IP no mesmo dia', async () => {
+    const opts = {
+      method: 'POST',
+      headers: { 'CF-Connecting-IP': '3.0.0.2', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: 'slug-d1-dedup' }),
+    }
+    await call('/api/view', opts)
+    const res = await call('/api/view', opts)
+    const body = await res.json()
+    expect(body.views).toBe(1)
+  })
+
+  it('conta IPs diferentes como views separadas', async () => {
+    await call('/api/view', {
+      method: 'POST',
+      headers: { 'CF-Connecting-IP': '3.0.0.3', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: 'slug-d1-multi' }),
+    })
+    const res = await call('/api/view', {
+      method: 'POST',
+      headers: { 'CF-Connecting-IP': '3.0.0.4', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: 'slug-d1-multi' }),
+    })
+    const body = await res.json()
+    expect(body.views).toBe(2)
+  })
+
+  it('retorna 400 para slugs vazios', async () => {
+    const res = await call('/api/view', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    })
+    expect(res.status).toBe(400)
+  })
+})
+
+describe('GET /api/views — D1', () => {
+  beforeAll(async () => {
+    await env.DB.prepare(
+      `INSERT OR REPLACE INTO page_views (slug, view_count, updated_at) VALUES (?, ?, ?)`
+    ).bind('slug-preexisting', 42, new Date().toISOString()).run()
+  })
+
+  it('retorna contagem do D1 para slug existente', async () => {
+    const res = await call('/api/views?slugs=slug-preexisting')
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body['slug-preexisting']).toBe(42)
+  })
+
+  it('retorna 0 para slug sem views', async () => {
+    const res = await call('/api/views?slugs=slug-sem-views-xyz')
+    const body = await res.json()
+    expect(body['slug-sem-views-xyz']).toBe(0)
+  })
+})
+
+// =============================================================================
+// Camada 3 — POST /api/hello: KV throttle de visitor:{fp}
+// =============================================================================
+
+describe('POST /api/hello — KV throttle de visitor:{fp}', () => {
+  it('não reescreve KV quando _kw é recente e nome não mudou', async () => {
+    const fp  = 'throttle_test_fp_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+    const key = `visitor:${fp}`
+    const now = new Date().toISOString()
+    const oldKw = Date.now() - 500 // 500ms atrás — dentro da janela de 1h
+
+    await env.VISITORS.put(key, JSON.stringify({
+      name: 'throttle-user', visits: 3, firstSeen: now, lastSeen: now,
+      country: null, city: null, _kw: oldKw,
+    }), { expirationTtl: 86400 })
+    await env.VISITORS.put('name:throttle-user', fp, { expirationTtl: 86400 })
+    await env.DB.prepare(
+      `INSERT OR REPLACE INTO profiles (fingerprint, first_seen, last_seen, display_name, blocked, visits_count) VALUES (?, ?, ?, ?, 0, 3)`
+    ).bind(fp, now, now, 'throttle-user').run()
+
+    await call('/api/hello', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fingerprint: fp, name: 'throttle-user' }),
+    })
+
+    const after = JSON.parse(await env.VISITORS.get(key))
+    expect(after._kw).toBe(oldKw) // _kw inalterado = nenhum put ao KV
+  })
+
+  it('reescreve KV quando nome muda', async () => {
+    const fp  = 'throttle_name_fp_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
+    const key = `visitor:${fp}`
+    const now = new Date().toISOString()
+    const oldKw = Date.now() - 500
+
+    await env.VISITORS.put(key, JSON.stringify({
+      name: 'nome-antigo', visits: 1, firstSeen: now, lastSeen: now,
+      country: null, city: null, _kw: oldKw,
+    }), { expirationTtl: 86400 })
+    await env.VISITORS.put('name:nome-antigo', fp, { expirationTtl: 86400 })
+    await env.DB.prepare(
+      `INSERT OR REPLACE INTO profiles (fingerprint, first_seen, last_seen, display_name, blocked, visits_count) VALUES (?, ?, ?, ?, 0, 1)`
+    ).bind(fp, now, now, 'nome-antigo').run()
+
+    await call('/api/hello', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fingerprint: fp, name: 'nome-novo' }),
+    })
+
+    const after = JSON.parse(await env.VISITORS.get(key))
+    expect(after._kw).toBeGreaterThan(oldKw) // _kw atualizado = put ao KV ocorreu
+  })
+})
+
+// =============================================================================
+// Camada 4 — POST /api/hello: daily gate via D1 (sem KV)
+// =============================================================================
+
+describe('POST /api/hello — daily gate via D1', () => {
+  it('não cria chave daily:{fp}:{date} no KV', async () => {
+    const fp  = 'daily_gate_test_cccccccccccccccccccccccccccccccccccccccccccccccc'
+    const todayStr = new Date().toISOString().substring(0, 10)
+    const dailyKey = `daily:${fp}:${todayStr}`
+
+    await call('/api/hello', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fingerprint: fp }),
+    })
+
+    const kvVal = await env.VISITORS.get(dailyKey)
+    expect(kvVal).toBeNull()
+  })
+
+  it('não incrementa visits_count no D1 quando last_seen já é hoje', async () => {
+    const fp  = 'daily_gate_dedup_ddddddddddddddddddddddddddddddddddddddddddddddd'
+    const now = new Date().toISOString()
+
+    await env.DB.prepare(
+      `INSERT OR REPLACE INTO profiles (fingerprint, first_seen, last_seen, display_name, blocked, visits_count) VALUES (?, ?, ?, ?, 0, 5)`
+    ).bind(fp, now, now, 'daily-gate-user').run()
+    await env.VISITORS.put(`name:daily-gate-user`, fp, { expirationTtl: 86400 })
+    await env.VISITORS.put(`visitor:${fp}`, JSON.stringify({
+      name: 'daily-gate-user', visits: 5, firstSeen: now, lastSeen: now,
+      country: null, city: null,
+    }), { expirationTtl: 86400 })
+
+    await call('/api/hello', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fingerprint: fp, name: 'daily-gate-user' }),
+    })
+
+    const row = await env.DB.prepare(
+      `SELECT visits_count FROM profiles WHERE fingerprint = ?`
+    ).bind(fp).first()
+    expect(row.visits_count).toBe(5) // não incrementou
   })
 })

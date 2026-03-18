@@ -12,9 +12,10 @@ export default {
     const url = new URL(request.url);
 
     try {
-      // Rate limiting por IP via KV — persistente entre instâncias, cobre todos os métodos
-      const limited = await checkRateLimit(
-        request, env,
+      // Rate limiting por IP — in-memory (globalThis._rl), sync, sem KV put
+      const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown';
+      const limited = checkRateLimitInMemory(
+        ip,
         url.pathname === '/api/exam-result' ? RATE_LIMIT_EXAM : RATE_LIMIT_GENERAL
       );
       if (limited) return corsResponse(env, jsonResponse({ error: "Too many requests" }, 429));
@@ -139,23 +140,29 @@ function jsonResponse(data, status = 200) {
 
 const RATE_LIMIT_GENERAL = 30;  // req/min por IP (rotas gerais)
 const RATE_LIMIT_EXAM    = 10;  // req/min por IP (simulado — previne scraping de questões)
+const KV_THROTTLE_MS     = 3_600_000; // 1h — intervalo mínimo entre writes de visitor:{fp}
 
 async function isKillSwitchActive(env) {
   const val = await env.VISITORS.get('kill_switch');
   return val === 'true';
 }
 
-
-async function checkRateLimit(request, env, limit = RATE_LIMIT_GENERAL) {
-  const ip     = request.headers.get('CF-Connecting-IP') ?? 'unknown';
-  const window = Math.floor(Date.now() / 60_000);
-  const key    = `rate:${ip}:${window}`;
-
-  const current = parseInt(await env.VISITORS.get(key) ?? '0');
-  if (current >= limit) return true;
-
-  await env.VISITORS.put(key, String(current + 1), { expirationTtl: 90 });
-  return false;
+// Rate limiting in-memory via globalThis._rl.
+// globalThis persiste durante o ciclo de vida da instância do Worker,
+// tornando o KV desnecessário para controle de flood por IP.
+// Tradeoff: não é cross-instance, mas Workers do mesmo colo geralmente
+// ficam na mesma instância. Aceitável para blog pessoal.
+function checkRateLimitInMemory(ip, limit = RATE_LIMIT_GENERAL) {
+  const win = Math.floor(Date.now() / 60_000);
+  const key = `${ip}:${win}`;
+  if (!globalThis._rl) globalThis._rl = new Map();
+  const cur = (globalThis._rl.get(key) || 0) + 1;
+  globalThis._rl.set(key, cur);
+  // Limpa janelas antigas para não crescer indefinidamente
+  for (const k of globalThis._rl.keys()) {
+    if (!k.endsWith(`:${win}`)) globalThis._rl.delete(k);
+  }
+  return cur > limit;
 }
 
 async function sha256(text) {
@@ -210,7 +217,7 @@ async function handleHello(request, env) {
   if (env.DB) {
     try {
       const preCheck = await env.DB.prepare(
-        `SELECT blocked, display_name FROM profiles WHERE fingerprint = ?`
+        `SELECT blocked, display_name, last_seen FROM profiles WHERE fingerprint = ?`
       ).bind(fingerprint).first();
       if (preCheck) {
         if (preCheck.blocked) {
@@ -313,14 +320,19 @@ async function handleHello(request, env) {
     }
   }
 
-  await env.VISITORS.put(key, JSON.stringify(visitor), {
-    expirationTtl: 31536000, // 1 ano
-  });
+  // Camada 3: só escreve no KV se nome mudou ou se passou mais de 1h desde o último write.
+  // Evita 1 KV put por page load para visitantes frequentes.
+  const nameChanged = cleanName !== null && cleanName !== previousName;
+  const needsKvWrite = !visitor._kw || Date.now() - visitor._kw > KV_THROTTLE_MS || nameChanged;
+  if (needsKvWrite) {
+    visitor._kw = Date.now();
+    await env.VISITORS.put(key, JSON.stringify(visitor), { expirationTtl: 31536000 });
+  }
 
-  // Upsert D1 apenas 1x por dia por fingerprint
+  // Camada 4: usa last_seen do D1 como gate diário em vez de uma chave KV separada.
+  // preCheck já foi lido no início da função — sem round-trip extra ao D1.
   if (env.DB) {
-    const dailyKey = `daily:${fingerprint}:${today()}`;
-    const alreadySynced = await env.VISITORS.get(dailyKey);
+    const alreadySynced = preCheck?.last_seen?.startsWith(today());
     if (!alreadySynced) {
       const cf  = request.cf || {};
       const ua  = parseUA(request.headers.get('User-Agent'));
@@ -391,8 +403,6 @@ async function handleHello(request, env) {
         ).run();
 
       } catch (_) {}
-
-      await env.VISITORS.put(dailyKey, '1', { expirationTtl: 86400 });
     }
 
     // display_name: UPSERT para garantir consistência quando INSERT diário falhou
@@ -490,29 +500,39 @@ async function handleView(request, env) {
     return jsonResponse({ error: "Invalid slugs" }, 400);
   }
 
-  const ip = request.headers.get("CF-Connecting-IP") || "unknown";
-  const ipHash = (await sha256(ip + (env.SALT || ""))).substring(0, 16);
+  if (!env.DB) return jsonResponse({ error: "DB not configured" }, 503);
 
+  const ip     = request.headers.get("CF-Connecting-IP") || "unknown";
+  const ipHash = (await sha256(ip + (env.SALT || ""))).substring(0, 16);
+  const date   = today();
+  const now    = new Date().toISOString();
   const results = {};
 
   await Promise.all(slugs.map(async (slug) => {
     if (typeof slug !== "string" || slug.length > 100) return;
+    try {
+      // Dedup diário por IP×slug — INSERT OR IGNORE não conta duplicatas
+      const inserted = await env.DB.prepare(`
+        INSERT OR IGNORE INTO page_view_ips (slug, ip_hash, date) VALUES (?, ?, ?)
+      `).bind(slug, ipHash, date).run();
 
-    const key = `views:${slug}`;
-    let data = { count: 0, ips: [] };
+      if (inserted.meta.changes > 0) {
+        // Nova combinação IP×data — incrementa o contador agregado
+        await env.DB.prepare(`
+          INSERT INTO page_views (slug, view_count, updated_at) VALUES (?, 1, ?)
+          ON CONFLICT(slug) DO UPDATE SET
+            view_count = view_count + 1,
+            updated_at = excluded.updated_at
+        `).bind(slug, now).run();
+      }
 
-    const raw = await env.VISITORS.get(key);
-    if (raw) {
-      try { data = JSON.parse(raw); } catch (_) {}
+      const row = await env.DB.prepare(
+        `SELECT view_count FROM page_views WHERE slug = ?`
+      ).bind(slug).first();
+      results[slug] = row?.view_count || 0;
+    } catch (_) {
+      results[slug] = 0;
     }
-
-    if (!data.ips.includes(ipHash)) {
-      data.ips.push(ipHash);
-      data.count = data.ips.length;
-      await env.VISITORS.put(key, JSON.stringify(data));
-    }
-
-    results[slug] = data.count;
   }));
 
   // Retrocompatível: se veio slug único, retorna { views: N }
@@ -532,13 +552,16 @@ async function handleViewsBatch(request, env) {
   const slugs = slugsParam.split(",").filter(s => s.length > 0).slice(0, 50);
 
   if (slugs.length === 0) return jsonResponse({});
+  if (!env.DB) return jsonResponse({});
 
   const results = {};
   await Promise.all(slugs.map(async (slug) => {
-    const raw = await env.VISITORS.get(`views:${slug}`);
-    if (raw) {
-      try { results[slug] = JSON.parse(raw).count || 0; } catch (_) { results[slug] = 0; }
-    } else {
+    try {
+      const row = await env.DB.prepare(
+        `SELECT view_count FROM page_views WHERE slug = ?`
+      ).bind(slug).first();
+      results[slug] = row?.view_count || 0;
+    } catch (_) {
       results[slug] = 0;
     }
   }));
@@ -1501,9 +1524,6 @@ async function handleRefresh(request, env) {
   const raw     = await env.VISITORS.get(key);
   if (!raw) return jsonResponse({ error: 'Unknown fingerprint' }, 404);
 
-  // Apaga daily key para forçar re-sync
-  try { await env.VISITORS.delete(`daily:${fingerprint}:${today()}`); } catch (_) {}
-
   if (!env.DB) return jsonResponse({ ok: true });
 
   const now  = new Date().toISOString();
@@ -1540,9 +1560,6 @@ async function handleRefresh(request, env) {
       fingerprint
     ).run();
   } catch (_) {}
-
-  // Recria daily key para não duplicar visita
-  try { await env.VISITORS.put(`daily:${fingerprint}:${today()}`, '1', { expirationTtl: 86400 }); } catch (_) {}
 
   return jsonResponse({ ok: true });
 }
