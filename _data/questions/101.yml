@@ -47,7 +47,7 @@
 
 - id: "101-005"
   topic: "101.3"
-  question: "Em um sistema que utiliza o initi/SystemV, qual o comando utilizado para iniciar o processo httpd?"
+  question: "Em um sistema que utiliza o init/SystemV, qual o comando utilizado para iniciar o processo httpd?"
   options:
     - "systemctl start httpd"
     - "systemctl httpd start"
@@ -100,7 +100,7 @@
     - "telinit 'mensagem'"
     - "wall \"mensagem\""
     - "message \"mensagem\""
-    - " send \"mensagem\""
+    - "send \"mensagem\""
   answer: 3
   comment: "O comando wall irá enviar a mensagem que seguir o comando diretamente para o terminal de todos os usuários conectados no sistema. #wall"
 
@@ -270,17 +270,6 @@
   answer: 3
   comment: "O comando systemctl list-dependencies exibe uma árvore hierárquica mostrando quais units precisam ser iniciadas para que a unit especificada (ou o default.target) funcione. Ele mapeia as diretivas Wants e Requires do systemd. #systemd #systemctl"
 
-- id: "101-022"
-  topic: "101.2"
-  question: "Onde o GRUB irá armazenar suas informações de boot?"
-  options:
-    - "Inicialização da ROM"
-    - "Inicialização da RAM"
-    - "Master Boot Record (MBR)"
-    - "Partição /root"
-  answer: 3
-  comment: "Em arquiteturas BIOS tradicionais, o estágio 1 do GRUB (o código executável inicial) é gravado diretamente nos primeiros 446 bytes do MBR do disco rígido. Ele serve como um apontador para carregar os estágios posteriores que estão no sistema de arquivos (/boot). #grub #mbr"
-
 - id: "101-025"
   topic: "101.3"
   question: "Qual target dá suporte a login gráfico ?"
@@ -360,18 +349,6 @@
   answer: 4
   comment: "O arquivo /proc/cpuinfo exibe a linha 'cpu MHz' (ou similar, dependendo da arquitetura) para cada núcleo lógico detectado pelo kernel. Ele também mostra o BogoMIPS, que é uma medição interna de temporização do kernel, mas não a frequência real do relógio. #cpuinfo #proc"
 
-- id: "101-032"
-  topic: "101.2"
-  question: "Qual o arquivo no /proc informa os parâmetros passados ao Kernel durante o processo de boot?"
-  options:
-    - "/proc/cmdline"
-    - "/froc/sys/kernel/sysrq"
-    - "/proc/stat"
-    - "/proc/apm"
-    - "/proc/kmsg"
-  answer: 1
-  comment: "O arquivo /proc/cmdline contém a string de argumentos enviada pelo bootloader (como o GRUB) para o kernel. É essencial para verificar parâmetros como o dispositivo raiz (root=), modo de segurança ou configurações de console. #cmdline #kernel #boot"
-
 - id: "101-033"
   topic: "101.1"
   question: "Quantos dispositivos de IDE podem ser instalados simultaneamente em um sistema Intel típico?"
@@ -390,7 +367,7 @@
   options:
     - "head -4 /usr/src/linux/Makefile"
     - "cat /usr/src/linux/VERSION"
-    - "Look in the README"
+    - "Verificar o README"
     - "cat /usr/src/linux/.version"
   answer: 1
   comment: "No código-fonte do kernel Linux, as primeiras linhas do arquivo 'Makefile' definem as variáveis VERSION, PATCHLEVEL, SUBLEVEL e EXTRAVERSION. Ler o topo deste arquivo é a forma mais direta de identificar a versão exata do fonte. #kernel #makefile #linux-src"
@@ -406,4 +383,104 @@
     - "/proc/int"
   answer: 4
   comment: "O arquivo /proc/interrupts registra o número de interrupções por IRQ em cada CPU, além de listar o dispositivo de hardware associado a cada uma. É a fonte primária para depurar conflitos de interrupção no kernel. #proc #irq #hardware"
+
+- id: "101-036"
+  topic: "101.3"
+  question: "Qual o processo com PID 1?"
+  options:
+    - "Varia conforme a distribuição"
+    - "nenhum"
+    - "init"
+    - "kernel"
+    - "bash"
+  answer: 3
+  comment: "O processo com PID 1 é o primeiro processo de espaço de usuário executado pelo kernel logo após o boot. Historicamente é o daemon init (SysVinit). Em distribuições modernas, o systemd assume o PID 1, mas geralmente mantém um link simbólico chamado 'init' para retrocompatibilidade. Ele é o pai ou avô de todos os outros processos no sistema. #init #pid"
+
+- id: "101-037"
+  topic: "101.1"
+  question: "Qual comando deve ser utilizado para carregar um módulo e todas suas dependências automaticamente?"
+  options:
+    - "modprobe"
+    - "insmod"
+    - "lsmod"
+    - "loadmod"
+  answer: 1
+  comment: "O comando modprobe é utilizado para carregar e remover módulos do sistema, trabalhando com os arquivos presentes no /lib/modules consegue identificar as dependência de cada módulo. O insmod é usado para carregar um modo diretamente, mas não há tratamento de dependências. O lsmod é usado para listar os módulos carregados. #hardware #kernel #modprobe"
+
+- id: "101-038"
+  topic: "101.2"
+  question: "Quais comandos exibem as mensagens geradas pelo kernel durante o processo de boot do sistema? (Selecione 2 Respostas Corretas)"
+  options:
+    - "logger"
+    - "udevadm monitor"
+    - "wall"
+    - "dmesg"
+    - "journalctl -k"
+  answer: [4, 5]
+  comment: "O comando dmesg tem como saída um registro dos logs do boot do sistema, a mesma informação pode ser obtida pelo comando “journalctl -k”, a opção -k é referente apenas as mensagens de kernel do boot atual, a opção -b mostra todos os logs do boot atual. #boot #kernel #dmesg #journalctl"
+
+- id: "101-039"
+  topic: "101.2"
+  question: "Quando o “System V” está em uso, qual é o primeiro processo a ser iniciado no sistema e que por isso sempre possui o PID igual a 1?"
+  options:
+    - "init"
+    - "kernel"
+    - "BIOS"
+    - "initramfs"
+  answer: 1
+  comment: "Após o processo de boot, o kernel invoca o processo /sbin/init como o primeiro processo do sistema, e este inicia os demais, desta forma todos os outros processos são filhos do processo init. #boot #init #sysv #pid1"
+
+- id: "101-040"
+  topic: "101.1"
+  type: "discursive"
+  question: "Qual arquivo no /proc pode ser utilizado para consultar as associações atuais de IRQs no sistema? (Informe apenas o nome do arquivo, sem o caminho completo)"
+  answer: "interrupts"
+  comment: "IRQ é a sigla de Interrupt Request Line, ou Requisição de Interrupção. Essas informações ficam registradas no arquivo dinâmico /proc/interrupts. #hardware #irq #interrupts #proc"
+
+- id: "101-041"
+  topic: "101.3"
+  question: "Em um sistema que utiliza o SysV, quais dos seguintes comandos podem ser utilizados para alterar o modo de execução para o modo de manutenção? (Escolha DUAS Respostas Corretas)"
+  options:
+    - "reboot"
+    - "telinit 1"
+    - "runlevel 1"
+    - "init s"
+    - "systemctl isolate rescue.target"
+  answer: [2, 4]
+  comment: "Com o SysV os comandos init e telinit são utilizados para alterar o runlevel atual. O modo de manutenção, ou rescue mode, ou modo single, são identificados pelo runlevel 1, s ou S. #sysv #runlevel #init #maintenance"
+
+- id: "101-042"
+  topic: "101.2"
+  question: "Qual sistema de arquivos o UEFI é capaz de ler para encontrar e acessar o Bootloader a ser utilizado no processo de Boot?"
+  options:
+    - "FAT"
+    - "EXT4"
+    - "NTFS"
+    - "XFS"
+    - "ESP"
+  answer: 1
+  comment: "O UEFI acessa o ESP (EFI System Partition) para obter o Bootloader a ser utilizado. O ESP é uma partição que deve ser do tipo FAT, e é normalmente montada no diretório /boot/efi, em seus sub-diretórios estão os bootloades que podem ser utilizados pelos sistema. #uefi #fat #boot #esp"
+
+- id: "101-043"
+  topic: "101.3"
+  question: "Qual daemon é responsável por tratar eventos gerados ao se pressionar a tecla power do hardware, ou ao se conectar ou desconectar o cabo de energia de um notebook?"
+  options:
+    - "powerd"
+    - "acpid"
+    - "smartd"
+    - "haltd"
+    - "udev"
+  answer: 2
+  comment: "Computadores modernos dão suporte à Advanced Configuration and Power Interface, que permite o gerenciamento inteligente de energia em seu sistema e consulta ao estado das baterias e da configuração. O daemon acpid monitora esses eventos tomando as ações relacionadas às suas regras e configurações internas. #power #acpi #acpid #energy"
+
+- id: "101-044"
+  topic: "101.3"
+  question: "Em um sistema que utiliza o systemd, qual comando pode ser utilizado para exibir o status do serviço httpd?"
+  options:
+    - "systemd status httpd"
+    - "systemctl httpd status"
+    - "systemctl status httpd.service"
+    - "systemd show httpd.service"
+  answer: 3
+  comment: "O comando systemctl é o comando usado para gerenciamento no serviços no systemd. A sintaxe para operações nos serviços é: “systemctl <operação> <serviço>” #systemd #systemctl #httpd #service"
 

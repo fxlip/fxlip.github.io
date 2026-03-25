@@ -272,4 +272,137 @@
     - "KVM"
     - "dbus"
   answer: 2
-  comment: "Os Guest/Device Drivers são instalados nos Sistemas Operacionais Hosts das máquinas virtuais para melhorar sua performance e usabilidade. Como exemplos tempos o “Guest Additions” no VirtualBox e o “Vmware Tools” no VMWare. #guest-driver"
+  comment: “Os Guest/Device Drivers são instalados nos Sistemas Operacionais Convidados (Guests) para melhorar sua performance e usabilidade. Como exemplos temos o “Guest Additions” no VirtualBox e o “Vmware Tools” no VMWare. #guest-driver”
+
+- id: "102-025"
+  topic: "102.3"
+  question: "Qual variável de ambiente pode ser configurada para definir temporariamente a localização de uma biblioteca no sistema?"
+  options:
+    - "LD_LIBRARY_PATH"
+    - "LD_SO_CACHE"
+    - "LIB_PATH"
+    - "LD_LIB_PATH"
+    - "LIB_SHARE_PATH"
+  answer: 1
+  comment: "Ao definir e exportar a variável de ambiente LD_LIBRARY_PATH com determinado diretório, ou conjunto deles, as aplicações passarão a buscar pelas bibliotecas nesses diretórios e não apenas nas localizações padrão /lib e /usr/lib. #sharedlibs #libraries #ld_library_path"
+
+- id: "102-026"
+  topic: "102.1"
+  type: "discursive"
+  question: "Qual ponto de montagem contém por padrão os diretórios e arquivos de cada usuário criado no sistema e por isso há a recomendação de que seja criado em uma partição específica do sistema? (Informe o caminho completo do diretório)"
+  answer: "/home"
+  comment: "Recomenda-se que o diretório /home seja criado em uma partição distinta pois por possuir os arquivos e diretórios de cada usuários, é importante evitar que estes ocupem todo o espaço disponível do sistema. Além disso a partição separada facilita procedimentos de backup. #home #partition #layout #storage"
+
+- id: "102-027"
+  topic: "102.2"
+  type: "discursive"
+  question: "No GRUB 2, qual o nome do arquivo de configuração que é efetivamente utilizado pelo GRUB 2? (Informe apenas o nome do arquivo, sem o caminho completo)"
+  answer: "grub.cfg"
+  comment: "As configurações do GRUB podem ser feitas no /etc/default/grub, após o uso dos comandos update-grub ou grub-mkconfig é que o arquivo /boot/grub/grub.cfg será atualizado e então efetivamente utilizado pelo GRUB. O arquivo menu.lst é utilizado pelo GRUB Legacy, não pelo GRUB2. #grub2 #bootloader #grub.cfg #config"
+
+- id: "102-028"
+  topic: "102.4"
+  question: "Em uma distribuição Debian, qual dos comandos abaixo deve ser utilizado para remover o pacote gedit, incluindo todos os seus arquivos de configuração?"
+  options:
+    - "dpkg -r gedit"
+    - "apt-get remove gedit"
+    - "apt-get remove –config gedit"
+    - "apt-get purge gedit"
+    - "apt-get clean gedit"
+  answer: 4
+  comment: "No apt-get, a opção “purge” irá remover a aplicação e seus arquivos de configuração, utilizando apenas o “remove” os arquivos de configuração serão mantidos. No dpkg o mesmo recurso é acionado pelas opções -P ou –purge. #debian #apt #purge #dpkg"
+
+- id: "102-029"
+  topic: "102.1"
+  question: "Em qual diretório é por padrão montada a partição ESP (EFI System Partition)?"
+  options:
+    - "/boot"
+    - "/boot/efi"
+    - "/uefi"
+    - "/boot/esp"
+    - "/efi"
+  answer: 2
+  comment: "Sistemas que utilizam o UEFI como firmare possuem uma partição especial chamada ESP (EFI System Partition), que é montada no diretório /boot/efi/. Nesse diretório estão localizados os bootloaders que serão utilizados no processo de boot. Essa partição deve ser sempre do tipo FAT. #uefi #esp #boot #partition"
+
+- id: "102-030"
+  topic: "102.4"
+  question: "Em um sistema Debian, em qual arquivo de configuração podem ser encontrados os repositórios de pacotes utilizados pelo APT?"
+  options:
+    - "/etc/apt.conf"
+    - "/etc/apt/sources.list"
+    - "/etc/sources.list"
+    - "/etc/apt.d/sources.list"
+  answer: 2
+  comment: "O arquivo /etc/apt/sources.list contém uma lista de URLs e parâmetros utilizados pelos comandos do APT para verificar e fazer o download de novos pacotes. #debian #apt #repository #sources.list"
+
+- id: "102-031"
+  topic: "102.4"
+  question: "Quais comandos abaixo podem ser utilizados para exibir os detalhes da instalação do pacote zsh, como a versão, dependências, descrição e etc? (Selecione DUAS Respostas Corretas)"
+  options:
+    - "apt-get status zsh"
+    - "dpkg -L zsh"
+    - "dpkg -s zsh"
+    - "apt search zsh"
+    - "apt-cache show zsh"
+  answer: [3, 5]
+  comment: "O “dpkg -s” e o “apt-cache show” retornarão diversas informações de um pacote instalado no sistema. O “dpkg -L” lista os arquivos associados a determinado pacote. O “apt search” procura por pacotes disponíveis na base com a string informada. A opção “status” do apt-get não existe. #debian #apt-cache #dpkg #zsh"
+
+- id: "102-032"
+  topic: "102.2"
+  question: "Na tela inicial do processo de boot do GRUB, quais parâmetros podem ser utilizado para forçar a inicialização do sistema em modo de manutenção? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "maintenance"
+    - "single"
+    - "systemd.unit=rescue.target"
+    - "mono"
+    - "init=/bin/sh"
+  answer: [2, 3, 5]
+  comment: "Na interface do GRUB é possível incluir uma série de parâmetros que serão utilizados pelo kernel no momento do boot. Para o modo de manutenção, utiliza-se 's', 'single' ou '1'. Outras opções incluem definir um novo init via 'init=/bin/sh' ou indicar ao systemd o 'rescue.target'. #grub #boot #maintenance #single #systemd #init"
+
+- id: "102-033"
+  topic: "102.6"
+  question: "Qual arquivo contem um identificador único de uma máquina, seja ela física ou virtual?"
+  options:
+    - "/etc/machine-id"
+    - "/etc/dbus-uuid"
+    - "/boot/machine/dbus"
+    - "/etc/system/machine"
+  answer: 1
+  comment: "O /etc/machine-id (ou /var/lib/dbus/machine-id) é referente ao D-BUS Machine ID, que identifica de maneira única o host. #machine-id #virtualization #uuid #dbus"
+
+- id: "102-034"
+  topic: "102.5"
+  question: "Qual comando deve ser utilizado para verificar em que locais serão instalados os arquivos referentes ao pacote de software-v2.rpm, antes de instalá-lo?"
+  options:
+    - "rpm -qa software-v2.rpm"
+    - "rpm -ql software-v2.rpm"
+    - "rpm -qp software-v2.rpm"
+    - "rpm -qpl software-v2.rpm"
+    - "rpm -qt software-v2.rpm"
+  answer: 4
+  comment: "No comando rpm a opção -q habilita o modo “query”, a opção “p” é referente a um pacote .rpm ainda não instalado no sistema, e a opção “l” lista os arquivos de um pacote. #rpm #redhat #package #query"
+
+- id: "102-035"
+  topic: "102.5"
+  question: "Qual opção do comando yum exibe uma lista de atualizações disponíveis para os atuais pacotes do sistema?"
+  options:
+    - "update"
+    - "upgrade"
+    - "list"
+    - "verify"
+    - "check-update"
+  answer: 5
+  comment: "A opção check-update do yum verifica se há atualizações disponíveis para o sistema. #yum #redhat #updates #check-update"
+
+- id: "102-036"
+  topic: "102.5"
+  question: "Em um sistema com OpenSuse, que também utiliza pacotes rpm, qual comando deve ser utilizado para instalar o pacote ksh?"
+  options:
+    - "dnf -i ksh"
+    - "yum install ksh"
+    - "zypper in ksh"
+    - "apt install ksh"
+    - "dpkg install ksh"
+  answer: 3
+  comment: "O zypper é o gerenciador de pacotes rpm utilizado em sistemas OpenSuse. As opções são semelhantes ao yum, porém não iguais. Em geral há uma opção longa, por exemplo “zypper install ksh” ou curta, “zypper in ksh”. #opensuse #zypper #rpm #ksh"
+

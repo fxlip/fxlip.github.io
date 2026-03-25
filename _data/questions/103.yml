@@ -474,18 +474,6 @@
   answer: 3
   comment: "A variável de ambiente $HOME armazena o caminho absoluto do diretório do usuário atual. É o destino padrão do shell quando o comando 'cd' é executado sem argumentos. #env #home"
 
-- id: "101-032"
-  topic: "101.3"
-  question: "Qual o processo com com PID 1?"
-  options:
-    - "it varies"
-    - "nenhum"
-    - "init"
-    - "kernel"
-    - "bash"
-  answer: 3
-  comment: "O processo com PID 1 é o primeiro processo de espaço de usuário executado pelo kernel logo após o boot. Historicamente é o daemon init (SysVinit). Em distribuições modernas, o systemd assume o PID 1, mas geralmente mantém um link simbólico chamado 'init' para retrocompatibilidade. Ele é o pai ou avô de todos os outros processos no sistema. #init #pid"
-
 - id: "103-041"
   topic: "103.1"
   question: "Ricardo está trabalhando atualmente em um diretório que contém só um arquivo chamado faq.txt. O que é exibido logo depois que os comandos seguintes são executados no bash? Selecione a opção correta."
@@ -604,7 +592,7 @@
   answer: 1
   comment: "A expressão [Ll]inux utiliza uma classe de caracteres para aceitar tanto 'L' maiúsculo quanto 'l' minúsculo no início. Importante notar que, em ferramentas como o grep, para evitar 'linux.com' ou 'TurboLinux', seriam necessários delimitadores de borda de palavra (como \\b), mas entre as opções dadas, [Ll]inux é a única sintaticamente correta para alternância de caixa. #regex #grep"
 
-- id: "103-050"
+- id: "103-061"
   topic: "103.1"
   question: "Você precisa procurar em todos os diretórios para localizar um determinado arquivo. Como você fará isto e ainda continuar a chamar outros comandos?"
   options:
@@ -732,4 +720,222 @@
     - "coloca o processo no primeiro plano."
   answer: 2
   comment: "O caractere '&' é o operador de controle do shell para execução assíncrona. Ele envia o comando para o 'background' (segundo plano), permitindo que o shell exiba o prompt imediatamente para novos comandos sem esperar o término do anterior. #bash #background #jobs"
+
+- id: "103-061"
+  topic: "103.1"
+  question: "Quais dos comandos abaixo podem ajudar um usuário a encontrar informações e ajuda sobre um comando? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "history"
+    - "find"
+    - "man"
+    - "info"
+    - "whatis"
+  answer: [3, 4, 5]
+  comment: "Os comandos man e info retornarão, na maioria dos casos, um manual completo de cada comando. O whatis trará uma definição breve da função da ferramenta. #man #info #whatis #help"
+
+- id: "103-062"
+  topic: "103.1"
+  type: "discursive"
+  question: "Qual variável de ambiente contém o nome do arquivo utilizado para armazenar os últimos comandos utilizados por um usuário? (Informe apenas o nome da variável)"
+  answer: "HISTFILE"
+  comment: "A variável de ambiente HISTFILE armazena o caminho e nome do arquivo que armazenará o histórico de comandos, por padrão /home/<USER>/.bash_history. HISTFILESIZE contém o tamanho máximo do arquivo de histórico. USER contém o nome do usuário do shell atual. HISTORY não existe. #bash #history #histfile #env"
+
+- id: "103-063"
+  topic: "103.1"
+  question: "Qual variável embutida no Bash retorna o valor do PID do shell atual?"
+  options:
+    - "$!"
+    - "$?"
+    - "$$"
+    - "$~"
+    - "$#"
+  answer: 3
+  comment: "Ao digitar $$ o usuário recebe o PID (Process ID) do shell atual. $! é o PID do último processo em background (job) executado. $? é o código de retorno (exit code) do último comando executado. $~ não existe. #bash #pid #variables #shell"
+
+- id: "103-064"
+  topic: "103.1"
+  question: "Você deseja definir a variável VAR1 com o Valor “Certificacao Linux”, qual comando deve ser utilizado?"
+  options:
+    - "VAR1(Certificacao Linux)"
+    - "VAR1=Certificacao Linux"
+    - "VAR1=\"Certificacao Linux\""
+    - "VAR1 = ‘Certificacao Linux’"
+  answer: 3
+  comment: "Quando houver mais de uma string na variável, elas devem ser agrupadas por aspas. Também não deve haver espaços antes ou depois do sinal de =. #bash #variables #quotes #env"
+
+- id: "103-065"
+  topic: "103.2"
+  question: "Um arquivo texto foi compactado utilizando-se o algoritmo gzip, qual comando pode ser utilizado para ler-se o conteúdo desse arquivo, sem remover a compactação do mesmo?"
+  options:
+    - "cat"
+    - "zcat"
+    - "bzcat"
+    - "md5sum"
+    - "xzcat"
+  answer: 2
+  comment: "O comando zcat pode ser utilizado para ler arquivos compactados com o algoritmo gzip, outra opção seria o uso do comando gunzip com a opção -c. O bzcat faz o mesmo para arquivos compactados com o bzip2 e o xzcat com o algoritimo xz. #gzip #zcat #compression #text"
+
+- id: "103-066"
+  topic: "103.2"
+  question: "Qual caractere(s) deve(m) ser removido(s) de um arquivo texto que está utilizando o padrão de quebras de linha CR-LF para que ele passe a utilizar o padrão do Linux?"
+  options:
+    - "\\r"
+    - "\\n"
+    - "\\r\\n"
+    - "^M"
+    - "\\d"
+  answer: 1
+  comment: "Para alterar o padrão de quebra de linha CR-LF, típico de sistemas Windows, para o padrão utilizado no Linux, LF, basta remover o caractere equivalente ao CR representado pelo \\r. Isso normalmente é feito através do comando tr, por exemplo: tr -d ‘\\r’ < origem.txt > destino.txt #text #crlf #linux #tr"
+
+- id: "103-067"
+  topic: "103.3"
+  question: "Dentre os arquivos abaixo, quais serão listados ao se utilizar o comando ls da seguinte maneira: # ls -l Exercicios[1-5].{txt,doc} (Selecione DUAS Respostas Corretas)"
+  options:
+    - "Exercicios1.txt"
+    - "Exercicios11.txt"
+    - "Exercicios22doc"
+    - "Exercicios15.doc"
+    - "Exercicios5.doc"
+  answer: [1, 5]
+  comment: "No file globbing do shell, o [] determina uma lista de caracteres que podem ser utilizados, apenas um deles. O {} possibilita a definição de uma lista de strings possíveis. #globbing #bash #files #ls"
+
+- id: "103-068"
+  topic: "103.3"
+  question: "Qual comando é capaz de determinar o tipo de um arquivo baseado em seus padrões de texto e formato?"
+  options:
+    - "type"
+    - "format"
+    - "file"
+    - "whatis"
+    - "info"
+  answer: 3
+  comment: "O comando “file” pode ser usado para determinar o tipo de um arquivo. O comando “type” é usado para identificar se um comando é interno ou externo ao shell. whatis mostra apenas uma descrição do comando. #file #commands #file-type #magic-numbers"
+
+- id: "103-069"
+  topic: "103.4"
+  question: "Qual comando irá enviar ao programa “gera-relatorio” o arquivo “dados” como entrada e registrar os logs de erro no arquivo “erros.log”?"
+  options:
+    - "gera-relatorio > dados 2> erros.log"
+    - "gera-relatorio < dados >> erros.log"
+    - "dados > gera-relatorio > erros.log"
+    - "gera-relatorio < dados 2> erros.log"
+  answer: 4
+  comment: "O símbolo < indica que “dados” será a entrada do comando “gera-relatorio”, enquanto que o simbolo “2>” indica que a saída de erro (stderr) será enviada ao arquivo erros.log. #stdin #stderr #bash"
+
+- id: "103-070"
+  topic: "103.3"
+  question: "Quais opções devem ser utilizadas no comando find para encontrar todos os arquivos modificados nos últimos 7 dias no diretório /etc?"
+  options:
+    - "find /etc -ctime +7"
+    - "find /etc -mtime +7"
+    - "find /etc -ctime 7"
+    - "find /etc -mtime -7"
+  answer: 4
+  comment: "O find possui 3 tipos de busca por tempo: ctime (change time) = última mudança de conteúdo e/ou propriedades, mtime (modification time) = última mudança de conteúdo, atime (access time) = última vez que o arquivo foi acessado. O sinal de menos (-) indica 'menos que' ou 'nos últimos'. #find #mtime #etc #files"
+
+- id: "103-071"
+  topic: "103.3"
+  question: "Qual comando irá remover o diretório aula1 e todos os seus arquivos e subdiretórios?"
+  options:
+    - "rm -r aula1"
+    - "rmdir aula1"
+    - "rmdir -r aula1"
+    - "rm -f aula1"
+  answer: 1
+  comment: "O comando rm com a opção -r remove um diretório recursivamente, ou seja, remove o diretório e tudo que está dentro. O rmdir é utilizado apenas para remover diretórios vazios. #rm #rmdir #recursive #dir"
+
+- id: "103-072"
+  topic: "103.4"
+  type: "discursive"
+  question: "Qual comando tem a função de a partir de uma entrada padrão, construir e executar determinado comando uma ou mais vezes? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
+  answer: "xargs"
+  comment: "O xargs é usado para construir e executar comandos a partir de uma entrada padrão. Ele converte a entrada recebida em argumentos para um comando e o executa. #xargs #pipes #stdin"
+
+- id: "103-073"
+  topic: "103.8"
+  question: "No VI, quais dos comandos abaixo podem ser utilizados para salvar um documento e em seguida sair do editor de texto?"
+  options:
+    - ":q!"
+    - ":wq"
+    - ":x"
+    - "ZZ"
+    - "XX"
+  answer: [2, 3, 4]
+  comment: "Os comandos :wq, :x e ZZ irão salvar o documento e sair do VI. :q! sai sem salvar e XX não tem nenhuma função. #vi #editor"
+
+- id: "103-074"
+  topic: "103.7"
+  question: "Qual dos seguintes comandos vai analisar o arquivo entrada.txt e substituir na sua saída todas as referências da palavra Linux por LINUX?"
+  options:
+    - "sed /Linux/LINUX/g entrada.txt"
+    - "sed ‘/Linux/LINUX/g’ entrada.txt"
+    - "sed ‘s/Linux/LINUX/’ entrada.txt"
+    - "sed ‘s/Linux/LINUX/g’ entrada.txt"
+  answer: 4
+  comment: "No sed, a instrução deve estar entre aspas simples. Outro ponto importante é o “g”, de global, no final da expressão; sem ela, apenas a primeira ocorrência de cada linha seria substituída, e não todas as ocorrências. #sed #regex"
+
+- id: "103-075"
+  topic: "103.8"
+  type: "discursive"
+  question: "No editor vi, qual comando irá copiar para o buffer a linha atual e as 5 linhas seguintes? (Informe o comando do vi sem espaços)"
+  answer: "6yy"
+  comment: "Ao pressionar yy a linha atual é copiada. Para copiar a linha atual e as 5 seguintes (totalizando 6 linhas), utiliza-se 6yy ou y6y. Para colar, utiliza-se o comando p. #vi"
+
+- id: "103-076"
+  topic: "103.5"
+  question: "Qual o código do sinal enviado a um processo quando ele é interrompido através do uso das teclas Ctrl C?"
+  options:
+    - "1"
+    - "2"
+    - "9"
+    - "15"
+    - "16"
+  answer: 2
+  comment: "O sinal 2, ou SIGINT, é associado ao Ctrl C, e interrompe a execução de um processo. #process #signal #sigint"
+
+- id: "103-077"
+  topic: "103.8"
+  question: "Durante a edição de um arquivo no vi, o arquivo foi alterado por outro processo ou usuário. Qual opção deve ser utilizada para reabrir o arquivo com o novo conteúdo, sem sair do vi?"
+  options:
+    - ":o"
+    - ":e"
+    - ":wq"
+    - ":i"
+  answer: 2
+  comment: "O comando :e abre novamente a última versão salva do arquivo em edição, sem sair do vi. #vi"
+
+- id: "103-078"
+  topic: "103.5"
+  question: "Quais opções devem ser usadas junto ao comando ps para que sejam exibidos os processos de todos os usuários do sistema, vinculados (ou não) a qualquer terminal, exibindo inclusive o nome do usuário dono de cada processo?"
+  options:
+    - "aux"
+    - "alx"
+    - "fx"
+    - "ef"
+  answer: 1
+  comment: "A opção “a” mostra os processos de outros usuários mas vinculados ao terminal atual. A opção “u” habilita o formato de usuário, exibindo o nome do usuário dono de cada processo assim como outros detalhes do processo. A opção “x” mostra os processos de todos os terminais, além de processos que não estão associados a nenhum terminal. #ps"
+
+- id: "103-079"
+  topic: "103.5"
+  question: "Quais ferramentas podem ser utilizadas para, a partir de uma única sessão no shell, ser possível criar e gerenciar diferentes terminais? (Selecione DUAS Respostas Corretas)"
+  options:
+    - "screen"
+    - "htop"
+    - "jobs"
+    - "tmux"
+    - "split"
+  answer: [1, 4]
+  comment: "Tanto o tmux quanto o screen permitem que usuário utilize uma única tela para abrir e gerenciar diversos terminais, com atividades independentes, permitindo inclusive o controle de janelas, painéis e etc. #tmux #screen"
+
+- id: "103-080"
+  topic: "103.6"
+  question: "Quais comandos podem ser usados para alterar a prioridade de execução de um programa que já esta em execução? (Selecione DUAS Respostas Corretas)"
+  options:
+    - "top"
+    - "nice"
+    - "renice"
+    - "chmod"
+    - "jobs"
+  answer: [1, 3]
+  comment: "Os comandos renice e top podem ser utilizados para alterar o valor de NICE de um processo já em execução. O comando nice é utilizado para definir o valor ao se iniciar um processo. #nice #renice #top"
 

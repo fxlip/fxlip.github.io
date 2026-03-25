@@ -224,7 +224,7 @@
   question: "Dentro da interface do comando parted, qual das instruções abaixo pode ser usada para diminuir o tamanho de uma partição?"
   options:
     - "resizepart"
-    - rescue"
+    - "rescue"
     - "reducepart"
     - "disk_resize"
     - "Não é possível reduzir o tamanho de uma partição"
@@ -237,7 +237,7 @@
   code: "/dev/sda1    7,3G     5,6G     1,7G     78% /home"
   options:
     - "du -h"
-    - df -m"
+    - "df -m"
     - "ls -lh"
     - "du -s"
     - "df -h"
@@ -293,11 +293,11 @@
   topic: "104.5"
   question: "Em uma sessão em que o valor do umask é 0002, qual a permissão padrão da criação de um arquivo?"
   options:
-    - "rw-rw-r–"
+    - "rw-rw-r--"
     - "rwxrwxrw-"
-    - "rw-r–r–"
+    - "rw-r--r--"
     - "rw-rw-rw-"
-    - "r-xr-xr–"
+    - "r-xr-xr--"
   answer: 1
   comment: "As permissões são definidas subtraindo o valor do umask do valor 666 para aquivos e 777 para diretórios. Dessa forma, o valor 022, que também pode aparecer como 0022, será 777 – 022 = 755 (rwxr-xr-x). #umask #permissions"
 
@@ -359,7 +359,7 @@
     - "FileSystems com Journalling requerem checagens de disco (fsck) menores e mais rápidas após uma queda de energia"
     - "Sistemas com Journallling funcionam melhor com arquivos grandes"
   answer: 4
-  comment: "O journal apenas as últimas operações de escrita e mudanças na partição, tornando a recuperação de uma falha no disco mais rápida e evitando corrompimentos durante quedas de energia ou desligamentos abruptos. O recurso do journaling foi implementado no filesystem ext3, sendo a única diferença com relação ao ext2. #journaling #ext3"
+  comment: "O journal registra apenas as últimas operações de escrita e mudanças na partição, tornando a recuperação de uma falha no disco mais rápida e evitando corrompimentos durante quedas de energia ou desligamentos abruptos. O recurso do journaling foi implementado no filesystem ext3, sendo a única diferença com relação ao ext2. #journaling #ext3"
 
 - id: "104-031"
   topic: "104.1"
@@ -395,3 +395,225 @@
     - "FS="
   answer: 4
   comment: "Um ponto de montagem também pode ser configurado através de uma Unit no Systemd. Para isso basta criar um arquivo do tipo ponto-de-montagem.mount nos diretórios de configuração do systemd (/lib/systemd/system ou /etc/systemd/system/). Entre outras opções, o “What” define o dispositivo e o “Where” o ponto de montagem. #systemd #mount"
+
+- id: "104-034"
+  topic: "104.7"
+  question: "Conforme o FHS, dentre as opções a seguir, qual a melhor definição para os arquivos contidos no diretório /var ?"
+  options:
+    - "Contém arquivos com informações do sistema e do hardware"
+    - "Arquivos temporários utilizados por usuários e aplicações"
+    - "Contém arquivos e bibliotecas compartilhadas por diversas aplicações"
+    - "Arquivos com dados variados e voláteis, como logs, caches, locks e etc"
+  answer: 4
+  comment: "O diretório /var (Variable) é destinado a arquivos que mudam de tamanho ou conteúdo durante a operação normal do sistema, como logs, arquivos de spool e bases de dados temporárias. #fhs #var #linux #filesystem"
+
+- id: "104-035"
+  topic: "104.2"
+  question: "Qual opção do comando tune2fs é utilizada para alterar a porcentagem de espaço reservada para o usuário root em uma partição com o sistema de arquivos ext4?"
+  options:
+    - "-i"
+    - "-s"
+    - "-o"
+    - "-m"
+    - "-c"
+  answer: 4
+  comment: "A opção -m do tune2fs altera o valor do parâmetro “reserved-blocks-percentage”, que define a porcentagem do sistema reservada ao root (padrão 5%). #ext4 #tune2fs #root #filesystem"
+
+- id: "104-036"
+  topic: "103.5"
+  question: "Qual comando exibe a lista de todas as tarefas executadas em background no shell atual?"
+  options:
+    - "top"
+    - "pgrep"
+    - "ps -a"
+    - "jobs"
+  answer: 4
+  comment: "O comando jobs mostra todos os processos (ou conjunto deles) iniciados em background, com o uso do &, na sessão atual. #jobs #bg #proc #shell"
+
+- id: "104-037"
+  topic: "104.3"
+  question: "Qual das entradas do arquivo /etc/fstab abaixo está incorreta?"
+  options:
+    - "LABEL=Partition1     /var     ext4     defaults     0     1"
+    - "/dev/sr0     /media/cdrom     iso9660     user,noauto     0     0"
+    - "UUID=E24E-BD2F     none     swap     sw     0     0"
+    - "/home     /dev/sda2     defaults,usrquota,grpquota     1     2"
+  answer: 4
+  comment: "A primeira informação das linhas do /etc/fstab deve ser o nome do dispositivo (device, UUID ou LABEL), o segundo deve ser o diretório a ser montado. No caso de uma partição de swap, o segundo campo pode ser descrito como “none”. #fstab #mount #linux #etc"
+
+- id: "104-038"
+  topic: "103.4"
+  question: "Qual dos seguintes redirecionamentos irá escrever a saída padrão e a saída de erro no arquivo filename?"
+  options:
+    - "2>&1 >filename"
+    - ">filename 2>&1"
+    - "1>&2> filename"
+    - ">>filename"
+  answer: 2
+  comment: "A indicação >filename redireciona a saída padrão (stdout, descritor de valor 1) para o arquivo filename. A indicação 2>&1 diz que a saída de erro (stderr, descritor de valor 2) deve ser associada ao mesmo local que está associada a saída padrão. #stdout #stderr #bash #file"
+
+- id: "104-039"
+  topic: "103.4"
+  question: "Qual comando deve ser usado para que o resultado do comando “ls -l” seja gravado ao final do arquivo log.out, sem apagar o conteúdo anterior desse arquivo?"
+  options:
+    - "ls -l | tee log.out"
+    - "ls -l > log.out"
+    - "ls -l 2> log.out"
+    - "ls -l >> log.out"
+  answer: 4
+  comment: "Ao contrário do >, o redirecionador >> faz um append no final do arquivo informado, mantendo o que estava escrito anteriormente. O tee por padrão sobrescreve o arquivo informado. #ls #bash #stdout"
+
+- id: "104-040"
+  topic: "104.3"
+  question: "O administrador do sistema deseja configurar a montagem automática de uma partição com o seu UUID. Quais comandos podem ser utilizados para se obter o valor do UUID de todas as partições do sistema? (Selecione DUAS Respostas Corretas)"
+  options:
+    - "blkid"
+    - "mount"
+    - "df -U"
+    - "systemctl list-mounts"
+    - "lsblk -f"
+  answer: [1, 5]
+  comment: "Os comandos “blkid” e “lsblk -f” exibirão todas as partições e seus respectivos valores de UUID, Label e diversas outras informações. #uuid #blkid #lsblk #fstab"
+
+- id: "104-041"
+  topic: "103.7"
+  question: "Das expressões regulares abaixo, qual pode ser utilizada para encontrar registros que comecem com a indicação de horário (Hora:Minuto), no formato 24-horas, também conhecido como formato militar, ou seja, 02:30, 14:22, 21:49, 9:49, aceitando inclusive que o valor da hora comece ou não com 0, por exemplo 1:30 e 01:30?"
+  options:
+    - "[0-2]?[0-9]:[0-5][0-9]$"
+    - "^([01][0-9]|2[0123]):[0-5][0-9]"
+    - "^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]"
+    - "^[0-9]?[0-9]:[0-5][0-9]"
+  answer: 3
+  comment: "Os colchetes [] definem uma lista de valores possíveis. Os parenteses () definem grupos que podem ser separados por |, no sentido de ou. O caractere ? indica que o caractere ou grupo anterior é opcional. E o ^ indica que a expressão deve estar no começo de uma linha. #regex #grep #egrep #time"
+
+- id: "104-042"
+  topic: "103.7"
+  question: "Qual comando mostra todas os registros do arquivo /etc/passwd, exceto os que tiverem a string “/bin/false”"
+  options:
+    - "grep -v “/bin/false” /etc/passwd"
+    - "egrep -c /bin/false /etc/passwd"
+    - "fgrep “/bin/false” /etc/passwd"
+    - "fgrep -c “/bin/false” /etc/passwd"
+  answer: 1
+  comment: "No grep/egrep/fgrep, a opção -v tem o efeito de não exibir a string ou os resultados da expressão utilizada. #grep #egrep #fgrep #bash"
+
+- id: "104-043"
+  topic: "103.6"
+  question: "Qual o valor de NICE usado para que um processo tenha a máxima prioridade possível?"
+  options:
+    - "19"
+    - "20"
+    - "-19"
+    - "-20"
+  answer: 4
+  comment: "O nice de um processo pode ser configurado com valores que vão do -20 ao 19, aonde o -20 aumenta ao máximo a prioridade, e o 19 a diminui ao máximo. #nice #priority #linux #process"
+
+- id: "104-044"
+  topic: "104.5"
+  question: "Qual comando impedirá que qualquer usuário que não seja o dono ou membros do grupo associado ao diretório /usr/dir, possam ler (com o comando ls) ou acessar (com o comando cd) este diretório?"
+  options:
+    - "chmod 774 /usr/dir"
+    - "chmod o-rx /usr/dir"
+    - "chmod o-r /usr/dir"
+    - "chmd 775 /usr/dir"
+  answer: 2
+  comment: "Em um diretório, a permissão 'r' permite listar os arquivos e subdiretórios, enquanto a permissão 'x' permite acessar (entrar) no diretório. Ao utilizar o-rx no chmod, removem-se as permissões de leitura e execução para a categoria 'outros' (others). #chmod"
+
+- id: "104-045"
+  topic: "104.5"
+  question: "Quais dos seguintes comandos podem ser utilizados para se definir o Sticky bit no diretório /tmp? (Selecione DUAS Respostas Corretas)"
+  options:
+    - "chmod g+s /tmp"
+    - "chmod 1775 /tmp"
+    - "chmod 2775 /tmp"
+    - "chmod 4775 /tmp"
+    - "chmod o+t /tmp"
+  answer: [2, 5]
+  comment: "O Sticky bit determina que um arquivo só pode ser apagado ou renomeado pelo seu proprietário, pelo proprietário do diretório ou pelo root. Em representação numérica, o valor 1 precede as permissões padrão (ex: 1775); em modo simbólico, utiliza-se o+t. #chmod"
+
+- id: "104-046"
+  topic: "104.6"
+  question: "Qual comando criará um link simbólico chamado acesso-direto apontando para o arquivo /opt/sistema/arquivo?"
+  options:
+    - "ln -s /opt/sistema/arquivo acesso-direto"
+    - "ln -s acesso-direto /opt/sistema/arquivo"
+    - "ln acesso-direto /opt/sistema/arquivo"
+    - "ln /opt/sistema/arquivo acesso-direto"
+  answer: 1
+  comment: "A opção -s do comando ln especifica a criação de um link simbólico e a principal forma de uso é: ln -s <arquivo alvo> <nome do link> #ln"
+
+- id: "104-047"
+  topic: "104.7"
+  question: "Qual opção do comando find é utilizada para limitar o número de subdiretórios em que a pesquisa recursiva ocorrerá?"
+  options:
+    - "-path"
+    - "-print"
+    - "-p"
+    - "-levels"
+    - "-maxdepth"
+  answer: 5
+  comment: "No find, com a opção -maxdepth é possível definir em quantos níveis de diretórios a pesquisa pelos arquivos se aprofundará. #find"
+
+- id: "104-048"
+  topic: "104.1"
+  type: "discursive"
+  question: "Após criar uma nova partição do tipo swap, qual o próximo comando que deve ser utilizado pelo administrador do sistema antes de torná-la ativa? (Informe apenas o comando, sem o caminho ou argumentos)"
+  answer: "mkswap"
+  comment: "Após definir a partição, ainda é preciso formatá-la com o comando mkswap para que após isso ela possa ser incluída na área de swap com o comando swapon. #swap"
+
+- id: "104-049"
+  topic: "104.2"
+  question: "Qual comando pode ser utilizado para verificar o uso de inodes da partição /dev/sdb1, montada no diretório /usr?"
+  options:
+    - "df /usr"
+    - "df -i /dev/sdb1"
+    - "du -i /usr"
+    - "fsck /dev/sdb1"
+  answer: 2
+  comment: "O comando df é utilizado para verificar a utilização de uma partição, normalmente exibe o espaço em disco, mas com a opção -i exibe o uso de inodes. #df #inodes"
+
+- id: "104-050"
+  topic: "104.1"
+  question: "Qual a principal diferença entre o sistema de arquivos ext2 e o ext3?"
+  options:
+    - "O ext2 usa particionamento MBR, enquanto que o ext3 usa GPT"
+    - "O ext3 foi criado para suportar um maior volume de dados"
+    - "Diferente do ext2, o ext3 suporta o recurso de journaling"
+    - "Diferente do ext2, o ext3 suporta a alocação dinâmica de inodes"
+  answer: 3
+  comment: "O recurso do journaling foi implementado no filesystem ext3, sendo a única diferença com relação ao ext2. #ext3 #journaling"
+
+- id: "104-051"
+  topic: "104.3"
+  question: "Qual opção do comando mount é usada para que que o conteúdo de um diretório fique também disponível em outro diretório?"
+  options:
+    - "–copy"
+    - "–link"
+    - "–bind"
+    - "–recursive"
+  answer: 3
+  comment: "A opção mount é usada para remontar um diretório também em algum outro diretório. Após essa configuração, o mesmo conteúdo pode ser acessado a partir de locais/diretórios diferentes. A sintaxe é: mount –bind oldir newdir #mount #bind"
+
+- id: "104-052"
+  topic: "104.5"
+  question: "Qual das seguintes configurações do umask fará com que todo novo arquivo criado tenha  a permissão 664 (rw-rw-r–) ?"
+  options:
+    - "0022"
+    - "1122"
+    - "0002"
+    - "0113"
+  answer: 3
+  comment: "As permissões são definidas subtraindo o valor do umask do valor 666 para arquivos e 777 para diretórios. Dessa forma, o valor 0002, que também pode aparecer como 002, será 666 – 002 = 664 (rw-rw-r–). #umask"
+
+- id: "104-053"
+  topic: "104.6"
+  question: "Quais afirmações são verdadeiras com relação aos links físicos e simbólicos? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "Um link simbólico pode ter como destino um arquivo em uma partição diferente"
+    - "Um link simbólico tem o mesmo inode que seu arquivo/diretório destino"
+    - "Apenas o link simbólico pode ter um diretório como destino, o link físico só pode ser utilizado para arquivos"
+    - "O acesso aos dados através de um link físico será possível mesmo que o nome do arquivo seja alterado posteriormente"
+    - "Em um link físico, será sempre utilizado o símbolo ->, para indicar o arquivo destino do link"
+  answer: [1, 3, 4]
+  comment: "Diferentemente de um link físico, não há nenhum problema do link simbólico apontar para um arquivo/diretório em uma partição diferente da qual está criado. Os links físicos possuem o mesmo inode que o arquivo destino. Um link físico é um outro arquivo que referencia o mesmo conjunto de dados, então após criados os arquivos são independentes e podem ser renomeados. Apenas o link simbólico utiliza o sinal -> para indicar seu destino. #links #inode"
+

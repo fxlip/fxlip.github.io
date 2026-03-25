@@ -21,17 +21,6 @@
   answer: 3
   comment: "xxx"
 
-- id: "109-001"
-  topic: "109.X"
-  question: "xxx"
-  options:
-    - "xxx"
-    - "xxx"
-    - "xxx"
-    - "xxx"
-  answer: [2, 4]
-  comment: "xxx"
-
 - id: "109-002"
   topic: "109.X"
   type: "discursive"
