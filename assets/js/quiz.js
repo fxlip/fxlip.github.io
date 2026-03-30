@@ -114,6 +114,14 @@
   // Renderização de HTML
   // --------------------------------------------------------------------------
 
+  function checkDiscursiveAnswer(input, accepted) {
+    const norm = input.trim().toLowerCase();
+    if (Array.isArray(accepted)) {
+      return accepted.some(a => String(a).trim().toLowerCase() === norm);
+    }
+    return norm === String(accepted || '').trim().toLowerCase();
+  }
+
   function buildCodeBlock(code) {
     if (!code) return '';
     return `<pre class="quiz-code"><code>${escapeHtml(code)}</code></pre>`;
@@ -125,9 +133,12 @@
     const codeHtml     = buildCodeBlock(q.code);
 
     if (q.type === 'discursive') {
-      const answerHtml = escapeHtml(q.answer || '').replace(/\n/g, '<br>');
+      const answerHtml = Array.isArray(q.answer)
+        ? q.answer.map(a => escapeHtml(String(a))).join(' / ')
+        : escapeHtml(q.answer || '').replace(/\n/g, '<br>');
+      const discAnswerAttr = escapeHtml(JSON.stringify(q.answer || ''));
       return (
-        `<div class="quiz-q quiz-discursive" data-topic="${escapeHtml(q.topic)}" data-disc-answer="${escapeHtml(q.answer || '')}">` +
+        `<div class="quiz-q quiz-discursive" data-topic="${escapeHtml(q.topic)}" data-disc-answer="${discAnswerAttr}">` +
           `<p>${questionHtml}</p>` +
           codeHtml +
           `<ol>` +
@@ -389,7 +400,9 @@
       const inputLi  = qEl.querySelector('.quiz-disc-input-li');
       const modelAns = qEl.querySelector('.quiz-model-answer');
       const explain  = qEl.querySelector('.quiz-explanation');
-      const discAns  = (qEl.dataset.discAnswer || '').trim().toLowerCase();
+      let discAns;
+      try { discAns = JSON.parse(qEl.dataset.discAnswer || '""'); }
+      catch (_) { discAns = qEl.dataset.discAnswer || ''; }
 
       textarea.addEventListener('focus', () => inputLi.classList.add('quiz-disc-focused'));
       textarea.addEventListener('blur',  () => inputLi.classList.remove('quiz-disc-focused'));
@@ -403,7 +416,7 @@
         qEl.classList.add('quiz-answered');
         textarea.disabled = true;
 
-        const isCorrect = textarea.value.trim().toLowerCase() === discAns;
+        const isCorrect = checkDiscursiveAnswer(textarea.value, discAns);
         modelAns.classList.add('visible', isCorrect ? 'quiz-disc-correct' : 'quiz-disc-wrong');
         if (explain && explain.textContent.trim()) explain.classList.add('visible');
         answered++;

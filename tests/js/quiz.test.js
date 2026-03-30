@@ -251,6 +251,87 @@ describe('selectQuestions', () => {
 })
 
 // =============================================================================
+// checkDiscursiveAnswer — duplicada de assets/js/quiz.js para teste isolado
+// =============================================================================
+
+function checkDiscursiveAnswer(input, accepted) {
+  const norm = input.trim().toLowerCase()
+  if (Array.isArray(accepted)) {
+    return accepted.some(a => String(a).trim().toLowerCase() === norm)
+  }
+  return norm === String(accepted || '').trim().toLowerCase()
+}
+
+// =============================================================================
+// Testes: checkDiscursiveAnswer
+// =============================================================================
+
+describe('checkDiscursiveAnswer', () => {
+  describe('resposta única (string)', () => {
+    it('aceita resposta correta', () => {
+      expect(checkDiscursiveAnswer('interrupts', 'interrupts')).toBe(true)
+    })
+
+    it('aceita resposta correta com case diferente', () => {
+      expect(checkDiscursiveAnswer('INTERRUPTS', 'interrupts')).toBe(true)
+    })
+
+    it('aceita resposta correta com espaços extras', () => {
+      expect(checkDiscursiveAnswer('  interrupts  ', 'interrupts')).toBe(true)
+    })
+
+    it('rejeita resposta errada', () => {
+      expect(checkDiscursiveAnswer('irqs', 'interrupts')).toBe(false)
+    })
+
+    it('rejeita string vazia', () => {
+      expect(checkDiscursiveAnswer('', 'interrupts')).toBe(false)
+    })
+
+    it('aceita número como string', () => {
+      expect(checkDiscursiveAnswer('1', '1')).toBe(true)
+    })
+  })
+
+  describe('múltiplas respostas aceitas (array)', () => {
+    const accepted = ['1', 'SIGHUP', 'HUP']
+
+    it('aceita primeiro elemento do array', () => {
+      expect(checkDiscursiveAnswer('1', accepted)).toBe(true)
+    })
+
+    it('aceita segundo elemento do array', () => {
+      expect(checkDiscursiveAnswer('SIGHUP', accepted)).toBe(true)
+    })
+
+    it('aceita terceiro elemento do array', () => {
+      expect(checkDiscursiveAnswer('HUP', accepted)).toBe(true)
+    })
+
+    it('aceita com case diferente', () => {
+      expect(checkDiscursiveAnswer('sighup', accepted)).toBe(true)
+      expect(checkDiscursiveAnswer('hup', accepted)).toBe(true)
+    })
+
+    it('aceita com espaços extras', () => {
+      expect(checkDiscursiveAnswer('  1  ', accepted)).toBe(true)
+    })
+
+    it('rejeita resposta não listada', () => {
+      expect(checkDiscursiveAnswer('SIGTERM', accepted)).toBe(false)
+    })
+
+    it('rejeita string vazia', () => {
+      expect(checkDiscursiveAnswer('', accepted)).toBe(false)
+    })
+
+    it('array vazio nunca aceita nenhuma resposta', () => {
+      expect(checkDiscursiveAnswer('1', [])).toBe(false)
+    })
+  })
+})
+
+// =============================================================================
 // buildCodeBlock — duplicada de assets/js/quiz.js para teste isolado
 // =============================================================================
 

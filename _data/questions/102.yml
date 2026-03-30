@@ -3,7 +3,7 @@
   type: "discursive"
   question: "Qual é o ID de partição de uma partição Swap do Linux?"
   answer: "82"
-  comment: "No esquema de particionamento MBR (Master Boot Record), cada tipo de partição possui um identificador hexadecimal; o código 82 reserva o espaço para a memória virtual (Swap) do Linux. #fdisk"
+ comment: "No esquema de particionamento MBR (Master Boot Record), cada tipo de partição possui um identificador hexadecimal; o código 82 reserva o espaço para a memória virtual (Swap) do Linux. #fdisk"
 
 - id: "102-002"
   topic: "102.2"  
@@ -15,14 +15,14 @@
     - "Após sobrescrever o kernel antigo em /boot por um novo"
     - "Apenas a primeira vez após a instalação do GRUB"
   answer: 5
-  comment: "O grub-install é usado para instalar os binários do GRUB no setor de boot (MBR ou partição EFI). Mudanças de configuração ou novos kernels exigem apenas o grub-mkconfig (ou update-grub), pois o \"carregador\" físico já está no lugar. #grub-install"
+ comment: "O grub-install é usado para instalar os binários do GRUB no setor de boot (MBR ou partição EFI). Mudanças de configuração ou novos kernels exigem apenas o grub-mkconfig (ou update-grub), pois o \"carregador\" físico já está no lugar. #grub-install"
 
 - id: "102-003"
   topic: "102.3"
   type: "discursive"
   question: "Qual programa é usado para determinar quais bibliotecas compartilhadas são usadas por um programa específico?"
   answer: "ldd"
-  comment: "O comando ldd (List Dynamic Dependencies) imprime as bibliotecas compartilhadas exigidas por cada programa ou biblioteca compartilhada especificada na linha de comando. #ldd"
+ comment: "O comando ldd (List Dynamic Dependencies) imprime as bibliotecas compartilhadas exigidas por cada programa ou biblioteca compartilhada especificada na linha de comando. #ldd"
 
 - id: "102-004"
   topic: "102.4"  
@@ -34,7 +34,7 @@
     - "dselect foobar"
     - "apt-get remove foobar"
   answer: [3, 5]
-  comment: "O dpkg -r (remove) opera em baixo nível diretamente no banco de dados local, enquanto o apt-get remove é uma interface de alto nível que também resolve dependências. Nunca use o nome do arquivo .deb para desinstalar, apenas o nome do pacote. #apt-get #dpkg"
+ comment: "O dpkg -r (remove) opera em baixo nível diretamente no banco de dados local, enquanto o apt-get remove é uma interface de alto nível que também resolve dependências. Nunca use o nome do arquivo .deb para desinstalar, apenas o nome do pacote. #apt-get #dpkg"
 
 - id: "102-005"
   topic: "102.5"  
@@ -46,7 +46,7 @@
     - "rpm -qa"
     - "rpm -la"
   answer: 4
-  comment: "O comando rpm com a flag -q (query) inicia uma consulta ao banco de dados, e a flag -a (all) instrui o sistema a retornar todos os pacotes atualmente instalados. #rpm"
+ comment: "O comando rpm com a flag -q (query) inicia uma consulta ao banco de dados, e a flag -a (all) instrui o sistema a retornar todos os pacotes atualmente instalados. #rpm"
 
 - id: "102-006"
   topic: "102.4"  
@@ -57,7 +57,7 @@
     - "apt-get"
     - "dinst"
   answer: 4
-  comment: "Enquanto dpkg (ferramenta de base), apt-get (gerenciador moderno) e dselect (interface de menu antiga) são ferramentas reais do ecossistema Debian, o comando dinst não existe nesse contexto. #dpkg"
+ comment: "Enquanto dpkg (ferramenta de base), apt-get (gerenciador moderno) e dselect (interface de menu antiga) são ferramentas reais do ecossistema Debian, o comando dinst não existe nesse contexto. #dpkg"
 
 - id: "102-007"
   topic: "102.1"
@@ -69,7 +69,7 @@
     - "mount /dev/cdrom /dev/hdc"
     - "mount -f linux /dev/hdc /mnt/cdrom"
   answer: 3
-  comment: "Para montar sem depender do /etc/fstab, você deve especificar explicitamente o tipo do sistema de arquivos (-t iso9660), o dispositivo de origem (/dev/cdrom) e o ponto de montagem de destino (/mnt/cdrom). #mount #iso9660 #cdrom"
+ comment: "Para montar sem depender do /etc/fstab, você deve especificar explicitamente o tipo do sistema de arquivos (-t iso9660), o dispositivo de origem (/dev/cdrom) e o ponto de montagem de destino (/mnt/cdrom). #mount #iso9660 #cdrom"
 
 - id: "102-008"
   topic: "102.1"
@@ -80,7 +80,7 @@
     - "detach /dev/sdb1"
     - "remount -u /mnt/backup"
   answer: 2
-  comment: "O comando correto é 'umount' (sem a letra 'n'). Ele pode receber tanto o nome do dispositivo quanto o ponto de montagem como argumento. É comum o erro de grafia 'unmount', mas o binário do sistema ignora o 'n' extra. #umount #filesystem #storage"
+ comment: "O comando correto é 'umount' (sem a letra 'n'). Ele pode receber tanto o nome do dispositivo quanto o ponto de montagem como argumento. É comum o erro de grafia 'unmount', mas o binário do sistema ignora o 'n' extra. #umount"
 
 - id: "102-009"
   topic: "102.1"
@@ -92,7 +92,7 @@
     - "O disco contém 2 partições primárias e duas estendidas"
     - "Ou /dev/sda1 ou /dev/sda2 é uma partição estendida"
   answer: 5
-  comment: "No particionamento MBR, há um limite de 4 partições primárias ou 3 primárias e 1 estendida na qual serão associadas as partições lógicas. As partições primárias e estendidas serão sempre de 1 a 4 (sda1, sda2, sda3 e sda4) e as partições lógicas a partir de 5 (sda5 e etc). #mbr"
+ comment: "No particionamento MBR, há um limite de 4 partições primárias ou 3 primárias e 1 estendida na qual serão associadas as partições lógicas. As partições primárias e estendidas serão sempre de 1 a 4 (sda1, sda2, sda3 e sda4) e as partições lógicas a partir de 5 (sda5 e etc). #mbr"
 
 - id: "102-010"
   topic: "102.2"
@@ -104,7 +104,7 @@
     - "root"
     - "BOOT_IMAGE"
   answer: 2
-  comment: "No GRUB Legacy, o parâmetro para indicar o kernel a ser utilizado é o “kernel”, já no GRUB 2 o parâmetro é o “linux”. #grub-legacy #grub2"
+ comment: "No GRUB Legacy, o parâmetro para indicar o kernel a ser utilizado é o“kernel”, já no GRUB 2 o parâmetro é o“linux”. #grub-legacy #grub2"
 
 - id: "102-011"
   topic: "102.2"
@@ -116,7 +116,7 @@
     - "/etc/grub.conf"
     - "/boot/grub/default"
   answer: 3
-  comment: "As configurações são normalmente realizadas no /etc/default/grub, em seguida deve ser utilizado o comando update-grub ou grub-mkconfig para que seja gerado um novo /boot/grub/grub.cfg que é o arquivo efetivamente utilizado pelo GRUB. #grub2 #default"
+ comment: "As configurações são normalmente realizadas no /etc/default/grub, em seguida deve ser utilizado o comando update-grub ou grub-mkconfig para que seja gerado um novo /boot/grub/grub.cfg que é o arquivo efetivamente utilizado pelo GRUB. #grub2"
 
 - id: "102-012"
   topic: "102.4"
@@ -128,7 +128,7 @@
     - "dpkg -l"
     - "rpm -q"
   answer: 4
-  comment: "O comando dpkg faz operações e consultas diretamente nos pacotes .deb. Dentre as diversas opções, o -l ou –list exibe os pacotes presentes no sistema. O apt-get é uma ferramenta de alto nível que lida com dependências e repositórios, e não tem uma opção direta para listar pacotes instalados. O rpm é específico para sistemas baseados em Red Hat. #dpkg #apt-get #rpm"
+ comment: "O comando dpkg faz operações e consultas diretamente nos pacotes .deb. Dentre as diversas opções, o -l ou –list exibe os pacotes presentes no sistema. O apt-get é uma ferramenta de alto nível que lida com dependências e repositórios, e não tem uma opção direta para listar pacotes instalados. O rpm é específico para sistemas baseados em Red Hat. #dpkg #apt-get #rpm"
 
 - id: "102-013"
   topic: "102.3"
@@ -140,7 +140,7 @@
     - "Todos os módulos do sistema são recompilados"
     - "Nada, o comando ldconfig exige parâmetros"
   answer: 1
-  comment: "O ldconfig é utilizado para atualizar a base de diretórios em que as bibliotecas compartilhadas podem ser encontradas, na prática o ldconfig atualiza o arquivo /etc/ld.so.cache com base nas configurações do /etc/ld.so.conf. #ldconfig"
+ comment: "O ldconfig é utilizado para atualizar a base de diretórios em que as bibliotecas compartilhadas podem ser encontradas, na prática o ldconfig atualiza o arquivo /etc/ld.so.cache com base nas configurações do /etc/ld.so.conf. #ldconfig"
 
 - id: "102-014"
   topic: "102.4"
@@ -152,7 +152,7 @@
     - "dpkg –update-all"
     - "aptitude update"
   answer: 2
-  comment: "O “apt-get upgrade” atualiza todos os pacotes atualmente instalados no sistema. O “apt-get update” apenas sincroniza a base local com as informações contidas nas fontes de pacotes. #apt-get #update"
+ comment:“O“apt-get upgrade” atualiza todos os pacotes atualmente instalados no sistema. O“apt-get update” apenas sincroniza a base local com as informações contidas nas fontes de pacotes. #apt-get”
 
 - id: "102-015"
   topic: "102.4"
@@ -164,7 +164,7 @@
     - "dselect tzdata"
     - "apt-get clean tzdata"
   answer: 3
-  comment: "O comando dpkg-reconfigure pode ser utilizado para reconfigurar um pacote já instalado como por exemplo as configurações do teclado com o “dkpg-reconfigure keyboard-configuration”. #dpkg-reconfigure"
+ comment: "O comando dpkg-reconfigure pode ser utilizado para reconfigurar um pacote já instalado como por exemplo as configurações do teclado com o“dkpg-reconfigure keyboard-configuration”. #dpkg-reconfigure"
 
 - id: "102-016"
   topic: "102.5"
@@ -176,7 +176,7 @@
     - "yum -ivh provalpi-1.1.1-2.x86_64.rpm"
     - "dpkg -i provalpi-1.1.1-2.x86_64.rpm"
   answer: 2
-  comment: "A opção -U do comando rpm pode ser utilizada tanto atualizar um pacote já instalado quanto para instalar um novo pacote. #rpm"
+ comment: "A opção -U do comando rpm pode ser utilizada tanto atualizar um pacote já instalado quanto para instalar um novo pacote. #rpm"
 
 - id: "102-017"
   topic: "102.5"
@@ -188,7 +188,7 @@
     - "O comando rpm pode ser utilizado para informar todas as dependências de um pacote."
     - "O comando rpm pode ser utilizado para fazer o download de um determinado pacote."
   answer: 5
-  comment: "O download de pacotes pode ser feito pelo comando yumdownloader ou pelo yum com a opção –downloadonly. #yum #rpm"
+ comment: "O download de pacotes pode ser feito pelo comando yumdownloader ou pelo yum com a opção –downloadonly. #yum #rpm"
 
 - id: "102-018"
   topic: "102.3"
@@ -200,7 +200,7 @@
       - "Incluir o diretório no arquivo /etc/ld.so.conf e executar o comando ldconfig"
       - "Criar um arquivo que contenha o diretório desejado em /etc/ld.so.conf.d/ e executar o comando ldd"
   answer: 4
-  comment: "O ldconfig é utilizado para atualizar a base de diretórios em que as bibliotecas compartilhadas podem ser encontradas, na prática o ldconfig atualiza o arquivo /etc/ld.so.cache com base nas configurações do /etc/ld.so.conf. #ldconfig"
+ comment: "O ldconfig é utilizado para atualizar a base de diretórios em que as bibliotecas compartilhadas podem ser encontradas, na prática o ldconfig atualiza o arquivo /etc/ld.so.cache com base nas configurações do /etc/ld.so.conf. #ldconfig"
 
 - id: "102-019"
   topic: "102.4"
@@ -212,7 +212,7 @@
     - "apt-get clear <nome-do-pacote>"
     - "rpm -e <nome-do-pacote>"
   answer: 3
-  comment: "As opções “–remove” e “-r” removem o pacote mas os arquivos de configuração serão mantidos. As opções “-P” e “–purge” removerem a aplicação e seus arquivos de configuração. #dpkg #apt-get"
+ comment: "As opções“–remove” e“-r” removem o pacote mas os arquivos de configuração serão mantidos. As opções“-P” e“–purge” removerem a aplicação e seus arquivos de configuração. #dpkg #apt-get"
 
 - id: "102-020"
   topic: "102.5"
@@ -224,7 +224,7 @@
     - "yum –search"
     - "yum -s"
   answer: 2
-  comment: "A opção search do yum procura por pacotes que tenham relação com a string informada, baseado no nome dos pacotes, seu sumário e descrição. #yum"
+ comment: "A opção search do yum procura por pacotes que tenham relação com a string informada, baseado no nome dos pacotes, seu sumário e descrição. #yum"
 
 - id: "102-021"
   topic: "102.2"
@@ -236,7 +236,7 @@
     - "update-grub /dev/sda"
     - "grub"
   answer: 2
-  comment: "O grub-install tem a função de instalar os arquivos do boot loader no dispositivo indicado. #grub-install"
+ comment: "O grub-install tem a função de instalar os arquivos do boot loader no dispositivo indicado. #grub-install"
 
 - id: "102-022"
   topic: "102.1"
@@ -248,7 +248,7 @@
     - "FAT"
     - "btrfs"
   answer: 4
-  comment: "Sistemas que utilizam o UEFI como firmware possuem uma partição especial chamada ESP (EFI System Partition), que é montada no diretório /boot/efi/. Nesse diretório estão localizados os bootloaders que serão utilizados no processo de boot. Essa partição deve ser sempre do tipo FAT. #efi"
+ comment: "Sistemas que utilizam o UEFI como firmware possuem uma partição especial chamada ESP (EFI System Partition), que é montada no diretório /boot/efi/. Nesse diretório estão localizados os bootloaders que serão utilizados no processo de boot. Essa partição deve ser sempre do tipo FAT. #efi"
 
 - id: "102-023"
   topic: "102.5"
@@ -260,7 +260,7 @@
     - "deb"
     - "tgz"
   answer: 3
-  comment: "O zypper é o gerenciador de pacotes rpm utilizado em sistemas OpenSuse. As opções são semelhantes ao yum, porém não iguais. Em geral há uma opção longa, por exemplo “zypper install ksh” ou curta, “zypper in ksh”"
+ comment: "O zypper é o gerenciador de pacotes rpm utilizado em sistemas OpenSuse. As opções são semelhantes ao yum, porém não iguais. Em geral há uma opção longa, por exemplo“zypper install ksh” ou curta,“zypper in ksh”"
 
 - id: "102-024"
   topic: "102.6"
@@ -272,7 +272,7 @@
     - "KVM"
     - "dbus"
   answer: 2
-  comment: “Os Guest/Device Drivers são instalados nos Sistemas Operacionais Convidados (Guests) para melhorar sua performance e usabilidade. Como exemplos temos o “Guest Additions” no VirtualBox e o “Vmware Tools” no VMWare. #guest-driver”
+ comment:“Os Guest/Device Drivers são instalados nos Sistemas Operacionais Convidados (Guests) para melhorar sua performance e usabilidade. Como exemplos temos o“Guest Additions” no VirtualBox e o“Vmware Tools” no VMWare. #guest-driver”
 
 - id: "102-025"
   topic: "102.3"
@@ -284,21 +284,21 @@
     - "LD_LIB_PATH"
     - "LIB_SHARE_PATH"
   answer: 1
-  comment: "Ao definir e exportar a variável de ambiente LD_LIBRARY_PATH com determinado diretório, ou conjunto deles, as aplicações passarão a buscar pelas bibliotecas nesses diretórios e não apenas nas localizações padrão /lib e /usr/lib. #sharedlibs #libraries #ld_library_path"
+ comment: "Ao definir e exportar a variável de ambiente LD_LIBRARY_PATH com determinado diretório, ou conjunto deles, as aplicações passarão a buscar pelas bibliotecas nesses diretórios e não apenas nas localizações padrão /lib e /usr/lib. #ldconfig #ld_library_path"
 
 - id: "102-026"
   topic: "102.1"
   type: "discursive"
   question: "Qual ponto de montagem contém por padrão os diretórios e arquivos de cada usuário criado no sistema e por isso há a recomendação de que seja criado em uma partição específica do sistema? (Informe o caminho completo do diretório)"
   answer: "/home"
-  comment: "Recomenda-se que o diretório /home seja criado em uma partição distinta pois por possuir os arquivos e diretórios de cada usuários, é importante evitar que estes ocupem todo o espaço disponível do sistema. Além disso a partição separada facilita procedimentos de backup. #home #partition #layout #storage"
+ comment: "Recomenda-se que o diretório /home seja criado em uma partição distinta pois por possuir os arquivos e diretórios de cada usuários, é importante evitar que estes ocupem todo o espaço disponível do sistema. Além disso a partição separada facilita procedimentos de backup."
 
 - id: "102-027"
   topic: "102.2"
   type: "discursive"
   question: "No GRUB 2, qual o nome do arquivo de configuração que é efetivamente utilizado pelo GRUB 2? (Informe apenas o nome do arquivo, sem o caminho completo)"
   answer: "grub.cfg"
-  comment: "As configurações do GRUB podem ser feitas no /etc/default/grub, após o uso dos comandos update-grub ou grub-mkconfig é que o arquivo /boot/grub/grub.cfg será atualizado e então efetivamente utilizado pelo GRUB. O arquivo menu.lst é utilizado pelo GRUB Legacy, não pelo GRUB2. #grub2 #bootloader #grub.cfg #config"
+ comment: "As configurações do GRUB podem ser feitas no /etc/default/grub, após o uso dos comandos update-grub ou grub-mkconfig é que o arquivo /boot/grub/grub.cfg será atualizado e então efetivamente utilizado pelo GRUB. O arquivo menu.lst é utilizado pelo GRUB Legacy, não pelo GRUB2. #grub2 #grub.cfg"
 
 - id: "102-028"
   topic: "102.4"
@@ -310,7 +310,7 @@
     - "apt-get purge gedit"
     - "apt-get clean gedit"
   answer: 4
-  comment: "No apt-get, a opção “purge” irá remover a aplicação e seus arquivos de configuração, utilizando apenas o “remove” os arquivos de configuração serão mantidos. No dpkg o mesmo recurso é acionado pelas opções -P ou –purge. #debian #apt #purge #dpkg"
+ comment: "No apt-get, a opção“purge” irá remover a aplicação e seus arquivos de configuração, utilizando apenas o“remove” os arquivos de configuração serão mantidos. No dpkg o mesmo recurso é acionado pelas opções -P ou –purge. #apt #dpkg"
 
 - id: "102-029"
   topic: "102.1"
@@ -322,7 +322,7 @@
     - "/boot/esp"
     - "/efi"
   answer: 2
-  comment: "Sistemas que utilizam o UEFI como firmare possuem uma partição especial chamada ESP (EFI System Partition), que é montada no diretório /boot/efi/. Nesse diretório estão localizados os bootloaders que serão utilizados no processo de boot. Essa partição deve ser sempre do tipo FAT. #uefi #esp #boot #partition"
+ comment: "Sistemas que utilizam o UEFI como firmare possuem uma partição especial chamada ESP (EFI System Partition), que é montada no diretório /boot/efi/. Nesse diretório estão localizados os bootloaders que serão utilizados no processo de boot. Essa partição deve ser sempre do tipo FAT. #uefi #esp"
 
 - id: "102-030"
   topic: "102.4"
@@ -333,7 +333,7 @@
     - "/etc/sources.list"
     - "/etc/apt.d/sources.list"
   answer: 2
-  comment: "O arquivo /etc/apt/sources.list contém uma lista de URLs e parâmetros utilizados pelos comandos do APT para verificar e fazer o download de novos pacotes. #debian #apt #repository #sources.list"
+ comment: "O arquivo /etc/apt/sources.list contém uma lista de URLs e parâmetros utilizados pelos comandos do APT para verificar e fazer o download de novos pacotes. #apt #sources.list"
 
 - id: "102-031"
   topic: "102.4"
@@ -345,7 +345,7 @@
     - "apt search zsh"
     - "apt-cache show zsh"
   answer: [3, 5]
-  comment: "O “dpkg -s” e o “apt-cache show” retornarão diversas informações de um pacote instalado no sistema. O “dpkg -L” lista os arquivos associados a determinado pacote. O “apt search” procura por pacotes disponíveis na base com a string informada. A opção “status” do apt-get não existe. #debian #apt-cache #dpkg #zsh"
+ comment: "O“dpkg -s” e o“apt-cache show” retornarão diversas informações de um pacote instalado no sistema. O“dpkg -L” lista os arquivos associados a determinado pacote. O“apt search” procura por pacotes disponíveis na base com a string informada. A opção“status” do apt-get não existe. #apt-cache #dpkg"
 
 - id: "102-032"
   topic: "102.2"
@@ -357,7 +357,7 @@
     - "mono"
     - "init=/bin/sh"
   answer: [2, 3, 5]
-  comment: "Na interface do GRUB é possível incluir uma série de parâmetros que serão utilizados pelo kernel no momento do boot. Para o modo de manutenção, utiliza-se 's', 'single' ou '1'. Outras opções incluem definir um novo init via 'init=/bin/sh' ou indicar ao systemd o 'rescue.target'. #grub #boot #maintenance #single #systemd #init"
+ comment: "Na interface do GRUB é possível incluir uma série de parâmetros que serão utilizados pelo kernel no momento do boot. Para o modo de manutenção, utiliza-se 's', 'single' ou '1'. Outras opções incluem definir um novo init via 'init=/bin/sh' ou indicar ao systemd o 'rescue.target'. #grub #systemd #init"
 
 - id: "102-033"
   topic: "102.6"
@@ -368,7 +368,7 @@
     - "/boot/machine/dbus"
     - "/etc/system/machine"
   answer: 1
-  comment: "O /etc/machine-id (ou /var/lib/dbus/machine-id) é referente ao D-BUS Machine ID, que identifica de maneira única o host. #machine-id #virtualization #uuid #dbus"
+ comment: "O /etc/machine-id (ou /var/lib/dbus/machine-id) é referente ao D-BUS Machine ID, que identifica de maneira única o host. #uuid"
 
 - id: "102-034"
   topic: "102.5"
@@ -380,7 +380,7 @@
     - "rpm -qpl software-v2.rpm"
     - "rpm -qt software-v2.rpm"
   answer: 4
-  comment: "No comando rpm a opção -q habilita o modo “query”, a opção “p” é referente a um pacote .rpm ainda não instalado no sistema, e a opção “l” lista os arquivos de um pacote. #rpm #redhat #package #query"
+ comment: "No comando rpm a opção -q habilita o modo“query”, a opção“p” é referente a um pacote .rpm ainda não instalado no sistema, e a opção“l” lista os arquivos de um pacote. #rpm"
 
 - id: "102-035"
   topic: "102.5"
@@ -392,7 +392,7 @@
     - "verify"
     - "check-update"
   answer: 5
-  comment: "A opção check-update do yum verifica se há atualizações disponíveis para o sistema. #yum #redhat #updates #check-update"
+ comment: "A opção check-update do yum verifica se há atualizações disponíveis para o sistema. #yum"
 
 - id: "102-036"
   topic: "102.5"
@@ -404,5 +404,151 @@
     - "apt install ksh"
     - "dpkg install ksh"
   answer: 3
-  comment: "O zypper é o gerenciador de pacotes rpm utilizado em sistemas OpenSuse. As opções são semelhantes ao yum, porém não iguais. Em geral há uma opção longa, por exemplo “zypper install ksh” ou curta, “zypper in ksh”. #opensuse #zypper #rpm #ksh"
+ comment:“O zypper é o gerenciador de pacotes rpm utilizado em sistemas OpenSuse. As opções são semelhantes ao yum, porém não iguais. Em geral há uma opção longa, por exemplo“zypper install ksh” ou curta,“zypper in ksh”. #zypper #rpm”
+
+- id: “102-037”
+  topic: “102.5”
+  question: “Quais comandos podem ser utilizados para remover um pacote em um sistema padrão Red Hat? (Selecione TRÊS Respostas Corretas)”
+  options:
+    - “rpm -e”
+    - “rpm -d”
+    - “yum remove”
+    - “yum erase”
+    - “rpm --purge”
+  answer: [1, 3, 4]
+ comment:“No comando rpm as opções -e ou --erase podem ser utilizadas para remover um pacote. No yum as opções 'erase' e 'remove' podem ser utilizadas para a mesma função. #rpm #yum”
+
+- id: “102-038”
+  topic: “102.5”
+  question: “Em um sistema que utiliza pacotes RPM, qual comando irá exibir todos os arquivos instalados pelo pacote vim-minimal?”
+  options:
+    - “rpm -qf vim-minimal”
+    - “rpm -F vim-minimal”
+    - “rpm -ql vim-minimal”
+    - “rpm -qa vim-minimal --files”
+    - “rpm -qs vim-minimal”
+  answer: 3
+ comment:“No comando rpm a opção -q habilita o modo 'query' e a opção -l possibilita informar um pacote e ter como retorno todos os arquivos instalados por ele. #rpm #vim-minimal”
+
+- id: “102-039”
+  topic: “102.6”
+  question: “Qual elemento tem a função de melhorar a performance e a usabilidade dos Sistemas Operacionais utilizados nas máquinas virtuais, ou S.O. Guest?”
+  options:
+    - “Cloud-Init”
+    - “Hypervisor”
+    - “Guest Driver”
+    - “D-Bus Machine ID”
+  answer: 3
+ comment:“Os Guest/Device Drivers são instalados nos Sistemas Operacionais das máquinas virtuais para melhorar sua performance e usabilidade. Como exemplos temos o 'Guest Additions' no VirtualBox e o 'VMware Tools' no VMware. #guest-driver #virtualbox #vmware”
+
+- id: “102-040”
+  topic: “102.1”
+  question: “Qual comando pode ser utilizado para verificar os pontos de montagem ativos pelo systemd?”
+  options:
+    - “journalctl list-mounts”
+    - “systemctl list-units --type=mount”
+    - “systemctl list-mounts”
+    - “cat /proc/systemd/mounts”
+  answer: 2
+ comment:“O systemd representa cada ponto de montagem como uma 'mount unit'. O comando systemctl list-units --type=mount lista todas as unidades de montagem ativas gerenciadas pelo systemd, exibindo o dispositivo, o ponto de montagem e o estado atual. O journalctl é exclusivo para consulta de logs, e os demais comandos não existem. #systemd #systemctl #mount”
+
+- id: “102-041”
+  topic: “102.5”
+  question: “Em um sistema Red Hat, o pacote novo-software já está instalado. O administrador recebeu o arquivo novo-softwareV2.rpm com uma nova versão. Qual comando deve ser utilizado para atualizar esse pacote a partir desse arquivo rpm?”
+  options:
+    - “yum update novo-softwareV2.rpm”
+    - “rpm -U novo-softwareV2.rpm”
+    - “rpm -ivh --force novo-software”
+    - “rpm -ivh novo-softwareV2.rpm”
+  answer: 2
+ comment:“No rpm, a opção -U (upgrade) instala ou atualiza um pacote já existente. A opção -i apenas faz uma nova instalação, sem substituir uma versão anterior. O --force junto com -ivh forçaria a reinstalação sobrescrevendo arquivos, mas não é uma atualização para nova versão. O yum update espera um nome de pacote, não um arquivo .rpm local. #rpm”
+
+- id: “102-042”
+  topic: “102.2”
+  question: “Analisando o arquivo /boot/grub/menu.lst, você verificou a indicação de \”hd0,3\” no parâmetro \”root\”. Qual das partições abaixo está sendo indicada?”
+  options:
+    - “/dev/hda3”
+    - “/dev/hda4”
+    - “/dev/hdc3”
+    - “/dev/hdd3”
+  answer: 2
+ comment:“No GRUB Legacy (menu.lst), a notação hd0,3 indica o primeiro disco (hd0 = /dev/hda) e a quarta partição (contagem começa em 0, então 3 = 4ª partição). No GRUB2, hd0,3 indicaria a terceira partição do primeiro disco (/dev/hda3), pois a contagem de partições começa em 1. #grub #grub-legacy #menu.lst”
+
+- id: “102-043”
+  topic: “102.4”
+  type: “discursive”
+  question: “Qual ferramenta do Debian pode ser utilizada para reconfigurar um pacote já instalado, permitindo que o administrador selecione novas definições para a instalação? (Informe apenas o nome do comando, sem o caminho ou argumentos)”
+  answer: “dpkg-reconfigure”
+ comment:“O comando dpkg-reconfigure reexecuta o script de configuração de um pacote já instalado, permitindo redefinir suas opções. Exemplo: dpkg-reconfigure keyboard-configuration para reconfigurar o teclado. #dpkg #dpkg-reconfigure”
+
+- id: “102-044”
+  topic: “102.3”
+  question: “Qual arquivo do sistema é atualizado após a execução do comando ldconfig?”
+  options:
+    - “/etc/ldd”
+    - “/etc/ld.so.conf”
+    - “/lib/ld.so”
+    - “/etc/ld.so.cache”
+  answer: 4
+ comment:”O comando ldconfig atualiza o cache de bibliotecas compartilhadas em /etc/ld.so.cache, com base nos diretórios definidos em /etc/ld.so.conf e nos arquivos de /etc/ld.so.conf.d/. O cache acelera a localização de bibliotecas em tempo de execução. #ldconfig #ld.so.cache”
+
+- id: “102-045”
+  topic: “102.4”
+  question: “Qual comando é usado apenas para pesquisar e exibir informações referentes à base de pacotes disponíveis em um sistema Debian?”
+  options:
+    - “apt-get”
+    - “apt-search”
+    - “apt-cache”
+    - “dpkg”
+    - “dpkg-find”
+  answer: 3
+ comment:“O apt-cache pesquisa a base de pacotes instalados e disponíveis no sistema, sem realizar operações de instalação, remoção ou atualização. Exemplos: apt-cache search <termo> para buscar pacotes e apt-cache show <pacote> para exibir detalhes. O apt-get e dpkg realizam operações sobre pacotes. #apt-cache”
+
+- id: “102-046”
+  topic: “102.1”
+  question: “Quais dos elementos a seguir são utilizados nas definições de dimensionamento feitas através do LVM? (Selecione TRÊS Respostas Corretas)”
+  options:
+    - “VG (Volume Group)”
+    - “PV (Physical Volume)”
+    - “LV (Logical Volume)”
+    - “GPT (GUID Partition)”
+    - “PG (Physical Group)”
+  answer: [1, 2, 3]
+ comment:“O LVM (Logical Volume Manager) possui 5 elementos principais: PV (Physical Volume) — disco ou partição física; VG (Volume Group) — agrupamento de PVs; LV (Logical Volume) — volume lógico criado dentro de um VG; PE (Physical Extent) e LE (Logical Extent) — unidades mínimas de alocação. GPT é um esquema de particionamento, não um elemento do LVM. #lvm #pv #vg #lv”
+
+- id: “102-047”
+  topic: “102.2”
+  question: “Quais comandos podem ser utilizados para atualizar o arquivo de configuração que será utilizado pelo GRUB 2 durante o processo de boot? (Selecione TRÊS Respostas Corretas)”
+  options:
+    - “grub-mkconfig > /boot/grub/grub.cfg”
+    - “grub-mkconfig -o /boot/grub/grub.cfg”
+    - “install-grub > /etc/default/grub”
+    - “update-grub -o /etc/default/grub”
+    - “update-grub > /boot/grub/grub.cfg”
+  answer: [1, 2, 5]
+ comment:“Os comandos grub-mkconfig e update-grub leem as configurações de /etc/default/grub e /etc/grub.d/* para gerar o arquivo /boot/grub/grub.cfg. Podem ser usados com -o para definir o arquivo de saída ou com redirecionamento (>). O install-grub e update-grub -o /etc/default/grub não são sintaxes válidas. #grub2 #grub-mkconfig #update-grub”
+
+- id: “102-048”
+  topic: “102.1”
+  question: “Quantas partições primárias um sistema que utiliza o particionamento MBR pode ter?”
+  options:
+    - “3”
+    - “4”
+    - “254”
+    - “128”
+    - “Ilimitado”
+  answer: 2
+ comment:“O MBR (Master Boot Record) suporta no máximo 4 partições primárias. Uma alternativa comum é usar 3 partições primárias e 1 estendida, dentro da qual são criadas partições lógicas (em quantidade maior). Para discos maiores ou mais partições, recomenda-se o GPT. #mbr”
+
+- id: “102-049”
+  topic: “102.4”
+  question: “Qual o comando utilizado para atualizar as informações dos repositórios em uma distribuição que utiliza o gerenciamento de pacotes no padrão Debian?”
+  options:
+    - “apt-get update”
+    - “apt-get upgrade”
+    - “apt-get dist-upgrade”
+    - “dpkg update”
+    - “apt list-upgrades”
+  answer: 1
+ comment:“O apt-get update sincroniza a lista de pacotes disponíveis com os repositórios configurados em /etc/apt/sources.list, mas não instala nem atualiza nenhum pacote. O apt-get upgrade atualiza os pacotes instalados e o dist-upgrade faz o mesmo permitindo remoção de pacotes conflitantes. #apt-get”
 
