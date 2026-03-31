@@ -240,11 +240,12 @@
 
 /* --- 5.4. BODY & CONTENT --- */
 .terminal-body {
-  padding: 10px 15px; 
-  color: #f8f8f2; 
-  overflow-x: auto; 
-  line-height: 1.5; 
+  padding: 10px 15px;
+  color: #f8f8f2;
+  overflow-x: auto;
+  line-height: 1.5;
 }
+.terminal-body:empty { display: none; }
 .terminal-body div { margin: 0; padding: 0; }
 
 .terminal-body hr, .terminal-body .post-list__divider {

@@ -146,9 +146,28 @@
 
 /* Placar injetado no header */
 #quiz-scoreboard {
+//  margin-top: 6px;
+//  padding-top: 5px;
+//  border-top: 1px solid var(--border-color);
+}
+
+.terminal-body .quiz-lvl2-line {
   margin-top: 6px;
-  padding-top: 5px;
+  padding-top: 6px;
   border-top: 1px solid var(--border-color);
+  margin-left: -15px;
+  margin-right: -15px;
+  padding-left: 16px;
+  padding-right: 15px;
+}
+
+@media only screen and (max-width: 600px) {
+  .terminal-body .quiz-lvl2-line {
+    margin-left: -10px;
+    margin-right: -10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 }
 
 .quiz-sc-label {

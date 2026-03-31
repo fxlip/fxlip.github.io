@@ -8,7 +8,7 @@
     - "fsck -f /dev/hdb7"
     - "fschk -f /dev/hdb7"
   answer: 4
- comment: "O comando fsck por padrão ignora sistemas de arquivos marcados como \"limpos\" para economizar tempo. A flag -f (force) ignora o estado do cleanflag e realiza uma verificação completa e minuciosa de toda a estrutura de inodes e blocos. #fsck"
+  comment: "O comando fsck por padrão ignora sistemas de arquivos marcados como \"limpos\" para economizar tempo. A flag -f (force) ignora o estado do cleanflag e realiza uma verificação completa e minuciosa de toda a estrutura de inodes e blocos. #fsck"
 
 - id: "104-002"
   topic: "104.3"  
@@ -20,7 +20,7 @@
     - "Nada. Eles ainda estão lá."
     - "Os nomes aparecem no diretório, mas os inodes são excluídos."
   answer: 4
- comment: "Quando você monta um sistema de arquivos em um diretório que já contém arquivos, o conteúdo original fica \"mascarado\" (escondido) pelo novo sistema de arquivos. O comando rm -rf /foo/* deletará apenas o que está no disquete. Ao desmontar, os arquivos originais reaparecem intactos. #mount"
+  comment: "Quando você monta um sistema de arquivos em um diretório que já contém arquivos, o conteúdo original fica \"mascarado\" (escondido) pelo novo sistema de arquivos. O comando rm -rf /foo/* deletará apenas o que está no disquete. Ao desmontar, os arquivos originais reaparecem intactos. #mount"
 
 - id: "104-003"
   topic: "104.4"  
@@ -32,14 +32,14 @@
     - "quota --user foo"
     - "quotainfo foo"
   answer: 3
- comment: "O comando quota exibe os limites e o uso atual de disco para um usuário ou grupo. Ao passar o nome do usuário como argumento (quota foo), o sistema reporta as restrições impostas a essa conta específica em todos os sistemas de arquivos montados com suporte a cotas. #quota"
+  comment: "O comando quota exibe os limites e o uso atual de disco para um usuário ou grupo. Ao passar o nome do usuário como argumento (quota foo), o sistema reporta as restrições impostas a essa conta específica em todos os sistemas de arquivos montados com suporte a cotas. #quota"
 
 - id: "104-004"
   topic: "104.5"
   type: "discursive"
   question: "Qual o valor numérico do modo de permissão -rwxr-sr--?"
   answer: "2754"
- comment: "As permissões padrão são 754 (rwx=7, r-x=5, r--=4). O \"s\" no campo do grupo indica o bit especial SetGID ativado sobre uma permissão de execução (s minúsculo = x presente). O SetGID tem valor 2 no primeiro dígito da representação de quatro oitais. #chmod"
+  comment: "As permissões padrão são 754 (rwx=7, r-x=5, r--=4). O \"s\" no campo do grupo indica o bit especial SetGID ativado sobre uma permissão de execução (s minúsculo = x presente). O SetGID tem valor 2 no primeiro dígito da representação de quatro oitais. #chmod"
 
 - id: "104-005"
   topic: "104.5"  
@@ -51,7 +51,7 @@
     - "Usar o cron para alterar as permissões dos arquivos dos usuários uma vez por dia."
     - "Usar substitutos para as ferramentas padrão do Unix que criam arquivos seguros."
   answer: 2
- comment: "O umask (User Mask) define as permissões padrão que serão subtraídas (mascaradas) no momento da criação de qualquer novo arquivo ou diretório. Configurar um umask como 0077 no .bash_profile ou /etc/profile, por exemplo, garante que apenas o dono tenha acesso aos arquivos criados, sem depender de ação manual posterior. #umask"
+  comment: "O umask (User Mask) define as permissões padrão que serão subtraídas (mascaradas) no momento da criação de qualquer novo arquivo ou diretório. Configurar um umask como 0077 no .bash_profile ou /etc/profile, por exemplo, garante que apenas o dono tenha acesso aos arquivos criados, sem depender de ação manual posterior. #umask"
 
 - id: "104-006"
   topic: "104.5"  
@@ -63,7 +63,7 @@
     - "chmod --user foo foobar"
     - "chperm --user foo --file foobar"
   answer: 3
- comment: "O comando chown (change owner) segue a sintaxe básica chown [NOVO_DONO] [ARQUIVO]. Ele permite alterar o proprietário e, opcionalmente, o grupo de um arquivo ou diretório. Somente o superusuário (root) pode alterar o dono de um arquivo para outro usuário. #chown"
+  comment: "O comando chown (change owner) segue a sintaxe básica chown [NOVO_DONO] [ARQUIVO]. Ele permite alterar o proprietário e, opcionalmente, o grupo de um arquivo ou diretório. Somente o superusuário (root) pode alterar o dono de um arquivo para outro usuário. #chown"
 
 - id: "104-007"
   topic: "104.6"  
@@ -75,14 +75,14 @@
     - "A destino /tmp/bar é um hardlink usando o mesmo inode que /home/foo/foobar"
     - "A destino /tmp/bar é um hardlink usando o mesmo inode que /home/foo/bar"
   answer: 1
- comment: "O comando ln -s foobar bar cria um link simbólico relativo. O arquivo bar contém apenas a string \"foobar\". A opção -d (ou --no-dereference) do comando cp garante que o link seja copiado como um link, preservando seu conteúdo literal. Como o conteúdo é \"foobar\", ao ser movido para /tmp, o sistema tentará resolver esse nome dentro do novo diretório."
+  comment: "O comando ln -s foobar bar cria um link simbólico relativo. O arquivo bar contém apenas a string \"foobar\". A opção -d (ou --no-dereference) do comando cp garante que o link seja copiado como um link, preservando seu conteúdo literal. Como o conteúdo é \"foobar\", ao ser movido para /tmp, o sistema tentará resolver esse nome dentro do novo diretório."
 
 - id: "104-008"
   topic: "104.7"
   type: "discursive"
   question: "Qual diretório contém a maioria dos arquivos de configuração do sistema? Insira o caminho completo."
   answer: "/etc"
- comment: "De acordo com o FHS (Filesystem Hierarchy Standard), o diretório /etc é o local centralizado para todos os arquivos de configuração estáticos do sistema. Ele não deve conter binários executáveis. #fhs"
+  comment: "De acordo com o FHS (Filesystem Hierarchy Standard), o diretório /etc é o local centralizado para todos os arquivos de configuração estáticos do sistema. Ele não deve conter binários executáveis. #fhs"
 
 - id: "104-009"
   topic: "104.2"
@@ -94,7 +94,7 @@
     - "Disk Usage - Mostra a quantidade de disco utilizada"
     - "Dir User - Mostra os diretórios dos usuários."
   answer: 4
- comment: "O comando du (Disk Usage) estima e exibe o espaço em disco usado por arquivos e diretórios específicos. Diferente do df, que lê os blocos livres do sistema de arquivos, o du percorre a árvore de diretórios somando o tamanho de cada arquivo recursivamente. #du"
+  comment: "O comando du (Disk Usage) estima e exibe o espaço em disco usado por arquivos e diretórios específicos. Diferente do df, que lê os blocos livres do sistema de arquivos, o du percorre a árvore de diretórios somando o tamanho de cada arquivo recursivamente. #du"
 
 - id: "104-010"
   topic: "104.7"
@@ -106,7 +106,7 @@
     - "/tmp"
     - "/var, /usr"
   answer: 1
- comment: "De acordo com o FHS (Filesystem Hierarchy Standard), o diretório /usr contém dados estáticos do sistema compartilháveis e imutáveis durante a operação normal (como binários e bibliotecas). Portanto, pode ser montado como read-only (ro) na rede ou localmente por segurança. Já partições como /var (logs, spools) e /tmp (arquivos temporários) exigem gravação constante (rw). #fhs #mount"
+  comment: "De acordo com o FHS (Filesystem Hierarchy Standard), o diretório /usr contém dados estáticos do sistema compartilháveis e imutáveis durante a operação normal (como binários e bibliotecas). Portanto, pode ser montado como read-only (ro) na rede ou localmente por segurança. Já partições como /var (logs, spools) e /tmp (arquivos temporários) exigem gravação constante (rw). #fhs #mount"
 
 - id: "104-011"
   topic: "104.2"
@@ -119,7 +119,7 @@
     - "df -k"
     - "du -s"
   answer: 3
- comment: "A saída apresenta sufixos de unidade como 'G' (Gigabytes) e 'M' (Megabytes), o que caracteriza o uso da flag -h (human-readable). O comando df (disk free) é o responsável por exibir o uso de espaço por sistema de arquivos montado, incluindo o ponto de montagem (/home). #df"
+  comment: "A saída apresenta sufixos de unidade como 'G' (Gigabytes) e 'M' (Megabytes), o que caracteriza o uso da flag -h (human-readable). O comando df (disk free) é o responsável por exibir o uso de espaço por sistema de arquivos montado, incluindo o ponto de montagem (/home). #df"
 
 - id: "104-012"
   topic: "104.2"
@@ -131,7 +131,7 @@
     - "e2fsck /dev/hda5"
     - "fsck.linux /dev/hda5"
   answer: [1, 2, 4]
- comment: "O utilitário fsck funciona como um wrapper que identifica o tipo de sistema de arquivos e chama o binário específico (fsck.ext2). O comando e2fsck é o utilitário nativo específico para a família ext (ext2/3/4). #fsck #ext2 #e2fsck"
+  comment: "O utilitário fsck funciona como um wrapper que identifica o tipo de sistema de arquivos e chama o binário específico (fsck.ext2). O comando e2fsck é o utilitário nativo específico para a família ext (ext2/3/4). #fsck #ext2 #e2fsck"
 
 - id: "104-013"
   topic: "104.1"
@@ -143,7 +143,7 @@
     - "Editar a linha /home em /etc/fstab"
     - "Editar o arquivo /home/quota.user"
   answer: 2
- comment: "O comando edquota (Edit Quota) abre o editor de texto padrão (geralmente vi ou nano) com os limites de blocos e inodes do usuário específico, permitindo a alteração manual das cotas soft e hard. #quota #edquota"
+  comment: "O comando edquota (Edit Quota) abre o editor de texto padrão (geralmente vi ou nano) com os limites de blocos e inodes do usuário específico, permitindo a alteração manual das cotas soft e hard. #quota #edquota"
 
 - id: "104-014"
   topic: "104.1"
@@ -156,7 +156,7 @@
     - "O sticky bit será aplicado a todos os arquivos dentro de /home/software."
     - "O bit SUID será habilitado para /home/software."
   answer: 1
- comment: "Quando o bit SGID (Set Group ID) é aplicado a um diretório (g+s), todos os novos arquivos e subdiretórios criados dentro dele herdarão automaticamente o grupo proprietário do diretório pai, em vez do grupo primário do usuário que o criou. Isso é fundamental para diretórios de colaboração. #chmod #sgid"
+  comment: "Quando o bit SGID (Set Group ID) é aplicado a um diretório (g+s), todos os novos arquivos e subdiretórios criados dentro dele herdarão automaticamente o grupo proprietário do diretório pai, em vez do grupo primário do usuário que o criou. Isso é fundamental para diretórios de colaboração. #chmod #sgid"
 
 - id: "104-015"
   topic: "104.1"
@@ -168,7 +168,7 @@
     - "mkfs -t swap"
     - "initswap"
   answer: 3
- comment: "O comando 'mkswap' (make swap) é o responsável por preparar uma partição ou arquivo para ser utilizado como área de troca (swap), gravando a assinatura necessária. O comando 'swapon' apenas ativa uma área que já foi preparada pelo mkswap. #swap #mkswap"
+  comment: "O comando 'mkswap' (make swap) é o responsável por preparar uma partição ou arquivo para ser utilizado como área de troca (swap), gravando a assinatura necessária. O comando 'swapon' apenas ativa uma área que já foi preparada pelo mkswap. #swap #mkswap"
 
 - id: "104-016"
   topic: "104.1"
@@ -180,7 +180,7 @@
     - "750"
     - "27"
   answer: 3
- comment: "A máscara umask subtrai permissões da permissão base (666 para arquivos, 777 para diretórios). Para um arquivo: 666 - 027 resulta em 640 (rw-r-----). O dono tem leitura/escrita, o grupo apenas leitura e outros não têm acesso. #umask #chmod"
+  comment: "A máscara umask subtrai permissões da permissão base (666 para arquivos, 777 para diretórios). Para um arquivo: 666 - 027 resulta em 640 (rw-r-----). O dono tem leitura/escrita, o grupo apenas leitura e outros não têm acesso. #umask #chmod"
 
 - id: "104-017"
   topic: "104.1"
@@ -192,7 +192,7 @@
     - "A gravação terá sucesso, mas o arquivo será truncado em sete dias."
     - "A gravação falhará, mas o root pode recuperar o arquivo inteiro dentro de sete dias."
   answer: 3
- comment: "João tem 90 MB e tenta gravar 30 MB, totalizando 120 MB. Como o limite 'hard' é de 110 MB, o sistema interrompe a escrita assim que esse teto é atingido. O resultado é uma falha de gravação (Disk quota exceeded) e o arquivo fica truncado com apenas 20 MB (o espaço que restava até os 110 MB). #quotas #hardlimit #ext2"
+  comment: "João tem 90 MB e tenta gravar 30 MB, totalizando 120 MB. Como o limite 'hard' é de 110 MB, o sistema interrompe a escrita assim que esse teto é atingido. O resultado é uma falha de gravação (Disk quota exceeded) e o arquivo fica truncado com apenas 20 MB (o espaço que restava até os 110 MB). #quotas #hardlimit #ext2"
 
 - id: "104-018"
   topic: "104.1"
@@ -204,7 +204,7 @@
     - "Digitar u várias vezes para desfazer as mudanças"
     - "Não há como recuperar as alterações já realizadas no disco"
   answer: 3
- comment: "As alterações realizadas dentro da interface do fdisk só serão efetivadas ao se sair da ferramenta, salvando as alterações com a opção“w”. Da mesma forma, é possível sair da interface sem que as alterações sejam efetivadas através da opção“q”. #fdisk"
+  comment: "As alterações realizadas dentro da interface do fdisk só serão efetivadas ao se sair da ferramenta, salvando as alterações com a opção“w”. Da mesma forma, é possível sair da interface sem que as alterações sejam efetivadas através da opção“q”. #fdisk"
 
 - id: "104-019"
   topic: "104.1"
@@ -217,7 +217,7 @@
     - "Converte uma partição FAT em ext3fs, sem corromper os arquivos existentes na partição"
     - "Nada, a opção -t não é válida"
   answer: 2
- comment: "A opção -t do mkfs é utilizada para definir o tipo de filesystem a ser utilizado, se não for informado o padrão é ext2. Além disso pode ser utilizado diretamente o mkfs.ext3, sem argumentos. A opção -j do mke2fs cria um sistema de arquivos com journal, que na prática é o ext3. #mkfs #ext3"
+  comment: "A opção -t do mkfs é utilizada para definir o tipo de filesystem a ser utilizado, se não for informado o padrão é ext2. Além disso pode ser utilizado diretamente o mkfs.ext3, sem argumentos. A opção -j do mke2fs cria um sistema de arquivos com journal, que na prática é o ext3. #mkfs #ext3"
 
 - id: "104-020"
   topic: "104.1"
@@ -229,7 +229,7 @@
     - "disk_resize"
     - "Não é possível reduzir o tamanho de uma partição"
   answer: 1
- comment: "No“parted”, o comando“resizepart” vai alterar o final da partição, dessa forma pode ser utilizado para aumentá-la ou diminuí-la."
+  comment: "No“parted”, o comando“resizepart” vai alterar o final da partição, dessa forma pode ser utilizado para aumentá-la ou diminuí-la."
 
 - id: "104-021"
   topic: "104.2"
@@ -242,7 +242,7 @@
     - "du -s"
     - "df -h"
   answer: 5
- comment: "O comando df é utilizado para verificar a utilização de uma partição, ao se utilizar a opção -h os números são exibidos em formato“human-readable”, ou“humanamente legível”, ou seja, a informação é exibida em MB, GB ao invés do padrão bytes. #df #du"
+  comment: "O comando df é utilizado para verificar a utilização de uma partição, ao se utilizar a opção -h os números são exibidos em formato“human-readable”, ou“humanamente legível”, ou seja, a informação é exibida em MB, GB ao invés do padrão bytes. #df #du"
 
 - id: "104-022"
   topic: "104.3"
@@ -253,7 +253,7 @@
     - "blkid"
     - "mount -l"
   answer: 3
- comment: "Os comandos“blkid” e“lsblk -f” exibirão todas as partições e seus respectivos valores de UUID, Label e diversas outras informações."
+  comment: "Os comandos“blkid” e“lsblk -f” exibirão todas as partições e seus respectivos valores de UUID, Label e diversas outras informações."
 
 - id: "104-023"
   topic: "104.3"
@@ -265,7 +265,7 @@
     - "ext4         /dev/sdc2    ext4         auto"
     - "/dev/sdc2    /var         ext4         noauto      0    0 "
   answer: 2
- comment: "Cada linha do arquivo /etc/fstab deve conter 6 campos, são eles: <file system> <mount point> <type> <options> <dump> <pass>"
+  comment: "Cada linha do arquivo /etc/fstab deve conter 6 campos, são eles: <file system> <mount point> <type> <options> <dump> <pass>"
 
 - id: "104-024"
   topic: "104.5"
@@ -278,7 +278,7 @@
     - "chmod u=7,g=5,o=4 arquivo1"
     - "chattr 754 arquivo1"
   answer: 3
- comment: |
+  comment: |
     O chmod aceita as definições de permissões em dois modos, o modo octal utilizado na pergunta, e o modo com o uso de opções como a seguir:
 
     u : Define as permissões para o usuário dono do arquivo.
@@ -299,7 +299,7 @@
     - "rw-rw-rw-"
     - "r-xr-xr--"
   answer: 1
- comment: "As permissões são definidas subtraindo o valor do umask do valor 666 para aquivos e 777 para diretórios. Dessa forma, o valor 022, que também pode aparecer como 0022, será 777 – 022 = 755 (rwxr-xr-x). #umask #chmod"
+  comment: "As permissões são definidas subtraindo o valor do umask do valor 666 para aquivos e 777 para diretórios. Dessa forma, o valor 022, que também pode aparecer como 0022, será 777 – 022 = 755 (rwxr-xr-x). #umask #chmod"
 
 - id: "104-026"
   topic: "104.5"
@@ -311,7 +311,7 @@
     - "chown Prova1 SimuladoLPI; chgrp LPI SimuladoLPI"
     - "chown Prova1 SimuladoLPI; chown :LPI SimuladoLPI"
   answer: 2
- comment: "O chown pode ser utilizado para definir o usuário e o grupo proprietário, aceitando as seguintes sintaxes: chown <usuario>:<grupo> <arquivo> ou chown <usuario>.<grupo> <arquivo> , sendo que o <grupo> pode ser omitido caso não se deseje alterá-lo. #chown"
+  comment: "O chown pode ser utilizado para definir o usuário e o grupo proprietário, aceitando as seguintes sintaxes: chown <usuario>:<grupo> <arquivo> ou chown <usuario>.<grupo> <arquivo> , sendo que o <grupo> pode ser omitido caso não se deseje alterá-lo. #chown"
 
 - id: "104-027"
   topic: "104.6"
@@ -323,7 +323,7 @@
     - "Um link simbólico pode apontar para um diretório"
     - "Ao apagar o arquivo origem de um link físico, não será mais possível acessar a informação através do arquivo de link."
   answer: 5
- comment: "Diferentemente de um link físico, não há nenhum problema do link simbólico apontar para um arquivo/diretório em uma partição diferente da qual está criado. Os links físicos possuem o mesmo inode que o arquivo destino. Um link físico é um outro arquivo que referencia o mesmo conjunto de dados, então após criados os arquivos são independes e podem ser renomeados e até apagados. Apenas o link simbólico utiliza o sinal -> para indicar seu destino."
+  comment: "Diferentemente de um link físico, não há nenhum problema do link simbólico apontar para um arquivo/diretório em uma partição diferente da qual está criado. Os links físicos possuem o mesmo inode que o arquivo destino. Um link físico é um outro arquivo que referencia o mesmo conjunto de dados, então após criados os arquivos são independes e podem ser renomeados e até apagados. Apenas o link simbólico utiliza o sinal -> para indicar seu destino."
 
 - id: "104-028"
   topic: "104.7"
@@ -335,7 +335,7 @@
     - "/sbin/fsck"
     - "/usr/local/sbin/fsck"
   answer: 4
- comment: "O fsck é um comando crítico, utilizado para recuperar partições corrompidas, e somente pode ser utilizado pelo usuário root (sysadmin), por isso está presente do diretório /sbin. Você também pode utilizar o diretório /usr/sbin, visto que o /sbin é sempre um link para o /usr/sbin. #fhs #fsck"
+  comment: "O fsck é um comando crítico, utilizado para recuperar partições corrompidas, e somente pode ser utilizado pelo usuário root (sysadmin), por isso está presente do diretório /sbin. Você também pode utilizar o diretório /usr/sbin, visto que o /sbin é sempre um link para o /usr/sbin. #fhs #fsck"
 
 - id: "104-029"
   topic: "104.7"
@@ -347,7 +347,7 @@
     - "fsck"
     - "O locate não utiliza nenhuma base de dados"
   answer: 2
- comment: "O comando locate utiliza uma base interna do Linux que contém a localização de todos os arquivos do sistema, possibilitando uma resposta rápida ao comando, no entanto essa base precisa ser atualizada pelo comando updatedb, normalmente executado na inicialização do sistema, ou regularmente por agendamento. #locate #updatedb"
+  comment: "O comando locate utiliza uma base interna do Linux que contém a localização de todos os arquivos do sistema, possibilitando uma resposta rápida ao comando, no entanto essa base precisa ser atualizada pelo comando updatedb, normalmente executado na inicialização do sistema, ou regularmente por agendamento. #locate #updatedb"
 
 - id: "104-030"
   topic: "104.1"
@@ -359,7 +359,7 @@
     - "FileSystems com Journalling requerem checagens de disco (fsck) menores e mais rápidas após uma queda de energia"
     - "Sistemas com Journallling funcionam melhor com arquivos grandes"
   answer: 4
- comment: "O journal registra apenas as últimas operações de escrita e mudanças na partição, tornando a recuperação de uma falha no disco mais rápida e evitando corrompimentos durante quedas de energia ou desligamentos abruptos. O recurso do journaling foi implementado no filesystem ext3, sendo a única diferença com relação ao ext2. #ext3"
+  comment: "O journal registra apenas as últimas operações de escrita e mudanças na partição, tornando a recuperação de uma falha no disco mais rápida e evitando corrompimentos durante quedas de energia ou desligamentos abruptos. O recurso do journaling foi implementado no filesystem ext3, sendo a única diferença com relação ao ext2. #ext3"
 
 - id: "104-031"
   topic: "104.1"
@@ -370,7 +370,7 @@
     - "NTFS"
     - "btrfs"
   answer: 2
- comment: "O exFAT permite arquivos individuais maiores que 4 GiB, facilitando a gravação contínua de vídeos em HD longos que pode exceder o limite de 4 GiB em menos de uma hora. O exFAT foi adotado pela SD Card Association como o sistema de arquivos padrão para cartões SDXC maiores que 32 GiB."
+  comment: "O exFAT permite arquivos individuais maiores que 4 GiB, facilitando a gravação contínua de vídeos em HD longos que pode exceder o limite de 4 GiB em menos de uma hora. O exFAT foi adotado pela SD Card Association como o sistema de arquivos padrão para cartões SDXC maiores que 32 GiB."
 
 - id: "104-032"
   topic: "104.2"
@@ -382,7 +382,7 @@
     - "xfsrestore"
     - "xfs_fsr"
   answer: 1
- comment: "O xfs_repair repara sistemas de arquivos XFS corrompidos ou danificados O e2fsck é apenas para ext2, ext3 e ext4. xfs_fsr é o reorganizador do sistema de arquivos do XFS. A sintaxe do fsck está incorreta, mas mesmo usando o fsck.xfs ou o fsck -t xfs, o comando indicará o uso do xfs_repair. #xfs #xfs_repair"
+  comment: "O xfs_repair repara sistemas de arquivos XFS corrompidos ou danificados O e2fsck é apenas para ext2, ext3 e ext4. xfs_fsr é o reorganizador do sistema de arquivos do XFS. A sintaxe do fsck está incorreta, mas mesmo usando o fsck.xfs ou o fsck -t xfs, o comando indicará o uso do xfs_repair. #xfs #xfs_repair"
 
 - id: "104-033"
   topic: "104.3"
@@ -394,7 +394,7 @@
     - "Where="
     - "FS="
   answer: 4
- comment: "Um ponto de montagem também pode ser configurado através de uma Unit no Systemd. Para isso basta criar um arquivo do tipo ponto-de-montagem.mount nos diretórios de configuração do systemd (/lib/systemd/system ou /etc/systemd/system/). Entre outras opções, o“What” define o dispositivo e o“Where” o ponto de montagem. #systemd #mount"
+  comment: "Um ponto de montagem também pode ser configurado através de uma Unit no Systemd. Para isso basta criar um arquivo do tipo ponto-de-montagem.mount nos diretórios de configuração do systemd (/lib/systemd/system ou /etc/systemd/system/). Entre outras opções, o“What” define o dispositivo e o“Where” o ponto de montagem. #systemd #mount"
 
 - id: "104-034"
   topic: "104.7"
@@ -405,7 +405,7 @@
     - "Contém arquivos e bibliotecas compartilhadas por diversas aplicações"
     - "Arquivos com dados variados e voláteis, como logs, caches, locks e etc"
   answer: 4
- comment: "O diretório /var (Variable) é destinado a arquivos que mudam de tamanho ou conteúdo durante a operação normal do sistema, como logs, arquivos de spool e bases de dados temporárias. #fhs"
+  comment: "O diretório /var (Variable) é destinado a arquivos que mudam de tamanho ou conteúdo durante a operação normal do sistema, como logs, arquivos de spool e bases de dados temporárias. #fhs"
 
 - id: "104-035"
   topic: "104.2"
@@ -417,7 +417,7 @@
     - "-m"
     - "-c"
   answer: 4
- comment: "A opção -m do tune2fs altera o valor do parâmetro“reserved-blocks-percentage”, que define a porcentagem do sistema reservada ao root (padrão 5%). #ext4 #tune2fs"
+  comment: "A opção -m do tune2fs altera o valor do parâmetro“reserved-blocks-percentage”, que define a porcentagem do sistema reservada ao root (padrão 5%). #ext4 #tune2fs"
 
 - id: "104-036"
   topic: "103.5"
@@ -428,7 +428,7 @@
     - "ps -a"
     - "jobs"
   answer: 4
- comment: "O comando jobs mostra todos os processos (ou conjunto deles) iniciados em background, com o uso do &, na sessão atual. #jobs #bg #proc #shell"
+  comment: "O comando jobs mostra todos os processos (ou conjunto deles) iniciados em background, com o uso do &, na sessão atual. #jobs #bg #proc #shell"
 
 - id: "104-037"
   topic: "104.3"
@@ -439,7 +439,7 @@
     - "UUID=E24E-BD2F     none     swap     sw     0     0"
     - "/home     /dev/sda2     defaults,usrquota,grpquota     1     2"
   answer: 4
- comment:“A primeira informação das linhas do /etc/fstab deve ser o nome do dispositivo (device, UUID ou LABEL), o segundo deve ser o diretório a ser montado. No caso de uma partição de swap, o segundo campo pode ser descrito como“none”. #fstab #mount”
+  comment: "A primeira informação das linhas do /etc/fstab deve ser o nome do dispositivo (device, UUID ou LABEL), o segundo deve ser o diretório a ser montado. No caso de uma partição de swap, o segundo campo pode ser descrito como“none”. #fstab #mount"
 
 - id: "104-038"
   topic: "103.4"
@@ -450,7 +450,7 @@
     - "1>&2> filename"
     - ">>filename"
   answer: 2
- comment: "A indicação >filename redireciona a saída padrão (stdout, descritor de valor 1) para o arquivo filename. A indicação 2>&1 diz que a saída de erro (stderr, descritor de valor 2) deve ser associada ao mesmo local que está associada a saída padrão. #stdout #stderr #bash #file"
+  comment: "A indicação >filename redireciona a saída padrão (stdout, descritor de valor 1) para o arquivo filename. A indicação 2>&1 diz que a saída de erro (stderr, descritor de valor 2) deve ser associada ao mesmo local que está associada a saída padrão. #stdout #stderr #bash #file"
 
 - id: "104-039"
   topic: "103.4"
@@ -461,7 +461,7 @@
     - "ls -l 2> log.out"
     - "ls -l >> log.out"
   answer: 4
- comment: "Ao contrário do >, o redirecionador >> faz um append no final do arquivo informado, mantendo o que estava escrito anteriormente. O tee por padrão sobrescreve o arquivo informado. #ls #bash #stdout"
+  comment: "Ao contrário do >, o redirecionador >> faz um append no final do arquivo informado, mantendo o que estava escrito anteriormente. O tee por padrão sobrescreve o arquivo informado. #ls #bash #stdout"
 
 - id: "104-040"
   topic: "104.3"
@@ -473,7 +473,7 @@
     - "systemctl list-mounts"
     - "lsblk -f"
   answer: [1, 5]
- comment: "Os comandos“blkid” e“lsblk -f” exibirão todas as partições e seus respectivos valores de UUID, Label e diversas outras informações. #uuid #blkid #lsblk #fstab"
+  comment: "Os comandos“blkid” e“lsblk -f” exibirão todas as partições e seus respectivos valores de UUID, Label e diversas outras informações. #uuid #blkid #lsblk #fstab"
 
 - id: "104-041"
   topic: "103.7"
@@ -484,7 +484,7 @@
     - "^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]"
     - "^[0-9]?[0-9]:[0-5][0-9]"
   answer: 3
- comment: "Os colchetes [] definem uma lista de valores possíveis. Os parenteses () definem grupos que podem ser separados por |, no sentido de ou. O caractere ? indica que o caractere ou grupo anterior é opcional. E o ^ indica que a expressão deve estar no começo de uma linha. #regex #grep #egrep"
+  comment: "Os colchetes [] definem uma lista de valores possíveis. Os parenteses () definem grupos que podem ser separados por |, no sentido de ou. O caractere ? indica que o caractere ou grupo anterior é opcional. E o ^ indica que a expressão deve estar no começo de uma linha. #regex #grep #egrep"
 
 - id: "104-042"
   topic: "103.7"
@@ -495,7 +495,7 @@
     - "fgrep “/bin/false” /etc/passwd"
     - "fgrep -c “/bin/false” /etc/passwd"
   answer: 1
- comment: "No grep/egrep/fgrep, a opção -v tem o efeito de não exibir a string ou os resultados da expressão utilizada. #grep #egrep #fgrep #bash"
+  comment: "No grep/egrep/fgrep, a opção -v tem o efeito de não exibir a string ou os resultados da expressão utilizada. #grep #egrep #fgrep #bash"
 
 - id: "104-043"
   topic: "103.6"
@@ -506,7 +506,7 @@
     - "-19"
     - "-20"
   answer: 4
- comment: "O nice de um processo pode ser configurado com valores que vão do -20 ao 19, aonde o -20 aumenta ao máximo a prioridade, e o 19 a diminui ao máximo. #nice"
+  comment: "O nice de um processo pode ser configurado com valores que vão do -20 ao 19, aonde o -20 aumenta ao máximo a prioridade, e o 19 a diminui ao máximo. #nice"
 
 - id: "104-044"
   topic: "104.5"
@@ -517,7 +517,7 @@
     - "chmod o-r /usr/dir"
     - "chmd 775 /usr/dir"
   answer: 2
- comment: "Em um diretório, a permissão 'r' permite listar os arquivos e subdiretórios, enquanto a permissão 'x' permite acessar (entrar) no diretório. Ao utilizar o-rx no chmod, removem-se as permissões de leitura e execução para a categoria 'outros' (others). #chmod"
+  comment: "Em um diretório, a permissão 'r' permite listar os arquivos e subdiretórios, enquanto a permissão 'x' permite acessar (entrar) no diretório. Ao utilizar o-rx no chmod, removem-se as permissões de leitura e execução para a categoria 'outros' (others). #chmod"
 
 - id: "104-045"
   topic: "104.5"
@@ -529,7 +529,7 @@
     - "chmod 4775 /tmp"
     - "chmod o+t /tmp"
   answer: [2, 5]
- comment: "O Sticky bit determina que um arquivo só pode ser apagado ou renomeado pelo seu proprietário, pelo proprietário do diretório ou pelo root. Em representação numérica, o valor 1 precede as permissões padrão (ex: 1775); em modo simbólico, utiliza-se o+t. #chmod"
+  comment: "O Sticky bit determina que um arquivo só pode ser apagado ou renomeado pelo seu proprietário, pelo proprietário do diretório ou pelo root. Em representação numérica, o valor 1 precede as permissões padrão (ex: 1775); em modo simbólico, utiliza-se o+t. #chmod"
 
 - id: "104-046"
   topic: "104.6"
@@ -540,7 +540,7 @@
     - "ln acesso-direto /opt/sistema/arquivo"
     - "ln /opt/sistema/arquivo acesso-direto"
   answer: 1
- comment: "A opção -s do comando ln especifica a criação de um link simbólico e a principal forma de uso é: ln -s <arquivo alvo> <nome do link> #ln"
+  comment: "A opção -s do comando ln especifica a criação de um link simbólico e a principal forma de uso é: ln -s <arquivo alvo> <nome do link> #ln"
 
 - id: "104-047"
   topic: "104.7"
@@ -552,14 +552,14 @@
     - "-levels"
     - "-maxdepth"
   answer: 5
- comment: "No find, com a opção -maxdepth é possível definir em quantos níveis de diretórios a pesquisa pelos arquivos se aprofundará. #find"
+  comment: "No find, com a opção -maxdepth é possível definir em quantos níveis de diretórios a pesquisa pelos arquivos se aprofundará. #find"
 
 - id: "104-048"
   topic: "104.1"
   type: "discursive"
   question: "Após criar uma nova partição do tipo swap, qual o próximo comando que deve ser utilizado pelo administrador do sistema antes de torná-la ativa? (Informe apenas o comando, sem o caminho ou argumentos)"
   answer: "mkswap"
- comment: "Após definir a partição, ainda é preciso formatá-la com o comando mkswap para que após isso ela possa ser incluída na área de swap com o comando swapon. #swap"
+  comment: "Após definir a partição, ainda é preciso formatá-la com o comando mkswap para que após isso ela possa ser incluída na área de swap com o comando swapon. #swap"
 
 - id: "104-049"
   topic: "104.2"
@@ -570,7 +570,7 @@
     - "du -i /usr"
     - "fsck /dev/sdb1"
   answer: 2
- comment: "O comando df é utilizado para verificar a utilização de uma partição, normalmente exibe o espaço em disco, mas com a opção -i exibe o uso de inodes. #df"
+  comment: "O comando df é utilizado para verificar a utilização de uma partição, normalmente exibe o espaço em disco, mas com a opção -i exibe o uso de inodes. #df"
 
 - id: "104-050"
   topic: "104.1"
@@ -581,7 +581,7 @@
     - "Diferente do ext2, o ext3 suporta o recurso de journaling"
     - "Diferente do ext2, o ext3 suporta a alocação dinâmica de inodes"
   answer: 3
- comment: "O recurso do journaling foi implementado no filesystem ext3, sendo a única diferença com relação ao ext2. #ext3"
+  comment: "O recurso do journaling foi implementado no filesystem ext3, sendo a única diferença com relação ao ext2. #ext3"
 
 - id: "104-051"
   topic: "104.3"
@@ -592,7 +592,7 @@
     - "–bind"
     - "–recursive"
   answer: 3
- comment: "A opção mount é usada para remontar um diretório também em algum outro diretório. Após essa configuração, o mesmo conteúdo pode ser acessado a partir de locais/diretórios diferentes. A sintaxe é: mount –bind oldir newdir #mount"
+  comment: "A opção mount é usada para remontar um diretório também em algum outro diretório. Após essa configuração, o mesmo conteúdo pode ser acessado a partir de locais/diretórios diferentes. A sintaxe é: mount –bind oldir newdir #mount"
 
 - id: "104-052"
   topic: "104.5"
@@ -603,7 +603,7 @@
     - "0002"
     - "0113"
   answer: 3
- comment: "As permissões são definidas subtraindo o valor do umask do valor 666 para arquivos e 777 para diretórios. Dessa forma, o valor 0002, que também pode aparecer como 002, será 666 – 002 = 664 (rw-rw-r–). #umask"
+  comment: "As permissões são definidas subtraindo o valor do umask do valor 666 para arquivos e 777 para diretórios. Dessa forma, o valor 0002, que também pode aparecer como 002, será 666 – 002 = 664 (rw-rw-r–). #umask"
 
 - id: "104-053"
   topic: "104.6"
@@ -615,7 +615,7 @@
     - "O acesso aos dados através de um link físico será possível mesmo que o nome do arquivo seja alterado posteriormente"
     - "Em um link físico, será sempre utilizado o símbolo ->, para indicar o arquivo destino do link"
   answer: [1, 3, 4]
- comment: "Diferentemente de um link físico, não há nenhum problema do link simbólico apontar para um arquivo/diretório em uma partição diferente da qual está criado. Os links físicos possuem o mesmo inode que o arquivo destino. Um link físico é um outro arquivo que referencia o mesmo conjunto de dados, então após criados os arquivos são independentes e podem ser renomeados. Apenas o link simbólico utiliza o sinal -> para indicar seu destino. #inode"
+  comment: "Diferentemente de um link físico, não há nenhum problema do link simbólico apontar para um arquivo/diretório em uma partição diferente da qual está criado. Os links físicos possuem o mesmo inode que o arquivo destino. Um link físico é um outro arquivo que referencia o mesmo conjunto de dados, então após criados os arquivos são independentes e podem ser renomeados. Apenas o link simbólico utiliza o sinal -> para indicar seu destino. #inode"
 
 - id: "104-054"
   topic: "104.3"
@@ -626,7 +626,7 @@
     - "Pelo UUID ou pelo nome do device (/dev/sda1)"
     - "Pelo UUID, nome do device (/dev/sda1) ou Label do device"
   answer: 4
- comment: "No /etc/fstab, a partição pode ser identificada de três formas: pelo nome do device (/dev/sda1), pelo UUID (Universally Unique Identifier — identificador único por partição) ou pelo Label definido pelo usuário na criação da partição. O uso de UUID é preferível pois não muda quando dispositivos são adicionados ou removidos. #fstab #uuid"
+  comment: "No /etc/fstab, a partição pode ser identificada de três formas: pelo nome do device (/dev/sda1), pelo UUID (Universally Unique Identifier — identificador único por partição) ou pelo Label definido pelo usuário na criação da partição. O uso de UUID é preferível pois não muda quando dispositivos são adicionados ou removidos. #fstab #uuid"
 
 - id: "104-055"
   topic: "104.2"
@@ -637,7 +637,7 @@
     - "du -sh /var/*"
     - "tune2fs /var"
   answer: 3
- comment: "O comando du (disk usage) exibe o uso de espaço em disco de arquivos e diretórios recursivamente. A opção -s resume o total por item e -h exibe em formato legível. 'du -sh /var/*' mostra o tamanho de cada subdiretório de /var, facilitando identificar o maior. O df mostra o uso das partições, não dos diretórios internos. #du #df"
+  comment: "O comando du (disk usage) exibe o uso de espaço em disco de arquivos e diretórios recursivamente. A opção -s resume o total por item e -h exibe em formato legível. 'du -sh /var/*' mostra o tamanho de cada subdiretório de /var, facilitando identificar o maior. O df mostra o uso das partições, não dos diretórios internos. #du #df"
 
 - id: "104-056"
   topic: "104.2"
@@ -648,7 +648,7 @@
     - "xfs_repair /dev/sda2"
     - "fsck -p /dev/sda2"
   answer: 3
- comment: "O xfs_repair verifica e repara sistemas de arquivos XFS corrompidos. O e2fsck é exclusivo para ext2/ext3/ext4. O xfs_fsr é o desfragmentador do XFS, não o reparador. O fsck.xfs (ou fsck -t xfs) apenas indica o uso do xfs_repair, não realiza o reparo diretamente. #xfs #xfs_repair #fsck"
+  comment: "O xfs_repair verifica e repara sistemas de arquivos XFS corrompidos. O e2fsck é exclusivo para ext2/ext3/ext4. O xfs_fsr é o desfragmentador do XFS, não o reparador. O fsck.xfs (ou fsck -t xfs) apenas indica o uso do xfs_repair, não realiza o reparo diretamente. #xfs #xfs_repair #fsck"
 
 - id: "104-057"
   topic: "104.3"
@@ -659,7 +659,7 @@
     - "Todas as partições atualmente montadas no sistema serão exibidas"
     - "Ocorrerá um erro de sintaxe pela falta da especificação de uma partição"
   answer: 2
- comment: "A opção -a do mount monta todas as partições listadas no /etc/fstab, exceto as que contêm a opção 'noauto'. Executado sem nenhuma opção, o mount apenas exibe as partições atualmente montadas. #mount #fstab"
+  comment: "A opção -a do mount monta todas as partições listadas no /etc/fstab, exceto as que contêm a opção 'noauto'. Executado sem nenhuma opção, o mount apenas exibe as partições atualmente montadas. #mount #fstab"
 
 - id: "104-058"
   topic: "104.5"
@@ -670,7 +670,7 @@
     - "chmod 550 arquivo.txt"
     - "chmod 664 arquivo.txt"
   answer: 2
- comment: "O valor octal 6 corresponde às permissões r (leitura) e w (escrita). O chmod 660 concede leitura e escrita ao dono (6) e ao grupo (6), sem nenhuma permissão para outros (0). O 644 daria leitura para outros. O 664 daria leitura para outros também. O 550 concede leitura e execução, sem escrita. #chmod #chmod #octal"
+  comment: "O valor octal 6 corresponde às permissões r (leitura) e w (escrita). O chmod 660 concede leitura e escrita ao dono (6) e ao grupo (6), sem nenhuma permissão para outros (0). O 644 daria leitura para outros. O 664 daria leitura para outros também. O 550 concede leitura e execução, sem escrita. #chmod #chmod #octal"
 
 - id: "104-059"
   topic: "104.5"
@@ -681,7 +681,7 @@
     - "rw-r--r--"
     - "rwxrwxr-x"
   answer: 1
- comment: "As permissões de novos arquivos e diretórios são definidas subtraindo o umask do padrão máximo: 666 para arquivos e 777 para diretórios. Com umask 022: 777 - 022 = 755 (rwxr-xr-x). Para arquivos: 666 - 022 = 644 (rw-r--r--). #umask #chmod"
+  comment: "As permissões de novos arquivos e diretórios são definidas subtraindo o umask do padrão máximo: 666 para arquivos e 777 para diretórios. Com umask 022: 777 - 022 = 755 (rwxr-xr-x). Para arquivos: 666 - 022 = 644 (rw-r--r--). #umask #chmod"
 
 - id: "104-060"
   topic: "104.3"
@@ -692,7 +692,7 @@
     - "mount -a /dev/sdb1"
     - "umount /dev/sdb1"
   answer: 4
- comment: "O fsck exige que a partição esteja desmontada para verificá-la e repará-la com segurança. Portanto, o primeiro passo é executar umount /dev/sdb1. Após a desmontagem, fsck -y /dev/sdb1 pode ser usado para verificar e corrigir automaticamente os erros encontrados. #fsck #umount #ext3"
+  comment: "O fsck exige que a partição esteja desmontada para verificá-la e repará-la com segurança. Portanto, o primeiro passo é executar umount /dev/sdb1. Após a desmontagem, fsck -y /dev/sdb1 pode ser usado para verificar e corrigir automaticamente os erros encontrados. #fsck #umount #ext3"
 
 - id: "104-061"
   topic: "104.5"
@@ -703,7 +703,7 @@
     - "Faz com que todos os arquivos e subdiretórios desse diretório só possam ser apagados por seus respectivos donos e pelo root, mesmo que o diretório tenha permissão de escrita para todos"
     - "Faz com que todos os arquivos e subdiretórios desse diretório possam ser apagados por quaisquer usuários, mesmo que o diretório não tenha permissão de escrita para todos"
   answer: 3
- comment: "O bit Sticky em diretórios impede que usuários apaguem ou renomeiem arquivos de outros usuários, mesmo tendo permissão de escrita no diretório. O exemplo clássico é o /tmp (drwxrwxrwt): qualquer usuário pode criar arquivos, mas apenas o dono e o root podem removê-los. #sticky #chmod"
+  comment: "O bit Sticky em diretórios impede que usuários apaguem ou renomeiem arquivos de outros usuários, mesmo tendo permissão de escrita no diretório. O exemplo clássico é o /tmp (drwxrwxrwt): qualquer usuário pode criar arquivos, mas apenas o dono e o root podem removê-los. #sticky #chmod"
 
 - id: "104-062"
   topic: "104.6"
@@ -715,7 +715,7 @@
     - "file1 e file2 devem obrigatoriamente estar na mesma partição"
     - "As mesmas permissões aplicadas ao arquivo file1 serão válidas no arquivo file2"
   answer: [3, 4, 5]
- comment: "Um link físico (hard link) é uma entrada de diretório adicional que aponta para o mesmo inode. Apagar um dos arquivos apenas remove a entrada, os dados persistem enquanto houver ao menos um link. Ambos devem estar na mesma partição (diferente do link simbólico). Como permissões são armazenadas no inode, ambos compartilham as mesmas permissões. #inode #chmod"
+  comment: "Um link físico (hard link) é uma entrada de diretório adicional que aponta para o mesmo inode. Apagar um dos arquivos apenas remove a entrada, os dados persistem enquanto houver ao menos um link. Ambos devem estar na mesma partição (diferente do link simbólico). Como permissões são armazenadas no inode, ambos compartilham as mesmas permissões. #inode #chmod"
 
 - id: "104-063"
   topic: "104.7"
@@ -727,14 +727,14 @@
     - "/opt/man"
     - "/var/share"
   answer: 1
- comment: "Segundo o FHS (Filesystem Hierarchy Standard), o /usr/share contém dados independentes de arquitetura compartilhados entre usuários, incluindo /usr/share/man (páginas de manual) e /usr/share/doc (documentação dos pacotes). #fhs #man"
+  comment: "Segundo o FHS (Filesystem Hierarchy Standard), o /usr/share contém dados independentes de arquitetura compartilhados entre usuários, incluindo /usr/share/man (páginas de manual) e /usr/share/doc (documentação dos pacotes). #fhs #man"
 
 - id: "104-064"
   topic: "104.7"
   type: "discursive"
   question: "Qual comando procura e retorna o caminho completo apenas de arquivos presentes nos diretórios listados na variável de ambiente PATH? (Informe apenas o comando, sem o caminho ou argumentos)"
   answer: "which"
- comment: "O which busca arquivos executáveis apenas nos diretórios da variável PATH, retornando o caminho completo do primeiro encontrado. O whereis localiza binários, bibliotecas, fontes e manuais. O locate usa uma base de dados interna com todos os arquivos do sistema. O apropos retorna descrições de comandos relacionados a um termo. #which #path #fhs"
+  comment: "O which busca arquivos executáveis apenas nos diretórios da variável PATH, retornando o caminho completo do primeiro encontrado. O whereis localiza binários, bibliotecas, fontes e manuais. O locate usa uma base de dados interna com todos os arquivos do sistema. O apropos retorna descrições de comandos relacionados a um termo. #which #path #fhs"
 
 - id: "104-065"
   topic: "104.6"
@@ -745,14 +745,14 @@
     - "Criar um link simbólico para arquivo1, chamado arquivo2"
     - "Criar um hard link para arquivo1, chamado arquivo2"
   answer: 4
- comment: "O comando ln sem opções cria um hard link (link físico). A sintaxe é: ln <alvo> <nome do link>. Portanto, 'ln arquivo1 arquivo2' cria um hard link chamado arquivo2 que aponta para arquivo1. Para criar um link simbólico, seria necessário usar ln -s. #ln"
+  comment: "O comando ln sem opções cria um hard link (link físico). A sintaxe é: ln <alvo> <nome do link>. Portanto, 'ln arquivo1 arquivo2' cria um hard link chamado arquivo2 que aponta para arquivo1. Para criar um link simbólico, seria necessário usar ln -s. #ln"
 
 - id: "104-066"
   topic: "104.1"
   type: "discursive"
   question: "Qual comando é utilizado para habilitar o swap em determinado dispositivo (partição ou arquivo)? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
   answer: "swapon"
- comment: "O swapon ativa um dispositivo ou arquivo como área de swap do sistema. O swapoff faz o inverso, desativando o swap do dispositivo. A área de swap é usada como extensão da memória RAM quando ela está esgotada. #swapon #swapoff #swap"
+  comment: "O swapon ativa um dispositivo ou arquivo como área de swap do sistema. O swapoff faz o inverso, desativando o swap do dispositivo. A área de swap é usada como extensão da memória RAM quando ela está esgotada. #swapon #swapoff #swap"
 
 - id: "104-067"
   topic: "104.1"
@@ -764,4 +764,4 @@
     - "Btrfs"
     - "XFS"
   answer: 4
- comment: "O Btrfs (B-tree filesystem) suporta nativamente subvolumes, snapshots, RAID multi-device e compressão transparente de dados. O ext4, XFS, exFAT e VFAT não possuem suporte nativo a subvolumes e snapshots. #btrfs #btrfs #btrfs"
+  comment: "O Btrfs (B-tree filesystem) suporta nativamente subvolumes, snapshots, RAID multi-device e compressão transparente de dados. O ext4, XFS, exFAT e VFAT não possuem suporte nativo a subvolumes e snapshots. #btrfs #btrfs #btrfs"

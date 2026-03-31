@@ -18,6 +18,13 @@
       .replace(/"/g, '&quot;');
   }
 
+  // Remove aspas ASCII (") e curly quotes (" " U+201C/U+201D) das extremidades do tópico
+  function normalizeTopic(raw) {
+    if (!raw) return null;
+    const clean = raw.replace(/^["\u201c\u201d]+|["\u201c\u201d]+$/g, '').trim();
+    return clean || null;
+  }
+
   function shuffle(arr) {
     const a = arr.slice();
     for (let i = a.length - 1; i > 0; i--) {
@@ -49,7 +56,11 @@
       const scores = loadScores();
       scores[examId] = {};
       for (const [topic, stats] of Object.entries(topicStats)) {
-        scores[examId][topic] = Math.round((stats.correct / stats.total) * 100);
+        scores[examId][topic] = {
+          pct:     Math.round((stats.correct / stats.total) * 100),
+          correct: stats.correct,
+          total:   stats.total,
+        };
       }
       localStorage.setItem(SCORES_KEY, JSON.stringify(scores));
     } catch (_) {}
@@ -68,8 +79,9 @@
 
     document.querySelectorAll('h2').forEach(h2 => {
       if (h2.querySelector('.quiz-score-badge')) return;
-      const pct = examScores[h2.textContent.trim()];
-      if (pct == null) return;
+      const entry = examScores[h2.textContent.trim()];
+      if (entry == null) return;
+      const pct = typeof entry === 'object' ? entry.pct : entry;
 
       const badge = document.createElement('span');
       badge.className = 'quiz-score-badge ' + (pct >= 70 ? 'quiz-pass' : 'quiz-fail');
@@ -90,6 +102,114 @@
       selected.push(...picked);
     }
     return selected;
+  }
+
+  // --------------------------------------------------------------------------
+  // Nível 2 — seleção de questões baseada em erros anteriores
+  // --------------------------------------------------------------------------
+
+  const LEVEL2_KEY    = 'fxlip_quiz_level2';
+  const LEVEL2_TTL_MS = 24 * 60 * 60 * 1000; // 24 h
+
+  function extractTags(comment) {
+    if (!comment) return [];
+    const matches = comment.match(/#([\w.-]+)/g) || [];
+    return [...new Set(matches.map(t => t.slice(1).replace(/[.-]+$/, '')))];
+  }
+
+  function buildTagFrequency(wrongQuestions) {
+    const freq = {};
+    for (const q of wrongQuestions) {
+      for (const tag of extractTags(q.comment)) {
+        freq[tag] = (freq[tag] || 0) + 1;
+      }
+    }
+    return freq;
+  }
+
+  function scoreQuestion(question, tagFreq, wrongTopics) {
+    let score = 0;
+    for (const tag of extractTags(question.comment)) {
+      score += tagFreq[tag] || 0;
+    }
+    if (wrongTopics && wrongTopics.has(question.topic)) {
+      score += 1;
+    }
+    return score;
+  }
+
+  function selectLevel2Questions(bank, wrongQuestions, usedIds, totalCount, config) {
+    const used        = new Set(usedIds);
+    const tagFreq     = buildTagFrequency(wrongQuestions);
+    const wrongTopics = new Set(wrongQuestions.map(q => q.topic));
+
+    // Pontua todas as questões do banco
+    const allScored = bank.map(q => ({ q, score: scoreQuestion(q, tagFreq, wrongTopics) }));
+
+    // Agrupa por subtópico; dentro de cada grupo: unused primeiro, depois score desc
+    const byTopic = {};
+    for (const entry of allScored) {
+      const t = entry.q.topic || '__none__';
+      if (!byTopic[t]) byTopic[t] = [];
+      byTopic[t].push(entry);
+    }
+    for (const t of Object.keys(byTopic)) {
+      byTopic[t].sort((a, b) => {
+        const aUsed = used.has(a.q.id) ? 1 : 0;
+        const bUsed = used.has(b.q.id) ? 1 : 0;
+        return aUsed - bUsed || b.score - a.score;
+      });
+    }
+
+    // Passo 1: garantia mínima — 1 questão por subtópico
+    const subtopics = config ? Object.keys(config) : Object.keys(byTopic);
+    const selected  = new Map(); // id → q
+
+    for (const topic of subtopics) {
+      if (selected.size >= totalCount) break;
+      const pick = (byTopic[topic] || []).find(({ q }) => !selected.has(q.id));
+      if (pick) selected.set(pick.q.id, pick.q);
+    }
+
+    // Passo 2: preenche vagas restantes — unused first, score desc
+    const remaining = totalCount - selected.size;
+    if (remaining > 0) {
+      const extras = allScored
+        .filter(({ q }) => !selected.has(q.id))
+        .sort((a, b) => {
+          const aUsed = used.has(a.q.id) ? 1 : 0;
+          const bUsed = used.has(b.q.id) ? 1 : 0;
+          return aUsed - bUsed || b.score - a.score;
+        });
+      for (let i = 0; i < remaining && i < extras.length; i++) {
+        selected.set(extras[i].q.id, extras[i].q);
+      }
+    }
+
+    return shuffle([...selected.values()]);
+  }
+
+  function saveLevel2State(wrongQuestions, usedIds, examId) {
+    try {
+      localStorage.setItem(LEVEL2_KEY, JSON.stringify({
+        ts:             Date.now(),
+        examId:         examId,
+        usedIds:        usedIds,
+        wrongQuestions: wrongQuestions,
+      }));
+    } catch (_) {}
+  }
+
+  function loadLevel2State() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(LEVEL2_KEY));
+      if (!raw || Date.now() - raw.ts > LEVEL2_TTL_MS) return null;
+      return raw;
+    } catch (_) { return null; }
+  }
+
+  function clearLevel2State() {
+    try { localStorage.removeItem(LEVEL2_KEY); } catch (_) {}
   }
 
   // --------------------------------------------------------------------------
@@ -138,7 +258,7 @@
         : escapeHtml(q.answer || '').replace(/\n/g, '<br>');
       const discAnswerAttr = escapeHtml(JSON.stringify(q.answer || ''));
       return (
-        `<div class="quiz-q quiz-discursive" data-topic="${escapeHtml(q.topic)}" data-disc-answer="${discAnswerAttr}">` +
+        `<div class="quiz-q quiz-discursive" data-id="${escapeHtml(q.id || '')}" data-topic="${escapeHtml(q.topic)}" data-disc-answer="${discAnswerAttr}">` +
           `<p>${questionHtml}</p>` +
           codeHtml +
           `<ol>` +
@@ -155,7 +275,7 @@
       const { options, answers } = shuffleMultiOptions(q.options, q.answer);
       const optionsHtml = options.map(opt => `<li>${escapeHtml(opt)}</li>`).join('');
       return (
-        `<div class="quiz-q quiz-multi" data-answers="${answers.join(',')}" data-topic="${escapeHtml(q.topic)}">` +
+        `<div class="quiz-q quiz-multi" data-id="${escapeHtml(q.id || '')}" data-answers="${answers.join(',')}" data-topic="${escapeHtml(q.topic)}">` +
           `<p>${questionHtml}</p>` +
           codeHtml +
           `<ol>${optionsHtml}</ol>` +
@@ -168,7 +288,7 @@
     const { options, answer } = shuffleOptions(q.options, q.answer);
     const optionsHtml = options.map(opt => `<li>${escapeHtml(opt)}</li>`).join('');
     return (
-      `<div class="quiz-q" data-answer="${answer}" data-topic="${escapeHtml(q.topic)}">` +
+      `<div class="quiz-q" data-id="${escapeHtml(q.id || '')}" data-answer="${answer}" data-topic="${escapeHtml(q.topic)}">` +
         `<p>${questionHtml}</p>` +
         codeHtml +
         `<ol>${optionsHtml}</ol>` +
@@ -189,8 +309,39 @@
 
     if (!bank || !config || !container) return;
 
+    // Detecta nível atual (1 = base, 2+ = níveis de recuperação)
+    const currentLevel  = parseInt(new URLSearchParams(window.location.search).get('level') || '1', 10);
+    const isHigherLevel = currentLevel > 1;
+
+    // Guarda: acesso direto a ?level=N sem progressão orgânica → redireciona para o simulado base
+    if (isHigherLevel) {
+      const state = loadLevel2State();
+      if (!state || state.wrongQuestions.length === 0) {
+        window.location.replace(window.location.pathname);
+        return;
+      }
+    }
+
+    const prevScores = isHigherLevel ? loadScores() : null;  // captura antes de saveExamScores sobrescrever
+    const lvl2State  = isHigherLevel ? loadLevel2State() : null;
+
+    let questions;
+    if (isHigherLevel && lvl2State && lvl2State.wrongQuestions.length > 0) {
+      clearLevel2State();
+      const totalCount = Object.values(config).reduce((a, b) => a + b, 0);
+      const fromLevel2 = selectLevel2Questions(
+        bank,
+        lvl2State.wrongQuestions,
+        lvl2State.usedIds || [],
+        totalCount,
+        config
+      );
+      questions = fromLevel2.length > 0 ? fromLevel2 : selectQuestions(bank, config);
+    } else {
+      questions = selectQuestions(bank, config);
+    }
+
     // Renderiza questões sorteadas
-    const questions = selectQuestions(bank, config);
     container.innerHTML = questions.map(renderQuestion).join('');
 
     // Processa hashtags nos comentários das questões (#bash, #find, etc.)
@@ -204,6 +355,8 @@
     let timerSecs  = 0;
     let timerInterval = null;
     const topics   = {};
+    const wrongIds = new Set();  // IDs das questões erradas (para Nível 2)
+    const qById    = Object.fromEntries(questions.filter(q => q.id).map(q => [q.id, q]));
 
     // Injeta placar no terminal-body do header
     const headerBody = document.querySelector('header .terminal-body');
@@ -302,6 +455,18 @@
               sep +
               `<span class="${bad ? 'quiz-fail' : 'quiz-pass'}">${tPctStr}</span>`;
 
+            // Comparação com Nível 1 (só em modo Nível 2)
+            if (isHigherLevel) {
+              const l1Entry   = prevScores?.[examId]?.[name];
+              const l1Correct = (l1Entry && typeof l1Entry === 'object') ? l1Entry.correct : null;
+              if (l1Correct != null) {
+                const delta    = stats.correct - l1Correct;
+                const deltaStr = delta === 0 ? '--' : (delta > 0 ? `+${delta}` : String(delta));
+                const dClass   = delta === 0 ? 'quiz-sc-label' : (delta > 0 ? 'quiz-pass' : 'quiz-fail');
+                html += sep + `<span class="${dClass}">(${deltaStr})</span>`;
+              }
+            }
+
             if (bad && href) {
               const lessonHref = topicTitle
                 ? `/linux/${name.replace('.', '/')}/${topicTitle}`
@@ -313,6 +478,21 @@
             headerBody.appendChild(line);
           });
         }
+
+        // Botão Nível 2 — disponível quando houver mais de 1 erro
+        if (wrongIds.size > 1 && !pass) {
+          const wrongQs  = [...wrongIds].map(id => qById[id]).filter(Boolean);
+          const usedIds  = questions.map(q => q.id).filter(Boolean);
+          saveLevel2State(wrongQs, usedIds, examId);
+
+          const nextLevel = currentLevel + 1;
+          const lvl2Line  = document.createElement('div');
+          lvl2Line.className = 't-out quiz-lvl2-line';
+          lvl2Line.innerHTML =
+            `<span class="quiz-sc-label">${wrongIds.size} questões erradas -&gt; </span>` +
+            `<a href="?level=${nextLevel}" class="mention-link">[nível ${nextLevel}]</a>`;
+          headerBody.appendChild(lvl2Line);
+        }
       }
     };
 
@@ -323,7 +503,7 @@
     const qEls = container.querySelectorAll('.quiz-q[data-answer]');
 
     qEls.forEach(qEl => {
-      const topic      = qEl.dataset.topic || null;
+      const topic      = normalizeTopic(qEl.dataset.topic);
       const correctIdx = parseInt(qEl.dataset.answer, 10) - 1;
       const items      = qEl.querySelectorAll('ol li');
 
@@ -347,6 +527,7 @@
           } else {
             li.classList.add('quiz-wrong');
             items[correctIdx]?.classList.add('quiz-reveal');
+            if (qEl.dataset.id) wrongIds.add(qEl.dataset.id);
           }
 
           updateScore();
@@ -356,7 +537,7 @@
 
     // Questões multi-select
     container.querySelectorAll('.quiz-multi[data-answers]').forEach(qEl => {
-      const topic       = qEl.dataset.topic || null;
+      const topic       = normalizeTopic(qEl.dataset.topic);
       const correctIdxs = qEl.dataset.answers.split(',').map(n => parseInt(n, 10) - 1);
       const items       = Array.from(qEl.querySelectorAll('ol li'));
 
@@ -382,6 +563,7 @@
         answered++;
         qEl.querySelector('.quiz-explanation')?.classList.add('visible');
         if (allCorrect) { correct++; if (topic) topics[topic].correct++; }
+        else if (qEl.dataset.id) wrongIds.add(qEl.dataset.id);
         updateScore();
       };
 
@@ -419,6 +601,7 @@
         const isCorrect = checkDiscursiveAnswer(textarea.value, discAns);
         modelAns.classList.add('visible', isCorrect ? 'quiz-disc-correct' : 'quiz-disc-wrong');
         if (explain && explain.textContent.trim()) explain.classList.add('visible');
+        if (!isCorrect && qEl.dataset.id) wrongIds.add(qEl.dataset.id);
         answered++;
         updateScore();
       });

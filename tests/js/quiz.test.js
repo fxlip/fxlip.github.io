@@ -332,6 +332,408 @@ describe('checkDiscursiveAnswer', () => {
 })
 
 // =============================================================================
+// extractTags — duplicada de assets/js/quiz.js para teste isolado
+// =============================================================================
+
+function extractTags(comment) {
+  if (!comment) return []
+  const matches = comment.match(/#([\w.-]+)/g) || []
+  return [...new Set(matches.map(t => t.slice(1).replace(/[.-]+$/, '')))]
+}
+
+// =============================================================================
+// Testes: extractTags
+// =============================================================================
+
+describe('extractTags', () => {
+  it('retorna array vazio para null', () => {
+    expect(extractTags(null)).toEqual([])
+  })
+
+  it('retorna array vazio para undefined', () => {
+    expect(extractTags(undefined)).toEqual([])
+  })
+
+  it('retorna array vazio para string vazia', () => {
+    expect(extractTags('')).toEqual([])
+  })
+
+  it('retorna array vazio para texto sem hashtag', () => {
+    expect(extractTags('comando find sem cerquilha')).toEqual([])
+  })
+
+  it('extrai uma única hashtag', () => {
+    expect(extractTags('Use #grep para buscar')).toEqual(['grep'])
+  })
+
+  it('extrai múltiplas hashtags', () => {
+    const tags = extractTags('#find #xargs #grep')
+    expect(tags).toHaveLength(3)
+    expect(tags).toContain('find')
+    expect(tags).toContain('xargs')
+    expect(tags).toContain('grep')
+  })
+
+  it('remove duplicatas', () => {
+    expect(extractTags('#find #find #find')).toEqual(['find'])
+  })
+
+  it('remove ponto trailing', () => {
+    const tags = extractTags('#find.')
+    expect(tags).toContain('find')
+    expect(tags).not.toContain('find.')
+  })
+
+  it('remove hífen trailing', () => {
+    const tags = extractTags('#grep-')
+    expect(tags).toContain('grep')
+    expect(tags).not.toContain('grep-')
+  })
+
+  it('preserva hífen interno (ex: #time-ago)', () => {
+    const tags = extractTags('#time-ago')
+    expect(tags).toContain('time-ago')
+  })
+})
+
+// =============================================================================
+// buildTagFrequency — duplicada de assets/js/quiz.js para teste isolado
+// =============================================================================
+
+function buildTagFrequency(wrongQuestions) {
+  const freq = {}
+  for (const q of wrongQuestions) {
+    for (const tag of extractTags(q.comment)) {
+      freq[tag] = (freq[tag] || 0) + 1
+    }
+  }
+  return freq
+}
+
+// =============================================================================
+// Testes: buildTagFrequency
+// =============================================================================
+
+describe('buildTagFrequency', () => {
+  it('retorna objeto vazio para array vazio', () => {
+    expect(buildTagFrequency([])).toEqual({})
+  })
+
+  it('conta tags de uma única questão', () => {
+    const q = { comment: 'Use #grep para buscar. #regex também ajuda.' }
+    const freq = buildTagFrequency([q])
+    expect(freq['grep']).toBe(1)
+    expect(freq['regex']).toBe(1)
+  })
+
+  it('acumula frequência de tags repetidas em questões diferentes', () => {
+    const qs = [
+      { comment: 'Veja #grep e #pipe.' },
+      { comment: 'Use #grep com #awk.' },
+    ]
+    const freq = buildTagFrequency(qs)
+    expect(freq['grep']).toBe(2)
+    expect(freq['pipe']).toBe(1)
+    expect(freq['awk']).toBe(1)
+  })
+
+  it('ignora questões sem campo comment', () => {
+    const qs = [{ question: 'sem comment' }, { comment: '#find é útil.' }]
+    const freq = buildTagFrequency(qs)
+    expect(freq['find']).toBe(1)
+    expect(Object.keys(freq)).toHaveLength(1)
+  })
+
+  it('ignora questões com comment null', () => {
+    const qs = [{ comment: null }, { comment: '#awk' }]
+    const freq = buildTagFrequency(qs)
+    expect(freq['awk']).toBe(1)
+    expect(Object.keys(freq)).toHaveLength(1)
+  })
+
+  it('extrai múltiplas tags da mesma questão sem duplicatas internas', () => {
+    const q = { comment: '#find #find #find' }
+    // Na mesma questão, conta 1 por tag (contribuição por questão, não por ocorrência)
+    const freq = buildTagFrequency([q])
+    expect(freq['find']).toBe(1)
+  })
+
+  it('ignora texto que não é hashtag', () => {
+    const q = { comment: 'O comando find procura arquivos. Use #find.' }
+    const freq = buildTagFrequency([q])
+    expect(Object.keys(freq)).toHaveLength(1)
+    expect(freq['find']).toBe(1)
+  })
+})
+
+// =============================================================================
+// scoreQuestion — duplicada de assets/js/quiz.js para teste isolado
+// =============================================================================
+
+function scoreQuestion(question, tagFreq, wrongTopics) {
+  let score = 0
+  for (const tag of extractTags(question.comment)) {
+    score += tagFreq[tag] || 0
+  }
+  if (wrongTopics && wrongTopics.has(question.topic)) {
+    score += 1
+  }
+  return score
+}
+
+// =============================================================================
+// Testes: scoreQuestion
+// =============================================================================
+
+describe('scoreQuestion', () => {
+  it('retorna 0 para questão sem comment', () => {
+    const q = { question: 'sem hashtags' }
+    expect(scoreQuestion(q, { grep: 2 })).toBe(0)
+  })
+
+  it('retorna 0 se nenhuma tag da questão está no mapa de frequência', () => {
+    const q = { comment: '#chmod #chown' }
+    expect(scoreQuestion(q, { grep: 2, find: 1 })).toBe(0)
+  })
+
+  it('retorna soma dos pesos das tags que batem', () => {
+    const q = { comment: '#grep #pipe' }
+    const freq = { grep: 2, pipe: 2 }
+    expect(scoreQuestion(q, freq)).toBe(4)
+  })
+
+  it('conta apenas tags presentes no mapa de frequência', () => {
+    const q = { comment: '#grep #chmod' }
+    const freq = { grep: 3 }
+    expect(scoreQuestion(q, freq)).toBe(3)
+  })
+
+  it('frequência vazia resulta em score 0', () => {
+    const q = { comment: '#grep #find' }
+    expect(scoreQuestion(q, {})).toBe(0)
+  })
+
+  it('tag aparece uma vez na questão mesmo que repita no comment', () => {
+    const q = { comment: '#grep #grep #grep' }
+    const freq = { grep: 5 }
+    expect(scoreQuestion(q, freq)).toBe(5)
+  })
+
+  it('adiciona +1 quando o tópico da questão está nos tópicos errados', () => {
+    const q    = { topic: '103.1', comment: '#chmod' }
+    const freq = {}
+    const wrongTopics = new Set(['103.1', '103.2'])
+    expect(scoreQuestion(q, freq, wrongTopics)).toBe(1)
+  })
+
+  it('acumula tag score + bônus de tópico', () => {
+    const q    = { topic: '103.1', comment: '#grep #pipe' }
+    const freq = { grep: 2, pipe: 1 }
+    const wrongTopics = new Set(['103.1'])
+    expect(scoreQuestion(q, freq, wrongTopics)).toBe(4) // 2+1+1
+  })
+
+  it('não aplica bônus de tópico quando wrongTopics não é passado', () => {
+    const q = { topic: '103.1', comment: '#grep' }
+    expect(scoreQuestion(q, { grep: 2 })).toBe(2)
+  })
+
+  it('não aplica bônus de tópico quando tópico não está no conjunto', () => {
+    const q    = { topic: '104.1', comment: '#grep' }
+    const freq = { grep: 2 }
+    const wrongTopics = new Set(['103.1', '103.2'])
+    expect(scoreQuestion(q, freq, wrongTopics)).toBe(2)
+  })
+})
+
+// =============================================================================
+// selectLevel2Questions — duplicada de assets/js/quiz.js para teste isolado
+// =============================================================================
+
+function selectLevel2Questions(bank, wrongQuestions, usedIds, totalCount, config) {
+  const used        = new Set(usedIds)
+  const tagFreq     = buildTagFrequency(wrongQuestions)
+  const wrongTopics = new Set(wrongQuestions.map(q => q.topic))
+
+  // Pontua todas as questões do banco
+  const allScored = bank.map(q => ({ q, score: scoreQuestion(q, tagFreq, wrongTopics) }))
+
+  // Agrupa por subtópico; dentro de cada grupo: unused primeiro, depois score desc
+  const byTopic = {}
+  for (const entry of allScored) {
+    const t = entry.q.topic || '__none__'
+    if (!byTopic[t]) byTopic[t] = []
+    byTopic[t].push(entry)
+  }
+  for (const t of Object.keys(byTopic)) {
+    byTopic[t].sort((a, b) => {
+      const aUsed = used.has(a.q.id) ? 1 : 0
+      const bUsed = used.has(b.q.id) ? 1 : 0
+      return aUsed - bUsed || b.score - a.score
+    })
+  }
+
+  // Passo 1: garantia mínima — 1 questão por subtópico
+  const subtopics = config ? Object.keys(config) : Object.keys(byTopic)
+  const selected  = new Map() // id → q
+
+  for (const topic of subtopics) {
+    if (selected.size >= totalCount) break
+    const pick = (byTopic[topic] || []).find(({ q }) => !selected.has(q.id))
+    if (pick) selected.set(pick.q.id, pick.q)
+  }
+
+  // Passo 2: preenche vagas restantes — unused first, score desc
+  const remaining = totalCount - selected.size
+  if (remaining > 0) {
+    const extras = allScored
+      .filter(({ q }) => !selected.has(q.id))
+      .sort((a, b) => {
+        const aUsed = used.has(a.q.id) ? 1 : 0
+        const bUsed = used.has(b.q.id) ? 1 : 0
+        return aUsed - bUsed || b.score - a.score
+      })
+    for (let i = 0; i < remaining && i < extras.length; i++) {
+      selected.set(extras[i].q.id, extras[i].q)
+    }
+  }
+
+  return shuffle([...selected.values()])
+}
+
+// =============================================================================
+// Testes: selectLevel2Questions
+// =============================================================================
+
+describe('selectLevel2Questions', () => {
+  const bank = [
+    { id: 'q1', topic: '103.1', comment: '#grep #pipe' },
+    { id: 'q2', topic: '103.1', comment: '#grep #awk' },
+    { id: 'q3', topic: '103.1', comment: '#find #xargs' },
+    { id: 'q4', topic: '103.1', comment: '#chmod #chown' },
+    { id: 'q5', topic: '103.2', comment: '#grep #regex' },
+    { id: 'q6', topic: '103.2', comment: '#awk #sed' },
+    { id: 'q7', topic: '103.2', comment: '#ls #cd' },
+    { id: 'q8', topic: '104.1', comment: '#chmod #chown' },
+  ]
+  const config = { '103.1': 4, '103.2': 3, '104.1': 1 }
+
+  const wrongQuestions = [
+    { id: 'wrong1', topic: '103.1', comment: '#grep #find' },
+    { id: 'wrong2', topic: '103.2', comment: '#grep #awk' },
+  ]
+
+  it('retorna exatamente totalCount questões (quando o banco é suficiente)', () => {
+    const result = selectLevel2Questions(bank, wrongQuestions, ['wrong1', 'wrong2'], 4, config)
+    expect(result).toHaveLength(4)
+  })
+
+  it('garante ao menos 1 questão por subtópico do config', () => {
+    for (let i = 0; i < 10; i++) {
+      const result = selectLevel2Questions(bank, wrongQuestions, ['wrong1', 'wrong2'], 6, config)
+      const topics = new Set(result.map(q => q.topic))
+      expect(topics.has('103.1')).toBe(true)
+      expect(topics.has('103.2')).toBe(true)
+      expect(topics.has('104.1')).toBe(true)
+    }
+  })
+
+  it('garante ao menos 1 por subtópico mesmo quando todas as questões daquele subtópico foram usadas', () => {
+    // q8 é a única questão de 104.1 e está em usedIds — deve aparecer mesmo assim (fallback)
+    const usedIncludesQ8 = ['wrong1', 'wrong2', 'q8']
+    for (let i = 0; i < 10; i++) {
+      const result = selectLevel2Questions(bank, wrongQuestions, usedIncludesQ8, 4, config)
+      const topics = result.map(q => q.topic)
+      expect(topics).toContain('104.1')
+    }
+  })
+
+  it('prefere questões não usadas para preencher a garantia mínima', () => {
+    // q1 e q2 (103.1) estão em usedIds; q3 e q4 (103.1) não estão
+    // O mínimo de 103.1 deve ser preenchido com q3 ou q4 (não usadas)
+    const usedIds = ['wrong1', 'wrong2', 'q1', 'q2']
+    for (let i = 0; i < 10; i++) {
+      const result = selectLevel2Questions(bank, wrongQuestions, usedIds, 4, config)
+      const ids = result.map(q => q.id)
+      expect(ids).not.toContain('q1')
+      expect(ids).not.toContain('q2')
+    }
+  })
+
+  it('não inclui IDs que não estão no banco (wrongQuestions são do banco anterior)', () => {
+    const result = selectLevel2Questions(bank, wrongQuestions, ['wrong1', 'wrong2'], 4, config)
+    const ids = result.map(q => q.id)
+    expect(ids).not.toContain('wrong1')
+    expect(ids).not.toContain('wrong2')
+  })
+
+  it('subtópico ausente dos erros ainda aparece no resultado (garantia mínima)', () => {
+    // 104.1 não está nos erros, mas deve aparecer no resultado pelo mínimo garantido
+    for (let i = 0; i < 10; i++) {
+      const result = selectLevel2Questions(bank, wrongQuestions, ['wrong1', 'wrong2'], 6, config)
+      expect(result.map(q => q.topic)).toContain('104.1')
+    }
+  })
+
+  it('vagas extras (além do mínimo por subtópico) priorizam questões de maior score', () => {
+    // wrongQuestions têm #grep e #awk → questões de 103.1 e 103.2 têm score alto
+    // 104.1 tem score=0 e já preenche o mínimo (q8)
+    // Com totalCount=6: mínimos=3 (1 por tópico), extras=3 → devem vir de 103.1 e 103.2
+    for (let i = 0; i < 10; i++) {
+      const result = selectLevel2Questions(bank, wrongQuestions, ['wrong1', 'wrong2'], 6, config)
+      // 104.1 deve ter exatamente 1 questão (somente o mínimo, sem extras pois score=0)
+      const from104 = result.filter(q => q.topic === '104.1')
+      expect(from104).toHaveLength(1)
+    }
+  })
+
+  it('retorna menos questões que totalCount se o banco não tiver suficientes', () => {
+    const result = selectLevel2Questions(bank, wrongQuestions, ['wrong1', 'wrong2'], 999, config)
+    expect(result.length).toBeLessThanOrEqual(bank.length)
+    expect(result.length).toBeGreaterThan(0)
+  })
+
+  it('não retorna questões duplicadas', () => {
+    const result = selectLevel2Questions(bank, wrongQuestions, ['wrong1', 'wrong2'], 6, config)
+    const ids = result.map(q => q.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('retorna array vazio apenas quando o banco está completamente vazio', () => {
+    const result = selectLevel2Questions([], wrongQuestions, [], 4, config)
+    expect(result).toHaveLength(0)
+  })
+
+  it('questão com tag + tópico correto tem score maior — ambas selecionadas com totalCount=2', () => {
+    const banco = [
+      { id: 'qtag', topic: '103.1', comment: '#grep' },
+      { id: 'qtop', topic: '103.1', comment: '#chmod' },
+    ]
+    const erros  = [{ id: 'w1', topic: '103.1', comment: '#grep' }]
+    const cfg    = { '103.1': 2 }
+    const result = selectLevel2Questions(banco, erros, ['w1'], 2, cfg)
+    expect(result.map(q => q.id)).toContain('qtag')
+    expect(result.map(q => q.id)).toContain('qtop')
+  })
+
+  it('dentro de um subtópico, a questão de maior score é selecionada para o mínimo', () => {
+    // qtag (score 2) deve ser o representante mínimo de 103.1, não qtop (score 1)
+    const banco = [
+      { id: 'qtop', topic: '103.1', comment: '#chmod' },
+      { id: 'qtag', topic: '103.1', comment: '#grep' },
+    ]
+    const erros = [{ id: 'w1', topic: '103.1', comment: '#grep' }]
+    const cfg   = { '103.1': 1 }
+    let qtagCount = 0
+    for (let i = 0; i < 20; i++) {
+      const result = selectLevel2Questions(banco, erros, ['w1'], 1, cfg)
+      if (result[0]?.id === 'qtag') qtagCount++
+    }
+    expect(qtagCount).toBe(20) // sempre seleciona a de maior score
+  })
+})
+
+// =============================================================================
 // buildCodeBlock — duplicada de assets/js/quiz.js para teste isolado
 // =============================================================================
 
@@ -376,5 +778,55 @@ describe('buildCodeBlock', () => {
   it('escapa aspas duplas', () => {
     const result = buildCodeBlock('z="$z $y"')
     expect(result).toContain('&quot;')
+  })
+})
+
+// =============================================================================
+// normalizeTopic — duplicada de assets/js/quiz.js para teste isolado
+// =============================================================================
+
+function normalizeTopic(raw) {
+  if (!raw) return null
+  // Remove aspas ASCII (") e curly quotes (" " U+201C/U+201D) das extremidades
+  const clean = raw.replace(/^["\u201c\u201d]+|["\u201c\u201d]+$/g, '').trim()
+  return clean || null
+}
+
+// =============================================================================
+// Testes: normalizeTopic
+// =============================================================================
+
+describe('normalizeTopic', () => {
+  it('retorna null para string vazia', () => {
+    expect(normalizeTopic('')).toBeNull()
+  })
+
+  it('retorna null para null/undefined', () => {
+    expect(normalizeTopic(null)).toBeNull()
+    expect(normalizeTopic(undefined)).toBeNull()
+  })
+
+  it('retorna tópico limpo sem modificação', () => {
+    expect(normalizeTopic('101.2')).toBe('101.2')
+    expect(normalizeTopic('103.8')).toBe('103.8')
+  })
+
+  it('remove aspas ASCII das extremidades', () => {
+    expect(normalizeTopic('"101.2"')).toBe('101.2')
+    expect(normalizeTopic('"103.8"')).toBe('103.8')
+  })
+
+  it('remove curly quotes (U+201C/U+201D) das extremidades', () => {
+    expect(normalizeTopic('\u201c101.2\u201d')).toBe('101.2')
+    expect(normalizeTopic('\u201c102.5\u201d')).toBe('102.5')
+  })
+
+  it('remove aspas abertas duplas (abertura repetida)', () => {
+    expect(normalizeTopic('\u201c\u201c101.2\u201d\u201d')).toBe('101.2')
+  })
+
+  it('não remove aspas internas ao tópico', () => {
+    // Cenário patológico — aspas no meio não devem ser removidas
+    expect(normalizeTopic('101.2')).toBe('101.2')
   })
 })

@@ -8,7 +8,7 @@
     - "-20"
     - "-10"
   answer: 2
- comment: "Ao se iniciar um processo no Linux, por padrão seu valor de NICE será definido como 0. O valor 10 é o padrão quando o processo é iniciado através do comando nice, sem um valor específico no argumento. #nice"
+  comment: "Ao se iniciar um processo no Linux, por padrão seu valor de NICE será definido como 0. O valor 10 é o padrão quando o processo é iniciado através do comando nice, sem um valor específico no argumento. #nice"
 
 - id: "103-002"
   topic: "103.2"
@@ -20,7 +20,7 @@
     - "tac /var/log/messages"
     - "sort --last-lines /var/log/messages"
   answer: 3
- comment: "A opção -f do comando tail exibe as atuais últimas linhas do arquivo e continua exibindo de maneira constante novas linhas que são inseridas. #tail"
+  comment: "A opção -f do comando tail exibe as atuais últimas linhas do arquivo e continua exibindo de maneira constante novas linhas que são inseridas. #tail"
 
 - id: "103-003"
   topic: "103.4"
@@ -32,7 +32,7 @@
     - "find / -uid 1000 | xargs ls -l"
     - "xargs"
   answer: 4
- comment: "O xargs é normalmente usado recebendo como entrada a saída do comando anterior, através do uso do pipe, e com base nessa informação, gerando os comandos desejados. #xargs"
+  comment: "O xargs é normalmente usado recebendo como entrada a saída do comando anterior, através do uso do pipe, e com base nessa informação, gerando os comandos desejados. #xargs"
 
 - id: "103-004"
   topic: "103.2"
@@ -44,7 +44,7 @@
     - "split"
     - "nl"
   answer: 5
- comment: "O comando nl numera as linhas de arquivos texto, ou de strings de texto passadas como entrada. #nl"
+  comment: "O comando nl numera as linhas de arquivos texto, ou de strings de texto passadas como entrada. #nl"
 
 - id: "103-005"
   topic: "103.3"
@@ -56,7 +56,7 @@
     - "No diretório /root, digitar: rm -r /usr"
     - "Em qualquer diretório, digitar: rm /root/usr"
   answer: 2
- comment: "A opção -r do comando rm possibilita que um diretório com arquivos e subdiretórios seja removido. Atenção com o caminho do diretório segundo o enunciado, que é /root/usr. #rm #rmdir"
+  comment: "A opção -r do comando rm possibilita que um diretório com arquivos e subdiretórios seja removido. Atenção com o caminho do diretório segundo o enunciado, que é /root/usr. #rm #rmdir"
 
 - id: "103-006"
   topic: "103.1"
@@ -68,7 +68,7 @@
     - "export TEMP1 = valor"
     - "TEMP1=valor; env TEMP1"
   answer: 3
- comment: "A declaração de uma variável é composta pelo nome da variável, o sinal de igual e o valor, atenção pois não pode haver espaço antes e depois do =. Para que essa variável esteja também disponível para os processos filho da sessão atual, deve ser usado o comando export. #export"
+  comment: "A declaração de uma variável é composta pelo nome da variável, o sinal de igual e o valor, atenção pois não pode haver espaço antes e depois do =. Para que essa variável esteja também disponível para os processos filho da sessão atual, deve ser usado o comando export. #export"
 
 - id: "103-007"
   topic: "103.5"
@@ -83,7 +83,7 @@
     - "kill -s SIGTERM 12340"
     - "pkill -p 1230"
   answer: 3
- comment: "O sinal 9 usado no kill corresponde ao SIGKILL, que faz com que o processo seja interrompido imediatamente, não podendo ser ignorado pelo processo. #kill"
+  comment: "O sinal 9 usado no kill corresponde ao SIGKILL, que faz com que o processo seja interrompido imediatamente, não podendo ser ignorado pelo processo. #kill"
 
 - id: "103-008"
   topic: "103.3"
@@ -95,7 +95,7 @@
     - "e0.DOC"
     - "telefone19.doc"
   answer: 2
- comment: "Os valores contidos dentro dos colchetes [] são referentes a uma lista de possíveis caracteres, no caso apenas 1 caractere entre 0 e 9. Importante notar também que no shell os caracteres são case-sensitive, ou seja, letras minúsculas são diferentes de letras maiúsculas."
+  comment: "Os valores contidos dentro dos colchetes [] são referentes a uma lista de possíveis caracteres, no caso apenas 1 caractere entre 0 e 9. Importante notar também que no shell os caracteres são case-sensitive, ou seja, letras minúsculas são diferentes de letras maiúsculas."
 
 - id: "103-009"
   topic: "103.8"
@@ -106,7 +106,7 @@
     - "Em modo de navegação, você deve digitar apenas ZZ, para sair sem salvar"
     - "Você deve entrar em modo de comando pressionando ESC, se necessário, e então digitar :q!"
   answer: 4
- comment: "No modo de comando do vi, o :q indica sair do arquivo e o ! força a saída mesmo que tenham ocorrido alterações no arquivo, no caso saindo sem salvar. #vi"
+  comment: "No modo de comando do vi, o :q indica sair do arquivo e o ! força a saída mesmo que tenham ocorrido alterações no arquivo, no caso saindo sem salvar. #vi"
 
 - id: "103-010"
   topic: "103.4"
@@ -118,7 +118,7 @@
     - "ls -l /etc/config* > erro-ls.out 2> saida-ls.out"
     - "ls -l /etc/config* >> saida-ls.out >> erro-ls.out"
   answer: 1
- comment: "Os redirecionadores > e >> redirecionam a saída padrão do comando, sendo que o >> indica que o conteúdo será adicionado ao final do arquivo indicado. Já o 2>, assim como o 2>>, redireciona a saída de erro da execução do comando. #bash"
+  comment: "Os redirecionadores > e >> redirecionam a saída padrão do comando, sendo que o >> indica que o conteúdo será adicionado ao final do arquivo indicado. Já o 2>, assim como o 2>>, redireciona a saída de erro da execução do comando. #bash"
 
 - id: "103-011"
   topic: "103.1"
@@ -130,7 +130,7 @@
     - "O PID do shell atual é exibido"
     - "O último comando executado no bash é executado novamente"
   answer: 5
- comment: "O !! reexecuta o último comando registrado no histórico de comandos (history). #bash"
+  comment: "O !! reexecuta o último comando registrado no histórico de comandos (history). #bash"
 
 - id: "103-012"
   topic: "103.3"
@@ -142,7 +142,7 @@
     - "tar xzvf arquivo.tgz"
     - "tar --show-files -f arquivo.tar"
   answer: 3
- comment: "A opção -t do comando tar apenas exibe o conteúdo do arquivo informado, sem realizar a descompactação. O -z é necessário quando o arquivo foi compactado com o gzip. #tar"
+  comment: "A opção -t do comando tar apenas exibe o conteúdo do arquivo informado, sem realizar a descompactação. O -z é necessário quando o arquivo foi compactado com o gzip. #tar"
 
 - id: "103-013"
   topic: "103.5"
@@ -154,7 +154,7 @@
     - "Ele evita que o comando escreva a saída padrão na tela"
     - "Ele faz com que o comando seja executado com prioridade maior que os demais processos"
   answer: 1
- comment: "Ao se utilizar o símbolo & ao final de uma chamada de comando ou programa, este será executado em background, deixando a interface no shell livre para a execução de novos comandos. #bg"
+  comment: "Ao se utilizar o símbolo & ao final de uma chamada de comando ou programa, este será executado em background, deixando a interface no shell livre para a execução de novos comandos. #bg"
 
 - id: "103-014"
   topic: "103.7"
@@ -167,7 +167,7 @@
     - "Serão retornadas todas as linhas que tenham no começo da linha um número seguido por uma letra maiúscula"
     - "Serão retornadas todas as linhas que contenham no final da linha um número seguido por uma letra maiúscula"
   answer: 4
- comment: "Ao se utilizar a opção -E no grep, a expressão será interpretada como uma expressão regular estendida. Na expressão, o símbolo ^ indica que a string deve estar no início da linha, seguido então de um número de 0 a 9, e uma letra maiúscula de A a Z. #grep"
+  comment: "Ao se utilizar a opção -E no grep, a expressão será interpretada como uma expressão regular estendida. Na expressão, o símbolo ^ indica que a string deve estar no início da linha, seguido então de um número de 0 a 9, e uma letra maiúscula de A a Z. #grep"
 
 - id: "103-015"
   topic: "103.8"
@@ -179,7 +179,7 @@
     - "Fazer a busca de uma string, sendo o sentido do começo para o final do arquivo"
     - "Sair do arquivo sem realizar nenhuma alteração"
   answer: 2
- comment: "No vi o caractere / faz a busca normal, do começo para o fim, enquanto que o caractere ? faz a busca inversa, do fim do arquivo para o começo. #vi"
+  comment: "No vi o caractere / faz a busca normal, do começo para o fim, enquanto que o caractere ? faz a busca inversa, do fim do arquivo para o começo. #vi"
 
 - id: "103-016"
   topic: "103.2"
@@ -190,7 +190,7 @@
     - "Divide um arquivo em vários outros arquivos de 1000 bytes cada"
     - "Divide um arquivo em vários outros arquivos de 1024 linhas cada"
   answer: 1
- comment: "O comportamento padrão do comando split é dividir o arquivo a cada 1000 linhas. #split"
+  comment: "O comportamento padrão do comando split é dividir o arquivo a cada 1000 linhas. #split"
 
 - id: "103-017"
   topic: "103.1"
@@ -201,7 +201,7 @@
     - "HISTSIZE"
     - "HISTCONTROL"
   answer: 2
- comment: "A variável de ambiente HISTFILE indica o arquivo usado para registrar o histórico de comandos da sessão atual. #history"
+  comment: "A variável de ambiente HISTFILE indica o arquivo usado para registrar o histórico de comandos da sessão atual. #history"
 
 - id: "103-018"
   topic: "103.1"
@@ -220,7 +220,7 @@
     - "echo 'O valor da variável \"$EXERCICIO\" é $EXERCICIO'"
     - "echo O valor da variável '$EXERCICIO' é $EXERCICIO"
   answer: 5
- comment: "As aspas simples impedem que a variável seja interpretada. Outra possibilidade seria: echo O valor da variável \\$EXERCICIO é $EXERCICIO #echo"
+  comment: "As aspas simples impedem que a variável seja interpretada. Outra possibilidade seria: echo O valor da variável \\$EXERCICIO é $EXERCICIO #echo"
 
 - id: "103-019"
   topic: "103.1"
@@ -232,7 +232,7 @@
     - "file"
     - "type"
   answer: 3
- comment: "O comando which retorna o caminho do arquivo que seria executado para o comando informado como argumento, sendo baseado nas informações contidas na variável PATH. #which"
+  comment: "O comando which retorna o caminho do arquivo que seria executado para o comando informado como argumento, sendo baseado nas informações contidas na variável PATH. #which"
 
 - id: "103-020"
   topic: "103.2"
@@ -244,7 +244,7 @@
     - "sha256sum"
     - "file"
   answer: 4
- comment: "O comando sha256sum é usado para gerar o hash de um arquivo e também para realizar as devidas comparações. Outras respostas possíveis seriam: md5sum, sha512sum. #sha256sum"
+  comment: "O comando sha256sum é usado para gerar o hash de um arquivo e também para realizar as devidas comparações. Outras respostas possíveis seriam: md5sum, sha512sum. #sha256sum"
 
 - id: "103-021"
   topic: "103.5"
@@ -256,7 +256,7 @@
     - "tmux -t5 free -m"
     - "tmux -n5 < free -m"
   answer: 1
- comment: "O comando watch permite que qualquer comando seja executado repetidamente no terminal. A opção -n indica o intervalo em segundos da atualização (reexecução) do comando. #watch"
+  comment: "O comando watch permite que qualquer comando seja executado repetidamente no terminal. A opção -n indica o intervalo em segundos da atualização (reexecução) do comando. #watch"
 
 - id: "103-022"
   topic: "103.5"
@@ -268,7 +268,7 @@
     - "md5sum"
     - "bash"
   answer: 3
- comment: "Os comandos tmux e screen são utilizados para administrar diversas sessões bash em um único emulador de terminal, permitindo o uso de abas e janelas. #tmux"
+  comment: "Os comandos tmux e screen são utilizados para administrar diversas sessões bash em um único emulador de terminal, permitindo o uso de abas e janelas. #tmux"
 
 - id: "103-023"
   topic: "103.7"
@@ -279,7 +279,7 @@
     - "regex"
     - "xgrep"
   answer: 2
- comment: "Por padrão, o grep utiliza expressões regulares básicas, mas com o uso da opção -E ou do comando egrep são suportadas expressões estendidas. #egrep"
+  comment: "Por padrão, o grep utiliza expressões regulares básicas, mas com o uso da opção -E ou do comando egrep são suportadas expressões estendidas. #egrep"
 
 - id: "103-024"
   topic: "103.7"
@@ -290,7 +290,7 @@
     - "egrep '[0123456789]{3,}' /etc/passwd"
     - "egrep '[0-9]{3,*}' /etc/passwd"
   answer: 3
- comment: "Deve ser utilizado o egrep ou o grep -E para que sejam aceitas expressões regulares estendidas. O [0123456789] indica que deve ocorrer um dos caracteres listados, e o {3,} indica que deve haver ao menos 3 ocorrências. #regex"
+  comment: "Deve ser utilizado o egrep ou o grep -E para que sejam aceitas expressões regulares estendidas. O [0123456789] indica que deve ocorrer um dos caracteres listados, e o {3,} indica que deve haver ao menos 3 ocorrências. #regex"
 
 - id: "103-025"
   topic: "103.8"
@@ -302,7 +302,7 @@
     - "gimp"
     - "cups"
   answer: 2
- comment: "O nano é outro editor de arquivos em modo texto muito utilizado em sistemas Unix e GNU/Linux. #nano"
+  comment: "O nano é outro editor de arquivos em modo texto muito utilizado em sistemas Unix e GNU/Linux. #nano"
 
 - id: "103-026"
   topic: "103.8"
@@ -314,7 +314,7 @@
     - "TERMINAL"
     - "GDMSESSION"
   answer: 2
- comment: "O editor padrão pode ser definido por usuário/sessão, através da variável de ambiente EDITOR. #editor"
+  comment: "O editor padrão pode ser definido por usuário/sessão, através da variável de ambiente EDITOR. #editor"
 
 - id: "103-027"
   topic: "103.1"  
@@ -326,7 +326,7 @@
     - "configure; make; make install"
     - "./configure; make; install"
   answer: 2
- comment: "Este é o fluxo clássico de compilação: ./configure verifica as dependências e prepara o ambiente, make compila o código em binários e make install copia os arquivos para os diretórios do sistema."
+  comment: "Este é o fluxo clássico de compilação: ./configure verifica as dependências e prepara o ambiente, make compila o código em binários e make install copia os arquivos para os diretórios do sistema."
 
 - id: "103-028"
   topic: "103.2"  
@@ -338,7 +338,7 @@
     - "O comando foo redireciona sua saída para o comando bar"
     - "O STDIN de foo está conectado ao STDOUT de bar"
   answer: [2, 4]
- comment: "O pipe (|) conecta o STDOUT (saída padrão) de foo ao STDIN (entrada padrão) de bar. O caractere > redireciona o STDOUT final de bar para o arquivo físico foobar. #stdout"
+  comment: "O pipe (|) conecta o STDOUT (saída padrão) de foo ao STDIN (entrada padrão) de bar. O caractere > redireciona o STDOUT final de bar para o arquivo físico foobar. #stdout"
 
 - id: "103-029"
   topic: "103.1"  
@@ -350,7 +350,7 @@
     - "O comando bar é processado após o comando foo, independentemente de erros."
     - "Esta não é uma linha de comando válida."
   answer: 5
- comment: "A combinação &| não é um operador válido no Bash ou SH. O & envia um comando para o background e encerra sua definição lógica, enquanto o pipe | exige um comando à sua esquerda para redirecionar o fluxo de dados. O operador correto para redirecionar stdout e stderr simultaneamente seria |&. #bash"
+  comment: "A combinação &| não é um operador válido no Bash ou SH. O & envia um comando para o background e encerra sua definição lógica, enquanto o pipe | exige um comando à sua esquerda para redirecionar o fluxo de dados. O operador correto para redirecionar stdout e stderr simultaneamente seria |&. #bash"
 
 - id: "103-030"
   topic: "103.3"  
@@ -363,7 +363,7 @@
     - "Todos os arquivos no diretório atual e em todos os subdiretórios incluídos que são menores que 12 KByte serão copiados para /tmp. A estrutura de diretórios também será copiada."
     - "Esta não é uma linha de comando válida."
   answer: 3
- comment: "O comando usa a substituição de comando $(...) para passar a saída do find como argumentos para o cp. O find busca recursivamente (diretório atual e subdiretórios) por arquivos menores que 12KB (-size -12k). O cp apenas copia os arquivos para a raiz de /tmp, sem recriar a estrutura de pastas original. #find"
+  comment: "O comando usa a substituição de comando $(...) para passar a saída do find como argumentos para o cp. O find busca recursivamente (diretório atual e subdiretórios) por arquivos menores que 12KB (-size -12k). O cp apenas copia os arquivos para a raiz de /tmp, sem recriar a estrutura de pastas original. #find"
 
 - id: "103-031"
   topic: "103.2"  
@@ -375,14 +375,14 @@
     - "getuserinfo -gid foo"
     - "grep foo /etc/group | cut -d: -f3"
   answer: 3
- comment: "O arquivo /etc/passwd estrutura os dados do usuário em campos separados por dois-pontos (:). O quarto campo é, por definição, o GID (Group ID) do grupo primário/padrão do usuário. O comando filtra a linha do usuário e isola esse valor."
+  comment: "O arquivo /etc/passwd estrutura os dados do usuário em campos separados por dois-pontos (:). O quarto campo é, por definição, o GID (Group ID) do grupo primário/padrão do usuário. O comando filtra a linha do usuário e isola esse valor."
 
 - id: "103-032"
   topic: "103.2"
   type: "discursive"
   question: "Qual comando é usado para conectar linhas de diferentes arquivos de texto em uma linha, sem se preocupar com campos comuns (apenas o comando - sem opções)?"
   answer: "paste"
- comment: "O comando paste funde linhas de vários arquivos horizontalmente, lado a lado, usando tabulações como separador padrão, sem realizar buscas por chaves ou campos correlacionados. #paste"
+  comment: "O comando paste funde linhas de vários arquivos horizontalmente, lado a lado, usando tabulações como separador padrão, sem realizar buscas por chaves ou campos correlacionados. #paste"
 
 - id: "103-033"
   topic: "103.3"  
@@ -394,7 +394,7 @@
     - "Todos os arquivos no diretório atual que possuem um ou mais pontos (.) em seus nomes — mas nem no início nem no fim do nome — seriam copiados para /tmp"
     - "Este é um comando DOS — não tem significado no Linux"
   answer: 3
- comment: "Diferente do DOS/Windows onde *.* significa \"todos os arquivos\", no Linux o shell interpreta os curingas literalmente. O primeiro * não casa com o ponto inicial de arquivos ocultos (como .bashrc). Portanto, o comando copia apenas arquivos que contêm um ponto em seu nome, desde que esse ponto não seja o primeiro caractere. #cp"
+  comment: "Diferente do DOS/Windows onde *.* significa \"todos os arquivos\", no Linux o shell interpreta os curingas literalmente. O primeiro * não casa com o ponto inicial de arquivos ocultos (como .bashrc). Portanto, o comando copia apenas arquivos que contêm um ponto em seu nome, desde que esse ponto não seja o primeiro caractere. #cp"
 
 - id: "103-034"
   topic: "103.5"  
@@ -406,7 +406,7 @@
     - "O comando foo escreve seu código de erro na variável ERR"
     - "O comando foo será iniciado repetidamente até retornar o valor 0"
   answer: 2
- comment: "O caractere & ao final de um comando instrui o shell a executá-lo de forma assíncrona. O processo é movido para o background, permitindo que o usuário continue utilizando o terminal imediatamente sem esperar o término da execução. #bg #jobs"
+  comment: "O caractere & ao final de um comando instrui o shell a executá-lo de forma assíncrona. O processo é movido para o background, permitindo que o usuário continue utilizando o terminal imediatamente sem esperar o término da execução. #bg #jobs"
 
 - id: "103-035"
   topic: "103.5"  
@@ -418,14 +418,14 @@
     - "Um processo que não é alcançável por nenhum sinal"
     - "Um processo que não é alcançável por nenhum sinal exceto o sinal KILL"
   answer: 3
- comment: "Daemons são processos que rodam em segundo plano (background) para executar tarefas de sistema ou serviços (como SSH, logs ou servidores web). Eles se desconectam da sessão do usuário e não possuem um terminal de controle (TTY)."
+  comment: "Daemons são processos que rodam em segundo plano (background) para executar tarefas de sistema ou serviços (como SSH, logs ou servidores web). Eles se desconectam da sessão do usuário e não possuem um terminal de controle (TTY)."
 
 - id: "103-036"
   topic: "103.6"
   type: "discursive"
   question: "Qual comando inicia processos com prioridade maior ou menor?"
   answer: "nice"
- comment: "O comando nice altera o valor de \"gentileza\" (niceness) de um processo no momento de sua criação. O intervalo vai de -20 (máxima prioridade, menos gentil) a 19 (mínima prioridade, muito gentil). O valor padrão é 0. #nice"
+  comment: "O comando nice altera o valor de \"gentileza\" (niceness) de um processo no momento de sua criação. O intervalo vai de -20 (máxima prioridade, menos gentil) a 19 (mínima prioridade, muito gentil). O valor padrão é 0. #nice"
 
 - id: "103-037"
   topic: "103.7"  
@@ -437,7 +437,7 @@
     - "Uma letra não maiúscula no início de uma palavra seguida por uma letra não maiúscula."
     - "Uma letra maiúscula no início de uma palavra seguida por uma letra não maiúscula."
   answer: 3
- comment: "Em expressões regulares (RegEx), [^...] nega o conjunto, casando com qualquer caractere que não esteja na lista (neste caso, qualquer coisa que não seja A-Z maiúsculo). Já o segundo colchete [!A-Z] é interpretado literalmente: o ! não tem função de negação dentro de colchetes em RegEx padrão (diferente do globbing do shell), então ele busca o caractere ! ou qualquer letra de A a Z. #regex"
+  comment: "Em expressões regulares (RegEx), [^...] nega o conjunto, casando com qualquer caractere que não esteja na lista (neste caso, qualquer coisa que não seja A-Z maiúsculo). Já o segundo colchete [!A-Z] é interpretado literalmente: o ! não tem função de negação dentro de colchetes em RegEx padrão (diferente do globbing do shell), então ele busca o caractere ! ou qualquer letra de A a Z. #regex"
 
 - id: "103-038"
   topic: "103.3"  
@@ -449,7 +449,7 @@
     - "Todos os arquivos começando com a letra A seguidos por um número."
     - "Todos os arquivos com números em seus nomes."
   answer: 4
- comment: "No globbing do Shell (curingas), A é o literal, [0-9] exige obrigatoriamente um dígito numérico logo após o 'A', e o * representa qualquer sequência de caracteres (ou nenhuma) que venha depois."
+  comment: "No globbing do Shell (curingas), A é o literal, [0-9] exige obrigatoriamente um dígito numérico logo após o 'A', e o * representa qualquer sequência de caracteres (ou nenhuma) que venha depois."
 
 - id: "103-039"
   topic: "103.8"  
@@ -461,7 +461,7 @@
     - ":q"
     - ":q!"
   answer: 3
- comment: "No modo de comando do vi, o comando :x (e também o :wq) é usado para salvar as alterações e fechar o editor. A diferença técnica é que o :x só grava o arquivo se houver alterações pendentes, enquanto o :wq força a gravação e atualiza o timestamp do arquivo mesmo que nada tenha mudado. #vi #vim"
+  comment: "No modo de comando do vi, o comando :x (e também o :wq) é usado para salvar as alterações e fechar o editor. A diferença técnica é que o :x só grava o arquivo se houver alterações pendentes, enquanto o :wq força a gravação e atualiza o timestamp do arquivo mesmo que nada tenha mudado. #vi #vim"
 
 - id: "103-040"
   topic: "103.1"
@@ -472,7 +472,7 @@
     - "HOME"
     - "BASH_ENV"
   answer: 3
- comment: "A variável de ambiente $HOME armazena o caminho absoluto do diretório do usuário atual. É o destino padrão do shell quando o comando 'cd' é executado sem argumentos. #env"
+  comment: "A variável de ambiente $HOME armazena o caminho absoluto do diretório do usuário atual. É o destino padrão do shell quando o comando 'cd' é executado sem argumentos. #env"
 
 - id: "103-041"
   topic: "103.1"
@@ -485,7 +485,7 @@
     - "ls ls ls $MYVAR"
     - "faq.txt faq.txt faq.txt faq.txt"
   answer: 3
- comment: "A expansão no Bash funciona com regras rígidas de aspas. $MYVAR solto ou em aspas duplas (\"$MYVAR\") expande para o valor da variável ('ls'). Em aspas simples ('$MYVAR'), o Bash trata como texto literal (não expande). E entre crases (`$MYVAR`), ocorre a substituição de comando: o Bash executa 'ls', e como só existe faq.txt no diretório, esse é o resultado impresso. #bash"
+  comment: "A expansão no Bash funciona com regras rígidas de aspas. $MYVAR solto ou em aspas duplas (\"$MYVAR\") expande para o valor da variável ('ls'). Em aspas simples ('$MYVAR'), o Bash trata como texto literal (não expande). E entre crases (`$MYVAR`), ocorre a substituição de comando: o Bash executa 'ls', e como só existe faq.txt no diretório, esse é o resultado impresso. #bash"
 
 - id: "103-042"
   topic: "103.1"
@@ -497,7 +497,7 @@
     - "Postscript Level 1 e Level 2 capabilities"
     - "Link simbólico para um mouse"
   answer: 2
- comment: "PS1 (Prompt String 1) define o prompt principal interativo do shell. PS2 define o prompt secundário, exibido quando um comando incompleto requer mais linhas de entrada. #bash #ps1"
+  comment: "PS1 (Prompt String 1) define o prompt principal interativo do shell. PS2 define o prompt secundário, exibido quando um comando incompleto requer mais linhas de entrada. #bash #ps1"
 
 - id: "103-043"
   topic: "103.1"
@@ -508,7 +508,7 @@
     - "shell"
     - "echo $MYSHEL"
   answer: 2
- comment: "A variável de ambiente $SHELL armazena o caminho completo do shell de login do usuário atual (ex: /bin/bash). O comando 'echo $SHELL' exibe esse valor no terminal. #shell #env"
+  comment: "A variável de ambiente $SHELL armazena o caminho completo do shell de login do usuário atual (ex: /bin/bash). O comando 'echo $SHELL' exibe esse valor no terminal. #shell #env"
 
 - id: "103-044"
   topic: "103.1"
@@ -520,7 +520,7 @@
     - "echo PATH"
     - "echo $PATH"
   answer: 5
- comment: "No Bash, variáveis são referenciadas com o prefixo '$'. O comando 'echo $PATH' imprime a lista de diretórios onde o shell busca executáveis, separados por dois-pontos (:). O formato %PATH% é exclusivo do Windows/DOS. #bash #path #env"
+  comment: "No Bash, variáveis são referenciadas com o prefixo '$'. O comando 'echo $PATH' imprime a lista de diretórios onde o shell busca executáveis, separados por dois-pontos (:). O formato %PATH% é exclusivo do Windows/DOS. #bash #path #env"
 
 - id: "103-045"
   topic: "103.1"
@@ -531,7 +531,7 @@
     - "A versão do rm está incorreta"
     - "foi criado um alias do rm para rm -i"
   answer: 4
- comment: "O comando rm por padrão não pede confirmação (comportamento silencioso). Muitas distribuições (como RHEL/CentOS) criam um 'alias rm=\"rm -i\"' nos arquivos de perfil do bash (~/.bashrc) para evitar deleções acidentais. O parâmetro -i ativa o modo interativo. #alias #bash #rm"
+  comment: "O comando rm por padrão não pede confirmação (comportamento silencioso). Muitas distribuições (como RHEL/CentOS) criam um 'alias rm=\"rm -i\"' nos arquivos de perfil do bash (~/.bashrc) para evitar deleções acidentais. O parâmetro -i ativa o modo interativo. #alias #bash #rm"
 
 - id: "103-046"
   topic: "103.1"
@@ -542,7 +542,7 @@
     - "Alterar a variável HISTFILESIZE para um valor menor."
     - "Alterar a variável HISTSIZE para um valor menor."
   answer: 3
- comment: "A variável HISTFILESIZE define o número máximo de linhas mantidas no arquivo de histórico em disco (.bash_history). Já a variável HISTSIZE controla apenas quantas linhas são mantidas na memória (RAM) durante a sessão atual. Para evitar que o arquivo físico consuma muito espaço, deve-se reduzir o HISTFILESIZE. #bash #history #env"
+  comment: "A variável HISTFILESIZE define o número máximo de linhas mantidas no arquivo de histórico em disco (.bash_history). Já a variável HISTSIZE controla apenas quantas linhas são mantidas na memória (RAM) durante a sessão atual. Para evitar que o arquivo físico consuma muito espaço, deve-se reduzir o HISTFILESIZE. #bash #history #env"
 
 - id: "103-047"
   topic: "103.1"
@@ -554,7 +554,7 @@
     - "chmod u=rwx,g=rx,o=r /home/joao/file1"
     - "chmod 754 /usr/joao/file1"
   answer: 4
- comment: "A permissão octal 754 converte-se em: rwx (7) para o dono (u), r-x (5) para o grupo (g) e r-- (4) para outros (o). O símbolo ~ (til) expande para o diretório home do usuário (/home/joao). O modo simbólico 'u=rwx,g=rx,o=r' reflete exatamente esses bits de permissão. #chmod"
+  comment: "A permissão octal 754 converte-se em: rwx (7) para o dono (u), r-x (5) para o grupo (g) e r-- (4) para outros (o). O símbolo ~ (til) expande para o diretório home do usuário (/home/joao). O modo simbólico 'u=rwx,g=rx,o=r' reflete exatamente esses bits de permissão. #chmod"
 
 - id: "103-048"
   topic: "103.2"
@@ -567,7 +567,7 @@
     - "Exibe toda linha nova do arquivo /var/log/messages enquanto este arquivo está crescendo."
     - "Muda o tempo de modificação pelo arquivo /var/log/messages para agora."
   answer: 4
- comment: "A flag -f (follow) do comando tail faz com que o utilitário não termine após ler o fim do arquivo, mas sim aguarde e exiba novas linhas que forem adicionadas em tempo real. É a ferramenta padrão para monitoramento de logs. #tail"
+  comment: "A flag -f (follow) do comando tail faz com que o utilitário não termine após ler o fim do arquivo, mas sim aguarde e exiba novas linhas que forem adicionadas em tempo real. É a ferramenta padrão para monitoramento de logs. #tail"
 
 - id: "103-049"
   topic: "103.1"
@@ -578,7 +578,7 @@
     - "Esc, /, Enter"
     - "ctrl-d, enter"
   answer: 1
- comment: "No Bash, a barra invertida (\\) seguida de Enter funciona como um caractere de continuação de linha. Isso indica ao shell que o comando ainda não terminou e que a próxima linha deve ser tratada como parte da mesma instrução. O prompt geralmente muda para '>' (PS2) para indicar a continuação. #bash"
+  comment: "No Bash, a barra invertida (\\) seguida de Enter funciona como um caractere de continuação de linha. Isso indica ao shell que o comando ainda não terminou e que a próxima linha deve ser tratada como parte da mesma instrução. O prompt geralmente muda para '>' (PS2) para indicar a continuação. #bash"
 
 - id: "103-050"
   topic: "103.3"
@@ -590,7 +590,7 @@
     - "[L/linux]"
     - "[Ll]inux?"
   answer: 1
- comment: "A expressão [Ll]inux utiliza uma classe de caracteres para aceitar tanto 'L' maiúsculo quanto 'l' minúsculo no início. Importante notar que, em ferramentas como o grep, para evitar 'linux.com' ou 'TurboLinux', seriam necessários delimitadores de borda de palavra (como \\b), mas entre as opções dadas, [Ll]inux é a única sintaticamente correta para alternância de caixa. #regex #grep"
+  comment: "A expressão [Ll]inux utiliza uma classe de caracteres para aceitar tanto 'L' maiúsculo quanto 'l' minúsculo no início. Importante notar que, em ferramentas como o grep, para evitar 'linux.com' ou 'TurboLinux', seriam necessários delimitadores de borda de palavra (como \\b), mas entre as opções dadas, [Ll]inux é a única sintaticamente correta para alternância de caixa. #regex #grep"
 
 - id: "103-061"
   topic: "103.1"
@@ -601,7 +601,7 @@
     - "find / -name filename"
     - "&find / -name filename &"
   answer: 2
- comment: "O caractere '&' no final de um comando instrui o shell a executá-lo em segundo plano (background). Isso libera o prompt imediatamente para que o usuário continue digitando outros comandos enquanto o 'find' processa a busca pesada no sistema de arquivos. #jobs #bg"
+  comment: "O caractere '&' no final de um comando instrui o shell a executá-lo em segundo plano (background). Isso libera o prompt imediatamente para que o usuário continue digitando outros comandos enquanto o 'find' processa a busca pesada no sistema de arquivos. #jobs #bg"
 
 - id: "103-051"
   topic: "103.1"
@@ -612,7 +612,7 @@
     - "Shell"
     - "Command"
   answer: 3
- comment: "O Shell atua como a camada de interface entre o usuário e o Kernel. Ele lê os comandos digitados, interpreta a sintaxe, expande variáveis e executa os programas correspondentes. Exemplos comuns incluem Bash, Zsh e Fish. #shell"
+  comment: "O Shell atua como a camada de interface entre o usuário e o Kernel. Ele lê os comandos digitados, interpreta a sintaxe, expande variáveis e executa os programas correspondentes. Exemplos comuns incluem Bash, Zsh e Fish. #shell"
 
 - id: "103-052"
   topic: "103.2"
@@ -624,7 +624,7 @@
     - "xd"
     - "hd"
   answer: 3
- comment: "O comando 'od' (octal dump) é o padrão POSIX para exibir arquivos em diversos formatos, incluindo hexadecimal (-x ou -t x1). Embora utilitários como 'hexdump' ou 'xxd' sejam comuns, o 'od' é a ferramenta base presente em praticamente qualquer sistema Unix/Linux. #od"
+  comment: "O comando 'od' (octal dump) é o padrão POSIX para exibir arquivos em diversos formatos, incluindo hexadecimal (-x ou -t x1). Embora utilitários como 'hexdump' ou 'xxd' sejam comuns, o 'od' é a ferramenta base presente em praticamente qualquer sistema Unix/Linux. #od"
 
 - id: "103-053"
   topic: "103.1"
@@ -636,7 +636,7 @@
     - "Ctrl-U e Enter"
     - "!-2"
   answer: 2
- comment: "O comando !! (bang-bang) é um atalho de histórico que repete o último comando executado. No modo de edição padrão do Bash (Emacs), o atalho de teclado Ctrl-P (Previous) navega para o comando anterior no histórico, e o Enter o executa, produzindo o mesmo resultado. #bash #history"
+  comment: "O comando !! (bang-bang) é um atalho de histórico que repete o último comando executado. No modo de edição padrão do Bash (Emacs), o atalho de teclado Ctrl-P (Previous) navega para o comando anterior no histórico, e o Enter o executa, produzindo o mesmo resultado. #bash #history"
 
 - id: "103-054"
   topic: "103.3"
@@ -648,7 +648,7 @@
     - "cp -r /home/gpaula /tmp"
     - "mv -cr /home/gpaula /tmp"
   answer: 4
- comment: "A opção -r (recursive) do comando cp é usada para copiar diretórios e todo o seu conteúdo, incluindo subdiretórios e arquivos. Embora a opção -a (archive) também funcione (pois inclui a recursividade), o enunciado foca especificamente na ação de incluir subdiretórios, o que é a função primária do -r. #cp"
+  comment: "A opção -r (recursive) do comando cp é usada para copiar diretórios e todo o seu conteúdo, incluindo subdiretórios e arquivos. Embora a opção -a (archive) também funcione (pois inclui a recursividade), o enunciado foca especificamente na ação de incluir subdiretórios, o que é a função primária do -r. #cp"
 
 - id: "103-055"
   topic: "103.1"
@@ -661,7 +661,7 @@
     - "Verifica se os arquivos .rhost existem nos diretórios home dos usuários e os remove e notifica o root com os nomes dos usuários."
     - "Remove todos os arquivos .rhosts e notifica todos os usuários."
   answer: 4
- comment: "O script localiza arquivos .rhost (risco de segurança), extrai o nome do usuário do caminho (terceiro campo do path /home/usuario/), acumula esses nomes na variável $z, remove o arquivo físico e, ao final, envia um e-mail ao root com a lista de usuários afetados. #find"
+  comment: "O script localiza arquivos .rhost (risco de segurança), extrai o nome do usuário do caminho (terceiro campo do path /home/usuario/), acumula esses nomes na variável $z, remove o arquivo físico e, ao final, envia um e-mail ao root com a lista de usuários afetados. #find"
 
 - id: "103-056"
   topic: "103.5"
@@ -672,7 +672,7 @@
     - "Lista de processos parados."
     - "Lista de todos os processos em execução em forma de árvore"
   answer: 4
- comment: "O comando 'ps' com as opções 'e' (everyone/all) e 'f' (full-format/forest) exibe todos os processos em execução no sistema, organizando-os visualmente em uma estrutura de árvore que mostra a hierarquia de processos pai e filho. #ps"
+  comment: "O comando 'ps' com as opções 'e' (everyone/all) e 'f' (full-format/forest) exibe todos os processos em execução no sistema, organizando-os visualmente em uma estrutura de árvore que mostra a hierarquia de processos pai e filho. #ps"
 
 - id: "103-057"
   topic: "103.2"
@@ -684,7 +684,7 @@
     - "tail -n 1 arquivo1.txt"
     - "head -v arquivo1.txt"
   answer: 3
- comment: "O comando tail, por padrão, exibe as últimas 10 linhas de um arquivo. A opção 'tail -n 1' exibiria apenas a última linha, mas 'tail' sozinho é a resposta correta para a ação genérica de exibir as últimas linhas. #tail #file"
+  comment: "O comando tail, por padrão, exibe as últimas 10 linhas de um arquivo. A opção 'tail -n 1' exibiria apenas a última linha, mas 'tail' sozinho é a resposta correta para a ação genérica de exibir as últimas linhas. #tail #file"
 
 - id: "103-058"
   topic: "103.5"
@@ -695,7 +695,7 @@
     - "O job é 4 e o PID do job é 3499."
     - "O job é 3499 e o PID do cat é 4."
   answer: 2
- comment: "Quando um pipeline é enviado para o background, o shell retorna o número do job entre colchetes [n] e o PID do último processo da cadeia (neste caso, o sort). No entanto, o comportamento padrão do Bash ao reportar o PID de um pipeline em background é focar no último comando da sequência, que coordena o fluxo de saída. #jobs #bg"
+  comment: "Quando um pipeline é enviado para o background, o shell retorna o número do job entre colchetes [n] e o PID do último processo da cadeia (neste caso, o sort). No entanto, o comportamento padrão do Bash ao reportar o PID de um pipeline em background é focar no último comando da sequência, que coordena o fluxo de saída. #jobs #bg"
 
 - id: "103-059"
   topic: "103.3"
@@ -707,7 +707,7 @@
     - "Eles são usados para exibir resultados depois de usar uma expressão regular."
     - "Eles são caracteres de texto padrão, usados na expressão regular."
   answer: 2
- comment: "Metacaracteres são símbolos que possuem um significado especial para o motor de busca de expressões regulares (como '.', '*', '+', '?', '^', '$'). Em vez de serem interpretados como texto literal, eles instruem o motor a realizar funções como repetição, alternância ou ancoragem. #regex"
+  comment: "Metacaracteres são símbolos que possuem um significado especial para o motor de busca de expressões regulares (como '.', '*', '+', '?', '^', '$'). Em vez de serem interpretados como texto literal, eles instruem o motor a realizar funções como repetição, alternância ou ancoragem. #regex"
 
 - id: "103-060"
   topic: "103.1"
@@ -719,7 +719,7 @@
     - "reinicia um processo parado."
     - "coloca o processo no primeiro plano."
   answer: 2
- comment: "O caractere '&' é o operador de controle do shell para execução assíncrona. Ele envia o comando para o 'background' (segundo plano), permitindo que o shell exiba o prompt imediatamente para novos comandos sem esperar o término do anterior. #bash #bg #jobs"
+  comment: "O caractere '&' é o operador de controle do shell para execução assíncrona. Ele envia o comando para o 'background' (segundo plano), permitindo que o shell exiba o prompt imediatamente para novos comandos sem esperar o término do anterior. #bash #bg #jobs"
 
 - id: "103-061"
   topic: "103.1"
@@ -731,14 +731,14 @@
     - "info"
     - "whatis"
   answer: [3, 4, 5]
- comment: "Os comandos man e info retornarão, na maioria dos casos, um manual completo de cada comando. O whatis trará uma definição breve da função da ferramenta. #man #whatis"
+  comment: "Os comandos man e info retornarão, na maioria dos casos, um manual completo de cada comando. O whatis trará uma definição breve da função da ferramenta. #man #whatis"
 
 - id: "103-062"
   topic: "103.1"
   type: "discursive"
   question: "Qual variável de ambiente contém o nome do arquivo utilizado para armazenar os últimos comandos utilizados por um usuário? (Informe apenas o nome da variável)"
   answer: "HISTFILE"
- comment: "A variável de ambiente HISTFILE armazena o caminho e nome do arquivo que armazenará o histórico de comandos, por padrão /home/<USER>/.bash_history. HISTFILESIZE contém o tamanho máximo do arquivo de histórico. USER contém o nome do usuário do shell atual. HISTORY não existe. #bash #history #histfile #env"
+  comment: "A variável de ambiente HISTFILE armazena o caminho e nome do arquivo que armazenará o histórico de comandos, por padrão /home/<USER>/.bash_history. HISTFILESIZE contém o tamanho máximo do arquivo de histórico. USER contém o nome do usuário do shell atual. HISTORY não existe. #bash #history #histfile #env"
 
 - id: "103-063"
   topic: "103.1"
@@ -750,7 +750,7 @@
     - "$~"
     - "$#"
   answer: 3
- comment: "Ao digitar $$ o usuário recebe o PID (Process ID) do shell atual. $! é o PID do último processo em background (job) executado. $? é o código de retorno (exit code) do último comando executado. $~ não existe. #bash #pid #shell"
+  comment: "Ao digitar $$ o usuário recebe o PID (Process ID) do shell atual. $! é o PID do último processo em background (job) executado. $? é o código de retorno (exit code) do último comando executado. $~ não existe. #bash #pid #shell"
 
 - id: "103-064"
   topic: "103.1"
@@ -761,7 +761,7 @@
     - "VAR1=\"Certificacao Linux\""
     - "VAR1 = ‘Certificacao Linux’"
   answer: 3
- comment: "Quando houver mais de uma string na variável, elas devem ser agrupadas por aspas. Também não deve haver espaços antes ou depois do sinal de =. #bash #env"
+  comment: "Quando houver mais de uma string na variável, elas devem ser agrupadas por aspas. Também não deve haver espaços antes ou depois do sinal de =. #bash #env"
 
 - id: "103-065"
   topic: "103.2"
@@ -773,7 +773,7 @@
     - "md5sum"
     - "xzcat"
   answer: 2
- comment: "O comando zcat pode ser utilizado para ler arquivos compactados com o algoritmo gzip, outra opção seria o uso do comando gunzip com a opção -c. O bzcat faz o mesmo para arquivos compactados com o bzip2 e o xzcat com o algoritimo xz. #gzip #zcat"
+  comment: "O comando zcat pode ser utilizado para ler arquivos compactados com o algoritmo gzip, outra opção seria o uso do comando gunzip com a opção -c. O bzcat faz o mesmo para arquivos compactados com o bzip2 e o xzcat com o algoritimo xz. #gzip #zcat"
 
 - id: "103-066"
   topic: "103.2"
@@ -785,7 +785,7 @@
     - "^M"
     - "\\d"
   answer: 1
- comment: "Para alterar o padrão de quebra de linha CR-LF, típico de sistemas Windows, para o padrão utilizado no Linux, LF, basta remover o caractere equivalente ao CR representado pelo \\r. Isso normalmente é feito através do comando tr, por exemplo: tr -d‘\\r’ < origem.txt > destino.txt #tr"
+  comment: "Para alterar o padrão de quebra de linha CR-LF, típico de sistemas Windows, para o padrão utilizado no Linux, LF, basta remover o caractere equivalente ao CR representado pelo \\r. Isso normalmente é feito através do comando tr, por exemplo: tr -d‘\\r’ < origem.txt > destino.txt #tr"
 
 - id: "103-067"
   topic: "103.3"
@@ -797,7 +797,7 @@
     - "Exercicios15.doc"
     - "Exercicios5.doc"
   answer: [1, 5]
- comment: "No file globbing do shell, o [] determina uma lista de caracteres que podem ser utilizados, apenas um deles. O {} possibilita a definição de uma lista de strings possíveis. #bash #ls"
+  comment: "No file globbing do shell, o [] determina uma lista de caracteres que podem ser utilizados, apenas um deles. O {} possibilita a definição de uma lista de strings possíveis. #bash #ls"
 
 - id: "103-068"
   topic: "103.3"
@@ -809,7 +809,7 @@
     - "whatis"
     - "info"
   answer: 3
- comment: "O comando“file” pode ser usado para determinar o tipo de um arquivo. O comando“type” é usado para identificar se um comando é interno ou externo ao shell. whatis mostra apenas uma descrição do comando. #file"
+  comment: "O comando“file” pode ser usado para determinar o tipo de um arquivo. O comando“type” é usado para identificar se um comando é interno ou externo ao shell. whatis mostra apenas uma descrição do comando. #file"
 
 - id: "103-069"
   topic: "103.4"
@@ -820,7 +820,7 @@
     - "dados > gera-relatorio > erros.log"
     - "gera-relatorio < dados 2> erros.log"
   answer: 4
- comment: "O símbolo < indica que“dados” será a entrada do comando“gera-relatorio”, enquanto que o simbolo“2>” indica que a saída de erro (stderr) será enviada ao arquivo erros.log. #stdin #stderr #bash"
+  comment: "O símbolo < indica que“dados” será a entrada do comando“gera-relatorio”, enquanto que o simbolo“2>” indica que a saída de erro (stderr) será enviada ao arquivo erros.log. #stdin #stderr #bash"
 
 - id: "103-070"
   topic: "103.3"
@@ -831,7 +831,7 @@
     - "find /etc -ctime 7"
     - "find /etc -mtime -7"
   answer: 4
- comment: "O find possui 3 tipos de busca por tempo: ctime (change time) = última mudança de conteúdo e/ou propriedades, mtime (modification time) = última mudança de conteúdo, atime (access time) = última vez que o arquivo foi acessado. O sinal de menos (-) indica 'menos que' ou 'nos últimos'. #find #mtime"
+  comment: "O find possui 3 tipos de busca por tempo: ctime (change time) = última mudança de conteúdo e/ou propriedades, mtime (modification time) = última mudança de conteúdo, atime (access time) = última vez que o arquivo foi acessado. O sinal de menos (-) indica 'menos que' ou 'nos últimos'. #find #mtime"
 
 - id: "103-071"
   topic: "103.3"
@@ -842,14 +842,14 @@
     - "rmdir -r aula1"
     - "rm -f aula1"
   answer: 1
- comment: "O comando rm com a opção -r remove um diretório recursivamente, ou seja, remove o diretório e tudo que está dentro. O rmdir é utilizado apenas para remover diretórios vazios. #rm #rmdir"
+  comment: "O comando rm com a opção -r remove um diretório recursivamente, ou seja, remove o diretório e tudo que está dentro. O rmdir é utilizado apenas para remover diretórios vazios. #rm #rmdir"
 
 - id: "103-072"
   topic: "103.4"
   type: "discursive"
   question: "Qual comando tem a função de a partir de uma entrada padrão, construir e executar determinado comando uma ou mais vezes? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
   answer: "xargs"
- comment: "O xargs é usado para construir e executar comandos a partir de uma entrada padrão. Ele converte a entrada recebida em argumentos para um comando e o executa. #xargs #stdin"
+  comment: "O xargs é usado para construir e executar comandos a partir de uma entrada padrão. Ele converte a entrada recebida em argumentos para um comando e o executa. #xargs #stdin"
 
 - id: "103-073"
   topic: "103.8"
@@ -861,7 +861,7 @@
     - "ZZ"
     - "XX"
   answer: [2, 3, 4]
- comment: "Os comandos :wq, :x e ZZ irão salvar o documento e sair do VI. :q! sai sem salvar e XX não tem nenhuma função. #vi #editor"
+  comment: "Os comandos :wq, :x e ZZ irão salvar o documento e sair do VI. :q! sai sem salvar e XX não tem nenhuma função. #vi #editor"
 
 - id: "103-074"
   topic: "103.7"
@@ -872,14 +872,14 @@
     - "sed ‘s/Linux/LINUX/’ entrada.txt"
     - "sed ‘s/Linux/LINUX/g’ entrada.txt"
   answer: 4
- comment: "No sed, a instrução deve estar entre aspas simples. Outro ponto importante é o“g”, de global, no final da expressão; sem ela, apenas a primeira ocorrência de cada linha seria substituída, e não todas as ocorrências. #sed #regex"
+  comment: "No sed, a instrução deve estar entre aspas simples. Outro ponto importante é o“g”, de global, no final da expressão; sem ela, apenas a primeira ocorrência de cada linha seria substituída, e não todas as ocorrências. #sed #regex"
 
 - id: "103-075"
   topic: "103.8"
   type: "discursive"
   question: "No editor vi, qual comando irá copiar para o buffer a linha atual e as 5 linhas seguintes? (Informe o comando do vi sem espaços)"
   answer: "6yy"
- comment: "Ao pressionar yy a linha atual é copiada. Para copiar a linha atual e as 5 seguintes (totalizando 6 linhas), utiliza-se 6yy ou y6y. Para colar, utiliza-se o comando p. #vi"
+  comment: "Ao pressionar yy a linha atual é copiada. Para copiar a linha atual e as 5 seguintes (totalizando 6 linhas), utiliza-se 6yy ou y6y. Para colar, utiliza-se o comando p. #vi"
 
 - id: "103-076"
   topic: "103.5"
@@ -891,7 +891,7 @@
     - "15"
     - "16"
   answer: 2
- comment: "O sinal 2, ou SIGINT, é associado ao Ctrl C, e interrompe a execução de um processo. #signal #sigint"
+  comment: "O sinal 2, ou SIGINT, é associado ao Ctrl C, e interrompe a execução de um processo. #signal #sigint"
 
 - id: "103-077"
   topic: "103.8"
@@ -902,7 +902,7 @@
     - ":wq"
     - ":i"
   answer: 2
- comment: "O comando :e abre novamente a última versão salva do arquivo em edição, sem sair do vi. #vi"
+  comment: "O comando :e abre novamente a última versão salva do arquivo em edição, sem sair do vi. #vi"
 
 - id: "103-078"
   topic: "103.5"
@@ -913,7 +913,7 @@
     - "fx"
     - "ef"
   answer: 1
- comment: "A opção“a” mostra os processos de outros usuários mas vinculados ao terminal atual. A opção“u” habilita o formato de usuário, exibindo o nome do usuário dono de cada processo assim como outros detalhes do processo. A opção“x” mostra os processos de todos os terminais, além de processos que não estão associados a nenhum terminal. #ps"
+  comment: "A opção“a” mostra os processos de outros usuários mas vinculados ao terminal atual. A opção“u” habilita o formato de usuário, exibindo o nome do usuário dono de cada processo assim como outros detalhes do processo. A opção“x” mostra os processos de todos os terminais, além de processos que não estão associados a nenhum terminal. #ps"
 
 - id: "103-079"
   topic: "103.5"
@@ -925,7 +925,7 @@
     - "tmux"
     - "split"
   answer: [1, 4]
- comment: "Tanto o tmux quanto o screen permitem que usuário utilize uma única tela para abrir e gerenciar diversos terminais, com atividades independentes, permitindo inclusive o controle de janelas, painéis e etc. #tmux #screen"
+  comment: "Tanto o tmux quanto o screen permitem que usuário utilize uma única tela para abrir e gerenciar diversos terminais, com atividades independentes, permitindo inclusive o controle de janelas, painéis e etc. #tmux #screen"
 
 - id: "103-080"
   topic: "103.6"
@@ -937,7 +937,7 @@
     - "chmod"
     - "jobs"
   answer: [1, 3]
- comment: "Os comandos renice e top podem ser utilizados para alterar o valor de NICE de um processo já em execução. O comando nice é utilizado para definir o valor ao se iniciar um processo. #nice #renice #top"
+  comment: "Os comandos renice e top podem ser utilizados para alterar o valor de NICE de um processo já em execução. O comando nice é utilizado para definir o valor ao se iniciar um processo. #nice #renice #top"
 
 - id: "103-081"
   topic: "103.1"
@@ -949,7 +949,7 @@
     - "listenv"
     - "alias"
   answer: 1
- comment: "O comando env exibe apenas as variáveis de ambiente exportadas da sessão atual do shell. O comando set exibe todas as variáveis, incluindo as locais (não exportadas). Os comandos setenv, listenv e alias não têm essa função. #env #set #shell"
+  comment: "O comando env exibe apenas as variáveis de ambiente exportadas da sessão atual do shell. O comando set exibe todas as variáveis, incluindo as locais (não exportadas). Os comandos setenv, listenv e alias não têm essa função. #env #set #shell"
 
 - id: "103-082"
   topic: "103.1"
@@ -960,7 +960,7 @@
     - "echo \"Agora são `date +H` horas e `date +M` minutos\""
     - "echo 'Agora são `date +%H` horas e `date +%M` minutos'"
   answer: 1
- comment: "Há duas sintaxes para executar um subcomando dentro de outro: crases (`comando`) ou a notação $( ). Ambas funcionam dentro de aspas duplas. Aspas simples impedem a expansão de subcomandos. As opções do date exigem o prefixo %, portanto +%H e +%M são as formas corretas. #echo #date #shell"
+  comment: "Há duas sintaxes para executar um subcomando dentro de outro: crases (`comando`) ou a notação $( ). Ambas funcionam dentro de aspas duplas. Aspas simples impedem a expansão de subcomandos. As opções do date exigem o prefixo %, portanto +%H e +%M são as formas corretas. #echo #date #shell"
 
 - id: "103-083"
   topic: "103.1"
@@ -972,7 +972,7 @@
     - ".bashrc_history"
     - ".histfile"
   answer: 2
- comment: "Por padrão, o arquivo .bash_history presente no $HOME do usuário armazena o histórico de execução de comandos, sendo atualizado ao final de cada sessão. O número de entradas é controlado pela variável HISTSIZE e o arquivo pela variável HISTFILE. #bash #history #bash_history #shell"
+  comment: "Por padrão, o arquivo .bash_history presente no $HOME do usuário armazena o histórico de execução de comandos, sendo atualizado ao final de cada sessão. O número de entradas é controlado pela variável HISTSIZE e o arquivo pela variável HISTFILE. #bash #history #bash_history #shell"
 
 - id: "103-084"
   topic: "103.1"
@@ -983,7 +983,7 @@
     - "hostname"
     - "uname -r"
   answer: 4
- comment: "O comando uname disponibiliza várias informações do sistema. A opção -r exibe o kernel-release (versão do kernel em execução). Outras opções úteis: -a (todas as informações), -s (nome do kernel), -m (arquitetura da máquina). #uname #kernel"
+  comment: "O comando uname disponibiliza várias informações do sistema. A opção -r exibe o kernel-release (versão do kernel em execução). Outras opções úteis: -a (todas as informações), -s (nome do kernel), -m (arquitetura da máquina). #uname #kernel"
 
 - id: "103-085"
   topic: "103.2"
@@ -995,7 +995,7 @@
     - "--unique"
     - "--truncate"
   answer: 1
- comment: "A opção -s (ou --squeeze-repeats) do comando tr substitui sequências repetidas de um caractere por uma única ocorrência. Exemplo: tr -s ' ' < entrada.txt > saida.txt comprime múltiplos espaços em um único. #tr"
+  comment: "A opção -s (ou --squeeze-repeats) do comando tr substitui sequências repetidas de um caractere por uma única ocorrência. Exemplo: tr -s ' ' < entrada.txt > saida.txt comprime múltiplos espaços em um único. #tr"
 
 - id: "103-086"
   topic: "103.3"
@@ -1006,7 +1006,7 @@
     - "find /usr -name \"report*csv\""
     - "find -dir /usr -iname report*csv"
   answer: 3
- comment: "A sintaxe correta do find é: find <diretório> <opção> <padrão>. A opção -name filtra por nome (case sensitive) e -iname por nome sem distinção de maiúsculas. O * representa qualquer sequência de caracteres. As aspas são necessárias para evitar que o shell expanda o glob antes do find. #find"
+  comment: "A sintaxe correta do find é: find <diretório> <opção> <padrão>. A opção -name filtra por nome (case sensitive) e -iname por nome sem distinção de maiúsculas. O * representa qualquer sequência de caracteres. As aspas são necessárias para evitar que o shell expanda o glob antes do find. #find"
 
 - id: "103-087"
   topic: "103.3"
@@ -1018,7 +1018,7 @@
     - "-y"
     - "-p"
   answer: 2
- comment: "A opção -i (interactive) do rm habilita o modo interativo, solicitando confirmação antes de cada remoção. A opção -f (force) tem efeito oposto, suprimindo qualquer confirmação e ignorando arquivos inexistentes. As opções -q, -y e -p não existem no rm. #rm"
+  comment: "A opção -i (interactive) do rm habilita o modo interativo, solicitando confirmação antes de cada remoção. A opção -f (force) tem efeito oposto, suprimindo qualquer confirmação e ignorando arquivos inexistentes. As opções -q, -y e -p não existem no rm. #rm"
 
 - id: "103-088"
   topic: "103.2"
@@ -1030,7 +1030,7 @@
     - "nl resultado.txt"
     - "nl -b resultado.txt"
   answer: [3, 4]
- comment: "O cat -b numera apenas as linhas não em branco. O nl sem parâmetros também numera apenas as linhas não em branco por padrão. O cat -n numera todas as linhas, incluindo as em branco. O tac apenas inverte a ordem das linhas. #cat #nl"
+  comment: "O cat -b numera apenas as linhas não em branco. O nl sem parâmetros também numera apenas as linhas não em branco por padrão. O cat -n numera todas as linhas, incluindo as em branco. O tac apenas inverte a ordem das linhas. #cat #nl"
 
 - id: "103-089"
   topic: "103.4"
@@ -1042,7 +1042,7 @@
     - "echo linux | cat"
     - "echo linux 2> file"
   answer: [2, 4, 5]
- comment: "Em 'cat <<< linux', o here-string envia o texto diretamente como stdin do cat, que o exibe. Em 'echo linux | cat', a saída do echo é passada via pipe ao cat. Em 'echo linux 2> file', apenas o stderr é redirecionado ao arquivo; o stdout (a palavra linux) ainda vai para a tela. O 'echo < linux' tenta usar um arquivo chamado linux como stdin do echo, que o ignora. #pipe #stdout #stderr"
+  comment: "Em 'cat <<< linux', o here-string envia o texto diretamente como stdin do cat, que o exibe. Em 'echo linux | cat', a saída do echo é passada via pipe ao cat. Em 'echo linux 2> file', apenas o stderr é redirecionado ao arquivo; o stdout (a palavra linux) ainda vai para a tela. O 'echo < linux' tenta usar um arquivo chamado linux como stdin do echo, que o ignora. #pipe #stdout #stderr"
 
 - id: "103-090"
   topic: "103.4"
@@ -1053,7 +1053,7 @@
     - "myapp | tee -a log.out"
     - "myapp >> log.out | tee"
   answer: 3
- comment: "O tee exibe a saída na tela e simultaneamente a grava em um arquivo. Por padrão, sobrescreve o arquivo existente. A opção -a (append) faz com que o tee adicione a saída ao final do arquivo sem apagar o conteúdo anterior. O >> apenas redireciona para o arquivo sem exibir na tela. #tee #pipe"
+  comment: "O tee exibe a saída na tela e simultaneamente a grava em um arquivo. Por padrão, sobrescreve o arquivo existente. A opção -a (append) faz com que o tee adicione a saída ao final do arquivo sem apagar o conteúdo anterior. O >> apenas redireciona para o arquivo sem exibir na tela. #tee #pipe"
 
 - id: "103-091"
   topic: "103.3"
@@ -1065,7 +1065,7 @@
     - "Alterar o dono do arquivo"
     - "Criar um link para um arquivo"
   answer: [1, 2]
- comment: "O comando touch tem duas funções principais: criar um arquivo vazio caso ele não exista, e atualizar os timestamps (data de acesso e modificação) de um arquivo já existente. Não altera permissões, dono nem cria links. #touch"
+  comment: "O comando touch tem duas funções principais: criar um arquivo vazio caso ele não exista, e atualizar os timestamps (data de acesso e modificação) de um arquivo já existente. Não altera permissões, dono nem cria links. #touch"
 
 - id: "103-092"
   topic: "103.3"
@@ -1077,7 +1077,7 @@
     - "xz -d backup.bz2"
     - "gunzip backup.bz2"
   answer: [1, 3]
- comment: "Arquivos .bz2 são compactados com bzip2. Para descompactar, usa-se o comando específico bunzip2 ou o próprio bzip2 com a opção -d (decompress). O unzip é para arquivos .zip, o gunzip para .gz e o xz para .xz. #bzip2 #bunzip2"
+  comment: "Arquivos .bz2 são compactados com bzip2. Para descompactar, usa-se o comando específico bunzip2 ou o próprio bzip2 com a opção -d (decompress). O unzip é para arquivos .zip, o gunzip para .gz e o xz para .xz. #bzip2 #bunzip2"
 
 - id: "103-093"
   topic: "103.6"
@@ -1089,7 +1089,7 @@
     - "19"
     - "20"
   answer: 2
- comment: "O comando nice, sem valor explícito, atribui o valor padrão de 10 ao processo, reduzindo sua prioridade. O valor 0 é o nice padrão de processos iniciados sem o nice. O intervalo válido vai de -20 (maior prioridade, exclusivo do root) a 19 (menor prioridade). #nice"
+  comment: "O comando nice, sem valor explícito, atribui o valor padrão de 10 ao processo, reduzindo sua prioridade. O valor 0 é o nice padrão de processos iniciados sem o nice. O intervalo válido vai de -20 (maior prioridade, exclusivo do root) a 19 (menor prioridade). #nice"
 
 - id: "103-094"
   topic: "103.4"
@@ -1101,7 +1101,7 @@
     - ">"
     - "<"
   answer: 1
- comment: "O símbolo | (pipe) conecta a saída padrão (stdout) do primeiro comando à entrada padrão (stdin) do segundo. O & executa um comando em background. O ; executa comandos em sequência independentemente. O > redireciona stdout para um arquivo. O < usa o conteúdo de um arquivo como stdin. #pipe #stdout #stdin #shell"
+  comment: "O símbolo | (pipe) conecta a saída padrão (stdout) do primeiro comando à entrada padrão (stdin) do segundo. O & executa um comando em background. O ; executa comandos em sequência independentemente. O > redireciona stdout para um arquivo. O < usa o conteúdo de um arquivo como stdin. #pipe #stdout #stdin #shell"
 
 - id: "103-095"
   topic: "103.5"
@@ -1113,7 +1113,7 @@
     - "nohup"
     - "watch"
   answer: 2
- comment: "O comando fg traz um job em background para o foreground da sessão atual. O bg reinicia um processo parado mantendo-o em background. O jobs lista os jobs ativos na sessão. O nohup executa um comando imune ao sinal SIGHUP (logout). O watch executa um comando repetidamente em intervalos. #fg #bg #jobs #bash"
+  comment: "O comando fg traz um job em background para o foreground da sessão atual. O bg reinicia um processo parado mantendo-o em background. O jobs lista os jobs ativos na sessão. O nohup executa um comando imune ao sinal SIGHUP (logout). O watch executa um comando repetidamente em intervalos. #fg #bg #jobs #bash"
 
 - id: "103-096"
   topic: "103.5"
@@ -1125,7 +1125,7 @@
     - "SIGSTP"
     - "SIGHUP"
   answer: 3
- comment: "Sem nenhum parâmetro, o kill envia o sinal SIGTERM (código 15), que solicita o encerramento do processo de forma graciosa, permitindo que ele finalize suas tarefas antes de sair. O SIGKILL (9) encerra o processo imediatamente sem possibilidade de tratamento. #kill #sigterm"
+  comment: "Sem nenhum parâmetro, o kill envia o sinal SIGTERM (código 15), que solicita o encerramento do processo de forma graciosa, permitindo que ele finalize suas tarefas antes de sair. O SIGKILL (9) encerra o processo imediatamente sem possibilidade de tratamento. #kill #sigterm"
 
 - id: "103-097"
   topic: "103.4"
@@ -1136,7 +1136,7 @@
     - "comando > saida.out 2> saida.err"
     - "comando > saida.err >> saida.out"
   answer: 3
- comment: "No Linux há 3 descritores de arquivo padrão: stdin (0), stdout (1) e stderr (2). O > redireciona o stdout (equivalente a 1>) e o 2> redireciona o stderr. Portanto, 'comando > saida.out 2> saida.err' envia a saída padrão para saida.out e os erros para saida.err. #stdout #stderr"
+  comment: "No Linux há 3 descritores de arquivo padrão: stdin (0), stdout (1) e stderr (2). O > redireciona o stdout (equivalente a 1>) e o 2> redireciona o stderr. Portanto, 'comando > saida.out 2> saida.err' envia a saída padrão para saida.out e os erros para saida.err. #stdout #stderr"
 
 - id: "103-098"
   topic: "103.5"
@@ -1148,14 +1148,14 @@
     - "fgrep"
     - "pgrep"
   answer: 5
- comment: "O pgrep busca processos por nome ou atributos (como usuário) e exibe seus PIDs. O pkill funciona de forma similar, mas em vez de exibir, envia sinais aos processos encontrados. O jobs lista jobs da sessão atual, o bg retoma processos em background e o fgrep é um filtro de texto. #pgrep #pkill #pid"
+  comment: "O pgrep busca processos por nome ou atributos (como usuário) e exibe seus PIDs. O pkill funciona de forma similar, mas em vez de exibir, envia sinais aos processos encontrados. O jobs lista jobs da sessão atual, o bg retoma processos em background e o fgrep é um filtro de texto. #pgrep #pkill #pid"
 
 - id: "103-099"
   topic: "103.6"
   type: "discursive"
   question: "Qual comando tem a única finalidade de alterar o valor do NICE de um processo em execução? (Informe apenas o comando, sem o caminho ou argumentos)"
   answer: "renice"
- comment: "O renice altera o valor de NICE de um processo já em execução, impactando sua prioridade de escalonamento. O nice é usado para definir o NICE ao iniciar um processo. O top também permite alterar o NICE interativamente, mas não tem essa como única finalidade. #renice #nice"
+  comment: "O renice altera o valor de NICE de um processo já em execução, impactando sua prioridade de escalonamento. O nice é usado para definir o NICE ao iniciar um processo. O top também permite alterar o NICE interativamente, mas não tem essa como única finalidade. #renice #nice"
 
 - id: "103-100"
   topic: "103.7"
@@ -1167,7 +1167,7 @@
     - "?"
     - "^"
   answer: 4
- comment: "O ? indica que o caractere anterior pode ocorrer zero ou uma vez (opcional). O + exige uma ou mais ocorrências. O * permite zero ou mais ocorrências. O . representa qualquer caractere único. O ^ ancora o padrão ao início da linha. #regex #grep"
+  comment: "O ? indica que o caractere anterior pode ocorrer zero ou uma vez (opcional). O + exige uma ou mais ocorrências. O * permite zero ou mais ocorrências. O . representa qualquer caractere único. O ^ ancora o padrão ao início da linha. #regex #grep"
 
 - id: "103-101"
   topic: "103.7"
@@ -1178,7 +1178,7 @@
     - "egrep"
     - "sed"
   answer: 1
- comment: "O fgrep (fixed grep) interpreta o padrão como string literal, não como expressão regular. É equivalente a grep -F. Os demais — grep, egrep (grep -E) e sed — suportam expressões regulares. #fgrep #grep #egrep #sed #regex"
+  comment: "O fgrep (fixed grep) interpreta o padrão como string literal, não como expressão regular. É equivalente a grep -F. Os demais — grep, egrep (grep -E) e sed — suportam expressões regulares. #fgrep #grep #egrep #sed #regex"
 
 - id: "103-102"
   topic: "103.7"
@@ -1189,7 +1189,7 @@
     - "grep -c Linux resultado.log"
     - "egrep -n \"Linux\" resultado.log"
   answer: 3
- comment: "A opção -c do grep conta o número de linhas que contêm o padrão. A opção -l lista apenas os nomes dos arquivos que possuem o padrão. A opção -n exibe o número de cada linha correspondente, mas não conta. O fgrep não aceita expressões regulares. #grep #regex"
+  comment: "A opção -c do grep conta o número de linhas que contêm o padrão. A opção -l lista apenas os nomes dos arquivos que possuem o padrão. A opção -n exibe o número de cada linha correspondente, mas não conta. O fgrep não aceita expressões regulares. #grep #regex"
 
 - id: "103-103"
   topic: "103.8"
@@ -1200,7 +1200,7 @@
     - "SHELL"
     - "SESSION_EDITOR"
   answer: 1
- comment: "A variável de ambiente EDITOR define o editor de texto padrão usado pelo shell e por outros programas (como git, crontab -e, etc.). Para tornar a configuração persistente, o usuário pode adicionar 'export EDITOR=vim' ao seu ~/.bashrc ou ~/.bash_profile. #editor #vim #nano #shell"
+  comment: "A variável de ambiente EDITOR define o editor de texto padrão usado pelo shell e por outros programas (como git, crontab -e, etc.). Para tornar a configuração persistente, o usuário pode adicionar 'export EDITOR=vim' ao seu ~/.bashrc ou ~/.bash_profile. #editor #vim #nano #shell"
 
 - id: "103-104"
   topic: "103.8"
@@ -1211,7 +1211,7 @@
     - ":!"
     - ":$"
   answer: 4
- comment: "No VI/Vim, o comando :$ posiciona o cursor na última linha do arquivo. Para navegar a linhas específicas: :1 vai à primeira linha, :100 vai à centésima, e assim por diante. O :! é usado para executar comandos do shell sem sair do editor. #vi #vim #editor"
+  comment: "No VI/Vim, o comando :$ posiciona o cursor na última linha do arquivo. Para navegar a linhas específicas: :1 vai à primeira linha, :100 vai à centésima, e assim por diante. O :! é usado para executar comandos do shell sem sair do editor. #vi #vim #editor"
 
 - id: "103-105"
   topic: "103.8"
@@ -1223,4 +1223,4 @@
     - ":20d"
     - "dd21"
   answer: 3
- comment: "O enunciado pede a linha atual mais as 20 seguintes, totalizando 21 linhas. No VI, Ndd apaga N linhas a partir da posição atual. Portanto, 21dd apaga 21 linhas. O equivalente d21d também funcionaria. O 20dd apagaria apenas 20 linhas, não incluindo todas as necessárias. #vi #vim #dd #editor"
+  comment: "O enunciado pede a linha atual mais as 20 seguintes, totalizando 21 linhas. No VI, Ndd apaga N linhas a partir da posição atual. Portanto, 21dd apaga 21 linhas. O equivalente d21d também funcionaria. O 20dd apagaria apenas 20 linhas, não incluindo todas as necessárias. #vi #vim #dd #editor"
