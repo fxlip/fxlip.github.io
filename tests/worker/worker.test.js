@@ -477,6 +477,81 @@ describe('POST /api/view — D1', () => {
     })
     expect(res.status).toBe(400)
   })
+
+  it('retorna 400 para mais de 50 slugs', async () => {
+    const slugs = Array.from({ length: 51 }, (_, i) => `slug-bulk-${i}`)
+    const res = await call('/api/view', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slugs }),
+    })
+    expect(res.status).toBe(400)
+  })
+
+  it('aceita formato batch { slugs: [...] } e conta cada slug uma vez por IP', async () => {
+    const res = await call('/api/view', {
+      method: 'POST',
+      headers: { 'CF-Connecting-IP': '3.0.0.5', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slugs: ['batch-a', 'batch-b', 'batch-c'] }),
+    })
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body['batch-a']).toBe(1)
+    expect(body['batch-b']).toBe(1)
+    expect(body['batch-c']).toBe(1)
+  })
+
+  it('mesmo IP não duplica em batch repetido', async () => {
+    const opts = {
+      method: 'POST',
+      headers: { 'CF-Connecting-IP': '3.0.0.6', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slugs: ['batch-dedup'] }),
+    }
+    await call('/api/view', opts)
+    const res = await call('/api/view', opts)
+    const body = await res.json()
+    expect(body['batch-dedup']).toBe(1)
+  })
+
+  it('mesmo IP incrementa novamente em dia diferente (dedup é diário, não permanente)', async () => {
+    // Simula view histórica: pre-popula page_view_ips com data passada e page_views com count=1
+    const ip   = '3.0.0.7'
+    const salt = ''  // SALT não configurado em test env
+    const rawHash = async (text) => {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text))
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 16)
+    }
+    const ipHash = await rawHash(ip + salt)
+
+    // Registra uma view "ontem"
+    await env.DB.prepare(
+      `INSERT OR IGNORE INTO page_view_ips (slug, ip_hash, date) VALUES (?, ?, ?)`
+    ).bind('slug-past-day', ipHash, '1970-01-01').run()
+    await env.DB.prepare(
+      `INSERT OR REPLACE INTO page_views (slug, view_count, updated_at) VALUES (?, 1, ?)`
+    ).bind('slug-past-day', '1970-01-01T00:00:00.000Z').run()
+
+    // Hoje, mesmo IP deve conseguir mais um incremento
+    const res = await call('/api/view', {
+      method: 'POST',
+      headers: { 'CF-Connecting-IP': ip, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slugs: ['slug-past-day'] }),
+    })
+    const body = await res.json()
+    expect(body['slug-past-day']).toBe(2)
+  })
+
+  it('view sem fingerprint de usuário conta normalmente (navegação orgânica/bot JS)', async () => {
+    // Sem CF-Connecting-IP explícito — worker usa 'unknown' como IP
+    const res = await call('/api/view', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slugs: ['slug-no-user'] }),
+    })
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body['slug-no-user']).toBeGreaterThanOrEqual(1)
+  })
 })
 
 describe('GET /api/views — D1', () => {
