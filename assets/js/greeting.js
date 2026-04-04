@@ -143,9 +143,7 @@ document.addEventListener("DOMContentLoaded", function() {
       inputLine.appendChild(input);
       inputLine.appendChild(cursor);
 
-      input.addEventListener('blur', function() {
-        requestAnimationFrame(function() { input.focus(); });
-      });
+      inputLine.addEventListener('click', function() { input.focus(); });
       input.focus();
 
       input.addEventListener("input", function() {

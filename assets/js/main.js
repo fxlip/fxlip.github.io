@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(html => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(html, "text/html");
-          const newPosts = doc.querySelectorAll("article.post-item");
+          const newPosts = doc.querySelectorAll("article.post-item:not(.post-item--pinned)");
           const nextData = doc.getElementById("infinite-loader");
 
           if (newPosts.length > 0) {
