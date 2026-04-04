@@ -541,3 +541,84 @@
   answer: 4
   comment: "A sequência de boot é: BIOS → localiza e executa o MBR → MBR carrega o Bootloader (GRUB) → Bootloader seleciona e executa o kernel e o initrd → kernel executa o init → init inicia os serviços conforme o runlevel/target configurado. #grub #kernel"
 
+- id: "101-052"
+  topic: "101.2"
+  type: "discursive"
+  question: "Qual comando é utilizado para exibir o conteúdo do Kernel Ring Buffer? (Informe apenas o comando, sem caminho ou argumentos)"
+  answer: "dmesg"
+  comment: "O dmesg é o comando utilizado para imprimir e controlar o kernel ring buffer, que contém informações geradas durante o último boot do sistema, além de outros registros do kernel e do sistema. No seu uso padrão todo o buffer é exibido na tela. Ele também pode fazer uma limpeza das informações pela opção -C ou --clear. #dmesg #boot"
+
+- id: "101-053"
+  topic: "101.1"
+  question: "Qual o padrão utilizado no Linux para identificação dos dispositivos de armazenamento SATA?"
+  options:
+    - "/dev/hdX"
+    - "/dev/sataX"
+    - "/mnt/staX"
+    - "/dev/sdX"
+  answer: 4
+  comment: "Dispositivos de armazenamento SATA seguem o mesmo padrão dos discos SCSI, ou seja, /dev/sdX. Discos ATA/IDE utilizam o padrão /dev/hdX. #sata #dev #storage"
+
+- id: "101-054"
+  topic: "101.2"
+  question: "Qual arquivo do /proc exibe os parâmetros enviados do bootloader para o kernel?"
+  options:
+    - "/proc/interrupts"
+    - "/proc/boot"
+    - "/proc/dmesg"
+    - "/proc/cmdline"
+    - "/proc/sys/kernel"
+  answer: 4
+  comment: "O /proc/cmdline contém os parâmetros enviados do bootloader para o kernel, como o arquivo de imagem do kernel (vmlinuz) e os parâmetros a serem utilizados. É a informação contida no parâmetro 'linux' do grub.cfg. #proc #cmdline #boot #grub"
+
+- id: "101-055"
+  topic: "101.3"
+  question: "O administrador deseja programar uma reinicialização do sistema para as 18:00. Qual comando pode ser utilizado?"
+  options:
+    - "shutdown 1800"
+    - "shutdown -r 18:00"
+    - "reboot 1800"
+    - "shutdown -h 1800"
+  answer: 2
+  comment: "O comando shutdown pode ser usado tanto para desligar como para reiniciar o sistema. Com a opção -r agenda uma reinicialização no horário especificado (formato HH:MM). A opção -h agenda o desligamento. O comando reboot não permite agendamento. O formato '1800' não é válido para o shutdown. #shutdown #reboot #runlevel"
+
+- id: "101-056"
+  topic: "101.3"
+  type: "discursive"
+  question: "Em um sistema que utiliza o SysV, em qual arquivo de configuração deve ser definido o runlevel padrão a ser utilizado após a inicialização? (Informe o nome com o caminho completo do arquivo)"
+  answer: "/etc/inittab"
+  comment: "O arquivo /etc/inittab informa ao processo init qual o runlevel padrão pelo parâmetro 'initdefault', e com isso quais serviços devem ser iniciados pelo sistema. No systemd, essa função é substituída pelo link simbólico /etc/systemd/system/default.target. #inittab #sysv #runlevel #init"
+
+- id: "101-057"
+  topic: "101.2"
+  question: "Qual componente contém a ordem dos dispositivos em que o bootloader deve ser procurado no processo de boot?"
+  options:
+    - "GRUB"
+    - "BIOS"
+    - "Initrd"
+    - "ESP"
+  answer: 2
+  comment: "Na BIOS do sistema deve ser informado quais as possíveis localizações do bootloader e a ordem em que devem ser consultados, o 'Boot device order'. O GRUB é o próprio bootloader, o Initrd é o sistema de arquivos temporário carregado pelo kernel e o ESP (EFI System Partition) é usado em sistemas UEFI. #bios #boot #bootloader"
+
+- id: "101-058"
+  topic: "101.3"
+  question: "Qual comando faz com que sejam recarregadas todas as configurações do systemd, fazendo uma releitura dos arquivos de configuração de todas as \"Units\"?"
+  options:
+    - "systemctl daemon-reload"
+    - "systemd reload"
+    - "systemctl isolate daemon"
+    - "journalctl reload-daemon"
+  answer: 1
+  comment: "A opção daemon-reload do systemctl recarrega a configuração do gerenciador do systemd. A opção executa novamente todos, recarrega todos os arquivos de unidade e recria toda a árvore de dependências. #systemctl #systemd #daemon-reload"
+
+- id: "101-059"
+  topic: "101.1"
+  question: "Das partições a seguir, quais são partições virtuais que são montadas dinamicamente pelo sistema durante o processo de inicialização?"
+  options:
+    - "/tmp"
+    - "/proc"
+    - "/sys"
+    - "/dev"
+    - "/var"
+  answer: [2, 3, 4]
+  comment: "/proc – Informações de processos ativos e recursos de hardware. /sys – Informações sobre os dispositivos de hardware. Filesystem do tipo sysfs. /dev – Referências aos dispositivos do sistema. Filesystem do tipo tmpfs. Gerenciado dinamicamente pelo udev. #proc #sys #dev #filesystem #inicialização"

@@ -1224,3 +1224,283 @@
     - "dd21"
   answer: 3
   comment: "O enunciado pede a linha atual mais as 20 seguintes, totalizando 21 linhas. No VI, Ndd apaga N linhas a partir da posição atual. Portanto, 21dd apaga 21 linhas. O equivalente d21d também funcionaria. O 20dd apagaria apenas 20 linhas, não incluindo todas as necessárias. #vi #vim #dd #editor"
+
+- id: "103-106"
+  topic: "103.1"
+  type: "discursive"
+  question: "Qual comando é utilizado para indicar se um determinado comando é interno ao shell, externo ou até mesmo se é um alias? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
+  answer: "type"
+  comment: "O comando type exibe se um comando é interno ao shell (builtin), externo (caminho do binário) ou um alias. O comando file mostra o tipo de arquivo, o whatis exibe uma breve descrição do comando e o hash é referente ao cache interno do shell. #type #shell #builtin"
+
+- id: "103-107"
+  topic: "103.1"
+  question: "O usuário possui no diretório atual o script relatorio.sh, considerando que esse diretório não está listado na variável de ambiente PATH, e que o script tem as devidas permissões de execução, quais comandos podem ser utilizados para executar o script? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "relatorio.sh"
+    - "./relatorio.sh"
+    - "bash relatorio.sh"
+    - "exec relatorio.sh"
+    - "source relatorio.sh"
+  answer: [2, 3, 5]
+  comment: "Como o diretório não está no PATH, a forma 'relatorio.sh' não pode ser usada isoladamente. Deve ser utilizado ./relatorio.sh para referenciar o diretório atual. Outra forma é passar o script como argumento do shell bash (ou sh, ksh, etc). O comando source executa o script na sessão atual, assim como o equivalente '. relatorio.sh'. O exec substitui o processo atual pelo script, mas exige o caminho completo ou que esteja no PATH. #shell #path #source #bash"
+
+- id: "103-108"
+  topic: "103.1"
+  question: "Qual dos seguintes comandos é usado para alterar parâmetros e opções da sessão atual do Bash?"
+  options:
+    - "env"
+    - "set"
+    - "setenv"
+    - "envsetup"
+    - "declare"
+  answer: 2
+  comment: "Além de mostrar as variáveis locais e exportadas da sessão, o set também é usado para alterar e definir opções e parâmetros do bash em execução (ex: set -x habilita o modo debug). O env exibe ou define variáveis de ambiente para um comando específico. O declare define variáveis com atributos, mas não altera opções do shell. #set #bash #shell"
+
+- id: "103-109"
+  topic: "103.1"
+  type: "discursive"
+  question: "Qual variável de ambiente define os diretórios em que o Bash procurará pelos arquivos executáveis dos comandos? (Informe apenas o nome da variável)"
+  answer: "PATH"
+  comment: "A variável PATH contém uma lista de diretórios separados por ':' em que podem ser encontrados os arquivos executáveis de cada comando reconhecido pelo Bash. Estando o comando ou aplicação nesses diretórios, o Bash é capaz de executá-lo sem que seja informado o caminho completo. #PATH #bash #variavel #shell"
+
+- id: "103-110"
+  topic: "103.2"
+  question: "Qual comando irá remover do arquivo exame.txt todas as linhas que possuam a string \"Windows\"?"
+  options:
+    - "sed 's/Windows//' exame.txt"
+    - "sed 's/Windows//g' exame.txt"
+    - "sed '/Windows/g' exame.txt"
+    - "sed '/Windows/d' exame.txt"
+  answer: 4
+  comment: "Usando o sed com a opção 'd' na expressão, toda a linha que contiver a string informada será excluída. A sintaxe 's/Windows//' apenas substitui a primeira ocorrência da string por vazio, mantendo a linha. A opção 'g' em 's/Windows//g' substitui todas as ocorrências mas também mantém a linha. A expressão '/Windows/g' não é uma sintaxe válida do sed. #sed #filtro #texto"
+
+- id: "103-111"
+  topic: "103.2"
+  question: "Qual comando irá retornar apenas o nome e o ID dos 5 últimos usuários presentes no arquivo /etc/passwd?"
+  options:
+    - "tail -5 /etc/passwd"
+    - "tail -n5 /etc/passwd > cut -d\":\" -f1-3"
+    - "tail -5 /etc/passwd | cut -d: -f1,3"
+    - "cut -f1,3 /etc/passwd | tail -n5"
+  answer: 3
+  comment: "O comando tail -5 (ou -n5) exibe as 5 últimas linhas do arquivo. O cut recorta parte da informação: -d define o delimitador de campos e -f especifica os campos a serem exibidos. O campo 1 é o nome do usuário e o campo 3 é o UID. O operador '>' redireciona para arquivo, não encadeia comandos como o pipe '|'. #tail #cut #passwd #pipe"
+
+- id: "103-112"
+  topic: "103.3"
+  question: "O administrador deseja criar uma imagem da partição /dev/sda1 com o nome backup.img. Qual comando deve ser utilizado?"
+  options:
+    - "cpio /dev/sda1 > backup.img"
+    - "dd /dev/sda1 > backup.img"
+    - "dd if=/dev/sda1 of=backup.img"
+    - "od from=/dev/sda1 to=backup.img"
+  answer: 3
+  comment: "O uso mais comum do comando dd é criar uma imagem a partir de uma partição, e vice-versa. A sintaxe utiliza if= para informar a origem (input file) e of= para informar o destino (output file). O cpio é usado para arquivamento, não para imagens de partição. O od é usado para exibir conteúdo de arquivos em formato octal/hexadecimal. #dd #backup #partição"
+
+- id: "103-113"
+  topic: "103.3"
+  question: "O administrador do sistema deseja compactar todos os arquivos do diretório /var que terminem com \"2015.log\". Qual comando pode ser utilizado?"
+  options:
+    - "find /var -name \"*2015.log\" | gzip"
+    - "find /var -name \"*2015.log\" | xargs gzip"
+    - "find /var -name \"*2015.log\" | tar zcf"
+    - "ls -l /var/*2015.log | xargs gzip"
+  answer: 2
+  comment: "O comando find /var -name \"*2015.log\" retorna todos os arquivos do diretório /var que terminem com 2015.log. Esses arquivos são enviados um a um como parâmetro para o gzip via xargs. O xargs é essencial para fazer o intermédio entre a saída do find e a entrada do gzip, que trabalha com um arquivo por vez. O pipe direto para gzip não funciona pois o gzip esperaria dados no stdin, não nomes de arquivo. #find #xargs #gzip #compactação"
+
+- id: "103-114"
+  topic: "103.3"
+  question: "Qual dos seguintes comandos pode ser usado para exibir o inode de um arquivo específico?"
+  options:
+    - "df"
+    - "du"
+    - "ls"
+    - "li"
+    - "file"
+  answer: 3
+  comment: "A opção -i do comando ls exibe o inode de cada arquivo ou diretório. #ls #inode #arquivo"
+
+- id: "103-115"
+  topic: "103.4"
+  question: "Qual dos seguintes comandos não exibirá nenhum resultado na tela do usuário?"
+  options:
+    - "ls -l /etc 2> log.out"
+    - "ls -l /etc | tee log.out"
+    - "ls -l /etc >> log.out"
+    - "ls -l /etc | cat"
+  answer: 3
+  comment: "O redirecionador >> faz com que a saída do comando, ao invés de ser enviada à tela, seja enviada para um arquivo. #redirecionamento #pipe #stdout"
+
+- id: "103-116"
+  topic: "103.4"
+  question: "Qual redirecionador instrui o shell a ler as entradas de uma determinada fonte até que uma linha contendo a string informada como delimitador ocorra?"
+  options:
+    - ">"
+    - "<"
+    - "<<"
+    - "1>&2>"
+    - "|"
+  answer: 3
+  comment: "O redirecionador <<, chamado \"Here Documents\", instrui o shell a ler as entradas de uma determinada fonte até que uma linha contendo a string informada como delimitador ocorra. #here-documents #redirecionamento #shell #stdin"
+
+- id: "103-117"
+  topic: "103.3"
+  question: "Qual comando pode ser utilizado para exibir os arquivos e diretórios contidos no arquivo backup.tgz?"
+  options:
+    - "tar zxf backup.tgz"
+    - "tar -t backup.tgz"
+    - "tar tf backup.tgz"
+    - "unzip backup.tgz"
+  answer: 3
+  comment: "No comando tar, a opção \"t\" exibe o conteúdo do arquivo agrupado/compactado, o -f sempre deve ser utilizado para indicar o arquivo .tar ou .tgz. #tar #tgz #compactação #arquivos"
+
+- id: "103-118"
+  topic: "103.5"
+  question: "Qual o código numérico do sinal SIGHUP?"
+  options:
+    - "1"
+    - "2"
+    - "9"
+    - "10"
+    - "15"
+  answer: 1
+  comment: "O SIGHUP pode fazer com que um processo morra, que seja reiniciado ou que ele releia seus arquivos de configuração, sendo 1 seu código numérico. 9 é o código do SIGKILL, 10 do SIGUSR1 e 15 do SIGTERM. #sighup #sinais #processos #kill"
+
+- id: "103-119"
+  topic: "103.4"
+  question: "Qual dos seguintes comandos irá criar um novo arquivo de nome horario.txt com o resultado do comando \"date\" caso este ainda não exista, ou sobrescrevê-lo com a saída do \"date\" caso ele já exista?"
+  options:
+    - "date 2> horario.txt"
+    - "date < horario.txt"
+    - "date > horario.txt"
+    - "date >> horario.txt"
+    - "date << horario.txt"
+  answer: 3
+  comment: "O redirecionador > envia a saída para o arquivo informado sobrescrevendo qualquer conteúdo anterior, por outro lado o >> faz um append no final do arquivo informado, mantendo o que estava escrito anteriormente. #redirecionamento #stdout #shell"
+
+- id: "103-120"
+  topic: "103.5"
+  question: "Qual símbolo deve ser usado após um comando para que o mesmo inicie sua execução em background?"
+  options:
+    - "%"
+    - "$"
+    - "&"
+    - "#"
+    - "!"
+  answer: 3
+  comment: "No shell, por padrão todo comando será iniciado em modo foreground, para forçar a inicialização como background, ou seja, desvinculado do shell, deve ser utilizado o símbolo & no final do comando. #background #foreground #shell #processos"
+
+- id: "103-121"
+  topic: "103.5"
+  question: "Quais comandos podem ser utilizados para verificar o load average da máquina? (Selecione DUAS Respostas Corretas)"
+  options:
+    - "uptime"
+    - "top"
+    - "uname"
+    - "cat /proc/cpuinfo"
+    - "dmesg"
+  answer: [1, 2]
+  comment: "De maneira geral, o load average permite verificar como está a execução de processos em um sistema. Esse valor pode ser visualizado pelos comandos uptime e top. #uptime #top #load-average #processos #monitoramento"
+
+- id: "103-122"
+  topic: "103.7"
+  question: "O arquivo aluno.txt contém uma lista com nomes completos de alunos do curso. Qual comando irá retornar o nome completo apenas dos alunos cujo primeiro nome seja Carlos?"
+  options:
+    - "grep -v Carlos alunos.txt"
+    - "egrep \"Carlos$\" alunos.txt"
+    - "grep \"^Carlos\" alunos.txt"
+    - "egrep ^carlos alunos.txt"
+  answer: 3
+  comment: "O caractere ^ indica sempre algo no início da linha. O caractere $ indica o final de uma linha. O grep -v excluiria toda ocorrência da palavra Carlos. O egrep ^carlos está com a primeira letra minúscula, visto que a função é case-sensitive, a string Carlos não seria encontrada. #grep #regex #expressoes-regulares #egrep"
+
+- id: "103-123"
+  topic: "103.6"
+  question: "Ao executar o comando: nice -8 myapp — Qual atributo e valor é definido ao processo?"
+  options:
+    - "É definido o nível de nice igual a 8"
+    - "É definido o nível de nice igual a -8"
+    - "A prioridade do processo é definida em 8"
+    - "A prioridade do processo é definida em -8"
+  answer: 1
+  comment: "Os comandos nice e renice alteram o valor do NICE de um processo, e o NICE impacta a prioridade definida pelo sistema operacional para cada processo. A sintaxe do comando nice é: nice -Valor_Nice comando, sendo assim, se usado nice -8 comando, o valor de nice associado ao comando seria 8. Atenção pois no comando renice a sintaxe é um pouco diferente: renice Valor_Nice PID, dessa forma o -8 seria o valor de nice -8. #nice #renice #prioridade #processos"
+
+- id: "103-124"
+  topic: "103.5"
+  type: "discursive"
+  question: "O administrador do sistema deseja manter o comando que exibe o uso de memória e swap do sistema sempre em execução e exibição, com os resultados sendo atualizados a cada 5 segundos. Qual comando atenderá essa necessidade? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
+  answer: "watch"
+  comment: "O comando watch pode ser utilizado com qualquer comando, para que o mesmo seja reexecutado constantemente, o tempo padrão é 2 segundos, porém a opção -n permite definir o tempo de atualização. A situação mencionada seria resolvida pela execução: watch -n5 free -m #watch #free #monitoramento #processos"
+
+- id: "103-125"
+  topic: "103.6"
+  question: "Qual o valor de nice que pode ser usado para indicar ao sistema que o processo deve ter a menor prioridade possível?"
+  options:
+    - "19"
+    - "20"
+    - "-19"
+    - "-20"
+  answer: 1
+  comment: "Os valores do nice variam do -20 ao 19, onde -20 dá a maior prioridade e 19 a menor prioridade. #nice #prioridade #processos"
+
+- id: "103-126"
+  topic: "103.8"
+  question: "No editor de texto VI, você está com o cursor posicionado na última linha do arquivo, e pesquisando na ordem inversa, do final para o início, deseja encontrar a próxima ocorrência da palavra LPI. Qual comando deve ser utilizado?"
+  options:
+    - "/LPI"
+    - "s/LPI"
+    - "?LPI"
+    - "n:LPI"
+  answer: 3
+  comment: "O ? faz uma busca do final para o começo de um arquivo, o / faz a busca do começo para o final. #vi #vim #busca #editor"
+
+- id: "103-127"
+  topic: "103.8"
+  question: "No VI, após realizar alterações no arquivo, qual comando deve ser utilizado para deixar a edição do arquivo sem gravar as alterações realizadas?"
+  options:
+    - ":q!"
+    - ":q"
+    - ":wq"
+    - "ZZ"
+  answer: 1
+  comment: "A opção :q solicita que o vi saia da edição, mas se o arquivo tiver sido alterado será necessário utilizar :q! para forçar a saída do vi sem salvar as alterações realizadas. Os comandos :wq e ZZ são utilizados para salvar e sair. #vi #vim #editor #sair"
+
+- id: "103-128"
+  topic: "103.7"
+  question: "Considerando o arquivo teste.txt com o seguinte conteúdo, qual o resultado do comando: egrep -c Aula1+ teste.txt ?"
+  code: "Aula1\nAula11\nAula12\nAula111\nAula 2\nAula 22\nAula3\nAula4"
+  options:
+    - "Sem nenhum retorno"
+    - "1"
+    - "4"
+    - "8"
+  answer: 3
+  comment: "A opção -c no grep/egrep conta a quantidade de linhas em que a string/expressão são encontradas. A expressão \"Aula1+\" diz que o caractere \"1\" deve obrigatoriamente estar presente na string uma ou mais vezes repetidas. Dessa forma são encontrados: Aula1, Aula11, Aula12 e Aula111. #egrep #grep #regex #expressoes-regulares"
+
+- id: "103-129"
+  topic: "103.8"
+  question: "No editor de texto vi, qual o comando copia o conteúdo da linha atual?"
+  options:
+    - "yy"
+    - "dd"
+    - "p"
+    - "cc"
+  answer: 1
+  comment: "Ao pressionar yy a linha atual é copiada, para copiar a linha atual e mais 9 pode ser utilizado y10y ou 10yy. Para colar basta pressionar p. #vi #vim #editor #yank #copiar"
+
+- id: "103-130"
+  topic: "103.4"
+  type: "discursive"
+  question: "Qual comando recebe uma entrada e a escreve na saída padrão e em um arquivo informado como parâmetro? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
+  answer: "tee"
+  comment: "A função do comando tee é receber uma entrada, normalmente a saída de um outro comando com o uso do |, exibir essa entrada na tela e ao mesmo tempo escrevê-la em um arquivo. #tee #pipe #redirecionamento #stdout"
+
+- id: "103-131"
+  topic: "103.7"
+  question: "O que o símbolo + representa em uma expressão regular?"
+  options:
+    - "Encontrar o caractere anterior uma ou mais vezes"
+    - "Encontrar o caractere anterior nenhuma ou mais vezes"
+    - "Encontrar o caractere anterior apenas uma vez"
+    - "Encontrar o caractere seguinte uma ou mais vezes"
+    - "Encontrar o caractere seguinte ao menos uma vez"
+  answer: 1
+  comment: "O + determina que o caractere anterior precisa estar presente ao menos uma vez na string mas pode ser repetido n vezes. #regex #expressoes-regulares #grep #egrep"

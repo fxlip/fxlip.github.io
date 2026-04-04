@@ -765,3 +765,166 @@
     - "XFS"
   answer: 4
   comment: "O Btrfs (B-tree filesystem) suporta nativamente subvolumes, snapshots, RAID multi-device e compressão transparente de dados. O ext4, XFS, exFAT e VFAT não possuem suporte nativo a subvolumes e snapshots. #btrfs #btrfs #btrfs"
+
+- id: "104-068"
+  topic: "104.3"
+  question: "Qual comando deve ser utilizado para montar manualmente o dispositivo /dev/sdb1 no diretório /mnt/backup/ ?"
+  options:
+    - "mount /dev/sdb1 /mnt/backup/"
+    - "mkfs /dev/sdb1 /mnt/backup"
+    - "mount /mnt/backup /dev/sdb1"
+    - "fstab /dev/sdb1 /mnt/backup"
+  answer: 1
+  comment: "O mount é o comando utilizado para montar manualmente uma partição a um diretório, sendo a sintaxe: mount <dispositivo> <ponto de montagem>. #mount #partição #filesystem #montagem"
+
+- id: "104-069"
+  topic: "104.2"
+  question: "Em uma partição que utiliza o sistema de arquivos XFS, qual comando é utilizado especificamente para que os dados dentro da partição sejam reorganizados?"
+  options:
+    - "xfs_repair"
+    - "xfs_db"
+    - "fsck.xfs"
+    - "xfs_fsr"
+    - "xfs_reorg"
+  answer: 4
+  comment: "O xfs_fsr (de FileSystem Reorganizer), tem a função de melhorar a organização do sistema de arquivos XFS. O xfs_db é uma ferramenta de Debug para partições XFS. O xfs_repair tem a função de reparar um filesystem XFS, de forma similar ao fsck para outros filesystems. #xfs #xfs_fsr #filesystem #desfragmentação"
+
+- id: "104-070"
+  topic: "104.2"
+  question: "Qual dos seguintes comandos irá alterar o intervalo máximo de verificações da partição /dev/sda1 para 30 dias?"
+  options:
+    - "tune2fs -j 30 /dev/sda1"
+    - "tune2fs -i 30 /dev/sda1"
+    - "tune2fs -m 30d /dev/sda1"
+    - "tune2fs -c 1m /dev/sda1"
+    - "tune2fs -d 30 /dev/sda1"
+  answer: 2
+  comment: "A opção -i do tune2fs altera o parâmetro \"interval-between-checks\", que é referente ao intervalo máximo entre checagens de uma partição. Podem ser utilizados os sufixos d para dias, m para meses e w para semanas, se nenhum for informado são considerados dias. #tune2fs #fsck #filesystem #ext2 #ext3 #ext4"
+
+- id: "104-071"
+  topic: "104.1"
+  question: "Quais comandos podem ser utilizados para se criar partições do tipo GPT? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "fdisk"
+    - "gdisk"
+    - "parted"
+    - "mkfs"
+    - "tune2fs"
+  answer: [1, 2, 3]
+  comment: "O fdisk e o parted podem criar partições do tipo MBR e GPT. O gdisk é específico para o tipo GPT. #gpt #fdisk #gdisk #parted #partição"
+
+- id: "104-072"
+  topic: "104.1"
+  question: "Quais comandos podem ser utilizados para criar um sistema de arquivos do tipo ext3? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "mkfs -t ext3"
+    - "mkfs.ext3"
+    - "mke2fs -j"
+    - "mke3fs"
+    - "mkfs --ext3"
+  answer: [1, 2, 3]
+  comment: "A opção -t do mkfs é utilizada para definir o tipo de filesystem a ser utilizado, se não for informado o padrão é ext2. Além disso pode ser utilizado diretamente o mkfs.ext3, sem argumentos. A opção -j do mke2fs cria um sistema de arquivos com journal, que na prática é o ext3. #mkfs #ext3 #mke2fs #filesystem"
+
+- id: "104-073"
+  topic: "104.5"
+  question: "Qual bit de acesso permite que um arquivo binário seja executado por qualquer usuário do sistema como se este fosse o dono do arquivo?"
+  options:
+    - "SUID"
+    - "SGID"
+    - "Sticky"
+    - "Special"
+  answer: 1
+  comment: "O SUID implementa a permissão descrita, ele é representado pelo caractere \"s\" na posição da permissão \"x\" do usuário dono do arquivo e pode ser implementado pelo comando \"chmod u+s arquivo\". #suid #permissões #chmod #segurança"
+
+- id: "104-074"
+  topic: "104.3"
+  question: "Qual opção deve ser utilizada no arquivo /etc/fstab para que determinada partição não seja automaticamente montada quando o sistema é iniciado?"
+  options:
+    - "umount"
+    - "noauto"
+    - "auto"
+    - "ro"
+    - "users"
+  answer: 2
+  comment: "A opção \"noauto\" diz que a partição deve sempre ser montada manualmente, o \"auto\" tem o efeito contrário. #fstab #mount #noauto #montagem"
+
+- id: "104-075"
+  topic: "104.3"
+  question: "Quantos campos devem estar presentes em cada linha de configuração do arquivo /etc/fstab?"
+  options:
+    - "3"
+    - "4"
+    - "5"
+    - "6"
+    - "7"
+  answer: 4
+  comment: "Cada linha do arquivo /etc/fstab deve conter 6 campos: <file system>, <mount point>, <type>, <options>, <dump>, <pass>. #fstab #filesystem #montagem #configuração"
+
+- id: "104-076"
+  topic: "104.5"
+  question: "Qual comando irá definir o usuário analista1 e grupo dev como proprietários do arquivo controle_ambiente?"
+  options:
+    - "chown analista1 dev controle_ambiente"
+    - "chown dev:analista1 controle_ambiente"
+    - "chown -u analista1 -g dev controle_ambiente"
+    - "chown analista1.dev controle_ambiente"
+  answer: 4
+  comment: "O chown pode ser utilizado para definir o usuário e o grupo proprietário, aceitando as seguintes sintaxes: chown <usuario>:<grupo> <arquivo> ou chown <usuario>.<grupo> <arquivo>, sendo que o <grupo> pode ser omitido caso não se deseje alterá-lo. #chown #permissões #proprietário #grupo"
+
+- id: "104-077"
+  topic: "104.5"
+  question: "Qual comando pode ser executado para habilitar o SGID no diretório arquivos?"
+  options:
+    - "chgrp SGID arquivos"
+    - "chmod u+s arquivos"
+    - "chmod 1644 arquivos"
+    - "chmod g+s arquivos"
+  answer: 4
+  comment: "O SGID é representado pela substituição do \"x\" pelo \"s\" nas permissões do grupo. O chmod g+s habilita o SGID, enquanto chmod u+s habilita o SUID. #sgid #chmod #permissões #grupo"
+
+- id: "104-078"
+  topic: "104.6"
+  question: "Como será definido o tamanho de um arquivo que é um link simbólico?"
+  options:
+    - "O link simbólico terá o mesmo tamanho que o arquivo para o qual ele aponta"
+    - "O tamanho do link simbólico será exatamente igual à quantidade de caracteres que formam o destino referenciado"
+    - "O link simbólico terá sempre o tamanho de 1 byte"
+    - "Um link simbólico terá sempre o tamanho de 4096 bytes"
+  answer: 2
+  comment: "Um link simbólico nada mais é que um apontamento para outro arquivo, por isso seu conteúdo é apenas o caminho para seu destino. #link-simbólico #symlink #ln #inode"
+
+- id: "104-079"
+  topic: "104.6"
+  question: "Na tentativa de criação de um link, foi retornada a seguinte mensagem de erro. Qual a possível causa do erro?"
+  code: "Invalid cross-device link"
+  options:
+    - "Tentou-se criar um link simbólico para um diretório"
+    - "Tentou-se criar um link simbólico para um arquivo presente em outra partição"
+    - "Tentou-se criar um link físico para um diretório"
+    - "Tentou-se criar um link físico para um arquivo presente em outra partição"
+  answer: 4
+  comment: "Links físicos não podem apontar para arquivos em outras partições, apresentando o erro mencionado. Também não podem apontar para diretórios, mas nesse caso a mensagem de erro seria \"hard link not allowed for directory\". Por outro lado, links simbólicos podem referenciar diretórios e arquivos em outras partições. #link-físico #hardlink #symlink #partição"
+
+- id: "104-080"
+  topic: "104.7"
+  question: "Qual comando irá retornar a localização do binário executável, os arquivos fonte e manuais de determinado comando?"
+  options:
+    - "which"
+    - "whereis"
+    - "whatis"
+    - "apropos"
+    - "basename"
+  answer: 2
+  comment: "O comando whereis localiza os arquivos binários, bibliotecas, códigos-fonte e manuais. #whereis #which #localização #binário #manual"
+
+- id: "104-081"
+  topic: "104.7"
+  question: "Em quais diretórios de um sistema Linux podem estar localizados arquivos binários que só podem ser executados pelo usuário root? (Selecione DUAS Respostas Corretas)"
+  options:
+    - "/bin"
+    - "/usr/bin"
+    - "/usr/sbin"
+    - "/var/sbin"
+    - "/sbin"
+  answer: [3, 5]
+  comment: "Os diretórios /sbin e /usr/sbin possuem programas utilizados na administração do sistema, apenas pelo usuário root, como fsck, mkfs, repquota e etc. #sbin #fhs #root #binários #administração"

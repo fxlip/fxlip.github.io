@@ -552,3 +552,134 @@
   answer: 1
   comment: "O apt-get update sincroniza a lista de pacotes disponíveis com os repositórios configurados em /etc/apt/sources.list, mas não instala nem atualiza nenhum pacote. O apt-get upgrade atualiza os pacotes instalados e o dist-upgrade faz o mesmo permitindo remoção de pacotes conflitantes. #apt-get"
 
+- id: "102-050"
+  topic: "102.5"
+  question: "O administrador de um sistema Red Hat deseja verificar qual foi o pacote responsável pela instalação do arquivo /etc/virc. Qual comando deve ser utilizado?"
+  options:
+    - "rpm -S /etc/virc"
+    - "rpm -F /etc/virc"
+    - "rpm -qa /etc/virc"
+    - "rpm -qf /etc/virc"
+    - "rpm -ql /etc/virc"
+  answer: 4
+  comment: "No comando rpm primeiro deve ser informado o parâmetro do modo de operação, nesse caso o modo é o query, representado pelo -q, após isso a opção 'f' recebe um arquivo como parâmetro e o rpm identifica o pacote relacionado a ele. #rpm"
+
+- id: "102-051"
+  topic: "102.5"
+  question: "Qual comando e opção deve ser utilizado para verificar a integridade de um pacote .rpm, incluindo timestamps, MD5 checksums e tamanhos dos arquivos?"
+  options:
+    - "rpm -V"
+    - "dpkg --verify"
+    - "rpm -qv"
+    - "yum check"
+  answer: 1
+  comment: "A opção -V ou --verify do rpm verifica a integridade de um pacote, comparando timestamps, MD5 checksums e tamanhos dos arquivos instalados com as informações originais do pacote. O dpkg --verify é equivalente no Debian, mas não se aplica a pacotes .rpm. #rpm #verify"
+
+- id: "102-052"
+  topic: "102.4"
+  question: "Qual dos comandos abaixo irá atualizar todos os pacotes de uma distribuição Debian?"
+  options:
+    - "apt-get upgrade"
+    - "apt-get update"
+    - "dpkg-reconfigure"
+    - "apt check"
+    - "apt install-all"
+  answer: 1
+  comment: "A opção 'upgrade' do apt-get atualiza todos os pacotes instalados no sistema. A opção 'update' apenas sincroniza a base de informações dos repositórios, sem atualizar nenhum pacote. Existe também o 'dist-upgrade' que, além de atualizar, pode remover pacotes considerados obsoletos. #apt-get #upgrade"
+
+- id: "102-053"
+  topic: "102.5"
+  question: "Qual dos comandos abaixo deve ser utilizado para atualizar todos os pacotes de um sistema que utiliza o padrão RPM, sem levar em consideração os pacotes marcados como obsoletos?"
+  options:
+    - "dnf update"
+    - "dnf upgrade"
+    - "dnf dist-upgrade"
+    - "dnf full-upgrade"
+  answer: 1
+  comment: "No YUM e no DNF, a opção 'update' atualiza um ou todos os pacotes do sistema sem considerar pacotes obsoletos. A opção 'upgrade' faz o mesmo que o 'update' mas considera os pacotes obsoletos, removendo-os se necessário. As opções 'dist-upgrade' e 'full-upgrade' não existem no dnf. #dnf #yum #rpm"
+
+- id: "102-054"
+  topic: "102.6"
+  question: "Dos elementos abaixo, qual é essencial para que seja possível a implementação de máquinas virtuais em determinada infraestrutura?"
+  options:
+    - "LXC"
+    - "Container Manager"
+    - "Cloud-Init"
+    - "Hypervisor"
+  answer: 4
+  comment: "O Hypervisor é a camada necessária entre a infraestrutura do Host e a máquina virtual (Guest). Ele controla e gerencia o acesso das VMs aos elementos de hardware da infraestrutura. O LXC é uma tecnologia de containers, não de virtualização completa. O Cloud-Init é usado para configuração inicial de instâncias em nuvem. #hypervisor #virtualizacao"
+
+- id: "102-055"
+  topic: "102.4"
+  question: "Qual comando deve ser utilizado pelo administrador do sistema para instalar o pacote de nome novo-software.deb?"
+  options:
+    - "apt-get install novo-software.deb"
+    - "dpkg -i novo-software.deb"
+    - "dpkg install novo-software.deb"
+    - "apt install novo-software.deb"
+  answer: 2
+  comment: "O comando dpkg é utilizado para instalar/atualizar/remover diretamente os pacotes, a opção -i faz o procedimento de instalação. Os comandos apt e apt-get utilizam os repositórios como origem dos pacotes quando o nome do pacote é informado sem caminho. O 'dpkg install' não é uma sintaxe válida. #dpkg #apt #debian"
+
+- id: "102-056"
+  topic: "102.3"
+  type: "discursive"
+  question: "Qual o comando utilizado para atualizar o arquivo de cache referente às bibliotecas compartilhadas? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
+  answer: "ldconfig"
+  comment: "O ldconfig atualiza a base de diretórios em que as bibliotecas compartilhadas podem ser encontradas. Na prática, atualiza o arquivo /etc/ld.so.cache com base nas configurações do /etc/ld.so.conf e dos diretórios em /etc/ld.so.conf.d/. #ldconfig #bibliotecas #shared-libraries"
+
+- id: "102-057"
+  topic: "102.4"
+  question: "Em um sistema Debian, o administrador deseja identificar o pacote que instalou o arquivo /etc/pam.conf. Qual comando deve ser utilizado?"
+  options:
+    - "apt-cache file /etc/pam.conf"
+    - "dpkg -S /etc/pam.conf"
+    - "dpkg -f /etc/pam.conf"
+    - "apt search /etc/pam.conf"
+  answer: 2
+  comment: "Com o \"dpkg -S\" (ou --search) é possível informar um arquivo e identificar o pacote \"dono\" deste arquivo. #dpkg #debian #pacotes #search"
+
+- id: "102-058"
+  topic: "102.1"
+  question: "Um sistema possui as seguintes partições: /dev/sda1, /dev/sda2, /dev/sda3, /dev/sda5 e /dev/sda6. Considerando que o sistema utiliza a tabela de partições MBR, é possível afirmar que: (Selecione 2 Respostas)"
+  options:
+    - "Uma das partições sda1, sda2 ou sda3 é uma partição estendida"
+    - "Duas das partições utilizadas são partições lógicas"
+    - "A partição /dev/sda4 deve ser criada para evitar erros lógicos"
+    - "Duas das partições do sistema são do tipo estendida"
+  answer: [1, 2]
+  comment: "O particionamento MBR permite no máximo 4 partições primárias, ou 3 primárias e 1 estendida. Na partição estendida são associadas as partições lógicas. Partições primárias ou estendidas são numeradas de 1 a 4, partições lógicas são numeradas a partir de 5. Dessa forma, a existência das partições 5 e 6 significa que existem 2 partições lógicas, e consequentemente 1 das partições 1, 2 ou 3 é necessariamente uma partição estendida. Não é obrigatório que todas as partições 1, 2, 3 e 4 existam, pode haver apenas as partições 1 e 3 por exemplo, mas as partições lógicas devem seguir a sequência a partir de 5. #mbr #partição #lógica #estendida #hd"
+
+- id: "102-059"
+  topic: "102.1"
+  question: "O que pode ser encontrado no EFI System Partition?"
+  options:
+    - "Os arquivos de configuração do GRUB 2"
+    - "A tabela de partições do sistema"
+    - "As imagens do kernel e do initramfs"
+    - "Boot loaders a serem utilizados no processo de boot"
+    - "Dados referentes ao Master Boot Record"
+  answer: 4
+  comment: "Sistemas que utilizam o UEFI como firmware possuem uma partição especial chamada ESP (EFI System Partition), que é montada no diretório /boot/efi/. Nesse diretório estão localizados os bootloaders que serão utilizados no processo de boot. Essa partição deve ser sempre do tipo FAT. #uefi #esp #efi #bootloader #partição"
+
+- id: "102-060"
+  topic: "102.2"
+  question: "Qual dos seguintes comandos pode ser usado para criar um arquivo de backup chamado backup.mbr da área de MBR da partição /dev/sda, porém sem incluir a tabela de partições e os dados referentes ao número de verificação?"
+  options:
+    - "dd if=backup.mbr of=/dev/sda bs=512"
+    - "dd if=backup.mbr of=/dev/sda bs=446 count=1"
+    - "dd if=/dev/sda of=backup.mbr bs=512"
+    - "dd if=/dev/sda of=backup.mbr bs=446 count=1"
+  answer: 4
+  comment: "Os 512 primeiros bytes de um dispositivo são reservados à área de MBR (Master Boot Record), sendo que nos primeiros 446 bytes estão reservados para o bootloader, os 64 bytes seguintes armazenam a tabela de partições, e os últimos 2 bytes são referentes ao \"número mágico\", um número de verificação. Com base nisso o comando dd pode ser utilizado na criação e restauro de backups da MBR. #dd #mbr #backup #bootloader"
+
+- id: "102-061"
+  topic: "102.2"
+  question: "No arquivo /boot/grub/grub.cfg, qual parâmetro indica o arquivo de kernel que deve ser utilizado durante o processo de boot?"
+  options:
+    - "linux"
+    - "initrd"
+    - "kernel"
+    - "root"
+    - "boot"
+  answer: 1
+  comment: "O arquivo grub.cfg é utilizado pelo GRUB2, sendo assim o parâmetro que indica o kernel é o \"linux\". No caso do GRUB Legacy seria o arquivo de configuração menu.lst e o parâmetro \"kernel\" indicaria o arquivo. #grub2 #grub #kernel #boot #configuração"
