@@ -836,32 +836,36 @@ describe('normalizeTopic', () => {
 // =============================================================================
 
 function buildTopicLine(name, stats, opts = {}) {
-  const { delta, href, topicTitle } = opts
+  const { delta, deltaLabel, href, topicTitle } = opts
   const tPct     = Math.round((stats.correct / stats.total) * 100)
   const bad      = tPct < 70
   const countStr = `${String(stats.correct).padStart(2, ' ')}/${String(stats.total).padEnd(2, ' ')}`
   const tPctStr  = String(tPct).padStart(3, ' ') + '%'
   const label    = topicTitle ? `[${topicTitle}]` : '[revisao]'
+  const sep      = `<span class="quiz-sc-label"> · </span>`
 
-  let extrasHtml = ''
+  let html =
+    `<span class="quiz-sc-label">${escapeHtml(name)}</span>` +
+    sep +
+    `<span class="quiz-sc-label">${escapeHtml(countStr)}</span>` +
+    sep +
+    `<span class="${bad ? 'quiz-fail' : 'quiz-pass'}">${escapeHtml(tPctStr)}</span>`
+
   if (delta !== undefined && delta !== null) {
-    const deltaStr = delta === 0 ? '--' : (delta > 0 ? `+${delta}` : String(delta))
-    const dClass   = delta === 0 ? 'quiz-sc-label' : (delta > 0 ? 'quiz-pass' : 'quiz-fail')
-    extrasHtml += `<span class="${dClass}">(${deltaStr})</span>`
+    const display = deltaLabel !== undefined
+      ? deltaLabel
+      : (delta === 0 ? '(--)' : (delta > 0 ? `(+${delta})` : `(${delta})`))
+    const dClass  = delta === 0 ? 'quiz-sc-label' : (delta > 0 ? 'quiz-pass' : 'quiz-fail')
+    html += sep + `<span class="${dClass}">${display}</span>`
   }
   if (bad && href) {
     const lessonHref = topicTitle
       ? `/linux/${name.replace('.', '/')}/${topicTitle}`
       : href
-    extrasHtml += `<a href="${escapeHtml(lessonHref)}" class="mention-link">${escapeHtml(label)}</a>`
+    html += sep + `<a href="${escapeHtml(lessonHref)}" class="mention-link">${escapeHtml(label)}</a>`
   }
 
-  return (
-    `<span class="quiz-sc-label">${escapeHtml(name)}</span>` +
-    `<span class="quiz-sc-label">${escapeHtml(countStr)}</span>` +
-    `<span class="${bad ? 'quiz-fail' : 'quiz-pass'}">${escapeHtml(tPctStr)}</span>` +
-    `<span>${extrasHtml}</span>`
-  )
+  return html
 }
 
 // =============================================================================
@@ -897,12 +901,12 @@ describe('buildTopicLine', () => {
     expect(html).toContain('100%')
   })
 
-  it('quarto span não tem link quando não é bad', () => {
+  it('não tem link quando pct >= 70', () => {
     const html = buildTopicLine('103.1', { correct: 4, total: 5 }, { href: '/linux/103/1/revisao' })
     expect(html).not.toContain('mention-link')
   })
 
-  it('quarto span contém link de revisão quando bad && href', () => {
+  it('contém link de revisão quando bad && href', () => {
     const html = buildTopicLine('103.1', { correct: 2, total: 5 }, { href: '/linux/103/1/revisao' })
     expect(html).toContain('mention-link')
     expect(html).toContain('/linux/103/1/revisao')
@@ -918,13 +922,13 @@ describe('buildTopicLine', () => {
     expect(html).toContain('[conceitos]')
   })
 
-  it('exibe delta positivo no quarto span', () => {
+  it('exibe delta positivo após separador', () => {
     const html = buildTopicLine('103.1', { correct: 4, total: 5 }, { delta: 2 })
     expect(html).toContain('quiz-pass')
     expect(html).toContain('(+2)')
   })
 
-  it('exibe delta negativo no quarto span', () => {
+  it('exibe delta negativo após separador', () => {
     const html = buildTopicLine('103.1', { correct: 3, total: 5 }, { delta: -1 })
     expect(html).toContain('quiz-fail')
     expect(html).toContain('(-1)')
@@ -932,22 +936,40 @@ describe('buildTopicLine', () => {
 
   it('exibe -- quando delta é zero', () => {
     const html = buildTopicLine('103.1', { correct: 4, total: 5 }, { delta: 0 })
-    expect(html).toContain('quiz-sc-label')
     expect(html).toContain('(--)')
   })
 
-  it('não contém separadores " · " (substituídos pelo grid gap)', () => {
-    const html = buildTopicLine('103.1', { correct: 3, total: 5 }, {
-      delta: 1,
-      href:  '/linux/103/1/revisao',
-    })
-    expect(html).not.toContain(' · ')
+  it('contém separadores " · " entre colunas', () => {
+    const html = buildTopicLine('103.1', { correct: 3, total: 5 })
+    expect(html).toContain(' · ')
   })
 
-  it('produz ao menos 4 abertura de span (topic, count, pct, extras)', () => {
-    const html = buildTopicLine('103.1', { correct: 3, total: 5 })
-    // Cada coluna do grid é um <span> — sem delta/link há exatamente 4
-    expect(html.split('<span').length - 1).toBe(4)
+  it('produz exatamente 5 spans para pct >= 70 sem delta (topic·sep·count·sep·pct)', () => {
+    const html = buildTopicLine('103.1', { correct: 4, total: 5 })
+    expect(html.split('<span').length - 1).toBe(5)
+  })
+
+  it('produz 7 spans com delta (adiciona sep+delta)', () => {
+    const html = buildTopicLine('103.1', { correct: 4, total: 5 }, { delta: 1 })
+    expect(html.split('<span').length - 1).toBe(7)
+  })
+
+  it('usa deltaLabel quando fornecido em vez de calcular a string', () => {
+    const html = buildTopicLine('101', { correct: 12, total: 15 }, { delta: 5, deltaLabel: '(+05%)' })
+    expect(html).toContain('(+05%)')
+    expect(html).not.toContain('(+5)')
+  })
+
+  it('deltaLabel negativo usa quiz-fail mesmo com string pré-formatada', () => {
+    const html = buildTopicLine('101', { correct: 8, total: 15 }, { delta: -3, deltaLabel: '(-03%)' })
+    expect(html).toContain('quiz-fail')
+    expect(html).toContain('(-03%)')
+  })
+
+  it('deltaLabel zero usa quiz-sc-label e exibe (--)', () => {
+    const html = buildTopicLine('101', { correct: 10, total: 15 }, { delta: 0, deltaLabel: '(--)' })
+    expect(html).toContain('quiz-sc-label')
+    expect(html).toContain('(--)')
   })
 
   it('escapa HTML no nome do tópico', () => {

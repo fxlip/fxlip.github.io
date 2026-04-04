@@ -247,35 +247,39 @@
     return `<pre class="quiz-code"><code>${escapeHtml(code)}</code></pre>`;
   }
 
-  // Gera o HTML interno de uma linha de resultado por tópico (4 colunas para .t-quiz-row).
+  // Gera o HTML de uma linha de resultado por tópico (separadores · entre colunas).
   // Função pura — sem acesso ao DOM — para facilitar testes.
   function buildTopicLine(name, stats, opts) {
-    const { delta, href, topicTitle } = opts || {};
+    const { delta, deltaLabel, href, topicTitle } = opts || {};
     const tPct     = Math.round((stats.correct / stats.total) * 100);
     const bad      = tPct < 70;
     const countStr = `${String(stats.correct).padStart(2, ' ')}/${String(stats.total).padEnd(2, ' ')}`;
     const tPctStr  = String(tPct).padStart(3, ' ') + '%';
     const label    = topicTitle ? `[${topicTitle}]` : '[revisao]';
+    const sep      = `<span class="quiz-sc-label"> · </span>`;
 
-    let extrasHtml = '';
+    let html =
+      `<span class="quiz-sc-label">${escapeHtml(name)}</span>` +
+      sep +
+      `<span class="quiz-sc-label">${escapeHtml(countStr)}</span>` +
+      sep +
+      `<span class="${bad ? 'quiz-fail' : 'quiz-pass'}">${escapeHtml(tPctStr)}</span>`;
+
     if (delta !== undefined && delta !== null) {
-      const deltaStr = delta === 0 ? '--' : (delta > 0 ? `+${delta}` : String(delta));
-      const dClass   = delta === 0 ? 'quiz-sc-label' : (delta > 0 ? 'quiz-pass' : 'quiz-fail');
-      extrasHtml += `<span class="${dClass}">(${deltaStr})</span>`;
+      const display = deltaLabel !== undefined
+        ? deltaLabel
+        : (delta === 0 ? '(--)' : (delta > 0 ? `(+${delta})` : `(${delta})`));
+      const dClass  = delta === 0 ? 'quiz-sc-label' : (delta > 0 ? 'quiz-pass' : 'quiz-fail');
+      html += sep + `<span class="${dClass}">${display}</span>`;
     }
     if (bad && href) {
       const lessonHref = topicTitle
         ? `/linux/${name.replace('.', '/')}/${topicTitle}`
         : href;
-      extrasHtml += `<a href="${escapeHtml(lessonHref)}" class="mention-link">${escapeHtml(label)}</a>`;
+      html += sep + `<a href="${escapeHtml(lessonHref)}" class="mention-link">${escapeHtml(label)}</a>`;
     }
 
-    return (
-      `<span class="quiz-sc-label">${escapeHtml(name)}</span>` +
-      `<span class="quiz-sc-label">${escapeHtml(countStr)}</span>` +
-      `<span class="${bad ? 'quiz-fail' : 'quiz-pass'}">${escapeHtml(tPctStr)}</span>` +
-      `<span>${extrasHtml}</span>`
-    );
+    return html;
   }
 
   function renderQuestion(q) {
@@ -466,23 +470,73 @@
             ([, a], [, b]) => (a.correct / a.total) - (b.correct / b.total)
           );
 
-          sorted.forEach(([name, stats]) => {
-            const tPct      = Math.round((stats.correct / stats.total) * 100);
-            const bad       = tPct < 70;
-            const topicTitle = (window.__topicTitles || {})[name];
-            const line      = document.createElement('div');
-            line.className  = 't-out t-quiz-row';
+          // Simulado completo (type=prova): agrega subtópicos por exame (101, 102, ...)
+          const examMeta  = window.__examMeta;
+          const isProva   = examMeta && examMeta.type === 'prova';
+          const displayLines = isProva
+            ? (() => {
+                const agg = {};
+                for (const [name, stats] of Object.entries(topics)) {
+                  const key = name.split('.')[0];
+                  if (!agg[key]) agg[key] = { correct: 0, total: 0 };
+                  agg[key].correct += stats.correct;
+                  agg[key].total   += stats.total;
+                }
+                return Object.entries(agg).sort(
+                  ([, a], [, b]) => (a.correct / a.total) - (b.correct / b.total)
+                );
+              })()
+            : sorted;
 
-            let delta = null;
+          // Prova + Nível 2: agrega scores do Nível 1 por prefixo de exame
+          let l1ProvaAgg = null;
+          if (isHigherLevel && isProva) {
+            const l1Scores = prevScores?.[examId] || {};
+            l1ProvaAgg = {};
+            for (const [subtopic, entry] of Object.entries(l1Scores)) {
+              const key = subtopic.split('.')[0];
+              if (!l1ProvaAgg[key]) l1ProvaAgg[key] = { correct: 0, total: 0 };
+              if (entry && typeof entry === 'object') {
+                l1ProvaAgg[key].correct += entry.correct || 0;
+                l1ProvaAgg[key].total   += entry.total   || 0;
+              }
+            }
+          }
+
+          displayLines.forEach(([name, stats]) => {
+            const topicTitle = !isProva ? (window.__topicTitles || {})[name] : undefined;
+            const line       = document.createElement('div');
+            line.className   = 't-out';
+
+            let delta      = null;
+            let deltaLabel = undefined;
+
             if (isHigherLevel) {
-              const l1Entry   = prevScores?.[examId]?.[name];
-              const l1Correct = (l1Entry && typeof l1Entry === 'object') ? l1Entry.correct : null;
-              if (l1Correct != null) delta = stats.correct - l1Correct;
+              if (isProva && l1ProvaAgg && l1ProvaAgg[name]) {
+                const l1 = l1ProvaAgg[name];
+                if (l1.total > 0) {
+                  const prevPct = Math.round((l1.correct / l1.total) * 100);
+                  const currPct = Math.round((stats.correct / stats.total) * 100);
+                  delta = currPct - prevPct;
+                  if (delta === 0) {
+                    deltaLabel = '(--)';
+                  } else {
+                    const sign   = delta > 0 ? '+' : '-';
+                    const absStr = String(Math.abs(delta)).padStart(2, '0');
+                    deltaLabel = `(${sign}${absStr}%)`;
+                  }
+                }
+              } else if (!isProva) {
+                const l1Entry   = prevScores?.[examId]?.[name];
+                const l1Correct = (l1Entry && typeof l1Entry === 'object') ? l1Entry.correct : null;
+                if (l1Correct != null) delta = stats.correct - l1Correct;
+              }
             }
 
             line.innerHTML = buildTopicLine(name, stats, {
               delta,
-              href:       bad ? topicToLink(name) : null,
+              deltaLabel,
+              href: !isProva ? topicToLink(name) : null,
               topicTitle,
             });
             headerBody.appendChild(line);
