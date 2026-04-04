@@ -199,7 +199,7 @@ TARGET_DIRS.each do |dir_name|
     next unless link
 
     # [FIX CRÍTICO] Se for link interno, deleta do Ruby para o JS assumir
-    if link.include?('felip.com.br') || link.include?('localhost') || link.include?('127.0.0.1')
+    if link.include?('fxlip.com') || link.include?('felip.com.br') || link.include?('localhost') || link.include?('127.0.0.1')
       if previews[slug]
         puts " [CLEAN] Link interno detectado. Removendo cache: #{slug}"
         previews.delete(slug)
