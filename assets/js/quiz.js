@@ -247,6 +247,37 @@
     return `<pre class="quiz-code"><code>${escapeHtml(code)}</code></pre>`;
   }
 
+  // Gera o HTML interno de uma linha de resultado por tópico (4 colunas para .t-quiz-row).
+  // Função pura — sem acesso ao DOM — para facilitar testes.
+  function buildTopicLine(name, stats, opts) {
+    const { delta, href, topicTitle } = opts || {};
+    const tPct     = Math.round((stats.correct / stats.total) * 100);
+    const bad      = tPct < 70;
+    const countStr = `${String(stats.correct).padStart(2, ' ')}/${String(stats.total).padEnd(2, ' ')}`;
+    const tPctStr  = String(tPct).padStart(3, ' ') + '%';
+    const label    = topicTitle ? `[${topicTitle}]` : '[revisao]';
+
+    let extrasHtml = '';
+    if (delta !== undefined && delta !== null) {
+      const deltaStr = delta === 0 ? '--' : (delta > 0 ? `+${delta}` : String(delta));
+      const dClass   = delta === 0 ? 'quiz-sc-label' : (delta > 0 ? 'quiz-pass' : 'quiz-fail');
+      extrasHtml += `<span class="${dClass}">(${deltaStr})</span>`;
+    }
+    if (bad && href) {
+      const lessonHref = topicTitle
+        ? `/linux/${name.replace('.', '/')}/${topicTitle}`
+        : href;
+      extrasHtml += `<a href="${escapeHtml(lessonHref)}" class="mention-link">${escapeHtml(label)}</a>`;
+    }
+
+    return (
+      `<span class="quiz-sc-label">${escapeHtml(name)}</span>` +
+      `<span class="quiz-sc-label">${escapeHtml(countStr)}</span>` +
+      `<span class="${bad ? 'quiz-fail' : 'quiz-pass'}">${escapeHtml(tPctStr)}</span>` +
+      `<span>${extrasHtml}</span>`
+    );
+  }
+
   function renderQuestion(q) {
     const questionHtml = escapeHtml(q.question).replace(/\n/g, '<br>');
     const commentHtml  = escapeHtml(q.comment || '').replace(/\n/g, '<br>');
@@ -436,47 +467,55 @@
           );
 
           sorted.forEach(([name, stats]) => {
-            const tPct  = Math.round((stats.correct / stats.total) * 100);
-            const bad   = tPct < 70;
-            const href  = topicToLink(name);
-            const line  = document.createElement('div');
-            line.className = 't-out';
-
-            const countStr = `${String(stats.correct).padStart(2, ' ')}/${String(stats.total).padEnd(2, ' ')}`;
-            const tPctStr  = String(tPct).padStart(3, ' ') + '%';
-            const sep      = `<span class="quiz-sc-label"> · </span>`;
+            const tPct      = Math.round((stats.correct / stats.total) * 100);
+            const bad       = tPct < 70;
             const topicTitle = (window.__topicTitles || {})[name];
-            const label    = topicTitle ? `[${topicTitle}]` : '[revisao]';
+            const line      = document.createElement('div');
+            line.className  = 't-out t-quiz-row';
 
-            let html =
-              `<span class="quiz-sc-label">${name}</span>` +
-              sep +
-              `<span class="quiz-sc-label">${countStr}</span>` +
-              sep +
-              `<span class="${bad ? 'quiz-fail' : 'quiz-pass'}">${tPctStr}</span>`;
-
-            // Comparação com Nível 1 (só em modo Nível 2)
+            let delta = null;
             if (isHigherLevel) {
               const l1Entry   = prevScores?.[examId]?.[name];
               const l1Correct = (l1Entry && typeof l1Entry === 'object') ? l1Entry.correct : null;
-              if (l1Correct != null) {
-                const delta    = stats.correct - l1Correct;
-                const deltaStr = delta === 0 ? '--' : (delta > 0 ? `+${delta}` : String(delta));
-                const dClass   = delta === 0 ? 'quiz-sc-label' : (delta > 0 ? 'quiz-pass' : 'quiz-fail');
-                html += sep + `<span class="${dClass}">(${deltaStr})</span>`;
-              }
+              if (l1Correct != null) delta = stats.correct - l1Correct;
             }
 
-            if (bad && href) {
-              const lessonHref = topicTitle
-                ? `/linux/${name.replace('.', '/')}/${topicTitle}`
-                : href;
-              html += sep + `<a href="${lessonHref}" class="mention-link">${label}</a>`;
-            }
-
-            line.innerHTML = html;
+            line.innerHTML = buildTopicLine(name, stats, {
+              delta,
+              href:       bad ? topicToLink(name) : null,
+              topicTitle,
+            });
             headerBody.appendChild(line);
           });
+        }
+
+        // Botão "ocultar corretas" — aparece quando há ao menos 1 questão certa
+        const correctCount = total - wrongIds.size;
+        if (correctCount > 0) {
+          let hiddenCorrect = false;
+          const toggleLine = document.createElement('div');
+          toggleLine.className = 't-out quiz-toggle-line';
+          const toggleBtn = document.createElement('a');
+          toggleBtn.href      = '#';
+          toggleBtn.className = 'mention-link';
+          toggleBtn.textContent = '[revisar]';
+          toggleBtn.addEventListener('click', e => {
+            e.preventDefault();
+            hiddenCorrect = !hiddenCorrect;
+            container.querySelectorAll('.quiz-q.quiz-answered').forEach(qEl => {
+              const isWrong =
+                qEl.querySelectorAll('li.quiz-wrong, li.quiz-reveal').length > 0 ||
+                !!qEl.querySelector('.quiz-model-answer.quiz-disc-wrong');
+              if (!isWrong) {
+                qEl.classList.toggle('quiz-q--hidden', hiddenCorrect);
+                const hr = qEl.nextElementSibling;
+                if (hr && hr.tagName === 'HR') hr.classList.toggle('quiz-q--hidden', hiddenCorrect);
+              }
+            });
+            toggleBtn.textContent = hiddenCorrect ? '[mostrar todas]' : '[revisar]';
+          });
+          toggleLine.appendChild(toggleBtn);
+          headerBody.appendChild(toggleLine);
         }
 
         // Botão Nível 2 — disponível quando houver mais de 1 erro

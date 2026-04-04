@@ -830,3 +830,129 @@ describe('normalizeTopic', () => {
     expect(normalizeTopic('101.2')).toBe('101.2')
   })
 })
+
+// =============================================================================
+// buildTopicLine — duplicada de assets/js/quiz.js para teste isolado
+// =============================================================================
+
+function buildTopicLine(name, stats, opts = {}) {
+  const { delta, href, topicTitle } = opts
+  const tPct     = Math.round((stats.correct / stats.total) * 100)
+  const bad      = tPct < 70
+  const countStr = `${String(stats.correct).padStart(2, ' ')}/${String(stats.total).padEnd(2, ' ')}`
+  const tPctStr  = String(tPct).padStart(3, ' ') + '%'
+  const label    = topicTitle ? `[${topicTitle}]` : '[revisao]'
+
+  let extrasHtml = ''
+  if (delta !== undefined && delta !== null) {
+    const deltaStr = delta === 0 ? '--' : (delta > 0 ? `+${delta}` : String(delta))
+    const dClass   = delta === 0 ? 'quiz-sc-label' : (delta > 0 ? 'quiz-pass' : 'quiz-fail')
+    extrasHtml += `<span class="${dClass}">(${deltaStr})</span>`
+  }
+  if (bad && href) {
+    const lessonHref = topicTitle
+      ? `/linux/${name.replace('.', '/')}/${topicTitle}`
+      : href
+    extrasHtml += `<a href="${escapeHtml(lessonHref)}" class="mention-link">${escapeHtml(label)}</a>`
+  }
+
+  return (
+    `<span class="quiz-sc-label">${escapeHtml(name)}</span>` +
+    `<span class="quiz-sc-label">${escapeHtml(countStr)}</span>` +
+    `<span class="${bad ? 'quiz-fail' : 'quiz-pass'}">${escapeHtml(tPctStr)}</span>` +
+    `<span>${extrasHtml}</span>`
+  )
+}
+
+// =============================================================================
+// Testes: buildTopicLine
+// =============================================================================
+
+describe('buildTopicLine', () => {
+  it('contém o nome do tópico no primeiro span', () => {
+    const html = buildTopicLine('103.1', { correct: 3, total: 5 })
+    expect(html).toContain('<span class="quiz-sc-label">103.1</span>')
+  })
+
+  it('contém a contagem no segundo span', () => {
+    const html = buildTopicLine('103.1', { correct: 3, total: 5 })
+    expect(html).toContain(' 3/5 ')
+  })
+
+  it('usa quiz-fail e exibe pct quando tPct < 70', () => {
+    const html = buildTopicLine('103.1', { correct: 3, total: 5 }) // 60%
+    expect(html).toContain('<span class="quiz-fail">')
+    expect(html).toContain(' 60%')
+  })
+
+  it('usa quiz-pass quando tPct >= 70', () => {
+    const html = buildTopicLine('103.1', { correct: 4, total: 5 }) // 80%
+    expect(html).toContain('<span class="quiz-pass">')
+    expect(html).toContain(' 80%')
+  })
+
+  it('usa quiz-pass em 100%', () => {
+    const html = buildTopicLine('103.1', { correct: 5, total: 5 })
+    expect(html).toContain('<span class="quiz-pass">')
+    expect(html).toContain('100%')
+  })
+
+  it('quarto span não tem link quando não é bad', () => {
+    const html = buildTopicLine('103.1', { correct: 4, total: 5 }, { href: '/linux/103/1/revisao' })
+    expect(html).not.toContain('mention-link')
+  })
+
+  it('quarto span contém link de revisão quando bad && href', () => {
+    const html = buildTopicLine('103.1', { correct: 2, total: 5 }, { href: '/linux/103/1/revisao' })
+    expect(html).toContain('mention-link')
+    expect(html).toContain('/linux/103/1/revisao')
+    expect(html).toContain('[revisao]')
+  })
+
+  it('usa topicTitle no link quando fornecido', () => {
+    const html = buildTopicLine('103.1', { correct: 2, total: 5 }, {
+      href:       '/linux/103/1/revisao',
+      topicTitle: 'conceitos',
+    })
+    expect(html).toContain('/linux/103/1/conceitos')
+    expect(html).toContain('[conceitos]')
+  })
+
+  it('exibe delta positivo no quarto span', () => {
+    const html = buildTopicLine('103.1', { correct: 4, total: 5 }, { delta: 2 })
+    expect(html).toContain('quiz-pass')
+    expect(html).toContain('(+2)')
+  })
+
+  it('exibe delta negativo no quarto span', () => {
+    const html = buildTopicLine('103.1', { correct: 3, total: 5 }, { delta: -1 })
+    expect(html).toContain('quiz-fail')
+    expect(html).toContain('(-1)')
+  })
+
+  it('exibe -- quando delta é zero', () => {
+    const html = buildTopicLine('103.1', { correct: 4, total: 5 }, { delta: 0 })
+    expect(html).toContain('quiz-sc-label')
+    expect(html).toContain('(--)')
+  })
+
+  it('não contém separadores " · " (substituídos pelo grid gap)', () => {
+    const html = buildTopicLine('103.1', { correct: 3, total: 5 }, {
+      delta: 1,
+      href:  '/linux/103/1/revisao',
+    })
+    expect(html).not.toContain(' · ')
+  })
+
+  it('produz ao menos 4 abertura de span (topic, count, pct, extras)', () => {
+    const html = buildTopicLine('103.1', { correct: 3, total: 5 })
+    // Cada coluna do grid é um <span> — sem delta/link há exatamente 4
+    expect(html.split('<span').length - 1).toBe(4)
+  })
+
+  it('escapa HTML no nome do tópico', () => {
+    const html = buildTopicLine('<103>', { correct: 1, total: 1 })
+    expect(html).not.toContain('<103>')
+    expect(html).toContain('&lt;103&gt;')
+  })
+})
