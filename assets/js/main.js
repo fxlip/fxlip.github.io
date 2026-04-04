@@ -206,6 +206,7 @@ document.addEventListener("DOMContentLoaded", function() {
               if (window.processSyntaxHighlighter) window.processSyntaxHighlighter(post);
               if (window.processTimeAgo) window.processTimeAgo(post);
               if (window.processShareButtons) window.processShareButtons(post);
+              if (window.processInternalEmbeds) window.processInternalEmbeds(post);
               
               // 2. Syntax Engine (syntax.js - Usa o JSON Central)
               if (window.renderBadges) {

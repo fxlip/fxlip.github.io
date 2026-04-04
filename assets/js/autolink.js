@@ -205,6 +205,38 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .catch(err => { loader.remove(); link.style.display = 'inline'; link.classList.add('mention-link'); });
     });
+
+    // Preenche cards internos gerados pelo Liquid (skeleton sem descrição)
+    context.querySelectorAll('.link-card.internal-ref:not([data-processed])').forEach(card => {
+      if (card.querySelector('.lc-desc')) return;
+      const url = card.href;
+      if (!url) return;
+      card.dataset.processed = 'true';
+      const urlObj = new URL(url);
+      fetch(urlObj.pathname)
+        .then(r => { if (!r.ok) throw new Error(); return r.text(); })
+        .then(html => {
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const contentDiv = doc.querySelector('.post-content');
+          let rawText = contentDiv ? contentDiv.cloneNode(true).innerText : '';
+          rawText = rawText.replace(/\s+/g, ' ').trim();
+          const desc = rawText.length > 160 ? rawText.substring(0, 160) + '...' : rawText;
+          const dateEl = doc.querySelector('.sys-date') || doc.querySelector('time');
+          const displayDate = dateEl ? (getRelativeTime(dateEl.innerText) || dateEl.innerText.trim()) : 'arquivo';
+          const meta = card.querySelector('.lc-meta');
+          if (meta && desc) {
+            const descEl = document.createElement('div');
+            descEl.className = 'lc-desc';
+            descEl.textContent = desc;
+            const siteEl = document.createElement('div');
+            siteEl.className = 'lc-site';
+            siteEl.textContent = displayDate;
+            meta.appendChild(descEl);
+            meta.appendChild(siteEl);
+          }
+        })
+        .catch(() => {});
+    });
   };
 
   // Blacklist de paths internos — mentions para esses slugs não são perfis de usuário

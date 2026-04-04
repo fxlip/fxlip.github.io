@@ -198,11 +198,12 @@ TARGET_DIRS.each do |dir_name|
 
     next unless link
 
-    # [FIX CRÍTICO] Se for link interno, deleta do Ruby para o JS assumir
+    # Link interno: salva stub mínimo (só url) para o Liquid renderizar o card skeleton.
+    # O JS preenche o conteúdo dinamicamente via fetch (processInternalEmbeds).
     if link.include?('fxlip.com') || link.include?('felip.com.br') || link.include?('localhost') || link.include?('127.0.0.1')
-      if previews[slug]
-        puts " [CLEAN] Link interno detectado. Removendo cache: #{slug}"
-        previews.delete(slug)
+      unless previews[slug].is_a?(Hash) && previews[slug]['url'] == link && previews[slug].keys == ['url']
+        puts " [STUB] Link interno: #{slug} -> #{link}"
+        previews[slug] = { 'url' => link }
         updated = true
       end
       next
