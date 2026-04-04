@@ -257,6 +257,15 @@ document.addEventListener("DOMContentLoaded", function() {
     container.style.cssText = 'padding:10px 15px;border-bottom:1px solid #2d2b3b';
     tabsBar.insertAdjacentElement('afterend', container);
 
+    // Mobile: qualquer toque na área do terminal foca o input do nome
+    // (replica o padrão da página de busca — necessário pois focus() async não abre teclado)
+    var termBox = tabsBar.closest('.terminal-box') || container;
+    termBox.addEventListener('click', function(e) {
+      var inp = document.getElementById('greeting-input');
+      if (!inp) return;
+      if (!e.target.closest('a') && !e.target.closest('button')) inp.focus();
+    });
+
     var niDataEl = document.getElementById('whoami-data');
     var niWhoami = {};
     try { niWhoami = JSON.parse(niDataEl ? niDataEl.textContent : '{}'); } catch (_) {}

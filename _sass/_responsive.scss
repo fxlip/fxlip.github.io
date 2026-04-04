@@ -158,4 +158,7 @@
   /* Previne zoom automático do iOS ao focar inputs (font-size < 16px dispara zoom) */
   input, textarea, select { font-size: 16px !important; }
 
+  /* Prompt de identificação: mantém 13px igual ao enunciado do terminal */
+  #id-prompt input { font-size: 13px !important; }
+
 }
