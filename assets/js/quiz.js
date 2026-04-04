@@ -250,16 +250,15 @@
   // Gera o HTML de uma linha de resultado por tópico (separadores · entre colunas).
   // Função pura — sem acesso ao DOM — para facilitar testes.
   function buildTopicLine(name, stats, opts) {
-    const { delta, deltaLabel, href, topicTitle } = opts || {};
+    const { delta, deltaLabel, displayName, showRevisar } = opts || {};
     const tPct     = Math.round((stats.correct / stats.total) * 100);
     const bad      = tPct < 70;
     const countStr = `${String(stats.correct).padStart(2, ' ')}/${String(stats.total).padEnd(2, ' ')}`;
     const tPctStr  = String(tPct).padStart(3, ' ') + '%';
-    const label    = topicTitle ? `[${topicTitle}]` : '[revisao]';
     const sep      = `<span class="quiz-sc-label"> · </span>`;
 
     let html =
-      `<span class="quiz-sc-label">${escapeHtml(name)}</span>` +
+      `<span class="quiz-sc-label">${escapeHtml(displayName !== undefined ? displayName : name)}</span>` +
       sep +
       `<span class="quiz-sc-label">${escapeHtml(countStr)}</span>` +
       sep +
@@ -270,13 +269,11 @@
         ? deltaLabel
         : (delta === 0 ? '(--)' : (delta > 0 ? `(+${delta})` : `(${delta})`));
       const dClass  = delta === 0 ? 'quiz-sc-label' : (delta > 0 ? 'quiz-pass' : 'quiz-fail');
-      html += sep + `<span class="${dClass}">${display}</span>`;
+      html += ` <span class="${dClass}">${display}</span>`;
     }
-    if (bad && href) {
-      const lessonHref = topicTitle
-        ? `/linux/${name.replace('.', '/')}/${topicTitle}`
-        : href;
-      html += sep + `<a href="${escapeHtml(lessonHref)}" class="mention-link">${escapeHtml(label)}</a>`;
+
+    if (showRevisar) {
+      html += sep + `<a href="#" class="quiz-revisar-btn mention-link" data-topic-review="${escapeHtml(name)}">[revisar]</a>`;
     }
 
     return html;
@@ -413,12 +410,6 @@
     // Atualização de placar
     // --------------------------------------------------------------------------
 
-    const topicToLink = name => {
-      const parts = name.split('.');
-      if (parts.length !== 2) return null;
-      return `/linux/${parts[0]}/${parts[1]}/revisao`;
-    };
-
     const updateScore = () => {
       const ansEl = document.getElementById('quiz-sc-answered');
       if (ansEl) ansEl.textContent = String(answered).padStart(2, ' ');
@@ -440,9 +431,30 @@
         const pct  = Math.round((correct / mcTotal) * 100);
         const pass = pct >= 70;
 
+        // Delta geral (só em Nível 2+): pct atual vs pct do Nível 1
+        let overallDeltaHtml = '';
+        if (isHigherLevel && prevScores) {
+          const l1Map = prevScores[Object.keys(topics)[0]?.split('.')[0]] || {};
+          let prevC = 0, prevT = 0;
+          for (const entry of Object.values(l1Map)) {
+            if (entry && typeof entry === 'object') {
+              prevC += entry.correct || 0;
+              prevT += entry.total   || 0;
+            }
+          }
+          if (prevT > 0) {
+            const prevPct  = Math.round((prevC / prevT) * 100);
+            const delta    = pct - prevPct;
+            const dClass   = delta === 0 ? 'quiz-sc-label' : (delta > 0 ? 'quiz-pass' : 'quiz-fail');
+            const dStr     = delta === 0 ? '(--)' : `(${delta > 0 ? '+' : '-'}${String(Math.abs(delta)).padStart(2, '0')}%)`;
+            overallDeltaHtml = ` <span class="${dClass}">${dStr}</span>`;
+          }
+        }
+
         scoreEl.innerHTML +=
           `<span class="quiz-sc-label"> · </span>` +
           `<span class="${pass ? 'quiz-pass' : 'quiz-fail'}">${String(pct).padStart(3, ' ')}%</span>` +
+          overallDeltaHtml +
           `<span class="quiz-sc-label"> · </span>` +
           `<span class="${pass ? 'quiz-pass' : 'quiz-fail'}">[${pass ? 'aprovado' : 'reprovado'}]</span>`;
 
@@ -504,9 +516,8 @@
           }
 
           displayLines.forEach(([name, stats]) => {
-            const topicTitle = !isProva ? (window.__topicTitles || {})[name] : undefined;
-            const line       = document.createElement('div');
-            line.className   = 't-out';
+            const line = document.createElement('div');
+            line.className = 't-out';
 
             let delta      = null;
             let deltaLabel = undefined;
@@ -536,40 +547,55 @@
             line.innerHTML = buildTopicLine(name, stats, {
               delta,
               deltaLabel,
-              href: !isProva ? topicToLink(name) : null,
-              topicTitle,
+              displayName:  isProva ? ` ${name} ` : undefined,
+              showRevisar:  stats.correct < stats.total,
             });
             headerBody.appendChild(line);
           });
-        }
 
-        // Botão "ocultar corretas" — aparece quando há ao menos 1 questão certa
-        const correctCount = total - wrongIds.size;
-        if (correctCount > 0) {
-          let hiddenCorrect = false;
-          const toggleLine = document.createElement('div');
-          toggleLine.className = 't-out quiz-toggle-line';
-          const toggleBtn = document.createElement('a');
-          toggleBtn.href      = '#';
-          toggleBtn.className = 'mention-link';
-          toggleBtn.textContent = '[revisar]';
-          toggleBtn.addEventListener('click', e => {
+          // Listener delegado para os botões [revisar] injetados nas linhas de tópico
+          let activeTopic = null;
+          headerBody.addEventListener('click', e => {
+            const btn = e.target.closest('.quiz-revisar-btn');
+            if (!btn) return;
             e.preventDefault();
-            hiddenCorrect = !hiddenCorrect;
-            container.querySelectorAll('.quiz-q.quiz-answered').forEach(qEl => {
-              const isWrong =
-                qEl.querySelectorAll('li.quiz-wrong, li.quiz-reveal').length > 0 ||
-                !!qEl.querySelector('.quiz-model-answer.quiz-disc-wrong');
-              if (!isWrong) {
-                qEl.classList.toggle('quiz-q--hidden', hiddenCorrect);
-                const hr = qEl.nextElementSibling;
-                if (hr && hr.tagName === 'HR') hr.classList.toggle('quiz-q--hidden', hiddenCorrect);
+
+            const clicked = btn.dataset.topicReview;
+
+            if (activeTopic === clicked) {
+              // Desativa: mostra todas as questões
+              container.querySelectorAll('.quiz-q').forEach(q => {
+                q.classList.remove('quiz-q--hidden');
+                const hr = q.nextElementSibling;
+                if (hr && hr.tagName === 'HR') hr.classList.remove('quiz-q--hidden');
+              });
+              btn.textContent = '[revisar]';
+              activeTopic = null;
+            } else {
+              // Troca de tópico ativo: reseta o anterior
+              if (activeTopic) {
+                const prev = headerBody.querySelector(`.quiz-revisar-btn[data-topic-review="${activeTopic}"]`);
+                if (prev) prev.textContent = '[revisar]';
               }
-            });
-            toggleBtn.textContent = hiddenCorrect ? '[mostrar todas]' : '[revisar]';
+              activeTopic = clicked;
+              btn.textContent = '[mostrar todas]';
+
+              // Filtra: exibe apenas questões erradas do tópico clicado
+              container.querySelectorAll('.quiz-q').forEach(qEl => {
+                const qTopic = normalizeTopic(qEl.dataset.topic);
+                const match  = isProva
+                  ? (qTopic === clicked || (qTopic && qTopic.startsWith(clicked + '.')))
+                  : qTopic === clicked;
+                const isWrong =
+                  qEl.querySelectorAll('li.quiz-wrong, li.quiz-reveal').length > 0 ||
+                  !!qEl.querySelector('.quiz-model-answer.quiz-disc-wrong');
+                const visible = match && isWrong;
+                qEl.classList.toggle('quiz-q--hidden', !visible);
+                const hr = qEl.nextElementSibling;
+                if (hr && hr.tagName === 'HR') hr.classList.toggle('quiz-q--hidden', !visible);
+              });
+            }
           });
-          toggleLine.appendChild(toggleBtn);
-          headerBody.appendChild(toggleLine);
         }
 
         // Botão Nível 2 — disponível quando houver mais de 1 erro
