@@ -75,7 +75,8 @@ article.post {
 }
 
 /* Sem header sticky = sem espaçamento de header. Zera para alinhar com a home. */
-body.no-header-mode article.post {
+/* .profile-shell excluída: a página de perfil/404 tem seu próprio espaçamento. */
+body.no-header-mode:not(.profile-shell) article.post {
   margin-top: 30px;
 }
 

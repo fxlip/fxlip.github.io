@@ -92,7 +92,7 @@
       body { scrollbar-width: thin; scrollbar-color: #333545 #13121d; }
     </style>
   </{{ "head" }}>
-  <body class="{% if page.hide_header or layout.hide_header %}no-header-mode{% endif %}" data-worker-url="{{ site.worker_url }}">
+  <body class="{% if page.hide_header or layout.hide_header %}no-header-mode{% endif %}{% if page.profile_shell %} profile-shell{% endif %}" data-worker-url="{{ site.worker_url }}">
     <div class="container">
       {% unless page.hide_header or layout.hide_header %}
         {%- include header.html -%}
