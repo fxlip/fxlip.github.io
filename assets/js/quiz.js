@@ -247,6 +247,25 @@
     return `<pre class="quiz-code"><code>${escapeHtml(code)}</code></pre>`;
   }
 
+  // Calcula o delta acumulado entre níveis: compara prevPct com o combinado (L1+L2).
+  // Retorna null se prevTotal <= 0.
+  function calcTopicDelta(prevCorrect, prevTotal, currCorrect, currTotal) {
+    if (prevTotal <= 0) return null;
+    const prevPct     = Math.round((prevCorrect / prevTotal) * 100);
+    const combinedPct = Math.round((prevCorrect + currCorrect) / (prevTotal + currTotal) * 100);
+    return combinedPct - prevPct;
+  }
+
+  // Formata o delta de percentagem entre níveis para exibição.
+  // Função pura — sem acesso ao DOM — para facilitar testes.
+  function formatDeltaLabel(delta) {
+    if (delta === 0)   return '(----)';
+    if (delta === 100) return '(100%)';
+    const sign   = delta > 0 ? '+' : '-';
+    const absStr = String(Math.abs(delta)).padStart(2, '0');
+    return `(${sign}${absStr}%)`;
+  }
+
   // Gera o HTML de uma linha de resultado por tópico (separadores · entre colunas).
   // Função pura — sem acesso ao DOM — para facilitar testes.
   function buildTopicLine(name, stats, opts) {
@@ -265,9 +284,7 @@
       `<span class="${bad ? 'quiz-fail' : 'quiz-pass'}">${escapeHtml(tPctStr)}</span>`;
 
     if (delta !== undefined && delta !== null) {
-      const display = deltaLabel !== undefined
-        ? deltaLabel
-        : (delta === 0 ? '(--)' : (delta > 0 ? `(+${delta})` : `(${delta})`));
+      const display = deltaLabel !== undefined ? deltaLabel : formatDeltaLabel(delta);
       const dClass  = delta === 0 ? 'quiz-sc-label' : (delta > 0 ? 'quiz-pass' : 'quiz-fail');
       html += ` <span class="${dClass}">${display}</span>`;
     }
@@ -442,12 +459,10 @@
               prevT += entry.total   || 0;
             }
           }
-          if (prevT > 0) {
-            const prevPct  = Math.round((prevC / prevT) * 100);
-            const delta    = pct - prevPct;
-            const dClass   = delta === 0 ? 'quiz-sc-label' : (delta > 0 ? 'quiz-pass' : 'quiz-fail');
-            const dStr     = delta === 0 ? '(--)' : `(${delta > 0 ? '+' : '-'}${String(Math.abs(delta)).padStart(2, '0')}%)`;
-            overallDeltaHtml = ` <span class="${dClass}">${dStr}</span>`;
+          const overallDelta = calcTopicDelta(prevC, prevT, correct, mcTotal);
+          if (overallDelta !== null) {
+            const dClass = overallDelta === 0 ? 'quiz-sc-label' : (overallDelta > 0 ? 'quiz-pass' : 'quiz-fail');
+            overallDeltaHtml = ` <span class="${dClass}">${formatDeltaLabel(overallDelta)}</span>`;
           }
         }
 
@@ -525,22 +540,20 @@
             if (isHigherLevel) {
               if (isProva && l1ProvaAgg && l1ProvaAgg[name]) {
                 const l1 = l1ProvaAgg[name];
-                if (l1.total > 0) {
-                  const prevPct = Math.round((l1.correct / l1.total) * 100);
-                  const currPct = Math.round((stats.correct / stats.total) * 100);
-                  delta = currPct - prevPct;
-                  if (delta === 0) {
-                    deltaLabel = '(--)';
-                  } else {
-                    const sign   = delta > 0 ? '+' : '-';
-                    const absStr = String(Math.abs(delta)).padStart(2, '0');
-                    deltaLabel = `(${sign}${absStr}%)`;
-                  }
+                const d  = calcTopicDelta(l1.correct, l1.total, stats.correct, stats.total);
+                if (d !== null) {
+                  delta      = d;
+                  deltaLabel = formatDeltaLabel(d);
                 }
               } else if (!isProva) {
-                const l1Entry   = prevScores?.[examId]?.[name];
-                const l1Correct = (l1Entry && typeof l1Entry === 'object') ? l1Entry.correct : null;
-                if (l1Correct != null) delta = stats.correct - l1Correct;
+                const l1Entry = prevScores?.[examId]?.[name];
+                if (l1Entry && typeof l1Entry === 'object') {
+                  const d = calcTopicDelta(l1Entry.correct, l1Entry.total, stats.correct, stats.total);
+                  if (d !== null) {
+                    delta      = d;
+                    deltaLabel = formatDeltaLabel(d);
+                  }
+                }
               }
             }
 

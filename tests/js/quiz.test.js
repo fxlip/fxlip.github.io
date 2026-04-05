@@ -161,6 +161,93 @@ describe('formatTime', () => {
 })
 
 // =============================================================================
+// Testes: calcTopicDelta — delta acumulado entre níveis
+// =============================================================================
+
+function calcTopicDelta(prevCorrect, prevTotal, currCorrect, currTotal) {
+  if (prevTotal <= 0) return null;
+  const prevPct     = Math.round((prevCorrect / prevTotal) * 100);
+  const combinedPct = Math.round((prevCorrect + currCorrect) / (prevTotal + currTotal) * 100);
+  return combinedPct - prevPct;
+}
+
+describe('calcTopicDelta', () => {
+  it('L1: 9/9=100%, L2: 0/1=0% → -10% (acumulado 9/10=90%)', () => {
+    expect(calcTopicDelta(9, 9, 0, 1)).toBe(-10)
+  })
+
+  it('L1: 9/9=100%, L2: 1/1=100% → 0 (acumulado 10/10=100%)', () => {
+    expect(calcTopicDelta(9, 9, 1, 1)).toBe(0)
+  })
+
+  it('L1: 2/2=100%, L2: 1/1=100% → 0 (questões reduzidas mas 100% mantido)', () => {
+    expect(calcTopicDelta(2, 2, 1, 1)).toBe(0)
+  })
+
+  it('L1: 3/5=60%, L2: 4/5=80% → +10% (acumulado 7/10=70%)', () => {
+    expect(calcTopicDelta(3, 5, 4, 5)).toBe(10)
+  })
+
+  it('L1: 0/5=0%, L2: 5/5=100% → +50% (acumulado 5/10=50%)', () => {
+    expect(calcTopicDelta(0, 5, 5, 5)).toBe(50)
+  })
+
+  it('L1: 5/5=100%, L2: 0/5=0% → -50% (acumulado 5/10=50%)', () => {
+    expect(calcTopicDelta(5, 5, 0, 5)).toBe(-50)
+  })
+
+  it('retorna null quando prevTotal é 0', () => {
+    expect(calcTopicDelta(0, 0, 3, 5)).toBeNull()
+  })
+})
+
+// =============================================================================
+// Testes: formatDeltaLabel — formatação do delta de percentagem entre níveis
+// =============================================================================
+
+function formatDeltaLabel(delta) {
+  if (delta === 0)   return '(----)';
+  if (delta === 100) return '(100%)';
+  const sign   = delta > 0 ? '+' : '-';
+  const absStr = String(Math.abs(delta)).padStart(2, '0');
+  return `(${sign}${absStr}%)`;
+}
+
+describe('formatDeltaLabel', () => {
+  it('zero retorna (----)', () => {
+    expect(formatDeltaLabel(0)).toBe('(----)')
+  })
+
+  it('+100 retorna (100%) sem o sinal de mais', () => {
+    expect(formatDeltaLabel(100)).toBe('(100%)')
+  })
+
+  it('positivo comum: 8 → (+08%)', () => {
+    expect(formatDeltaLabel(8)).toBe('(+08%)')
+  })
+
+  it('positivo com dois dígitos: 50 → (+50%)', () => {
+    expect(formatDeltaLabel(50)).toBe('(+50%)')
+  })
+
+  it('negativo comum: -3 → (-03%)', () => {
+    expect(formatDeltaLabel(-3)).toBe('(-03%)')
+  })
+
+  it('negativo com dois dígitos: -50 → (-50%)', () => {
+    expect(formatDeltaLabel(-50)).toBe('(-50%)')
+  })
+
+  it('-100 retorna (-100%) com sinal', () => {
+    expect(formatDeltaLabel(-100)).toBe('(-100%)')
+  })
+
+  it('+1 → (+01%)', () => {
+    expect(formatDeltaLabel(1)).toBe('(+01%)')
+  })
+})
+
+// =============================================================================
 // Testes: elapsedMins (conversão de segundos para minutos inteiros)
 // =============================================================================
 
@@ -891,7 +978,7 @@ function buildTopicLine(name, stats, opts = {}) {
   if (delta !== undefined && delta !== null) {
     const display = deltaLabel !== undefined
       ? deltaLabel
-      : (delta === 0 ? '(--)' : (delta > 0 ? `(+${delta})` : `(${delta})`))
+      : formatDeltaLabel(delta)
     const dClass  = delta === 0 ? 'quiz-sc-label' : (delta > 0 ? 'quiz-pass' : 'quiz-fail')
     html += ` <span class="${dClass}">${display}</span>`
   }
@@ -955,21 +1042,21 @@ describe('buildTopicLine', () => {
     expect(html).toContain('>103.1<')
   })
 
-  it('exibe delta positivo após separador', () => {
+  it('exibe delta positivo após separador no formato (+02%)', () => {
     const html = buildTopicLine('103.1', { correct: 4, total: 5 }, { delta: 2 })
     expect(html).toContain('quiz-pass')
-    expect(html).toContain('(+2)')
+    expect(html).toContain('(+02%)')
   })
 
-  it('exibe delta negativo após separador', () => {
+  it('exibe delta negativo após separador no formato (-01%)', () => {
     const html = buildTopicLine('103.1', { correct: 3, total: 5 }, { delta: -1 })
     expect(html).toContain('quiz-fail')
-    expect(html).toContain('(-1)')
+    expect(html).toContain('(-01%)')
   })
 
-  it('exibe -- quando delta é zero', () => {
+  it('exibe (----) quando delta é zero', () => {
     const html = buildTopicLine('103.1', { correct: 4, total: 5 }, { delta: 0 })
-    expect(html).toContain('(--)')
+    expect(html).toContain('(----)')
   })
 
   it('contém separadores " · " entre colunas', () => {
@@ -999,10 +1086,10 @@ describe('buildTopicLine', () => {
     expect(html).toContain('(-03%)')
   })
 
-  it('deltaLabel zero usa quiz-sc-label e exibe (--)', () => {
-    const html = buildTopicLine('101', { correct: 10, total: 15 }, { delta: 0, deltaLabel: '(--)' })
+  it('deltaLabel zero usa quiz-sc-label e exibe (----)', () => {
+    const html = buildTopicLine('101', { correct: 10, total: 15 }, { delta: 0, deltaLabel: '(----)' })
     expect(html).toContain('quiz-sc-label')
-    expect(html).toContain('(--)')
+    expect(html).toContain('(----)')
   })
 
   it('não contém quiz-revisar-btn por padrão', () => {
