@@ -214,6 +214,9 @@
   border-top-color: var(--link-color);
   border-right-color: #2d2b3b;
 //  border-bottom-color: var(--code-bg);
+}
+
+.terminal-tab--exact {
   cursor: default;
   pointer-events: none;
 }

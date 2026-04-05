@@ -82,7 +82,7 @@
   type: "discursive"
   question: "Qual diretório contém a maioria dos arquivos de configuração do sistema? Insira o caminho completo."
   answer: "/etc"
-  comment: "De acordo com o FHS (Filesystem Hierarchy Standard), o diretório /etc é o local centralizado para todos os arquivos de configuração estáticos do sistema. Ele não deve conter binários executáveis. #fhs"
+  comment: "De acordo com o FHS (Filesystem Hierarchy Standard), o diretório /etc é o local centralizado para todos os arquivos de configuração estáticos do sistema. Ele não deve conter binários executáveis. #etc"
 
 - id: "104-009"
   topic: "104.2"
@@ -405,7 +405,7 @@
     - "Contém arquivos e bibliotecas compartilhadas por diversas aplicações"
     - "Arquivos com dados variados e voláteis, como logs, caches, locks e etc"
   answer: 4
-  comment: "O diretório /var (Variable) é destinado a arquivos que mudam de tamanho ou conteúdo durante a operação normal do sistema, como logs, arquivos de spool e bases de dados temporárias. #fhs"
+  comment: "O diretório /var (Variable) é destinado a arquivos que mudam de tamanho ou conteúdo durante a operação normal do sistema, como logs, arquivos de spool e bases de dados temporárias. #var"
 
 - id: "104-035"
   topic: "104.2"
@@ -927,4 +927,4 @@
     - "/var/sbin"
     - "/sbin"
   answer: [3, 5]
-  comment: "Os diretórios /sbin e /usr/sbin possuem programas utilizados na administração do sistema, apenas pelo usuário root, como fsck, mkfs, repquota e etc. #fhs"
+  comment: "Os diretórios /sbin e /usr/sbin possuem programas utilizados na administração do sistema, apenas pelo usuário root, como fsck, mkfs, repquota e etc. #sbin"
