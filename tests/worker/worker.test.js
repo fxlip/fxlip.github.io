@@ -404,6 +404,33 @@ describe('GET /api/exam-log', () => {
     expect(entry.pct).toBe(72)
   })
 
+  it('retorna elapsed_mins quando presente no content', async () => {
+    const FP3 = 'examlog_elapsed_fp_aabbcc1234567890'
+    const now = new Date().toISOString()
+    await env.DB.prepare(
+      `INSERT OR REPLACE INTO profiles (fingerprint, first_seen, last_seen, display_name, blocked)
+       VALUES (?, ?, ?, ?, 0)`
+    ).bind(FP3, now, now, 'usercomtempo').run()
+    await env.DB.prepare(
+      `INSERT INTO profile_events (profile_id, event_type, content, created_at) VALUES (?, ?, ?, ?)`
+    ).bind(FP3, 'exam_result', 'topico:104:54:32', now).run()
+
+    const res = await call('/api/exam-log')
+    const body = await res.json()
+    const entry = body.entries.find(e => e.username === 'usercomtempo' && e.label === '104')
+    expect(entry).toBeDefined()
+    expect(entry.pct).toBe(54)
+    expect(entry.elapsed_mins).toBe(32)
+  })
+
+  it('retorna elapsed_mins como null para entradas antigas sem o campo', async () => {
+    const res = await call('/api/exam-log')
+    const body = await res.json()
+    const entry = body.entries.find(e => e.username === 'testuser' && e.label === '103')
+    expect(entry).toBeDefined()
+    expect(entry.elapsed_mins).toBeNull()
+  })
+
   it('não retorna entradas de usuários bloqueados', async () => {
     const FP2 = 'examlog_blocked_fp_xyz9876543210000'
     const now = new Date().toISOString()

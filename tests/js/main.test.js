@@ -37,6 +37,11 @@ function formatExamLogEntry(entry) {
   return null;
 }
 
+function examLogElapsedText(elapsed_mins) {
+  if (elapsed_mins == null || typeof elapsed_mins !== 'number') return '';
+  return ' em ' + elapsed_mins + 'min';
+}
+
 // =============================================================================
 // buildProfileTabState
 // =============================================================================
@@ -156,5 +161,35 @@ describe('formatExamLogEntry', () => {
   it('exibe 100% corretamente', () => {
     const result = formatExamLogEntry({ username: 'x', type: 'prova', label: '102-500', pct: 100 })
     expect(result).toBe('@x acertou 100% da prova 102-500')
+  })
+})
+
+// =============================================================================
+// examLogElapsedText
+// =============================================================================
+
+describe('examLogElapsedText', () => {
+  it('retorna string vazia para null (entrada antiga sem tempo)', () => {
+    expect(examLogElapsedText(null)).toBe('')
+  })
+
+  it('retorna string vazia para undefined', () => {
+    expect(examLogElapsedText(undefined)).toBe('')
+  })
+
+  it('formata minutos corretamente', () => {
+    expect(examLogElapsedText(32)).toBe(' em 32min')
+  })
+
+  it('formata 0 minutos', () => {
+    expect(examLogElapsedText(0)).toBe(' em 0min')
+  })
+
+  it('formata mais de 60 minutos sem truncar', () => {
+    expect(examLogElapsedText(61)).toBe(' em 61min')
+  })
+
+  it('retorna string vazia para string (tipo inválido)', () => {
+    expect(examLogElapsedText('32')).toBe('')
   })
 })

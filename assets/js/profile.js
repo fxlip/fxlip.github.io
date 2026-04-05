@@ -708,11 +708,12 @@
             oauth_twitter_unlinked: function() { return 'desconectou o <span class="t-cmd">X</span>'; },
             exam_result:   function(c) {
               var parts = (c || '').split(':');
-              if (parts.length !== 3) return esc(c);
+              if (parts.length < 3) return esc(c);
               var type  = parts[0], label = parts[1], pct = parseInt(parts[2], 10);
               var cls   = pct >= 70 ? 'quiz-pass' : 'quiz-fail';
               var prep  = type === 'prova' ? 'da prova' : 'do tópico';
-              return 'acertou <span class="' + cls + '">' + pct + '%</span> ' + prep + ' <span class="t-cmd">' + esc(label) + '</span>';
+              var timeHtml = parts[3] !== undefined ? ' em <span class="t-gray">' + parseInt(parts[3], 10) + 'min</span>' : '';
+              return 'acertou <span class="' + cls + '">' + pct + '%</span> ' + prep + ' <span class="t-cmd">' + esc(label) + '</span>' + timeHtml;
             },
           };
 

@@ -471,7 +471,7 @@
             fetch(wUrl + '/api/exam-result', {
               method:  'POST',
               headers: { 'Content-Type': 'application/json' },
-              body:    JSON.stringify({ fingerprint: fp, type: meta.type, label: meta.label, pct: pct })
+              body:    JSON.stringify({ fingerprint: fp, type: meta.type, label: meta.label, pct: pct, elapsed_mins: Math.floor(timerSecs / 60) })
             }).catch(function() {});
           }
         } catch (_) {}

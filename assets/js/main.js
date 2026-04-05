@@ -431,6 +431,15 @@ document.addEventListener("DOMContentLoaded", function() {
           // " da prova 101-500" ou " do tópico 103"
           line.appendChild(document.createTextNode(prep + e.label));
 
+          // " em 32min" — presente apenas em entradas com elapsed_mins
+          if (e.elapsed_mins != null && typeof e.elapsed_mins === 'number') {
+            line.appendChild(document.createTextNode(' em '));
+            var minsSpan = document.createElement('span');
+            minsSpan.className = 't-gray';
+            minsSpan.textContent = e.elapsed_mins + 'min';
+            line.appendChild(minsSpan);
+          }
+
           examLogEl.appendChild(line);
         });
       })

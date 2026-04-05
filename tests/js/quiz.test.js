@@ -161,6 +161,44 @@ describe('formatTime', () => {
 })
 
 // =============================================================================
+// Testes: elapsedMins (conversão de segundos para minutos inteiros)
+// =============================================================================
+
+function elapsedMins(secs) {
+  return Math.floor(secs / 60);
+}
+
+describe('elapsedMins', () => {
+  it('0 segundos → 0 minutos', () => {
+    expect(elapsedMins(0)).toBe(0);
+  });
+
+  it('59 segundos → 0 minutos (segundos desprezados)', () => {
+    expect(elapsedMins(59)).toBe(0);
+  });
+
+  it('60 segundos → 1 minuto', () => {
+    expect(elapsedMins(60)).toBe(1);
+  });
+
+  it('90 segundos → 1 minuto', () => {
+    expect(elapsedMins(90)).toBe(1);
+  });
+
+  it('1920 segundos (32min) → 32 minutos', () => {
+    expect(elapsedMins(1920)).toBe(32);
+  });
+
+  it('3660 segundos (61min) → 61 minutos (passa de 1h sem truncar)', () => {
+    expect(elapsedMins(3660)).toBe(61);
+  });
+
+  it('3723 segundos → 62 minutos', () => {
+    expect(elapsedMins(3723)).toBe(62);
+  });
+});
+
+// =============================================================================
 // Testes: shuffleOptions
 // =============================================================================
 

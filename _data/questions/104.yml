@@ -299,7 +299,7 @@
     - "rw-rw-rw-"
     - "r-xr-xr--"
   answer: 1
-  comment: "As permissões são definidas subtraindo o valor do umask do valor 666 para aquivos e 777 para diretórios. Dessa forma, o valor 022, que também pode aparecer como 0022, será 777 – 022 = 755 (rwxr-xr-x). #umask #chmod"
+  comment: "As permissões são definidas subtraindo o valor do umask do valor 666 para aquivos e 777 para diretórios. Dessa forma, o valor 0002, que também pode aparecer como 002, será 666 – 002 = 664 (rw-rw-r--). #umask #chmod"
 
 - id: "104-026"
   topic: "104.5"
@@ -734,7 +734,7 @@
   type: "discursive"
   question: "Qual comando procura e retorna o caminho completo apenas de arquivos presentes nos diretórios listados na variável de ambiente PATH? (Informe apenas o comando, sem o caminho ou argumentos)"
   answer: "which"
-  comment: "O which busca arquivos executáveis apenas nos diretórios da variável PATH, retornando o caminho completo do primeiro encontrado. O whereis localiza binários, bibliotecas, fontes e manuais. O locate usa uma base de dados interna com todos os arquivos do sistema. O apropos retorna descrições de comandos relacionados a um termo. #which #path #fhs"
+  comment: "O which busca arquivos executáveis apenas nos diretórios da variável PATH, retornando o caminho completo do primeiro encontrado. O whereis localiza binários, bibliotecas, fontes e manuais. O locate usa uma base de dados interna com todos os arquivos do sistema. O apropos retorna descrições de comandos relacionados a um termo. #which"
 
 - id: "104-065"
   topic: "104.6"
@@ -775,7 +775,7 @@
     - "mount /mnt/backup /dev/sdb1"
     - "fstab /dev/sdb1 /mnt/backup"
   answer: 1
-  comment: "O mount é o comando utilizado para montar manualmente uma partição a um diretório, sendo a sintaxe: mount <dispositivo> <ponto de montagem>. #mount #partição #filesystem #montagem"
+  comment: "O mount é o comando utilizado para montar manualmente uma partição a um diretório, sendo a sintaxe: mount <dispositivo> <ponto de montagem>. #mount"
 
 - id: "104-069"
   topic: "104.2"
@@ -834,7 +834,7 @@
     - "Sticky"
     - "Special"
   answer: 1
-  comment: "O SUID implementa a permissão descrita, ele é representado pelo caractere \"s\" na posição da permissão \"x\" do usuário dono do arquivo e pode ser implementado pelo comando \"chmod u+s arquivo\". #suid #permissões #chmod"
+  comment: "O SUID implementa a permissão descrita, ele é representado pelo caractere \"s\" na posição da permissão \"x\" do usuário dono do arquivo e pode ser implementado pelo comando \"chmod u+s arquivo\". #SUID #SGID #sticky"
 
 - id: "104-074"
   topic: "104.3"
@@ -880,7 +880,7 @@
     - "chmod 1644 arquivos"
     - "chmod g+s arquivos"
   answer: 4
-  comment: "O SGID é representado pela substituição do \"x\" pelo \"s\" nas permissões do grupo. O chmod g+s habilita o SGID, enquanto chmod u+s habilita o SUID. #sgid #chmod #permissões"
+  comment: "O SGID é representado pela substituição do \"x\" pelo \"s\" nas permissões do grupo. O chmod g+s habilita o SGID, enquanto chmod u+s habilita o SUID. #SGID #chmod"
 
 - id: "104-078"
   topic: "104.6"
@@ -891,7 +891,7 @@
     - "O link simbólico terá sempre o tamanho de 1 byte"
     - "Um link simbólico terá sempre o tamanho de 4096 bytes"
   answer: 2
-  comment: "Um link simbólico nada mais é que um apontamento para outro arquivo, por isso seu conteúdo é apenas o caminho para seu destino. #link-simbólico #symlink #ln #inode"
+  comment: "Um link simbólico nada mais é que um apontamento para outro arquivo, por isso seu conteúdo é apenas o caminho para seu destino. #symlink #ln"
 
 - id: "104-079"
   topic: "104.6"
@@ -915,7 +915,7 @@
     - "apropos"
     - "basename"
   answer: 2
-  comment: "O comando whereis localiza os arquivos binários, bibliotecas, códigos-fonte e manuais. #whereis #which"
+  comment: "O comando whereis localiza os arquivos binários, bibliotecas, códigos-fonte e manuais. #whereis #whatis #which #apropos"
 
 - id: "104-081"
   topic: "104.7"

@@ -1028,7 +1028,7 @@ async function handleExamResult(request, env) {
   let body;
   try { body = await request.json(); } catch (_) { return jsonResponse({ error: 'Invalid JSON' }, 400); }
 
-  const { fingerprint, type, label, pct } = body || {};
+  const { fingerprint, type, label, pct, elapsed_mins } = body || {};
   if (!fingerprint || !type || !label || pct == null) return jsonResponse({ error: 'Missing fields' }, 400);
   if (!['topico', 'prova'].includes(type)) return jsonResponse({ error: 'Invalid type' }, 400);
   if (typeof pct !== 'number' || pct < 0 || pct > 100) return jsonResponse({ error: 'Invalid pct' }, 400);
@@ -1039,8 +1039,9 @@ async function handleExamResult(request, env) {
   ).bind(fingerprint).first();
   if (!profile) return jsonResponse({ error: 'Profile not found' }, 404);
 
-  const now     = new Date().toISOString();
-  const content = `${type}:${label}:${pct}`;
+  const validMins = (typeof elapsed_mins === 'number' && elapsed_mins >= 0) ? Math.floor(elapsed_mins) : null;
+  const now       = new Date().toISOString();
+  const content   = validMins !== null ? `${type}:${label}:${pct}:${validMins}` : `${type}:${label}:${pct}`;
   await env.DB.prepare(
     `INSERT INTO profile_events (profile_id, event_type, content, created_at) VALUES (?,?,?,?)`
   ).bind(fingerprint, 'exam_result', content, now).run();
@@ -1069,11 +1070,13 @@ async function handleExamLog(env) {
   `).all();
 
   const entries = (rows.results || []).map(row => {
-    const parts  = (row.content || '').split(':');
-    const type   = parts[0] || '';
-    const label  = parts[1] || '';
-    const pct    = parseInt(parts[2]) || 0;
-    return { username: row.username, type, label, pct, created_at: row.created_at };
+    const parts       = (row.content || '').split(':');
+    const type        = parts[0] || '';
+    const label       = parts[1] || '';
+    const pct         = parseInt(parts[2]) || 0;
+    const rawMins     = parts[3] !== undefined ? parseInt(parts[3]) : null;
+    const elapsed_mins = (rawMins !== null && !isNaN(rawMins)) ? rawMins : null;
+    return { username: row.username, type, label, pct, elapsed_mins, created_at: row.created_at };
   }).filter(e => e.type && e.label);
 
   return jsonResponse({ entries });
