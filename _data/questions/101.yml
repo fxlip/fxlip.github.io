@@ -193,7 +193,7 @@
   type: "discursive"
   question: "/dev/____ é a primeira partição lógica do mestre no primeiro canal IDE."
   answer: "hda5"
-  comment: "No esquema de nomeação IDE legado, o primeiro disco (master no canal 1) é hda. As partições 1 a 4 são reservadas para partições primárias ou estendidas. As partições lógicas começam obrigatoriamente a partir do número 5, independentemente de quantas partições primárias existam."
+  comment: "No esquema de nomeação IDE legado, o primeiro disco (master no canal 1) é hda. As partições 1 a 4 são reservadas para partições primárias ou estendidas. As partições lógicas começam obrigatoriamente a partir do número 5, independentemente de quantas partições primárias existam. #ide"
 
 - id: "101-018"
   topic: "101.1"
@@ -557,7 +557,7 @@
     - "/mnt/staX"
     - "/dev/sdX"
   answer: 4
-  comment: "Dispositivos de armazenamento SATA seguem o mesmo padrão dos discos SCSI, ou seja, /dev/sdX. Discos ATA/IDE utilizam o padrão /dev/hdX. #sata #dev #storage"
+  comment: "Dispositivos de armazenamento SATA seguem o mesmo padrão dos discos SCSI, ou seja, /dev/sdX. Discos ATA/IDE utilizam o padrão /dev/hdX. #dev"
 
 - id: "101-054"
   topic: "101.2"

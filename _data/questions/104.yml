@@ -670,7 +670,7 @@
     - "chmod 550 arquivo.txt"
     - "chmod 664 arquivo.txt"
   answer: 2
-  comment: "O valor octal 6 corresponde às permissões r (leitura) e w (escrita). O chmod 660 concede leitura e escrita ao dono (6) e ao grupo (6), sem nenhuma permissão para outros (0). O 644 daria leitura para outros. O 664 daria leitura para outros também. O 550 concede leitura e execução, sem escrita. #chmod #chmod #octal"
+  comment: "O valor octal 6 corresponde às permissões r (leitura) e w (escrita). O chmod 660 concede leitura e escrita ao dono (6) e ao grupo (6), sem nenhuma permissão para outros (0). O 644 daria leitura para outros. O 664 daria leitura para outros também. O 550 concede leitura e execução, sem escrita. #chmod #chmod"
 
 - id: "104-059"
   topic: "104.5"
@@ -787,7 +787,7 @@
     - "xfs_fsr"
     - "xfs_reorg"
   answer: 4
-  comment: "O xfs_fsr (de FileSystem Reorganizer), tem a função de melhorar a organização do sistema de arquivos XFS. O xfs_db é uma ferramenta de Debug para partições XFS. O xfs_repair tem a função de reparar um filesystem XFS, de forma similar ao fsck para outros filesystems. #xfs #xfs_fsr #filesystem #desfragmentação"
+  comment: "O xfs_fsr (de FileSystem Reorganizer), tem a função de melhorar a organização do sistema de arquivos XFS. O xfs_db é uma ferramenta de Debug para partições XFS. O xfs_repair tem a função de reparar um filesystem XFS, de forma similar ao fsck para outros filesystems. #xfs #xfs_fsr #filesystem"
 
 - id: "104-070"
   topic: "104.2"
@@ -834,7 +834,7 @@
     - "Sticky"
     - "Special"
   answer: 1
-  comment: "O SUID implementa a permissão descrita, ele é representado pelo caractere \"s\" na posição da permissão \"x\" do usuário dono do arquivo e pode ser implementado pelo comando \"chmod u+s arquivo\". #suid #permissões #chmod #segurança"
+  comment: "O SUID implementa a permissão descrita, ele é representado pelo caractere \"s\" na posição da permissão \"x\" do usuário dono do arquivo e pode ser implementado pelo comando \"chmod u+s arquivo\". #suid #permissões #chmod"
 
 - id: "104-074"
   topic: "104.3"
@@ -858,7 +858,7 @@
     - "6"
     - "7"
   answer: 4
-  comment: "Cada linha do arquivo /etc/fstab deve conter 6 campos: <file system>, <mount point>, <type>, <options>, <dump>, <pass>. #fstab #filesystem #montagem #configuração"
+  comment: "Cada linha do arquivo /etc/fstab deve conter 6 campos: <file system>, <mount point>, <type>, <options>, <dump>, <pass>. #fstab #filesystem #montagem"
 
 - id: "104-076"
   topic: "104.5"
@@ -869,7 +869,7 @@
     - "chown -u analista1 -g dev controle_ambiente"
     - "chown analista1.dev controle_ambiente"
   answer: 4
-  comment: "O chown pode ser utilizado para definir o usuário e o grupo proprietário, aceitando as seguintes sintaxes: chown <usuario>:<grupo> <arquivo> ou chown <usuario>.<grupo> <arquivo>, sendo que o <grupo> pode ser omitido caso não se deseje alterá-lo. #chown #permissões #proprietário #grupo"
+  comment: "O chown pode ser utilizado para definir o usuário e o grupo proprietário, aceitando as seguintes sintaxes: chown <usuario>:<grupo> <arquivo> ou chown <usuario>.<grupo> <arquivo>, sendo que o <grupo> pode ser omitido caso não se deseje alterá-lo. #chown"
 
 - id: "104-077"
   topic: "104.5"
@@ -880,7 +880,7 @@
     - "chmod 1644 arquivos"
     - "chmod g+s arquivos"
   answer: 4
-  comment: "O SGID é representado pela substituição do \"x\" pelo \"s\" nas permissões do grupo. O chmod g+s habilita o SGID, enquanto chmod u+s habilita o SUID. #sgid #chmod #permissões #grupo"
+  comment: "O SGID é representado pela substituição do \"x\" pelo \"s\" nas permissões do grupo. O chmod g+s habilita o SGID, enquanto chmod u+s habilita o SUID. #sgid #chmod #permissões"
 
 - id: "104-078"
   topic: "104.6"
@@ -903,7 +903,7 @@
     - "Tentou-se criar um link físico para um diretório"
     - "Tentou-se criar um link físico para um arquivo presente em outra partição"
   answer: 4
-  comment: "Links físicos não podem apontar para arquivos em outras partições, apresentando o erro mencionado. Também não podem apontar para diretórios, mas nesse caso a mensagem de erro seria \"hard link not allowed for directory\". Por outro lado, links simbólicos podem referenciar diretórios e arquivos em outras partições. #link-físico #hardlink #symlink #partição"
+  comment: "Links físicos não podem apontar para arquivos em outras partições, apresentando o erro mencionado. Também não podem apontar para diretórios, mas nesse caso a mensagem de erro seria \"hard link not allowed for directory\". Por outro lado, links simbólicos podem referenciar diretórios e arquivos em outras partições. #hardlink #symlink"
 
 - id: "104-080"
   topic: "104.7"
@@ -915,7 +915,7 @@
     - "apropos"
     - "basename"
   answer: 2
-  comment: "O comando whereis localiza os arquivos binários, bibliotecas, códigos-fonte e manuais. #whereis #which #localização #binário #manual"
+  comment: "O comando whereis localiza os arquivos binários, bibliotecas, códigos-fonte e manuais. #whereis #which"
 
 - id: "104-081"
   topic: "104.7"
@@ -927,4 +927,4 @@
     - "/var/sbin"
     - "/sbin"
   answer: [3, 5]
-  comment: "Os diretórios /sbin e /usr/sbin possuem programas utilizados na administração do sistema, apenas pelo usuário root, como fsck, mkfs, repquota e etc. #sbin #fhs #root #binários #administração"
+  comment: "Os diretórios /sbin e /usr/sbin possuem programas utilizados na administração do sistema, apenas pelo usuário root, como fsck, mkfs, repquota e etc. #fhs"

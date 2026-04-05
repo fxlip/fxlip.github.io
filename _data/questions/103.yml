@@ -1230,7 +1230,7 @@
   type: "discursive"
   question: "Qual comando é utilizado para indicar se um determinado comando é interno ao shell, externo ou até mesmo se é um alias? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
   answer: "type"
-  comment: "O comando type exibe se um comando é interno ao shell (builtin), externo (caminho do binário) ou um alias. O comando file mostra o tipo de arquivo, o whatis exibe uma breve descrição do comando e o hash é referente ao cache interno do shell. #type #shell #builtin"
+  comment: "O comando type exibe se um comando é interno ao shell (builtin), externo (caminho do binário) ou um alias. O comando file mostra o tipo de arquivo, o whatis exibe uma breve descrição do comando e o hash é referente ao cache interno do shell. #type #shell"
 
 - id: "103-107"
   topic: "103.1"
@@ -1261,7 +1261,7 @@
   type: "discursive"
   question: "Qual variável de ambiente define os diretórios em que o Bash procurará pelos arquivos executáveis dos comandos? (Informe apenas o nome da variável)"
   answer: "PATH"
-  comment: "A variável PATH contém uma lista de diretórios separados por ':' em que podem ser encontrados os arquivos executáveis de cada comando reconhecido pelo Bash. Estando o comando ou aplicação nesses diretórios, o Bash é capaz de executá-lo sem que seja informado o caminho completo. #PATH #bash #variavel #shell"
+  comment: "A variável PATH contém uma lista de diretórios separados por ':' em que podem ser encontrados os arquivos executáveis de cada comando reconhecido pelo Bash. Estando o comando ou aplicação nesses diretórios, o Bash é capaz de executá-lo sem que seja informado o caminho completo. #PATH #bash #shell"
 
 - id: "103-110"
   topic: "103.2"
@@ -1272,7 +1272,7 @@
     - "sed '/Windows/g' exame.txt"
     - "sed '/Windows/d' exame.txt"
   answer: 4
-  comment: "Usando o sed com a opção 'd' na expressão, toda a linha que contiver a string informada será excluída. A sintaxe 's/Windows//' apenas substitui a primeira ocorrência da string por vazio, mantendo a linha. A opção 'g' em 's/Windows//g' substitui todas as ocorrências mas também mantém a linha. A expressão '/Windows/g' não é uma sintaxe válida do sed. #sed #filtro #texto"
+  comment: "Usando o sed com a opção 'd' na expressão, toda a linha que contiver a string informada será excluída. A sintaxe 's/Windows//' apenas substitui a primeira ocorrência da string por vazio, mantendo a linha. A opção 'g' em 's/Windows//g' substitui todas as ocorrências mas também mantém a linha. A expressão '/Windows/g' não é uma sintaxe válida do sed. #sed"
 
 - id: "103-111"
   topic: "103.2"
@@ -1294,7 +1294,7 @@
     - "dd if=/dev/sda1 of=backup.img"
     - "od from=/dev/sda1 to=backup.img"
   answer: 3
-  comment: "O uso mais comum do comando dd é criar uma imagem a partir de uma partição, e vice-versa. A sintaxe utiliza if= para informar a origem (input file) e of= para informar o destino (output file). O cpio é usado para arquivamento, não para imagens de partição. O od é usado para exibir conteúdo de arquivos em formato octal/hexadecimal. #dd #backup #partição"
+  comment: "O uso mais comum do comando dd é criar uma imagem a partir de uma partição, e vice-versa. A sintaxe utiliza if= para informar a origem (input file) e of= para informar o destino (output file). O cpio é usado para arquivamento, não para imagens de partição. O od é usado para exibir conteúdo de arquivos em formato octal/hexadecimal. #dd #partição"
 
 - id: "103-113"
   topic: "103.3"
@@ -1305,7 +1305,7 @@
     - "find /var -name \"*2015.log\" | tar zcf"
     - "ls -l /var/*2015.log | xargs gzip"
   answer: 2
-  comment: "O comando find /var -name \"*2015.log\" retorna todos os arquivos do diretório /var que terminem com 2015.log. Esses arquivos são enviados um a um como parâmetro para o gzip via xargs. O xargs é essencial para fazer o intermédio entre a saída do find e a entrada do gzip, que trabalha com um arquivo por vez. O pipe direto para gzip não funciona pois o gzip esperaria dados no stdin, não nomes de arquivo. #find #xargs #gzip #compactação"
+  comment: "O comando find /var -name \"*2015.log\" retorna todos os arquivos do diretório /var que terminem com 2015.log. Esses arquivos são enviados um a um como parâmetro para o gzip via xargs. O xargs é essencial para fazer o intermédio entre a saída do find e a entrada do gzip, que trabalha com um arquivo por vez. O pipe direto para gzip não funciona pois o gzip esperaria dados no stdin, não nomes de arquivo. #find #xargs #gzip"
 
 - id: "103-114"
   topic: "103.3"
@@ -1317,7 +1317,7 @@
     - "li"
     - "file"
   answer: 3
-  comment: "A opção -i do comando ls exibe o inode de cada arquivo ou diretório. #ls #inode #arquivo"
+  comment: "A opção -i do comando ls exibe o inode de cada arquivo ou diretório. #ls #inode"
 
 - id: "103-115"
   topic: "103.4"
@@ -1340,7 +1340,7 @@
     - "1>&2>"
     - "|"
   answer: 3
-  comment: "O redirecionador <<, chamado \"Here Documents\", instrui o shell a ler as entradas de uma determinada fonte até que uma linha contendo a string informada como delimitador ocorra. #here-documents #redirecionamento #shell #stdin"
+  comment: "O redirecionador <<, chamado \"Here Documents\", instrui o shell a ler as entradas de uma determinada fonte até que uma linha contendo a string informada como delimitador ocorra. #redirecionamento #shell #stdin"
 
 - id: "103-117"
   topic: "103.3"
@@ -1351,7 +1351,7 @@
     - "tar tf backup.tgz"
     - "unzip backup.tgz"
   answer: 3
-  comment: "No comando tar, a opção \"t\" exibe o conteúdo do arquivo agrupado/compactado, o -f sempre deve ser utilizado para indicar o arquivo .tar ou .tgz. #tar #tgz #compactação #arquivos"
+  comment: "No comando tar, a opção \"t\" exibe o conteúdo do arquivo agrupado/compactado, o -f sempre deve ser utilizado para indicar o arquivo .tar ou .tgz. #tar #tgz"
 
 - id: "103-118"
   topic: "103.5"
@@ -1399,7 +1399,7 @@
     - "cat /proc/cpuinfo"
     - "dmesg"
   answer: [1, 2]
-  comment: "De maneira geral, o load average permite verificar como está a execução de processos em um sistema. Esse valor pode ser visualizado pelos comandos uptime e top. #uptime #top #load-average #processos #monitoramento"
+  comment: "De maneira geral, o load average permite verificar como está a execução de processos em um sistema. Esse valor pode ser visualizado pelos comandos uptime e top. #uptime #top #load-average #processos"
 
 - id: "103-122"
   topic: "103.7"
@@ -1410,7 +1410,7 @@
     - "grep \"^Carlos\" alunos.txt"
     - "egrep ^carlos alunos.txt"
   answer: 3
-  comment: "O caractere ^ indica sempre algo no início da linha. O caractere $ indica o final de uma linha. O grep -v excluiria toda ocorrência da palavra Carlos. O egrep ^carlos está com a primeira letra minúscula, visto que a função é case-sensitive, a string Carlos não seria encontrada. #grep #regex #expressoes-regulares #egrep"
+  comment: "O caractere ^ indica sempre algo no início da linha. O caractere $ indica o final de uma linha. O grep -v excluiria toda ocorrência da palavra Carlos. O egrep ^carlos está com a primeira letra minúscula, visto que a função é case-sensitive, a string Carlos não seria encontrada. #grep #regex #egrep"
 
 - id: "103-123"
   topic: "103.6"
@@ -1428,7 +1428,7 @@
   type: "discursive"
   question: "O administrador do sistema deseja manter o comando que exibe o uso de memória e swap do sistema sempre em execução e exibição, com os resultados sendo atualizados a cada 5 segundos. Qual comando atenderá essa necessidade? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
   answer: "watch"
-  comment: "O comando watch pode ser utilizado com qualquer comando, para que o mesmo seja reexecutado constantemente, o tempo padrão é 2 segundos, porém a opção -n permite definir o tempo de atualização. A situação mencionada seria resolvida pela execução: watch -n5 free -m #watch #free #monitoramento #processos"
+  comment: "O comando watch pode ser utilizado com qualquer comando, para que o mesmo seja reexecutado constantemente, o tempo padrão é 2 segundos, porém a opção -n permite definir o tempo de atualização. A situação mencionada seria resolvida pela execução: watch -n5 free -m #watch #free #processos"
 
 - id: "103-125"
   topic: "103.6"
@@ -1450,7 +1450,7 @@
     - "?LPI"
     - "n:LPI"
   answer: 3
-  comment: "O ? faz uma busca do final para o começo de um arquivo, o / faz a busca do começo para o final. #vi #vim #busca #editor"
+  comment: "O ? faz uma busca do final para o começo de um arquivo, o / faz a busca do começo para o final. #vi #vim #editor"
 
 - id: "103-127"
   topic: "103.8"
@@ -1461,7 +1461,7 @@
     - ":wq"
     - "ZZ"
   answer: 1
-  comment: "A opção :q solicita que o vi saia da edição, mas se o arquivo tiver sido alterado será necessário utilizar :q! para forçar a saída do vi sem salvar as alterações realizadas. Os comandos :wq e ZZ são utilizados para salvar e sair. #vi #vim #editor #sair"
+  comment: "A opção :q solicita que o vi saia da edição, mas se o arquivo tiver sido alterado será necessário utilizar :q! para forçar a saída do vi sem salvar as alterações realizadas. Os comandos :wq e ZZ são utilizados para salvar e sair. #vi #vim #editor"
 
 - id: "103-128"
   topic: "103.7"
@@ -1473,7 +1473,7 @@
     - "4"
     - "8"
   answer: 3
-  comment: "A opção -c no grep/egrep conta a quantidade de linhas em que a string/expressão são encontradas. A expressão \"Aula1+\" diz que o caractere \"1\" deve obrigatoriamente estar presente na string uma ou mais vezes repetidas. Dessa forma são encontrados: Aula1, Aula11, Aula12 e Aula111. #egrep #grep #regex #expressoes-regulares"
+  comment: "A opção -c no grep/egrep conta a quantidade de linhas em que a string/expressão são encontradas. A expressão \"Aula1+\" diz que o caractere \"1\" deve obrigatoriamente estar presente na string uma ou mais vezes repetidas. Dessa forma são encontrados: Aula1, Aula11, Aula12 e Aula111. #egrep #grep #regex"
 
 - id: "103-129"
   topic: "103.8"
@@ -1484,7 +1484,7 @@
     - "p"
     - "cc"
   answer: 1
-  comment: "Ao pressionar yy a linha atual é copiada, para copiar a linha atual e mais 9 pode ser utilizado y10y ou 10yy. Para colar basta pressionar p. #vi #vim #editor #yank #copiar"
+  comment: "Ao pressionar yy a linha atual é copiada, para copiar a linha atual e mais 9 pode ser utilizado y10y ou 10yy. Para colar basta pressionar p. #vi #vim #editor"
 
 - id: "103-130"
   topic: "103.4"
@@ -1503,4 +1503,4 @@
     - "Encontrar o caractere seguinte uma ou mais vezes"
     - "Encontrar o caractere seguinte ao menos uma vez"
   answer: 1
-  comment: "O + determina que o caractere anterior precisa estar presente ao menos uma vez na string mas pode ser repetido n vezes. #regex #expressoes-regulares #grep #egrep"
+  comment: "O + determina que o caractere anterior precisa estar presente ao menos uma vez na string mas pode ser repetido n vezes. #regex #grep #egrep"

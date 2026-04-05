@@ -69,7 +69,7 @@
     - "mount /dev/cdrom /dev/hdc"
     - "mount -f linux /dev/hdc /mnt/cdrom"
   answer: 3
-  comment: "Para montar sem depender do /etc/fstab, você deve especificar explicitamente o tipo do sistema de arquivos (-t iso9660), o dispositivo de origem (/dev/cdrom) e o ponto de montagem de destino (/mnt/cdrom). #mount #iso9660 #cdrom"
+  comment: "Para montar sem depender do /etc/fstab, você deve especificar explicitamente o tipo do sistema de arquivos (-t iso9660), o dispositivo de origem (/dev/cdrom) e o ponto de montagem de destino (/mnt/cdrom). #mount #iso9660"
 
 - id: "102-008"
   topic: "102.1"
@@ -573,7 +573,7 @@
     - "rpm -qv"
     - "yum check"
   answer: 1
-  comment: "A opção -V ou --verify do rpm verifica a integridade de um pacote, comparando timestamps, MD5 checksums e tamanhos dos arquivos instalados com as informações originais do pacote. O dpkg --verify é equivalente no Debian, mas não se aplica a pacotes .rpm. #rpm #verify"
+  comment: "A opção -V ou --verify do rpm verifica a integridade de um pacote, comparando timestamps, MD5 checksums e tamanhos dos arquivos instalados com as informações originais do pacote. O dpkg --verify é equivalente no Debian, mas não se aplica a pacotes .rpm. #rpm"
 
 - id: "102-052"
   topic: "102.4"
@@ -585,7 +585,7 @@
     - "apt check"
     - "apt install-all"
   answer: 1
-  comment: "A opção 'upgrade' do apt-get atualiza todos os pacotes instalados no sistema. A opção 'update' apenas sincroniza a base de informações dos repositórios, sem atualizar nenhum pacote. Existe também o 'dist-upgrade' que, além de atualizar, pode remover pacotes considerados obsoletos. #apt-get #upgrade"
+  comment: "A opção 'upgrade' do apt-get atualiza todos os pacotes instalados no sistema. A opção 'update' apenas sincroniza a base de informações dos repositórios, sem atualizar nenhum pacote. Existe também o 'dist-upgrade' que, além de atualizar, pode remover pacotes considerados obsoletos. #apt-get"
 
 - id: "102-053"
   topic: "102.5"
@@ -607,7 +607,7 @@
     - "Cloud-Init"
     - "Hypervisor"
   answer: 4
-  comment: "O Hypervisor é a camada necessária entre a infraestrutura do Host e a máquina virtual (Guest). Ele controla e gerencia o acesso das VMs aos elementos de hardware da infraestrutura. O LXC é uma tecnologia de containers, não de virtualização completa. O Cloud-Init é usado para configuração inicial de instâncias em nuvem. #hypervisor #virtualizacao"
+  comment: "O Hypervisor é a camada necessária entre a infraestrutura do Host e a máquina virtual (Guest). Ele controla e gerencia o acesso das VMs aos elementos de hardware da infraestrutura. O LXC é uma tecnologia de containers, não de virtualização completa. O Cloud-Init é usado para configuração inicial de instâncias em nuvem."
 
 - id: "102-055"
   topic: "102.4"
@@ -618,14 +618,14 @@
     - "dpkg install novo-software.deb"
     - "apt install novo-software.deb"
   answer: 2
-  comment: "O comando dpkg é utilizado para instalar/atualizar/remover diretamente os pacotes, a opção -i faz o procedimento de instalação. Os comandos apt e apt-get utilizam os repositórios como origem dos pacotes quando o nome do pacote é informado sem caminho. O 'dpkg install' não é uma sintaxe válida. #dpkg #apt #debian"
+  comment: "O comando dpkg é utilizado para instalar/atualizar/remover diretamente os pacotes, a opção -i faz o procedimento de instalação. Os comandos apt e apt-get utilizam os repositórios como origem dos pacotes quando o nome do pacote é informado sem caminho. O 'dpkg install' não é uma sintaxe válida. #dpkg #apt"
 
 - id: "102-056"
   topic: "102.3"
   type: "discursive"
   question: "Qual o comando utilizado para atualizar o arquivo de cache referente às bibliotecas compartilhadas? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
   answer: "ldconfig"
-  comment: "O ldconfig atualiza a base de diretórios em que as bibliotecas compartilhadas podem ser encontradas. Na prática, atualiza o arquivo /etc/ld.so.cache com base nas configurações do /etc/ld.so.conf e dos diretórios em /etc/ld.so.conf.d/. #ldconfig #bibliotecas #shared-libraries"
+  comment: "O ldconfig atualiza a base de diretórios em que as bibliotecas compartilhadas podem ser encontradas. Na prática, atualiza o arquivo /etc/ld.so.cache com base nas configurações do /etc/ld.so.conf e dos diretórios em /etc/ld.so.conf.d/. #ldconfig #shared-libraries"
 
 - id: "102-057"
   topic: "102.4"
@@ -636,7 +636,7 @@
     - "dpkg -f /etc/pam.conf"
     - "apt search /etc/pam.conf"
   answer: 2
-  comment: "Com o \"dpkg -S\" (ou --search) é possível informar um arquivo e identificar o pacote \"dono\" deste arquivo. #dpkg #debian #pacotes #search"
+  comment: "Com o \"dpkg -S\" (ou --search) é possível informar um arquivo e identificar o pacote \"dono\" deste arquivo. #dpkg"
 
 - id: "102-058"
   topic: "102.1"
@@ -647,7 +647,7 @@
     - "A partição /dev/sda4 deve ser criada para evitar erros lógicos"
     - "Duas das partições do sistema são do tipo estendida"
   answer: [1, 2]
-  comment: "O particionamento MBR permite no máximo 4 partições primárias, ou 3 primárias e 1 estendida. Na partição estendida são associadas as partições lógicas. Partições primárias ou estendidas são numeradas de 1 a 4, partições lógicas são numeradas a partir de 5. Dessa forma, a existência das partições 5 e 6 significa que existem 2 partições lógicas, e consequentemente 1 das partições 1, 2 ou 3 é necessariamente uma partição estendida. Não é obrigatório que todas as partições 1, 2, 3 e 4 existam, pode haver apenas as partições 1 e 3 por exemplo, mas as partições lógicas devem seguir a sequência a partir de 5. #mbr #partição #lógica #estendida #hd"
+  comment: "O particionamento MBR permite no máximo 4 partições primárias, ou 3 primárias e 1 estendida. Na partição estendida são associadas as partições lógicas. Partições primárias ou estendidas são numeradas de 1 a 4, partições lógicas são numeradas a partir de 5. Dessa forma, a existência das partições 5 e 6 significa que existem 2 partições lógicas, e consequentemente 1 das partições 1, 2 ou 3 é necessariamente uma partição estendida. Não é obrigatório que todas as partições 1, 2, 3 e 4 existam, pode haver apenas as partições 1 e 3 por exemplo, mas as partições lógicas devem seguir a sequência a partir de 5. #mbr #partição #lógica #estendida"
 
 - id: "102-059"
   topic: "102.1"
@@ -670,7 +670,7 @@
     - "dd if=/dev/sda of=backup.mbr bs=512"
     - "dd if=/dev/sda of=backup.mbr bs=446 count=1"
   answer: 4
-  comment: "Os 512 primeiros bytes de um dispositivo são reservados à área de MBR (Master Boot Record), sendo que nos primeiros 446 bytes estão reservados para o bootloader, os 64 bytes seguintes armazenam a tabela de partições, e os últimos 2 bytes são referentes ao \"número mágico\", um número de verificação. Com base nisso o comando dd pode ser utilizado na criação e restauro de backups da MBR. #dd #mbr #backup #bootloader"
+  comment: "Os 512 primeiros bytes de um dispositivo são reservados à área de MBR (Master Boot Record), sendo que nos primeiros 446 bytes estão reservados para o bootloader, os 64 bytes seguintes armazenam a tabela de partições, e os últimos 2 bytes são referentes ao \"número mágico\", um número de verificação. Com base nisso o comando dd pode ser utilizado na criação e restauro de backups da MBR. #dd #mbr #bootloader"
 
 - id: "102-061"
   topic: "102.2"
@@ -682,4 +682,4 @@
     - "root"
     - "boot"
   answer: 1
-  comment: "O arquivo grub.cfg é utilizado pelo GRUB2, sendo assim o parâmetro que indica o kernel é o \"linux\". No caso do GRUB Legacy seria o arquivo de configuração menu.lst e o parâmetro \"kernel\" indicaria o arquivo. #grub2 #grub #kernel #boot #configuração"
+  comment: "O arquivo grub.cfg é utilizado pelo GRUB2, sendo assim o parâmetro que indica o kernel é o \"linux\". No caso do GRUB Legacy seria o arquivo de configuração menu.lst e o parâmetro \"kernel\" indicaria o arquivo. #grub2 #grub #kernel #boot"
