@@ -240,7 +240,7 @@
 
 - id: "101-023"
   topic: "101.3"
-  question: "Para realizar o start do servidor web apache em sistemas que utilizam o sysvinit utilizamos o comando; service httpd start. Como seria realizado este procedimento em um sistema que utiliza o systemd ?"
+  question: "Para realizar o start do servidor web apache em sistemas que utilizam o sysvinit utilizamos o comando: 'service httpd start'. Como seria realizado este procedimento em um sistema que utiliza o systemd ?"
   options:
     - "/etc/init.d/httpd start"
     - "httpdctl start"
