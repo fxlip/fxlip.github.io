@@ -683,3 +683,131 @@
     - "boot"
   answer: 1
   comment: "O arquivo grub.cfg é utilizado pelo GRUB2, sendo assim o parâmetro que indica o kernel é o \"linux\". No caso do GRUB Legacy seria o arquivo de configuração menu.lst e o parâmetro \"kernel\" indicaria o arquivo. #grub2 #grub #kernel #boot"
+
+- id: "102-062"
+  topic: "102.2"
+  question: "Qual comando instala todos os arquivos necessários para o boot loader no dispositivo /dev/sda?"
+  options:
+    - "grub-mkconfig > /dev/sda"
+    - "update-grub -o /dev/sda"
+    - "grub-install /dev/sda"
+    - "dd if=/boot of=/dev/sda count=512"
+  answer: 3
+  comment: "O comando grub-install fará a instalação dos arquivos do GRUB no dispositivo indicado, por padrão no diretório /boot. Os comandos grub-mkconfig e update-grub têm a função de atualizar os arquivos do GRUB no /boot, com base no que foi configurado pelo administrador. #grub"
+
+- id: "102-063"
+  topic: "102.4"
+  question: "Qual comando irá exibir todas as dependências do pacote já instalado vim?"
+  options:
+    - "apt-get depends vim"
+    - "apt-cache depends vim"
+    - "apt search vim"
+    - "dpkg -d vim"
+  answer: 2
+  comment: "Dentre as opções apresentadas, o apt-cache depends mostra as dependências de um pacote. O \"apt\" possui a mesma opção, mas não o apt-get. O comando \"dpkg -s vim\" também retornaria essa informação. #apt-cache #dpkg"
+
+- id: "102-064"
+  topic: "102.4"
+  question: "Qual comando irá desinstalar um pacote mas manter no sistema seus arquivos de configuração?"
+  options:
+    - "dpkg --remove pacote"
+    - "dpkg -P pacote"
+    - "dpkg --clean pacote"
+    - "dpkg -s pacote"
+  answer: 1
+  comment: "As opções \"--remove\" e \"-r\" removem o pacote mas os arquivos de configuração serão mantidos. As opções \"-P\" e \"--purge\" removem a aplicação e seus arquivos de configuração. #dpkg"
+
+- id: "102-065"
+  topic: "102.1"
+  question: "Quais recursos são disponibilizados no uso do LVM (Logical Volume Manager)? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "Uso de partições lógicas com dimensionamento dinâmico."
+    - "Possibilidade de inclusão de novos dispositivos de armazenamento nos volumes criados e em uso."
+    - "Gerenciamento dos discos via RAID"
+    - "Criptografia dos discos e volumes do sistema"
+    - "Criação de snapshots para registro dos estados de cada volume"
+  answer: [1, 2, 5]
+  comment: "O LVM permite a alocação dinâmica dos dispositivos de armazenamento em Volume Groups (VG) e Logical Volumes (LV), que podem ser ajustados e redimensionados conforme as necessidades do sistema. Também está disponível o recurso de Snapshot, que permite a geração de uma \"foto\" do volume lógico, que pode ser posteriormente recuperada. #lvm"
+
+- id: "102-066"
+  topic: "102.3"
+  type: "discursive"
+  question: "Qual comando exibe as bibliotecas compartilhadas utilizadas por determinado binário executável ou por outra biblioteca? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
+  answer: "ldd"
+  comment: "O ldd seguido do nome da aplicação exibirá as bibliotecas dinâmicas utilizadas por essa aplicação. #ldd"
+
+- id: "102-067"
+  topic: "102.4"
+  question: "Qual das seguintes opções do apt-get irá atualizar os pacotes para suas versões mais recentes, podendo também remover pacotes que estão obsoletos?"
+  options:
+    - "auto-update"
+    - "dist-upgrade"
+    - "upgrade"
+    - "update"
+  answer: 2
+  comment: "O apt-get dist-upgrade é normalmente utilizado na atualização da distribuição como um todo, dessa forma os pacotes são atualizados mas também podem ser removidos caso não sejam mais necessários. O apt-get upgrade também atualiza todos os pacotes instalados no sistema, mas não irá remover nenhum pacote. #dist-upgrade"
+
+- id: "102-068"
+  topic: "102.2"
+  question: "Nas configurações do GRUB 2, qual parâmetro indica o sistema iniciado por padrão?"
+  options:
+    - "GRUB_TIMEOUT"
+    - "default"
+    - "GRUB_DEFAULT"
+    - "root"
+    - "linux"
+  answer: 3
+  comment: "O GRUB_DEFAULT=X indica qual sistema deve ser iniciado por padrão. O GRUB_TIMEOUT indica o tempo de espera antes de iniciar o boot do kernel. A opção \"default\" indica o sistema padrão no GRUB Legacy. #grub2"
+
+- id: "102-069"
+  topic: "102.1"
+  question: "Quais dos seguintes diretórios não podem ser montados em partições diferentes à partição raiz (/)? (Selecione DUAS Respostas Corretas)"
+  options:
+    - "/boot"
+    - "/etc"
+    - "/sbin"
+    - "/home"
+    - "/var"
+  answer: [2, 3]
+  comment: "Alguns diretórios não podem ser montados em partições diferentes da partição /. A partição / é a primeira a ser montada e após isso arquivos de configuração e ferramentas serão utilizados para finalizar a inicialização do sistema. Os diretórios que devem estar na mesma partição são: /etc, /sbin, /bin, /lib, /media, /mnt, /proc, /sys, /dev. #sbin #etc"
+
+- id: "102-070"
+  topic: "102.6"
+  question: "Das afirmações abaixo, qual é verdadeira com relação ao uso de containers?"
+  options:
+    - "Há uma reserva de memória RAM na máquina Host para cada container iniciado."
+    - "Todos os containers compartilham o kernel da infraestrutura host."
+    - "Cada container deve utilizar seu próprio kernel"
+    - "Deve ser instalado um Sistema Operacional completo em cada container"
+  answer: 2
+  comment: "Um container possui um conjunto de bibliotecas e softwares mas não necessariamente um kernel e sistema operacional. O kernel do host é utilizado para obter os recursos necessários. A reserva de memória RAM ocorre com máquinas virtuais, mas não em containers, apesar dos Container Managers terem seus controles nesse sentido. #docker"
+
+- id: "102-071"
+  topic: "102.5"
+  type: "discursive"
+  question: "Em um sistema padrão Red Hat, em qual diretório estão localizadas as informações referentes aos repositórios utilizados pelo gerenciador de pacotes? (Informe o caminho completo do diretório)"
+  answer: "/etc/yum.repos.d/"
+  comment: "Os repositórios são indicados nos arquivos presentes no diretório /etc/yum.repos.d/. #yum #rpm"
+
+- id: "102-072"
+  topic: "102.5"
+  question: "Qual comando pode ser utilizado para fazer o download de um pacote RPM, sem realizar sua instalação?"
+  options:
+    - "yum install --downloadonly"
+    - "yum install --download"
+    - "yum --download"
+    - "yum --downloadonly"
+  answer: 1
+  comment: "O comando \"yum install --downloadonly <pacote>\" irá apenas fazer o download de um pacote rpm dos repositórios configurados, mas não fará a instalação. #yum #rpm"
+
+- id: "102-073"
+  topic: "102.5"
+  question: "Quais comandos podem ser utilizados para remover um pacote em um sistema padrão Red Hat? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "rpm -e"
+    - "rpm -d"
+    - "yum remove"
+    - "yum erase"
+    - "rpm --purge"
+  answer: [1, 3, 4]
+  comment: "No comando rpm as opções -e ou --erase podem ser utilizadas para remover um pacote. No yum as opções \"erase\" e \"remove\" podem ser utilizadas para a mesma função. #rpm #yum"

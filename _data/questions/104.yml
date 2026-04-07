@@ -928,3 +928,175 @@
     - "/sbin"
   answer: [3, 5]
   comment: "Os diretórios /sbin e /usr/sbin possuem programas utilizados na administração do sistema, apenas pelo usuário root, como fsck, mkfs, repquota e etc. #sbin"
+
+- id: "104-082"
+  topic: "104.3"
+  question: "Nas configurações do arquivo /etc/fstab, qual opção determina que a partição pode ser montada e desmontada por qualquer usuário do sistema, mesmo que não tenha sido ele quem montou a partição inicialmente?"
+  options:
+    - "nouser"
+    - "user"
+    - "users"
+    - "remount"
+  answer: 3
+  comment: "A opção \"users\" permite que qualquer usuário monte e desmonte a partição, independentemente de quem a montou. A opção \"user\" permite que qualquer usuário monte, mas só quem montou pode desmontar. O \"nouser\" impede que usuários comuns montem a partição. O \"remount\" remonta uma partição já montada sem desmontá-la. #fstab #mount"
+
+- id: "104-083"
+  topic: "104.6"
+  question: "Com base na seguinte saída do comando ls -li podemos afirmar que: (Selecione TRÊS Respostas Corretas)"
+  code: |
+    $ ls -il
+    total 16
+    14026028 -rw-r----- 2 ricardo ricardo 20 Jun 15 15:43 arquivo1
+    14026030 -rw-r----- 1 ricardo ricardo 20 Jun 15 15:43 arquivo2
+    14026031 -rw-r----- 1 ricardo ricardo 20 Jun 15 15:43 arquivo3
+    14026032 lrwxrwxrwx 1 ricardo ricardo  8 Jun 15 15:44 arquivo4 -> arquivo2
+    14026028 -rw-r----- 2 ricardo ricardo 20 Jun 15 15:43 arquivo5
+  options:
+    - "Se a permissão do arquivo1 for alterada, o arquivo5 terá a mesma permissão"
+    - "arquivo4 é um link simbólico para arquivo2"
+    - "Se o dono do arquivo2 for alterado, o mesmo dono será atribuído ao arquivo4"
+    - "arquivo1 e arquivo5 são links físicos"
+    - "Se o arquivo5 for apagado, o arquivo1 também será"
+  answer: [1, 2, 4]
+  comment: "O caractere \"l\" nas permissões e a indicação -> no arquivo4 indica que este é um link simbólico para o arquivo2. As propriedades dos links simbólicos são totalmente independentes entre eles, cada um pode ter sua permissão, dono e etc. Por outro lado, o arquivo1 e o arquivo5 compartilham o mesmo inode (coluna 1 do ls), e por isso possuem as mesmas definições de propriedades. #ln #inode"
+
+- id: "104-084"
+  topic: "104.7"
+  type: "discursive"
+  question: "Qual comando atualiza a base de dados utilizada pelo comando locate? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
+  answer: "updatedb"
+  comment: "O comando locate utiliza uma base interna do Linux que contém a localização de todos os arquivos do sistema, possibilitando uma resposta rápida ao comando. No entanto essa base precisa ser atualizada pelo comando updatedb, normalmente executado na inicialização do sistema ou regularmente por agendamento. #locate #updatedb"
+
+- id: "104-085"
+  topic: "104.7"
+  question: "Ao redirecionar a saída do comando find para o comando xargs, qual opção do find é necessária quando os nomes dos arquivos possuem espaços em branco?"
+  options:
+    - "-space0"
+    - "-print0"
+    - "-null"
+    - "-zero-space"
+    - "-perm"
+  answer: 2
+  comment: "Por padrão, o find retorna o nome dos arquivos terminados com o caractere de nova linha (new line), o que impossibilita o uso do xargs em caso de arquivos que utilizem espaços. Usando a opção -print0, o caractere de nova linha é substituído pelo caractere nulo, dessa forma é possível usar o xargs com a opção -0, resolvendo o problema dos nomes de arquivos com espaços. #find #xargs"
+
+- id: "104-086"
+  topic: "104.2"
+  question: "Qual opção do comando fsck fará com que uma partição seja analisada mas que nenhuma ação de correção seja realizada automaticamente?"
+  options:
+    - "-c"
+    - "-f"
+    - "-y"
+    - "-n"
+  answer: 4
+  comment: "No fsck, a opção -n (de \"no\") faz com que nenhuma mudança seja feita. O \"-y\" (de \"yes\") aceita todas as operações recomendadas. O \"-c\" checa por badblocks e o \"-f\" força a checagem mesmo que o filesystem esteja marcado como limpo/ok. #fsck"
+
+- id: "104-087"
+  topic: "104.5"
+  type: "discursive"
+  question: "Qual valor de umask vai garantir que novos arquivos criados tenham permissão de leitura e escrita para o usuário dono do arquivo, apenas de leitura para o grupo e nenhum tipo de acesso a todos os demais usuários? (Informe apenas o valor numérico da máscara)"
+  answer:
+    - "0027"
+    - "027"
+    - "0026"
+    - "026"
+  comment: "As permissões são definidas subtraindo o valor do umask do valor 666 para arquivos e 777 para diretórios. Os valores 0026 e 0027 (ou 026/027) são válidos para arquivos, pois ambos resultam em rw-r----- (640). A diferença aparece nos diretórios: 0026 gera rwxr-x--x (751) e 0027 gera rwxr-x--- (750). #umask"
+
+- id: "104-088"
+  topic: "104.3"
+  question: "Em quais arquivos podem ser verificados os dispositivos e partições montadas no momento no sistema? (Selecione DUAS Respostas Corretas)"
+  options:
+    - "/proc/filesystems"
+    - "/etc/fstab"
+    - "/etc/mtab"
+    - "/proc/mounts"
+    - "/proc/fstab"
+  answer: [3, 4]
+  comment: "Os arquivos /etc/mtab e /proc/mounts apontam para o arquivo /proc/self/mounts, que contém todas as partições atualmente montadas no sistema. O arquivo /etc/fstab contém as configurações de pontos de montagem, que não necessariamente estão montadas no momento. #mount #fstab"
+
+- id: "104-089"
+  topic: "104.1"
+  question: "Ao analisar as partições de um sistema, foram identificadas 2 partições com o tipo 82 (0x82). O que isso indica?"
+  options:
+    - "Duas partições do sistema são usadas para os dados da Instalação Linux"
+    - "O sistema utiliza duas partições para compor sua área de swap"
+    - "Duas partições do sistema estão sendo utilizadas para o sistema operacional Windows"
+    - "Há um erro na definição das partições pois pode haver apenas uma partição definida com o tipo 82"
+  answer: 2
+  comment: "Uma partição com ID 82 (0x82) será designada para área de swap, enquanto que partições com ID 83 (0x83), Linux Native, serão utilizadas para arquivos do Linux. A área de swap de um sistema pode ser composta de várias partições. #swap #fdisk"
+
+- id: "104-090"
+  topic: "104.2"
+  type: "discursive"
+  question: "Qual comando pode ser utilizado para converter um sistema de arquivos ext2 em ext3? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
+  answer: "tune2fs"
+  comment: "A diferença do ext3 para o ext2 é o recurso do journaling. O comando tune2fs com a opção -j adiciona o journaling ao dispositivo, convertendo-o de ext2 para ext3. #tune2fs"
+
+- id: "104-091"
+  topic: "104.3"
+  question: "No systemd, qual seria o nome do arquivo de configuração da unidade (Unit) responsável pela montagem da partição /var/log?"
+  options:
+    - "varlog.partition"
+    - "var-log.filesystem"
+    - "varlog.unit"
+    - "var-log.device"
+    - "var-log.mount"
+  answer: 5
+  comment: "Em um sistema com systemd ativo, todas as partições montadas são reconhecidas e carregadas pelo systemd. O tipo de unidade (Unit) dessas montagens é o mount, representadas pelos arquivos terminados em \".mount\". As barras do caminho são substituídas por hífens no nome do arquivo. #mount"
+
+- id: "104-092"
+  topic: "104.1"
+  question: "Dos comandos abaixo, quais podem ser utilizados para criar um sistema de arquivos em uma partição? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "parted"
+    - "mkfs"
+    - "mkfs.ext3"
+    - "mke2fs"
+    - "fdisk"
+  answer: [2, 3, 4]
+  comment: "Após definir uma partição usando fdisk, parted ou gdisk, a partição deve ser formatada com o sistema de arquivos. O principal comando é o mkfs ou mkfs.tipo, o mke2fs é usado para filesystems ext2/3/4. O parted e o fdisk são ferramentas de particionamento, não de criação de filesystem. #mkfs #mke2fs #mkfs.ext3 #parted #fdisk"
+
+- id: "104-093"
+  topic: "104.5"
+  question: "Considerando o diretório \"sistema\" com as permissões a seguir, qual comando deve ser utilizado para assegurar que os novos arquivos criados nesse diretório tenham como dono o grupo suporte?"
+  code: "drwxrwxr-x   2   root   suporte   4096   Jun 15 14:28   sistema"
+  options:
+    - "chmod u+s sistema"
+    - "chgrp suporte sistema"
+    - "chmod o+t sistema"
+    - "chmod 2775 sistema"
+  answer: 4
+  comment: "O SGID faz com que novos arquivos sejam criados com o mesmo grupo padrão do diretório, ao invés do grupo de quem criou o arquivo. Essa propriedade pode ser aplicada com \"chmod g+s diretório\" ou \"chmod 2775 diretório\". #chmod"
+
+- id: "104-094"
+  topic: "104.6"
+  question: "O que é possível afirmar ao observar um arquivo com a permissão lrwxrwxrwx?"
+  options:
+    - "O arquivo possui o bit especial SUID"
+    - "O arquivo possui o bit especial SGID"
+    - "O arquivo é um link simbólico"
+    - "O arquivo é um link físico"
+  answer: 3
+  comment: "Sempre que um arquivo possuir a letra \"l\" no início de suas permissões, seguido de permissões 777, é um indicador de ser um link simbólico. Também será possível visualizar a indicação: nome-do-link -> arquivo/diretório-destino. #ln #symlink"
+
+- id: "104-095"
+  topic: "104.5"
+  question: "Quais comandos abaixo podem ser utilizados para definir o grupo suporte ao arquivo acesso.txt? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "chgrp suporte acesso.txt"
+    - "chgrp acesso.txt suporte"
+    - "chown suporte acesso.txt"
+    - "chown .suporte acesso.txt"
+    - "chown :suporte acesso.txt"
+  answer: [1, 4, 5]
+  comment: "O comando chgrp é específico para definição do grupo, com sintaxe: chgrp <grupo> <arquivo>. O chown pode definir usuário e grupo, aceitando as sintaxes: chown :grupo arquivo ou chown .grupo arquivo, sendo que o usuário pode ser omitido caso não se deseje alterá-lo. #chgrp #chown"
+
+- id: "104-096"
+  topic: "104.3"
+  question: "Qual comando pode ser utilizado para verificar os pontos de montagem ativos pelo systemd?"
+  options:
+    - "journalctl list-mounts"
+    - "systemctl list-units --type=mount"
+    - "systemctl list-mounts"
+    - "cat /proc/systemd/mounts"
+  answer: 2
+  comment: "O comando systemctl list-units --type=mount exibe todas as unidades de montagem ativas gerenciadas pelo systemd, permitindo verificar os pontos de montagem em uso no sistema. #systemctl #mount"

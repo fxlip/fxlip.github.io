@@ -544,19 +544,8 @@
   answer: 3
   comment: "A variável HISTFILESIZE define o número máximo de linhas mantidas no arquivo de histórico em disco (.bash_history). Já a variável HISTSIZE controla apenas quantas linhas são mantidas na memória (RAM) durante a sessão atual. Para evitar que o arquivo físico consuma muito espaço, deve-se reduzir o HISTFILESIZE. #bash #history #env"
 
-- id: "103-047"
-  topic: "103.1"
-  question: "Qual dos comandos a seguir é equivalente ao comando # chmod 754 ~/arquivo1 para o usuário João cujo diretório home é /home/joao?"
-  options:
-    - "chmod u=7,g=5,o=4 ~/file1"
-    - "chmod 754 homejoaofile1"
-    - "chmod ugo=rwx ~/file1"
-    - "chmod u=rwx,g=rx,o=r /home/joao/file1"
-    - "chmod 754 /usr/joao/file1"
-  answer: 4
-  comment: "A permissão octal 754 converte-se em: rwx (7) para o dono (u), r-x (5) para o grupo (g) e r-- (4) para outros (o). O símbolo ~ (til) expande para o diretório home do usuário (/home/joao). O modo simbólico 'u=rwx,g=rx,o=r' reflete exatamente esses bits de permissão. #chmod"
 
-- id: "103-048"
+- id: "103-047"
   topic: "103.2"
   question: "Como você pode descrever o comando a seguir?"
   code: "tail -f /var/log/messages"
@@ -569,7 +558,7 @@
   answer: 4
   comment: "A flag -f (follow) do comando tail faz com que o utilitário não termine após ler o fim do arquivo, mas sim aguarde e exiba novas linhas que forem adicionadas em tempo real. É a ferramenta padrão para monitoramento de logs. #tail"
 
-- id: "103-049"
+- id: "103-048"
   topic: "103.1"
   question: "Você está digitando uma linha de comando grande e complexa e você alcançou o fim da tela. Você quer continuar digitando, mas na linha abaixo. Quais as teclas que permitem isso?"
   options:
@@ -580,7 +569,7 @@
   answer: 1
   comment: "No Bash, a barra invertida (\\) seguida de Enter funciona como um caractere de continuação de linha. Isso indica ao shell que o comando ainda não terminou e que a próxima linha deve ser tratada como parte da mesma instrução. O prompt geralmente muda para '>' (PS2) para indicar a continuação. #bash"
 
-- id: "103-050"
+- id: "103-049"
   topic: "103.3"
   question: "Qual expressão regular a seguir pode ser capaz de filtrar as palavras \"Linux\" e \"linux\", mas não \"linux.com\" e \"TurboLinux\"?"
   options:
@@ -592,7 +581,7 @@
   answer: 1
   comment: "A expressão [Ll]inux utiliza uma classe de caracteres para aceitar tanto 'L' maiúsculo quanto 'l' minúsculo no início. Importante notar que, em ferramentas como o grep, para evitar 'linux.com' ou 'TurboLinux', seriam necessários delimitadores de borda de palavra (como \\b), mas entre as opções dadas, [Ll]inux é a única sintaticamente correta para alternância de caixa. #regex #grep"
 
-- id: "103-061"
+- id: "103-050"
   topic: "103.1"
   question: "Você precisa procurar em todos os diretórios para localizar um determinado arquivo. Como você fará isto e ainda continuar a chamar outros comandos?"
   options:
@@ -1504,3 +1493,342 @@
     - "Encontrar o caractere seguinte ao menos uma vez"
   answer: 1
   comment: "O + determina que o caractere anterior precisa estar presente ao menos uma vez na string mas pode ser repetido n vezes. #regex #grep #egrep"
+
+- id: "103-132"
+  topic: "103.4"
+  question: "No Linux, qual o valor numérico para o descritor de saída de erro (stderr)?"
+  options:
+    - "0"
+    - "1"
+    - "2"
+    - "-1"
+    - "256"
+  answer: 3
+  comment: "0 é o descritor da entrada padrão (stdin), 1 o descritor da saída padrão (stdout) e 2 o da saída de erro (stderr). #stderr"
+
+- id: "103-133"
+  topic: "103.5"
+  question: "Qual comando deve preceder a execução de um processo para que este não pare sua execução após o usuário efetuar o logout do sistema?"
+  options:
+    - "keep"
+    - "jobs"
+    - "nohup"
+    - "screen"
+  answer: 3
+  comment: "Com o nohup, um processo em geral é executado da seguinte maneira: nohup <comando> &. Dessa forma ele é iniciado em background e continuará sendo executado mesmo que o bash seja fechado. Também não aceitará o sinal SIGHUP. #nohup #sighup"
+
+- id: "103-134"
+  topic: "103.4"
+  question: "Qual dos seguintes comandos irá enviar a saída do programa application para o arquivo log.out e para a saída padrão (tela) do usuário?"
+  options:
+    - "application >> log.out"
+    - "application | tee log.out"
+    - "application > tee log.out"
+    - "application > log.out | tee"
+  answer: 2
+  comment: "A função do comando tee é receber uma entrada, normalmente a saída de um outro comando com o uso do |, exibir essa entrada na tela e ao mesmo tempo escrevê-la em um arquivo. #tee"
+
+- id: "103-135"
+  topic: "103.5"
+  question: "Qual comando exibe todos os processos em forma de árvore, informando inclusive o PID de cada processo?"
+  options:
+    - "pstree -a"
+    - "pstree -p"
+    - "pgrep"
+    - "jobs -p"
+  answer: 2
+  comment: "O comando pstree exibe os processos de forma hierárquica, a opção -p exibe o PID de cada processo. No comando ps, a opção --forest tem resultado semelhante. #pid"
+
+- id: "103-136"
+  topic: "103.5"
+  type: "discursive"
+  question: "Qual sinal é frequentemente usado para instruir um daemon a se reinicializar e aplicar as definições mais recentes em seu arquivo de configuração? (Informe o código numérico ou o nome do sinal)"
+  answer: "1"
+  comment: "O SIGHUP, ou apenas HUP, é normalmente utilizado para que um processo seja reiniciado ou que ele releia seus arquivos de configuração, sendo 1 seu código numérico. #kill"
+
+- id: "103-137"
+  topic: "103.6"
+  question: "Considere a execução do comando abaixo. Qual foi o valor de nice definido ao processo?"
+  code: "# renice -15 9999"
+  options:
+    - "15"
+    - "-15"
+    - "9999"
+    - "Nenhum, há um erro de sintaxe"
+  answer: 2
+  comment: "A sintaxe do renice é: renice Valor_Nice PID, dessa forma o -15 é o valor de nice -15. Atenção pois a sintaxe do comando nice é um pouco diferente: nice -Valor_Nice comando, sendo assim, se usado nice -15 comando, o valor de nice associado ao comando seria 15. #renice #nice"
+
+- id: "103-138"
+  topic: "103.7"
+  question: "Considerando o arquivo teste.txt com o conteúdo abaixo, qual o resultado do comando: grep -c \"Aula.1\" teste.txt ?"
+  code: |
+    Aula1
+    Aula11
+    Aula12
+    Aula111
+    Aula 2
+    Aula 22
+    Aula3
+    Aula4
+  options:
+    - "Sem nenhum retorno"
+    - "1"
+    - "2"
+    - "4"
+  answer: 3
+  comment: "O . determina um caractere qualquer, dessa forma a expressão regular encontrará as ocorrências que tenham \"Aula\", seguidas de qualquer caractere e o número \"1\". O grep mostrará as linhas: Aula11 e Aula111, totalizando 2 linhas (a opção -c conta linhas). #grep #regex"
+
+- id: "103-139"
+  topic: "103.6"
+  type: "discursive"
+  question: "Qual comando é usado para iniciar um outro comando alterando a sua prioridade padrão no sistema? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
+  answer: "nice"
+  comment: "O comando nice inicia um processo com seu valor de nice alterado. O NICE impacta a prioridade definida pelo sistema operacional para cada processo. #nice"
+
+- id: "103-140"
+  topic: "103.5"
+  question: "Qual dos seguintes comandos coloca para execução em background o último job parado na sessão atual do shell?"
+  options:
+    - "exec"
+    - "jobs"
+    - "bg"
+    - "fg"
+  answer: 3
+  comment: "O comando bg reinicia a execução de um processo que foi parado na sessão atual, mas em background. O comando fg faz o oposto, traz um job que está em execução em background para o foreground da sessão atual. #bg #fg"
+
+- id: "103-141"
+  topic: "103.8"
+  question: "No vi, após copiar 10 linhas e mover o cursor para uma linha diferente do texto, qual caractere deve ser utilizado para inserir o conteúdo copiado abaixo da linha em que o cursor está posicionado?"
+  options:
+    - "i"
+    - "o"
+    - "c"
+    - "p"
+    - "a"
+  answer: 4
+  comment: "O comando p, de \"paste\", insere o conteúdo copiado ou deletado (recortado) nas linhas abaixo à que o cursor está posicionado. #vi"
+
+- id: "103-142"
+  topic: "103.7"
+  question: "Das expressões regulares abaixo, qual pode ser utilizada para encontrar em um texto, números de telefone no formato 999-999-9999?"
+  options:
+    - "[0-9,3]-[0-9,3]-[0-9,4]"
+    - "[0-9,0-9,0-9]-[0-9,0-9,0-9]-[0-9,0-9,0-9,0-9]"
+    - "[0-9]{3}-[0-9]{3}-[0-9]{4}"
+    - "[0-9](3)\\-[0-9](3)\\-[0-9](4)"
+  answer: 3
+  comment: "Os caracteres [] definem uma lista, sendo que [0-9] indica que são aceitos todos os caracteres numéricos. As chaves {} indicam um quantificador, ou seja, quantas ocorrências do caractere anterior são esperadas. Por se tratar de uma expressão regular estendida, a expressão só funcionará com o uso do comando egrep ou grep -E. #regex"
+
+- id: "103-143"
+  topic: "103.7"
+  question: "Qual comando irá deletar de um arquivo toda linha que comece com a string \"www.\"?"
+  options:
+    - "sed -i '/^www\\./d' arquivo"
+    - "egrep -v '^www' arquivo"
+    - "sed 's/^www//g' arquivo"
+    - "sed -i 's/^www//' telefone.txt"
+  answer: 1
+  comment: "No comando sed a opção -i faz com que o arquivo origem seja alterado. O /d indica que toda a linha que possui a string será removida. O ^ ancora a expressão ao início da linha e o \\. escapa o ponto literal. #sed #regex"
+
+- id: "103-144"
+  topic: "103.8"
+  question: "No editor de textos vi, qual tecla deve ser utilizada para entrar em modo de edição na linha abaixo da qual está posicionada o cursor?"
+  options:
+    - "i"
+    - "a"
+    - "o"
+    - "n"
+    - "p"
+  answer: 3
+  comment: "A tecla \"o\" entra em modo de edição na linha abaixo. A tecla \"i\" entra em modo de edição na posição do cursor e a tecla \"a\" entra em modo de edição na posição seguinte à atual posição do cursor. #vi"
+
+- id: "103-145"
+  topic: "103.1"
+  question: "A variável NOME foi declarada com o nome do aluno \"André da Silva\". Qual comando abaixo exibirá a frase \"O aluno André da Silva foi Aprovado!\""
+  options:
+    - "echo \"O aluno NOME foi Aprovado!\""
+    - "echo O aluno $NOME foi Aprovado!"
+    - "print \"O aluno $NOME foi Aprovado!\""
+    - "echo O aluno '$NOME' foi Aprovado!"
+  answer: 2
+  comment: "No comando echo o uso das aspas duplas é opcional na maioria dos casos. As aspas simples fazem com que as variáveis não sejam interpretadas, exibindo o nome literal da variável em vez do seu valor. #echo #bash"
+
+- id: "103-146"
+  topic: "103.8"
+  question: "Dentre as opções abaixo, quais são alternativas ao editor de texto \"vi\"? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "nano"
+    - "emacs"
+    - "tmux"
+    - "vim"
+    - "screen"
+  answer: [1, 2, 4]
+  comment: "O vim é uma melhoria do vi, na prática atualmente na maioria das distribuições o comando vi é um link para o vim. Outras opções são o nano e o emacs. O tmux e o screen são multiplexadores de terminal, não editores de texto. #vim #nano #emacs"
+
+- id: "103-147"
+  topic: "103.1"
+  question: "Quais teclas de atalho podem ser utilizadas para que o último comando digitado seja executado novamente?"
+  options:
+    - "$?"
+    - "$$"
+    - "!!"
+    - "$!"
+    - "??"
+  answer: 3
+  comment: "Existem algumas opções para repetir comandos anteriores, entre eles o !! executa o último comando utilizado. $$ retorna o PID do shell atual e $? o exit code do último comando utilizado. #bash #shell"
+
+- id: "103-148"
+  topic: "103.1"
+  question: "O usuário declarou a variável SISTEMA em sua sessão do shell e deseja que todos os processos iniciados a partir deste shell sejam capazes de visualizar o conteúdo desta variável. Qual comando deve ser usado?"
+  options:
+    - "env SISTEMA"
+    - "set $SISTEMA"
+    - "export SISTEMA"
+    - "define $SISTEMA"
+    - "var SISTEMA"
+  answer: 3
+  comment: "O comando export faz com que uma variável torne-se global, e com isso todos os processos filho possam trabalhar com o conteúdo desta variável. #export #set #env #define #var"
+
+- id: "103-149"
+  topic: "103.1"
+  question: "Qual comando tem como principal função encontrar o caminho de determinado comando, baseado nos diretórios definidos na variável de ambiente PATH?"
+  options:
+    - "locate"
+    - "which"
+    - "type"
+    - "file"
+    - "whatis"
+  answer: 2
+  comment: "O comando which procura por arquivos executáveis nos diretórios listados na variável de ambiente PATH, retornando então o caminho completo de determinado comando. #which #type #locate #file #whatis"
+
+- id: "103-150"
+  topic: "103.4"
+  question: "Qual o resultado do comando a seguir?"
+  code: "cat arquivo.txt | xargs touch"
+  options:
+    - "O comando não é válido e ocorrerá um erro de sintaxe"
+    - "Serão criados novos arquivos cujos nomes serão as strings presentes em cada linha do arquivo.txt"
+    - "Será criado um novo arquivo de nome \"touch\" com o mesmo conteúdo do arquivo.txt"
+    - "Será criado um novo arquivo de nome \"xargs\" com o mesmo conteúdo do arquivo.txt"
+  answer: 2
+  comment: "O xargs é usado para construir e executar comandos a partir de uma entrada padrão. Ele converte a entrada recebida em argumentos para um comando e o executa. Nesse caso, cada linha do arquivo.txt será o argumento de entrada para o comando touch, que será executado diversas vezes caso o arquivo.txt tenha mais de uma linha. #xargs #touch"
+
+- id: "103-151"
+  topic: "103.3"
+  question: "Quais comandos podem ser utilizados para compactação de arquivos, com diferentes algoritmos? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "dd"
+    - "xz"
+    - "bzip2"
+    - "cpio"
+    - "gzip"
+  answer: [2, 3, 5]
+  comment: "Os comandos gzip, bzip2 e xz são utilizados para compactação, assim como, respectivamente, são utilizados os comandos gunzip, bunzip2 e unxz para descompactação. #gzip #bzip2 #xz #cpio #dd"
+
+- id: "103-152"
+  topic: "103.3"
+  question: "Qual comando pode ser usado para extrair o conteúdo do arquivo backup.cpio?"
+  options:
+    - "cpio -xf backup.cpio"
+    - "cpio -iv < backup.cpio"
+    - "cpio -e backup.cpio"
+    - "cpio -it -F backup.cpio"
+  answer: 2
+  comment: "Para extrair o conteúdo de um arquivo do tipo cpio, deve ser utilizada a opção -i e opcionalmente o -v para o modo verbose. O arquivo deve ser indicado como entrada e por isso é usado o sinal <. #cpio"
+
+- id: "103-153"
+  topic: "103.2"
+  question: "Qual o resultado da execução do comando abaixo?"
+  code: "echo Curso Linux Online | tr -d 'aeiou'"
+  options:
+    - "Ocorre um Erro de Sintaxe"
+    - "Curso Linux Online"
+    - "Crs Lnx Onln"
+    - "Crs Lnx nln"
+    - "O resultado é uma linha em branco"
+  answer: 3
+  comment: "O comando tr irá receber a string \"Curso Linux Online\" como entrada, o -d removerá os caracteres informados gerando a nova saída. Como tudo é case sensitive, o \"O\" de Online não é removido, resultando em \"Crs Lnx Onln\". #tr #regex"
+
+- id: "103-154"
+  topic: "103.2"
+  question: "Ao utilizar o comando split em um arquivo, por padrão qual será o tamanho máximo de cada novo arquivo criado?"
+  options:
+    - "1000 bytes"
+    - "1000 linhas"
+    - "100 linhas"
+    - "512 bytes"
+    - "100 caracteres"
+  answer: 2
+  comment: "Sem nenhum parâmetro, o split dividirá um arquivo em outros arquivos de 1000 linhas cada. A opção -l pode ser utilizada para definir a quantidade de linhas desejada e a opção -b para definir em bytes. #split"
+
+- id: "103-155"
+  topic: "103.3"
+  question: "Quais parâmetros do ls vão fazer com que sejam exibidos todos os detalhes dos arquivos e diretórios, inclusive os ocultos, ordenados de forma que os arquivos criados/modificados mais recentemente apareçam no final da lista?"
+  options:
+    - "ls -lt"
+    - "ls -altr"
+    - "ls -lta"
+    - "ls -al"
+  answer: 2
+  comment: "No comando ls, a opção \"a\" exibe os arquivos ocultos, o \"l\" mostra os detalhes, o \"t\" ordena pelos mais recentes primeiro e o \"r\" inverte a ordem de exibição, fazendo com que os arquivos mais novos apareçam no final da listagem. #ls"
+
+- id: "103-156"
+  topic: "103.3"
+  question: "Qual comando irá criar de uma só vez todos os diretórios da árvore curso/aula1/exercicios?"
+  options:
+    - "mkdir curso aula1 exercicios"
+    - "mkdir curso/aula1/exercicios"
+    - "mkdir -p curso/aula1/exercicios"
+    - "mkdir -r curso/aula1/exercicios"
+  answer: 3
+  comment: "A opção -p do mkdir faz com que toda a árvore seja criada. Sem essa opção ocorreria um erro devido à inexistência dos diretórios curso e aula1. #mkdir"
+
+- id: "103-157"
+  topic: "103.4"
+  question: "No Bash, o que o redirecionamento 1>&2 indica?"
+  options:
+    - "Que a saída de erro vai ser redirecionada para a saída padrão"
+    - "Que a saída padrão vai ser redirecionada para a saída de erro"
+    - "Que a entrada padrão vai ser redirecionada para a saída de erro"
+    - "Que a saída padrão vai ser redirecionada para a entrada padrão"
+  answer: 2
+  comment: "A sinalização 1>&2 indica que a saída padrão (1> ou apenas >) vai ser encaminhada para o mesmo local em que está sendo encaminhada a saída de erro (2>). #stdout #stderr"
+
+- id: "103-158"
+  topic: "103.4"
+  question: "Quais das opções a seguir exibem na tela a palavra \"linux\"? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "echo < linux"
+    - "cat <<< linux"
+    - "echo <<< linux"
+    - "echo linux | cat"
+    - "echo linux 2> file"
+  answer: [2, 4, 5]
+  comment: "Em \"cat <<< linux\", o texto após o direcionador <<< é enviado como entrada do cat e exibido. Em \"echo linux | cat\", a saída é enviada ao cat e exibida. Em \"echo linux 2> file\", apenas a saída de erro é redirecionada ao arquivo, a saída padrão continua sendo exibida na tela. #echo #cat"
+
+- id: "103-159"
+  topic: "103.5"
+  question: "Qual comando gera a saída abaixo?"
+  code: |
+                 total       usada       livre    compart.  buff/cache  disponível
+    Mem.:         15Gi       6,7Gi       4,7Gi       658Mi       4,8Gi       8,5Gi
+    Swap:        976Mi          0B       976Mi
+  options:
+    - "free -h"
+    - "df -h"
+    - "cat /proc/meminfo"
+    - "vmstat"
+    - "uname -a"
+  answer: 1
+  comment: "O comando free mostra o uso da memória RAM do sistema e da área de swap. A opção -h exibe os valores em formato legível (Mb/Gb). O comando df é utilizado para mostrar a utilização de disco das partições do sistema. #free"
+
+- id: "103-160"
+  topic: "103.7"
+  question: "Qual dos comandos abaixo não é capaz de interpretar expressões regulares no shell?"
+  options:
+    - "fgrep"
+    - "grep"
+    - "egrep"
+    - "sed"
+  answer: 1
+  comment: "O comando fgrep apenas faz filtros por strings de texto fixas, mas não interpreta expressões regulares. Todos os outros comandos (grep, egrep, sed) aceitam expressões regulares. #fgrep #grep #regex"

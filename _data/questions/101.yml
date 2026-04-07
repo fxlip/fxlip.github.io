@@ -509,14 +509,24 @@
 
 - id: "101-049"
   topic: "101.1"
-  question: "Ao listar os dispositivos USB, o dispositivo da Logitech aparece como \"Bus 002 Device 002: ID 046d:c52f Logitech, Inc. Unifying Receiver\". Qual comando exibe todos os detalhes desse dispositivo?"
+  question: "Ao listar os dispositivos conectados ao USB, a seguinte lista foi mostrada. Qual comando deve ser utilizado para exibir todos os detalhes do dispositivo da \"Logitech\"?"
+  code: |
+    Bus 001 Device 006: ID 064e:c231 Suyin Corp.
+    Bus 001 Device 005: ID 0bda:0129 Realtek Semiconductor Corp. RTS5129 Card Reader Controller
+    Bus 001 Device 004: ID 04f3:2013 Elan Microelectronics Corp.
+    Bus 001 Device 007: ID 0cf3:e005 Atheros Communications, Inc.
+    Bus 001 Device 002: ID 8087:8000 Intel Corp.
+    Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+    Bus 003 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+    Bus 002 Device 002: ID 046d:c52f Logitech, Inc. Unifying Receiver
+    Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
   options:
     - "lsusb -v Logitech"
     - "lsusb -d -v 046d:c52f"
     - "lsusb -s 002:002 -v"
     - "lspci -v -s 002:002"
   answer: 3
-  comment: "O comando lsusb lista dispositivos USB. A opção -s filtra por Bus:Device (ex: 002:002) e -v exibe os detalhes completos. A opção -d filtra pelo ID do fabricante:produto mas deve ser usada como -d 046d:c52f -v (sem o separador -d -v). O lspci é para dispositivos PCI, não USB. #lsusb #usb"
+  comment: "O comando lsusb lista dispositivos USB. A opção -s filtra por Bus:Device (ex: 002:002) e -v exibe os detalhes completos. A opção -d filtra pelo ID do fabricante:produto e também pode ser usada com -v. O lspci é para dispositivos PCI, não USB. #lsusb"
 
 - id: "101-050"
   topic: "101.3"
@@ -622,3 +632,90 @@
     - "/var"
   answer: [2, 3, 4]
   comment: "/proc – Informações de processos ativos e recursos de hardware. /sys – Informações sobre os dispositivos de hardware. Filesystem do tipo sysfs. /dev – Referências aos dispositivos do sistema. Filesystem do tipo tmpfs. Gerenciado dinamicamente pelo udev. #proc #sys #dev #filesystem #inicialização"
+
+- id: "101-060"
+  topic: "101.2"
+  question: "Qual o nome do processo realizado pela BIOS que é responsável por realizar um teste nos dispositivos de hardware conectados à placa-mãe?"
+  options:
+    - "MBR"
+    - "POST"
+    - "INITRAMFS"
+    - "GRUB"
+  answer: 2
+  comment: "O POST (Power-On Self-Test) é um procedimento da BIOS que verifica se todos os dispositivos estão prontos para o uso. A MBR (Master Boot Record) é a área de disco que contém as informações utilizadas durante o processo de boot e o GRUB é um gerenciador de boot. #bios"
+
+- id: "101-061"
+  topic: "101.1"
+  question: "Você deseja identificar a marca e o modelo da placa de rede conectada ao seu barramento PCI, qual dos comandos abaixo pode ser utilizado para essa finalidade?"
+  options:
+    - "lspci"
+    - "lsusb"
+    - "cat /proc/pci"
+    - "dmesg"
+  answer: 1
+  comment: "O comando lspci é utilizado para exibir informações sobre os barramentos PCIs utilizados no sistema e os dispositivos conectados a eles. #lspci"
+
+- id: "101-062"
+  topic: "101.3"
+  question: "Qual comando é utilizado para enviar uma mensagem a todos os usuários logados no terminal no momento?"
+  options:
+    - "yell"
+    - "notify"
+    - "broadcast"
+    - "motd"
+    - "wall"
+  answer: 5
+  comment: "O comando wall irá enviar a mensagem que seguir o comando diretamente para o terminal de todos os usuários conectados no sistema. #wall #runlevel #shutdown"
+
+- id: "101-063"
+  topic: "101.3"
+  question: "Qual dos seguintes comandos faz com que o SysV recarregue as informações de seu arquivo de configuração?"
+  options:
+    - "init reload"
+    - "telinit 1"
+    - "telinit q"
+    - "init 0"
+    - "init daemon-reload"
+  answer: 3
+  comment: "As opções q ou Q do comando init ou telinit recarregam as informações presentes no arquivo de configuração. Esse comando é equivalente ao systemctl daemon-reload. #telinit #runlevel"
+
+- id: "101-064"
+  topic: "101.1"
+  type: "discursive"
+  question: "Em qual diretório podem ser criados arquivos com regras adicionais para o udev? (Informe o caminho completo do diretório)"
+  answer: "/etc/udev/rules.d/"
+  comment: "O udev é o processo responsável pelo gerenciamento dos dispositivos no /dev. Regras adicionais e específicas podem ser inseridas através de arquivos no diretório /etc/udev/rules.d/. #udev"
+
+- id: "101-065"
+  topic: "101.3"
+  question: "Em um sistema que utiliza o systemd, qual comando irá colocar o sistema em modo de manutenção (single-user)?"
+  options:
+    - "systemctl single-user"
+    - "systemctl isolate single"
+    - "systemctl default rescue"
+    - "systemctl isolate rescue.target"
+  answer: 4
+  comment: "No systemctl, a opção isolate é usada para alterar entre modos de execução, ou target (runlevels no SysV). Para o modo de recuperação (ou modo single) usa-se os targets rescue.target ou runlevel1.target. #systemctl #runlevel"
+
+- id: "101-066"
+  topic: "101.2"
+  question: "Qual sequência melhor representa um processo de boot em sistemas que utilizam UEFI como firmware?"
+  options:
+    - "BIOS > UEFI > BootLoader > Kernel > Init System"
+    - "UEFI > BIOS > BootLoader > Kernel > Init System"
+    - "UEFI > BootLoader > Kernel > Init System"
+    - "UEFI > MBR > Kernel > Init System"
+  answer: 3
+  comment: "O UEFI obtém as informações dos BootLoader diretamente da partição ESP (EFI System Partition), que é por padrão montada no diretório /boot/efi. Ele é utilizado no lugar da BIOS e não utiliza mais uma área de MBR. #uefi"
+
+- id: "101-067"
+  topic: "101.2"
+  question: "Quais das seguintes opções são soluções de sistema de init (Init System) para o Linux? (Selecione 3 Respostas Corretas)"
+  options:
+    - "Anacron"
+    - "Upstart"
+    - "Initramfs"
+    - "SysV"
+    - "systemd"
+  answer: [2, 4, 5]
+  comment: "System V, ou SysV, é o gerenciador de serviços que foi usado originalmente nos ambientes Linux, herdado do Unix. Atualmente a maioria das distribuições utilizam o systemd. O Upstart foi criado pela Canonical, mas atualmente raramente é utilizado. #sysv #systemd #upstart"
