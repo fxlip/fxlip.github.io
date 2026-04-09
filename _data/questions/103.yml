@@ -1809,7 +1809,7 @@
 - id: "103-159"
   topic: "103.5"
   question: "Qual comando gera a saída abaixo?"
-  code: |
+  code: |2
                  total       usada       livre    compart.  buff/cache  disponível
     Mem.:         15Gi       6,7Gi       4,7Gi       658Mi       4,8Gi       8,5Gi
     Swap:        976Mi          0B       976Mi
