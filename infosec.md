@@ -150,5 +150,120 @@ Roadmap da pós-graduação em SI
     {%- endfor -%}
     
     <div class="t-out">&nbsp;</div>
+
+    {% comment %}
+    TODO: reabilitar quando houver mais volume de arquivos em /files/infosec/
+
+    <div>
+      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~/infosec</span><span class="t-gray">$</span> <span class="t-cmd">tree ~/files/infosec/senac/</span>
+    </div>
+    <div class="t-out">.</div>
+
+    {%- assign infosec_files = site.static_files | where_exp: "f", "f.path contains '/files/infosec/senac/'" | sort: "path" -%}
+
+    {%- assign l1_list = "" -%}
+    {%- for f in infosec_files -%}
+      {%- assign rel = f.path | replace_first: "/files/infosec/senac/", "" -%}
+      {%- assign parts = rel | split: "/" -%}
+      {%- if parts.size > 0 and parts[0] != "" -%}
+        {%- assign l1_list = l1_list | append: parts[0] | append: "|||" -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- assign l1_dirs = l1_list | split: "|||" | uniq | sort -%}
+
+    {%- for d1 in l1_dirs -%}
+      {%- if forloop.last -%}
+        {%- assign c1 = "└── " -%}{%- assign p1 = "    " -%}
+      {%- else -%}
+        {%- assign c1 = "├── " -%}{%- assign p1 = "│   " -%}
+      {%- endif -%}
+      <div class="t-row"><span class="t-tree">{{ c1 }}</span><span class="d" style="font-weight: bold; color: #ff79c6;">{{ d1 }}/</span></div>
+
+      {%- assign prefix1 = "/files/infosec/senac/" | append: d1 | append: "/" -%}
+      {%- assign l2_list = "" -%}
+      {%- for f in infosec_files -%}
+        {%- if f.path contains prefix1 -%}
+          {%- assign rel = f.path | replace_first: prefix1, "" -%}
+          {%- assign parts = rel | split: "/" -%}
+          {%- if parts[0] != "" -%}
+            {%- assign l2_list = l2_list | append: parts[0] | append: "|||" -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- assign l2_entries = l2_list | split: "|||" | uniq | sort -%}
+
+      {%- for e2 in l2_entries -%}
+        {%- if forloop.last -%}
+          {%- assign c2 = "└── " -%}{%- assign p2 = "    " -%}
+        {%- else -%}
+          {%- assign c2 = "├── " -%}{%- assign p2 = "│   " -%}
+        {%- endif -%}
+        {%- assign check2 = prefix1 | append: e2 | append: "/" -%}
+        {%- assign is_dir2 = false -%}
+        {%- for f in infosec_files -%}
+          {%- if f.path contains check2 -%}
+            {%- assign is_dir2 = true -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if is_dir2 -%}
+          <div class="t-row"><span class="t-tree">{{ p1 }}{{ c2 }}</span><span class="d" style="font-weight: bold; color: #bd93f9;">{{ e2 }}/</span></div>
+
+          {%- assign prefix2 = prefix1 | append: e2 | append: "/" -%}
+          {%- assign l3_list = "" -%}
+          {%- for f in infosec_files -%}
+            {%- if f.path contains prefix2 -%}
+              {%- assign rel = f.path | replace_first: prefix2, "" -%}
+              {%- assign parts = rel | split: "/" -%}
+              {%- if parts[0] != "" -%}
+                {%- assign l3_list = l3_list | append: parts[0] | append: "|||" -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- assign l3_entries = l3_list | split: "|||" | uniq | sort -%}
+
+          {%- for e3 in l3_entries -%}
+            {%- if forloop.last -%}
+              {%- assign c3 = "└── " -%}{%- assign p3 = "    " -%}
+            {%- else -%}
+              {%- assign c3 = "├── " -%}{%- assign p3 = "│   " -%}
+            {%- endif -%}
+            {%- assign check3 = prefix2 | append: e3 | append: "/" -%}
+            {%- assign is_dir3 = false -%}
+            {%- for f in infosec_files -%}
+              {%- if f.path contains check3 -%}
+                {%- assign is_dir3 = true -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if is_dir3 -%}
+              <div class="t-row"><span class="t-tree">{{ p1 }}{{ p2 }}{{ c3 }}</span><span class="d" style="font-weight: bold; color: #6272a4;">{{ e3 }}/</span></div>
+
+              {%- assign prefix3 = prefix2 | append: e3 | append: "/" -%}
+              {%- assign l4_files = infosec_files | where_exp: "f", "f.path contains prefix3" | sort: "path" -%}
+              {%- for file in l4_files -%}
+                {%- if forloop.last -%}{%- assign c4 = "└── " -%}{%- else -%}{%- assign c4 = "├── " -%}{%- endif -%}
+                <div class="t-row">
+                  <span class="t-tree">{{ p1 }}{{ p2 }}{{ p3 }}{{ c4 }}</span>
+                  <a href="{{ file.path }}" class="f file-link" target="_blank">{{ file.name }}</a>
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              <div class="t-row">
+                <span class="t-tree">{{ p1 }}{{ p2 }}{{ c3 }}</span>
+                <a href="{{ prefix2 | append: e3 }}" class="f file-link" target="_blank">{{ e3 }}</a>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          <div class="t-row">
+            <span class="t-tree">{{ p1 }}{{ c2 }}</span>
+            <a href="{{ prefix1 | append: e2 }}" class="f file-link" target="_blank">{{ e2 }}</a>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+
+    {% endcomment %}
   </div>
 </div>
