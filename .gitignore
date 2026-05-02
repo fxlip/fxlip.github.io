@@ -1,41 +1,86 @@
-# Build
+# =======================
+# BUILD — Jekyll
+# =======================
 _site/
 .sass-cache/
 .jekyll-cache/
+.jekyll-metadata
 
-# Dependências
+# =======================
+# DEPENDÊNCIAS — Ruby
+# =======================
 vendor/
 .bundle/
 Gemfile.lock
-
-# Sistema
-.DS_Store
-*.swp
-*.log
-*.code-workspace
-fxlip.sh
-
-# Segredos
-.env
-*.pem
-
-# IDE
-.vscode/
-.idea/
-logs/
-
-# Gems
 *.gem
 
-# Node
+# =======================
+# DEPENDÊNCIAS — Node
+# =======================
 node_modules/
 
-# Claude Code
-CLAUDE.md
-.claude/
+# =======================
+# SEGREDOS & CREDENCIAIS
+# =======================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.cert
+*.crt
 
-# wrangler files
-.wrangler
+# =======================
+# CLOUDFLARE WORKERS
+# =======================
+.wrangler/
 workers/.dev.vars
 workers/.dev.vars.*
 !workers/.dev.vars.example
+
+# =======================
+# CLAUDE CODE
+# =======================
+CLAUDE.md
+.claude/
+
+# =======================
+# IDE & EDITORES
+# =======================
+.vscode/
+.idea/
+*.code-workspace
+*.swp
+*.swo
+*~
+
+# =======================
+# SISTEMA OPERACIONAL
+# =======================
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+desktop.ini
+
+# =======================
+# LOGS & TEMPORÁRIOS
+# =======================
+*.log
+logs/
+tmp/
+*.bak
+*.tmp
+
+# =======================
+# RUBY — MISC
+# =======================
+.byebug_history
+coverage/
+
+# =======================
+# SCRIPTS LOCAIS
+# =======================
+fxlip.sh
