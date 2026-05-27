@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "fundamentos"
+title: "1-fundamentos"
 date: 2026-04-09T18:57:57-03:00
 permalink: /infosec/inteligencia-artificial/fundamentos
 categories: [infosec]

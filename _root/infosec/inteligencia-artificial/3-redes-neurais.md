@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "redes-neurais"
+title: "3-redes-neurais"
 date: 2026-04-10T18:57:57-03:00
 permalink: /infosec/inteligencia-artificial/redes-neurais
 categories: [infosec]

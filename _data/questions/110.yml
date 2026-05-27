@@ -1,29 +1,151 @@
 - id: "110-000"
-  topic: "110.X"  
-  question: "xxx"
+  topic: "110.3"
+  question: "Qual cifra NÃO é disponibilizada por padrão na versão mais recente do OpenSSH?"
   options:
-    - "xxx"
-    - "xxx"
-    - "xxx"
-    - "xxx"
-    - "xxx"
-  answer: 3
-  comment: "xxx"
+    - "RSA"
+    - "DSA"
+    - "ECDSA"
+    - "ED25519"
+  answer: 2
+  comment: "O OpenSSH desabilitou o suporte ao 'ssh-dss' (DSA) por padrão na versão 7.0 (2015), devido à sua vulnerabilidade e limitações de tamanho de chave (fixado em 1024 bits), o que o torna inadequado para os padrões atuais de segurança. #OpenSSH #DSA #cryptography #security #deprecation"
 
 - id: "110-001"
-  topic: "110.X"
-  question: "xxx"
+  topic: "110.1"
+  question: "Qual dos comandos abaixo pode ser utilizado para verificar as portas abertas em outra máquina da rede?"
   options:
-    - "xxx"
-    - "xxx"
-    - "xxx"
-    - "xxx"
-  answer: [2, 4]
-  comment: "xxx"
+    - "lsof"
+    - "netstat"
+    - "nmap"
+    - "fuser"
+    - "ping"
+  answer: 3
+  comment: "O 'nmap' (Network Mapper) é a ferramenta padrão para exploração de rede e auditoria de segurança. Ele permite identificar serviços, versões e o sistema operacional de hosts remotos através do escaneamento de portas. #nmap #security #auditing #reconnaissance"
 
 - id: "110-002"
-  topic: "110.X"
-  type: "discursive"
-  question: "xxx"
-  answer: "/etc"
-  comment: "xxx"
+  topic: "110.2"
+  question: "Por questões de segurança, qual arquivo NUNCA deve ter permissão de leitura para usuários comuns?"
+  options:
+    - "/etc/passwd"
+    - "/etc/shadow"
+    - "/etc/group"
+    - "/etc/services"
+    - "/etc/hosts"
+  answer: 2
+  comment: "O arquivo '/etc/shadow' armazena os hashes das senhas dos usuários. Por ser o alvo principal de ataques de força bruta ou dicionário, suas permissões devem ser restritas (tipicamente 600 ou 400, pertencendo ao root). #security #shadow #permissions #root #linux"
+
+- id: "110-003"
+  topic: "110.1"
+  question: "Qual das opções abaixo NÃO pode ser controlada pelo comando ulimit?"
+  options:
+    - "Número de arquivos abertos simultaneamente"
+    - "Número máximo de processos em execução por um usuário"
+    - "Tamanho máximo dos arquivos"
+    - "Limite máximo para uso do disco"
+    - "Uso máximo da memória virtual"
+  answer: 4
+  comment: "O comando 'ulimit' controla limites de recursos do shell e processos (como memória, processos simultâneos e arquivos abertos). O uso de disco (quota de armazenamento por usuário ou diretório) é gerenciado via 'quotas' do sistema de arquivos e não pelo 'ulimit'. #ulimit #resource-limits #quotas #system-administration"
+
+- id: "110-004"
+  topic: "110.3"
+  question: "Qual o comando utilizado para gerar as chaves pública e privada para ser utilizada em uma conexão SSH?"
+  options:
+    - "ssh –new-key"
+    - "ssh-keygen"
+    - "ssh –keygen"
+    - "keygen-ssh"
+  answer: 2
+  comment: "O comando 'ssh-keygen' gera pares de chaves criptográficas (RSA, Ed25519, etc.). A chave privada deve permanecer protegida no diretório '~/.ssh/', enquanto a pública (.pub) é copiada para o servidor alvo. #SSH #ssh-keygen #cryptography #security #linux-admin"
+
+- id: "110-005"
+  topic: "110.1"
+  question: "Qual o arquivo de configuração utilizado pelo sudo?"
+  options:
+    - "/etc/visudo"
+    - "/etc/sudoers"
+    - "~/.sudoers"
+    - "/etc/sysconfig/limits.conf"
+    - "/etc/sudo.conf"
+  answer: 2
+  comment: "O '/etc/sudoers' define quem tem permissão para executar comandos como root ou outro usuário. É vital editar este arquivo apenas via 'visudo', que verifica a sintaxe antes de salvar, evitando erros que poderiam bloquear permanentemente o acesso administrativo. #sudo #sudoers #linux-admin #security #root"
+
+- id: "110-006"
+  topic: "110.2"
+  question: "Se um IP estiver listado em /etc/hosts.allow e /etc/hosts.deny, qual o comportamento do TCP Wrapper?"
+  options:
+    - "O hosts.deny terá prioridade e o acesso será negado"
+    - "Ocorrerá um erro de duplicidade"
+    - "O hosts.allow libera, mas o hosts.deny nega logo em seguida"
+    - "O hosts.allow é analisado primeiro e o acesso é liberado, sem consultar o hosts.deny"
+  answer: 4
+  comment: "O TCP Wrapper segue uma lógica de 'primeira correspondência': se um endereço é encontrado no 'hosts.allow', a regra é aplicada imediatamente e o processamento é interrompido. O 'hosts.deny' só é consultado se não houver match anterior. #TCPWrappers #Security #hosts.allow #hosts.deny #linux"
+
+- id: "110-007"
+  topic: "110.1"
+  question: "Qual comando exibe os usuários logados, o que estão executando e o consumo de CPU?"
+  options:
+    - "last"
+    - "lastlog"
+    - "who"
+    - "w"
+    - "lastb"
+  answer: 4
+  comment: "O comando 'w' fornece um resumo rápido: uptime do sistema, média de carga (load average) e uma lista detalhada de usuários logados, incluindo tty, IP de origem, tempo de login, JCPU (tempo total usado por processos do usuário) e PCPU (tempo usado pelo processo atual). #linux #admin #w #system-monitoring"
+
+- id: "110-008"
+  topic: "110.3"
+  question: "Qual o melhor comando para enviar /tmp/backup.tgz para o home do usuário 'suporte' na máquina 'servidorX' via SSH?"
+  options:
+    - "scp suporte@servidorX:/home/suporte/tmp/backup.tgz"
+    - "ssh –scp /tmp/backup.tgz suporte@servidorX:/home/suporte/"
+    - "scp /tmp/backup.tgz suporte@servidorX:~/"
+    - "scp /tmp/backup.tgz -l suporte servidorX /home/suporte/"
+  answer: 3
+  comment: "O comando 'scp' (Secure Copy) utiliza o protocolo SSH para transferência de arquivos. A sintaxe 'origem destino' é respeitada, onde o til ('~') representa o diretório home do usuário remoto. #scp #SSH #file-transfer #linux #admin"
+
+- id: "110-009"
+  topic: "110.3"
+  question: "Como você deve instalar a chave pública GPG (chave.pub) de um colega no seu ambiente?"
+  options:
+    - "gpg-import chave.pub"
+    - "gpg --import chave.pub"
+    - "gpg --recv-keys chave.pub"
+    - "gpg --receive-keys chave.pub"
+    - "gpg --verify chave.pub"
+  answer: 2
+  comment: "O comando 'gpg --import' lê o arquivo contendo a chave pública e a adiciona ao seu 'keyring' (chaveiro) local. Após importar, você deve verificar a 'impressão digital' (fingerprint) da chave com o proprietário para garantir sua autenticidade antes de confiar nela. #GPG #encryption #security #keys #linux"
+
+- id: "110-010"
+  topic: "110.1"
+  question: "Qual destas senhas é a mais segura?"
+  options:
+    - "FBT8634"
+    - "Antonio13081981"
+    - "batman99"
+    - "O7H_Pae!"
+    - "654321"
+  answer: 4
+  comment: "A segurança de uma senha baseia-se na entropia (complexidade e comprimento). A senha 'O7H_Pae!' utiliza uma combinação de caracteres maiúsculos, minúsculos, números e símbolos especiais, o que aumenta exponencialmente o tempo necessário para um ataque de força bruta. #password-security #entropy #cybersecurity #best-practices"
+
+- id: "110-011"
+  topic: "110.1"
+  question: "Qual comando bloqueia temporariamente o login do usuário 'agenor'?"
+  options:
+    - "userdel agenor"
+    - "passwd -b agenor"
+    - "passwd -l agenor"
+    - "chage -L agenor"
+  answer: 3
+  comment: "O comando 'passwd -l' (lock) bloqueia a conta do usuário adicionando um '!' (ou '*') antes da senha no arquivo '/etc/shadow', impedindo a autenticação. Para desbloquear, usa-se 'passwd -u' (unlock). #passwd #security #user-management #lock #linux-admin"
+
+- id: "110-012"
+  topic: "110.3"
+  question: "Qual o daemon que mantém as chaves privadas do GPG carregadas em memória?"
+  options:
+    - "gpg-private-keys"
+    - "gpg-daemon"
+    - "gpgd"
+    - "gpg-agent"
+    - "ssh-agent"
+  answer: 4
+  comment: "O 'gpg-agent' é um daemon que gerencia chaves secretas (privadas) independentemente do processo principal do GPG. Ele permite que as chaves sejam mantidas desbloqueadas na memória por um tempo determinado, evitando que o usuário precise digitar a senha (passphrase) repetidamente. #GPG #security #gpg-agent #linux #cryptography"
+

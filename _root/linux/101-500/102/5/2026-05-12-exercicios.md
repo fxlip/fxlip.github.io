@@ -1,0 +1,31 @@
+---
+layout: page
+title: ".exercicios"
+date: 2026-05-12T00:00:00-03:00
+permalink: /linux/102/5/exercicios
+categories: [linux]
+tags: [102, 5]
+muted: true
+---
+
+# 102.5
+
+---
+
+<div class="terminal-box">
+  <div class="terminal-header">
+    <div class="terminal-controls">
+      <div class="win-btn btn-min" title="Minimize">−</div>
+      <div class="win-btn btn-close" title="Close">✕</div>
+    </div>
+  </div>
+  <div class="terminal-body">
+    <div>
+      <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">./footer.sh</span>
+    </div>
+    <div class="t-out">
+>> @linux/102/6/virtualizacao
+<< @linux/102/5/rpm
+    </div>
+  </div>
+</div>

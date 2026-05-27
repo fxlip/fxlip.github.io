@@ -1,29 +1,141 @@
 - id: "107-000"
-  topic: "107.X"  
-  question: "xxx"
+  topic: "107.1"
+  question: "O que está errado na seguinte entrada do arquivo /etc/passwd?"
+  code: "mariajose:x:1230:Maria Jose:/home/mariajose:/bin/bash"
   options:
-    - "xxx"
-    - "xxx"
-    - "xxx"
-    - "xxx"
-    - "xxx"
+    - "O nome do usuário não pode ter mais que 8 caracteres"
+    - "IDs acima de 1000 são reservados a processos do sistema"
+    - "A informação de UID ou GID está faltando no registro"
+    - "O registro não contém a senha do usuário"
+    - "O valor do UID está representado como um x."
   answer: 3
-  comment: "xxx"
+  comment: "A entrada apresentada possui apenas 6 campos, enquanto o padrão do /etc/passwd exige 7. No exemplo, após o UID (1230), o campo GID foi omitido, pulando diretamente para o comentário (Gecos). A estrutura correta deve ser: nome:senha:UID:GID:comentário:home:shell. #etc #passwd #users #linux"
 
 - id: "107-001"
-  topic: "107.X"
-  question: "xxx"
+  topic: "107.1"
+  question: "Qual comando pode ser utilizado para criar o usuário aluno1, definindo seu diretório padrão como /usr/aluno1?"
   options:
-    - "xxx"
-    - "xxx"
-    - "xxx"
-    - "xxx"
-  answer: [2, 4]
-  comment: "xxx"
+    - "useradd aluno1 -h /usr/aluno1"
+    - "useradd -d /usr/aluno1 aluno1"
+    - "usermod -c aluno1 -d /usr/aluno1"
+    - "newuser aluno1 -d /usr/aluno1"
+  answer: 2
+  comment: "O comando useradd com a flag -d permite especificar um diretório home customizado durante a criação da conta. O comando usermod seria utilizado apenas para modificar uma conta já existente. #useradd #home #directory #linux"
 
 - id: "107-002"
-  topic: "107.X"
-  type: "discursive"
-  question: "xxx"
-  answer: "/etc"
-  comment: "xxx"
+  topic: "107.1"
+  question: "O administrador do sistema deseja bloquear temporariamente o login de um usuário enquanto realiza algumas investigações. Qual dos comandos abaixo NÃO deve ser utilizado pelo sysadmin?"
+  options:
+    - "passwd -l"
+    - "usermod -L"
+    - "userdel"
+    - "chage -E0"
+  answer: 3
+  comment: "O comando userdel remove permanentemente o usuário do sistema. Para bloqueios temporários, utiliza-se o travamento da senha (passwd -l, usermod -L) ou a expiração imediata da conta (chage -E0). #userdel #lock #passwd #chage"
+
+- id: "107-003"
+  topic: "107.1"
+  question: "Qual das afirmações abaixo NÃO é verdadeira com relação aos usuários e grupos no Linux?"
+  options:
+    - "Um usuário pode pertencer a vários grupos simultaneamente"
+    - "Todo usuário tem obrigatoriamente um grupo padrão e facultativamente grupos adicionais"
+    - "Mesmo com acesso como root, não é possível ler a senha dos usuários nos arquivos de configuração"
+    - "A presença do caractere '!' no início do campo da senha no /etc/shadow indica que o usuário está bloqueado"
+    - "Após criado um usuário ou grupo, não é possível alterar o UID ou GID."
+  answer: 5
+  comment: "IDs de usuários e grupos podem ser alterados a qualquer momento utilizando os comandos 'usermod -u' e 'groupmod -g', respectivamente. Contudo, é necessário cautela, pois os arquivos existentes não mudam de dono automaticamente apenas pela troca do ID no banco de dados. #usermod #groupmod #UID #GID"
+
+- id: "107-004"
+  topic: "107.1"
+  question: "O usuário 'carlosalberto' tem 'sbt' como grupo principal e também faz parte do grupo 'amesmapraca'. O administrador deseja adicioná-lo ao grupo 'omesmobanco'. Qual comando deve ser utilizado?"
+  options:
+    - "usermod -G omesmobanco carlosalberto"
+    - "usermod -g omesmobanco carlosalberto"
+    - "groupmod -u carlosalberto omesmobanco"
+    - "groupadd omesmobanco -u carlosalberto"
+    - "usermod -a -G omesmobanco carlosalberto"
+  answer: 5
+  comment: "A flag -G define grupos suplementares, mas se usada sozinha, ela substitui os grupos atuais pelos novos. A flag -a (append) deve ser usada em conjunto para garantir que o usuário seja apenas adicionado ao novo grupo, mantendo os anteriores. #usermod #groups #append #linux"
+
+- id: "107-005"
+  topic: "107.2"
+  question: "Quais dos seguintes agendamentos em um arquivo de crontab irá executar o script /usr/bin/cleanup.sh 3 vezes ao dia?"
+  options:
+    - "*/3 * * * * /usr/bin/cleanup.sh"
+    - "0,10,20 * * * * /usr/bin/cleanup.sh"
+    - "30 6,13,22 * * * /usr/bin/cleanup.sh"
+    - "30 6,13,22 1-3 * * /usr/bin/cleanup.sh"
+  answer: 3
+  comment: "Os campos do cron são: minuto, hora, dia, mês e dia da semana. A opção correta define a execução aos 30 minutos das horas 6, 13 e 22, totalizando 3 vezes ao dia em qualquer data. A primeira opção executaria a cada 3 minutos, resultando em 480 execuções diárias. #cron #crontab #scheduling #bash"
+
+- id: "107-006"
+  topic: "107.2"
+  question: "Um usuário começou a trabalhar às 09:00 AM e deseja programar o script /home/usuario/fim-do-dia.sh para executar às 18:00. Qual comando deve ser utilizado?"
+  options:
+    - "at 6pm"
+    - "at +9hours"
+    - "cron 18:00"
+    - "at +18:00"
+    - "systemd-run now +9hour"
+  answer: 1
+  comment: "O comando 'at' é utilizado para agendamentos únicos (non-recurring). Ele aceita formatos de tempo flexíveis como '6pm', '18:00' ou palavras-chave como 'teatime'. Após o comando, o usuário deve informar o script ou comando a ser executado. #at #scheduling #batch #linux"
+
+- id: "107-007"
+  topic: "107.2"
+  question: "O administrador do sistema deseja configurar a crontab do usuário suporte com os agendamentos contidos no arquivo regras.txt. Qual comando deve ser utilizado?"
+  options:
+    - "crontab suporte regras.txt"
+    - "crontab -u suporte < regras.txt"
+    - "crontab -u suporte regras.txt"
+    - "crontab -u suporte -f regras.txt"
+    - "cat regras.txt > crontab suporte"
+  answer: 3
+  comment: "O comando 'crontab -u <usuario>' permite que o root gerencie tabelas de outros usuários. Ao passar o nome de um arquivo como argumento final, o conteúdo desse arquivo substitui integralmente a crontab atual do usuário alvo. #crontab #cron #root #administration"
+
+- id: "107-008"
+  topic: "107.3"
+  question: "Qual variável de ambiente irá prevalecer sobre todas as variáveis LC_*?"
+  options:
+    - "LOCALE"
+    - "LOCALE_ALL"
+    - "LANG"
+    - "LC_ALL"
+    - "LC_SUPER"
+  answer: 4
+  comment: "A variável LC_ALL tem precedência sobre todas as outras variáveis de categoria (LC_TIME, LC_NUMERIC, etc.) e sobre a variável LANG. A única variável que pode superá-la em contextos específicos de tradução de interface é a LANGUAGE. #LC_ALL #locale #i18n #env"
+
+- id: "107-009"
+  topic: "107.3"
+  question: "Um único usuário de um servidor Linux trabalha remotamente em uma localização que possui o fuso horário diferente dos demais usuários do sistema. Como o administrador pode resolver a solicitação de exibir o horário local para este usuário?"
+  options:
+    - "Inserindo a timezone do usuário no arquivo /etc/localtime"
+    - "Incluindo no diretório home do usuário o arquivo .timezone contendo a localização específica"
+    - "Editando o arquivo .profile do usuário e definindo o fuso horário na variável LC_ALL"
+    - "Editando o arquivo .bashrc do usuário e definindo o fuso horário correto na variável TZ"
+    - "O administrador deve fechar o chamado indicando que a configuração não pode ser realizada"
+  answer: 4
+  comment: "A variável de ambiente TZ permite que um usuário defina seu próprio fuso horário sem afetar o restante do sistema. Configurar export TZ='America/Sao_Paulo' (exemplo) no .bashrc garante que a alteração persista em cada nova sessão. #TZ #timezone #bashrc #env"
+
+- id: "107-010"
+  topic: "107.3"
+  question: "Em qual diretório o administrador irá encontrar todos os arquivos referentes aos diferentes fuso horários que podem ser definidos?"
+  options:
+    - "/etc/timezone/"
+    - "/usr/share/zoneinfo/"
+    - "/etc/localtime/"
+    - "/usr/local/timezone/"
+  answer: 2
+  comment: "O diretório /usr/share/zoneinfo/ funciona como o banco de dados mestre de fusos horários do sistema. O arquivo /etc/localtime geralmente é um link simbólico que aponta para um desses arquivos específicos. #zoneinfo #timezone #fhs #linux"
+
+- id: "107-011"
+  topic: "107.2"
+  question: "Ao se criar um agendamento via systemd-timer, qual opção deve ser utilizada para se definir que determinado serviço seja executado a partir de um tempo após a máquina ser iniciada?"
+  options:
+    - "OnBootTime"
+    - "OnStartTime"
+    - "OnBootSec"
+    - "OnStartupSec"
+    - "OnActiveSec"
+  answer: 3
+  comment: "O parâmetro 'OnBootSec' define um timer relativo ao momento em que a máquina foi ligada. Diferente do cron, o systemd-timer permite agendamentos baseados em eventos monótonos (como o boot ou a ativação da unidade). #systemd #timer #boot #scheduling"
+

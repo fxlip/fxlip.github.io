@@ -8,15 +8,19 @@ tags: [102, 6]
 hide_footer: true
 ---
 
+# 102.6
 
-*Áreas de Conhecimento:*
-- xxxx. 
-- xxxx.
-- xxxx.
-- xx.
+## Áreas de Conhecimento
+- -> Entender o conceito geral de máquinas virtuais e contêineres.
+- -> Entender elementos comuns em máquinas virtuais numa nuvem IaaS, como instâncias computacionais, armazenamento em bloco e rede.
+- -> Entender as propriedades exclusivas de um sistema Linux que precisam ser alteradas quando um sistema é clonado ou utilizado como modelo.
+- -> Entender como imagens de sistema são utilizadas para implementar máquinas virtuais, instâncias de nuvem e contêineres.
+- -> Entender as extensões do Linux que integram o Linux com uma solução de virtualização.
+- -> Noções de cloud-init.
 
-`xxx`
+---
 
+xxx
 
 ---
 
@@ -37,6 +41,7 @@ hide_footer: true
     </div>
     <div class="t-out">
 >> @linux/104/1/filesystem
+~~ @linux/102/simulado
 ++ @linux/102/6/exercicios
 ++ @linux/102/6/revisao
 << @linux/102/5/rpm

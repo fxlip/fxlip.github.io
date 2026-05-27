@@ -84,7 +84,7 @@ fxlip@www:~$ nano meu-curriculo.txt
       <span class="t-user">fxlip</span><span class="t-gray">@</span><span class="t-host">www</span><span class="t-gray">:</span><span class="t-path">~</span><span class="t-gray">$</span> <span class="t-cmd">./footer.sh</span>
     </div>
     <div class="t-out">
->> @linux/101/1/hardware
+>> @linux/101/1/hardwares
 ++ @linux/103/revisao
 ++ @linux/103/simulado
 << @linux/103/8/vi

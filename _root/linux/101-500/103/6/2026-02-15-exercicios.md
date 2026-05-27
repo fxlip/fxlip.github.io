@@ -72,7 +72,7 @@ fxlip@www:~$
     </div>
     <div class="t-out">
 >> @linux/103/7/regex
-<< @linux/103/6/necess
+<< @linux/103/6/niceness
     </div>
   </div>
 </div>

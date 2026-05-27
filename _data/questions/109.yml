@@ -9,21 +9,193 @@
   answer: 1
   comment: "Para a conectividade total em uma estação, o kernel precisa de três informações na tabela de roteamento: a rota da própria interface (para saber quem ele é), a rota da rede local (para falar com vizinhos na mesma sub-rede) e o gateway padrão (default gateway) para encaminhar pacotes para fora da rede local (Internet). #network #routing #gateway"
 
-- id: "109-000"
-  topic: "109.X"  
-  question: "xxx"
+- id: "109-001"
+  topic: "109.1"
+  question: "Quais dos seguintes IPs NÃO está utilizando um IP de Rede Privada?"
   options:
-    - "xxx"
-    - "xxx"
-    - "xxx"
-    - "xxx"
-    - "xxx"
-  answer: 3
-  comment: "xxx"
+    - "192.168.12.10"
+    - "10.10.0.50"
+    - "172.16.12.30"
+    - "172.30.100.201"
+    - "192.10.20.30"
+  answer: 5
+  comment: "Os endereços privados (RFC 1918) são: Classe A (10.0.0.0/8), Classe B (172.16.0.0/12) e Classe C (192.168.0.0/16). O IP 192.10.20.30 pertence a um intervalo de IP público. #networking #IP #private #RFC1918"
 
 - id: "109-002"
-  topic: "109.X"
-  type: "discursive"
-  question: "xxx"
-  answer: "/etc"
-  comment: "xxx"
+  topic: "109.2"
+  question: "O administrador deseja associar o IP 192.168.56.253 ao nome 'acesso1' para facilitar o acesso. Como ele pode fazer essa configuração?"
+  options:
+    - "Através do comando host"
+    - "Pelo arquivo /etc/nsswitch.conf"
+    - "Pelo arquivo /etc/hosts"
+    - "Pelo comando dig"
+    - "No arquivo /etc/network/interfaces"
+  answer: 3
+  comment: "O arquivo /etc/hosts é um banco de dados estático de nomes de hosts. O formato da linha é 'IP hostname aliases'. Exemplo: '192.168.56.253 acesso1'. #hosts #network #static-mapping #linux-admin"
+
+- id: "109-003"
+  topic: "109.1"
+  question: "A porta de número 53 é utilizada por qual serviço?"
+  options:
+    - "SMTP"
+    - "DNS"
+    - "DHCP"
+    - "IMAP"
+    - "NTP"
+  answer: 2
+  comment: "O DNS (Domain Name System) utiliza a porta 53 tanto para consultas UDP (padrão) quanto TCP (quando o pacote ultrapassa 512 bytes ou em transferência de zona). #DNS #ports #network #RFC1035"
+
+- id: "109-004"
+  topic: "109.4"
+  question: "Qual dos comandos abaixo pode ser utilizado para identificar o IP associado ao endereço www.lpi.org?"
+  options:
+    - "dig"
+    - "hostname"
+    - "ifconfig"
+    - "route"
+  answer: 1
+  comment: "O comando 'dig' (Domain Information Groper) é a ferramenta padrão para consultas DNS, fornecendo respostas detalhadas sobre registros A, AAAA, MX, NS, entre outros. O 'hostname' exibe o nome local, 'ifconfig' gerencia interfaces e 'route' exibe a tabela de roteamento. #dig #DNS #network-troubleshooting #lpi"
+
+- id: "109-005"
+  topic: "109.1"
+  question: "A sub-rede 172.16.30.0/25 poderá ter no máximo quantos hosts únicos?"
+  options:
+    - "254"
+    - "253"
+    - "126"
+    - "128"
+    - "62"
+  answer: 3
+  comment: "Em uma sub-rede /25, restam 7 bits para hosts ($2^7 = 128$). Subtraindo o endereço de rede e o de broadcast, temos $128 - 2 = 126$ endereços utilizáveis para hosts. #subnetting #CIDR #IPv4 #networking"
+
+- id: "109-006"
+  topic: "109.2"
+  question: "Qual o comando que deve ser utilizado para que o NetworkManager desabilite a conexão de rede de nome “Intranet”?"
+  options:
+    - "nmcli eth1 down"
+    - "nmcli device eth1 down"
+    - "nmcli connection down Intranet"
+    - "nmcli con eth1 down"
+    - "nmcli device Intranet down"
+  answer: 3
+  comment: "O comando 'nmcli connection down [nome]' desativa uma configuração de conexão específica. O NetworkManager gerencia conexões (perfis lógicos) e dispositivos (hardware físico) separadamente; o comando 'connection' foca no perfil, enquanto 'device' foca na interface. #nmcli #NetworkManager #networking #linux"
+
+- id: "109-007"
+  topic: "109.3"
+  question: "Qual dos comandos abaixo pode ser utilizado para visualizar as conexões estabelecidas entre o host local e um host remoto?"
+  options:
+    - "ss"
+    - "netcat"
+    - "traceroute"
+    - "tracepath"
+    - "nslookup"
+  answer: 1
+  comment: "O comando 'ss' (Socket Statistics) é o sucessor moderno e mais eficiente do 'netstat'. Ele consulta diretamente as informações do kernel para listar conexões TCP, UDP e sockets de domínio Unix. #ss #netstat #network-troubleshooting #socket"
+
+- id: "109-008"
+  topic: "109.1"
+  question: "Qual protocolo de transporte garante o envio correto do pacote do host A ao host B, fazendo a retransmissão em caso de falhas na rede?"
+  options:
+    - "ICMP"
+    - "IPv6"
+    - "UDP"
+    - "TCP"
+    - "SMTP"
+  answer: 4
+  comment: "O TCP (Transmission Control Protocol) é um protocolo de transporte orientado a conexão que utiliza confirmações (ACKs) e numeração de sequência para garantir que todos os dados sejam entregues, íntegros e na ordem correta, realizando retransmissão automática de pacotes perdidos. #TCP #network #transport #reliability"
+
+- id: "109-009"
+  topic: "109.1"
+  question: "O IP 172.16.30.10 pertence a qual classe de IPs?"
+  options:
+    - "A"
+    - "B"
+    - "C"
+    - "D"
+    - "E"
+  answer: 2
+  comment: "A classificação de IPs IPv4 baseia-se no primeiro octeto: Classe A (1-127), Classe B (128-191), Classe C (192-223), Classe D (224-239/Multicast) e Classe E (240-255/Experimental). Como 172 está entre 128 e 191, é Classe B. #IPv4 #NetworkClasses #Networking"
+
+- id: "109-010"
+  topic: "109.3"
+  question: "Um administrador investiga um host sem acesso à Internet. A interface funciona e o DNS resolve nomes corretamente. Qual é a causa mais provável?"
+  options:
+    - "DNS precisa ser público na Internet"
+    - "Gateway padrão utiliza um IP fora da rede configurada na interface"
+    - "Tempo de resposta do DNS está lento"
+    - "A máquina possui 2 interfaces configuradas"
+    - "Arquivo /etc/nsswitch.conf mal configurado"
+  answer: 2
+  comment: "Se o DNS funciona, a rede local está ativa, mas a Internet falha, o gargalo é quase sempre a rota de saída. O gateway padrão (default gateway) deve estar na mesma sub-rede que a interface do host. Se o IP do gateway estiver fora do range, o tráfego externo simplesmente não encontra a saída. #routing #gateway #troubleshooting #networking"
+
+- id: "109-011"
+  topic: "109.3"
+  question: "Qual protocolo de rede é utilizado pelo comando “ping” para testar a conectividade de um host remoto?"
+  options:
+    - "TCP"
+    - "UDP"
+    - "ICMP"
+    - "SNMP"
+  answer: 3
+  comment: "O comando 'ping' utiliza o protocolo ICMP (Internet Control Message Protocol), especificamente as mensagens 'Echo Request' (tipo 8) e 'Echo Reply' (tipo 0). Ele funciona na camada de rede, sendo essencial para diagnósticos de conectividade básica. #ping #ICMP #networking #troubleshooting"
+
+- id: "109-012"
+  topic: "109.4"
+  question: "O administrador configurou um servidor DNS interno 172.16.30.1. Qual arquivo de configuração deve ser ajustado nos hosts para que usem esse servidor?"
+  options:
+    - "/etc/hosts"
+    - "/etc/nsswitch.conf"
+    - "/etc/sysconfig/network"
+    - "/etc/dns.conf"
+    - "/etc/resolv.conf"
+  answer: 5
+  comment: "O arquivo '/etc/resolv.conf' é onde o cliente DNS do sistema busca os endereços dos servidores de nomes. A diretiva 'nameserver' seguida pelo IP (ex: 'nameserver 172.16.30.1') define o resolvedor a ser consultado. #resolv.conf #DNS #client-config #networking"
+
+- id: "109-013"
+  topic: "109.3"
+  question: "Você tem um MTA rodando em 192.168.8.10. A partir de 192.168.8.5, qual comando verifica se o serviço SMTP está aceitando conexões?"
+  options:
+    - "netstat -nalpt |grep 192.168.8.10"
+    - "telnet 192.168.8.10 25"
+    - "telnet 0 25"
+    - "netcat 192.168.8.10 110"
+    - "ping 192.168.8.10:110"
+  answer: 2
+  comment: "O 'telnet' (ou 'nc') permite estabelecer um socket TCP direto. Ao conectar na porta 25 (padrão SMTP), você interage diretamente com o MTA. Se a conexão for estabelecida e exibir o banner do servidor, o serviço está funcional. #SMTP #telnet #MTA #troubleshooting"
+
+- id: "109-014"
+  topic: "109.1"
+  question: "Quantos IPs podem ser utilizados para hosts em uma sub-rede com máscara CIDR 28?"
+  options:
+    - "13"
+    - "14"
+    - "15"
+    - "30"
+    - "62"
+  answer: 2
+  comment: "Em uma sub-rede /28, restam 4 bits para hosts ($2^4 = 16$). Subtraindo o endereço de rede e o de broadcast, temos $16 - 2 = 14$ endereços utilizáveis para hosts. #subnetting #CIDR #IPv4 #networking"
+
+- id: "109-015"
+  topic: "109.2"
+  question: "Qual comando do NetworkManager lista as redes Wi-Fi disponíveis para uso?"
+  options:
+    - "nmcli connection list"
+    - "nmcli wifi list"
+    - "nmcli device wifi list"
+    - "nmcli radio wifi on"
+    - "nmcli radio show"
+  answer: 3
+  comment: "O comando 'nmcli device wifi list' instrui o subsistema de rede (device) a escanear e listar os pontos de acesso (APs) detectados. Embora 'nmcli wifi list' funcione em versões mais recentes como atalho, o comando completo e estruturado pelo manual LPI é 'nmcli device wifi list'. #nmcli #WiFi #NetworkManager #scanning"
+
+- id: "109-016"
+  topic: "109.3"
+  question: "Qual a sintaxe correta para adicionar o IP 192.168.10.10 com máscara 255.255.255.192 na interface eth1 usando o comando ip?"
+  options:
+    - "ip address add 192.168.10.10 netmask 255.255.255.192 dev eth1"
+    - "ip address add 192.168.10.10/26 dev eth1"
+    - "ip address add 192.168.10.10/25 via eth1"
+    - "ip address add eth1:0 192.168.10.10/255.255.255.192 via eth1"
+    - "ip address add eth1:0 192.168.10.10/25 dev eth1"
+  answer: 2
+  comment: "O comando 'ip addr add [IP/prefixo] dev [interface]' é o padrão moderno. A máscara 255.255.255.192 equivale a 26 bits (192 = 11000000 em binário), logo '/26'. #iproute2 #linux-networking #CIDR #subnetting"
+

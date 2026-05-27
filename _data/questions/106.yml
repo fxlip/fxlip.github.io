@@ -28,3 +28,87 @@
   question: "Você deseja executar uma aplicação X na sua máquina local, mas ela deve ser exibida no primeiro servidor de exibição de foo. O comando é \"xapplication -display __________\" (Não use números de tela)"
   answer: "foo:0"
   comment: "A sintaxe do display no X11 segue o padrão hostname:display_number.screen_number. Como a questão pede o primeiro servidor de exibição (0) e proíbe o número da tela (o que vem depois do ponto), o preenchimento correto é apenas o nome do host seguido de :0. #X11 #display"
+
+- id: "106-004"
+  topic: "106.1"
+  question: "Nas configurações do arquivo xorg.conf, qual seção irá conter informações referentes à resolução da tela?"
+  options:
+    - "Na seção Monitor, opção Modeline"
+    - "Na seção Device, opção Modeline"
+    - "Na seção Screen, opção Resolution"
+    - "Na seção Screen, Sub-Seção Display, opção Modes"
+    - "Na seção ServerLayout, Sub-Seção Screen, opção Resolution"
+  answer: 4
+  comment: "A seção 'Screen' é onde ocorre o vínculo entre o Monitor e o Device (placa de vídeo). Dentro dela, a subseção 'Display' define as profundidades de cor e a opção 'Modes' especifica as resoluções de tela suportadas. #xorg #x11 #display #modes"
+
+- id: "106-005"
+  topic: "106.1"
+  question: "A variável de ambiente DISPLAY definida com valor 10.0.0.50:1.0 determina que:"
+  options:
+    - "As janelas serão exibidas no segundo display da máquina 10.0.0.50"
+    - "As janelas serão exibidas no primeiro display da máquina 10.0.0.50"
+    - "O servidor X será iniciado na máquina 10.0.0.50"
+    - "A versão do servidor em execução na máquina 10.0.0.50 é a 1.0"
+    - "A variável de ambiente DISPLAY não tem relação com o servidor X."
+  answer: 1
+  comment: "A variável DISPLAY segue o formato 'hostname:número_do_servidor.número_da_tela'. Como a contagem inicia em 0, o valor ':1' indica o segundo servidor gráfico (display) da máquina. #DISPLAY #X11 #networking #env"
+
+- id: "106-006"
+  topic: "106.1"
+  question: "Qual dos seguintes comandos faz com o que o servidor X11 do Linux aceite as conexões vindas do servidor server1.domain.com?"
+  options:
+    - "export DISPLAY=server1.domain.com:0.0"
+    - "xhost server1.domain.com"
+    - "xhost +server1.domain.com"
+    - "xaccess +server1.domain.com"
+    - "Xorg -connect server1.domain.com"
+  answer: 3
+  comment: "O comando xhost controla o acesso ao servidor X baseado em hosts. O prefixo '+' concede permissão explicitamente ao host especificado. Sem argumentos, o xhost lista as permissões atuais. #xhost #x11 #security #network"
+
+- id: "106-007"
+  topic: "106.3"
+  question: "Qual configuração de acessibilidade cria um delay ao se pressionar uma mesma tecla pela segunda vez, ignorando repetições rápidas?"
+  options:
+    - "Slow Keys"
+    - "Bounce Keys"
+    - "Delay Keys"
+    - "Sticky Keys"
+    - "On-Screen Keyboard"
+  answer: 2
+  comment: "O recurso Bounce Keys (Teclas de Repercussão) ignora pressões repetidas da mesma tecla em um curto intervalo de tempo. Diferente dele, o Sticky Keys permite acionar teclas modificadoras sequencialmente, e o Slow Keys exige que a tecla seja mantida pressionada por um tempo mínimo. #accessibility #x11 #keyboard #bouncekeys"
+
+- id: "106-008"
+  topic: "106.1"
+  question: "Qual o componente de um Desktop Environment responsável por fazer o gerenciamento das janelas?"
+  options:
+    - "Display Manager"
+    - "GUI"
+    - "Wayland"
+    - "Window Manager"
+    - "DE"
+  answer: 4
+  comment: "O Window Manager (Gerenciador de Janelas) é o componente que controla a aparência e o posicionamento das janelas. Exemplos incluem Mutter (GNOME), KWin (KDE) e Xfwm (Xfce). #windowmanager #desktop #gui #x11"
+
+- id: "106-009"
+  topic: "106.1"
+  question: "Qual arquivo presente no $HOME do usuário conterá informações e logs referentes à sua sessão no servidor X11, podendo ser utilizado para se identificar causas de algum erro?"
+  options:
+    - "$HOME/.Xerrors"
+    - "$HOME/.Xauthority"
+    - "$HOME/.Xlogs"
+    - "$HOME/.xsession-errors"
+  answer: 4
+  comment: "O arquivo ~/.xsession-errors armazena mensagens de erro, avisos e logs de aplicativos executados durante a sessão gráfica do usuário. É o primeiro lugar onde um administrador deve olhar quando um aplicativo GUI falha em iniciar ou fecha inesperadamente. #xsession-errors #X11 #logs #troubleshooting"
+
+- id: "106-010"
+  topic: "106.2"
+  question: "Qual das opções abaixo NÃO é um Desktop Environment?"
+  options:
+    - "KDE"
+    - "Gnome"
+    - "Wayland"
+    - "Xfce"
+    - "MATE"
+  answer: 3
+  comment: "Wayland não é um ambiente de desktop, mas sim um protocolo que especifica a comunicação entre o servidor gráfico (compositor) e seus clientes, visando substituir o X11. KDE, Gnome, Xfce e MATE são Desktop Environments completos. #wayland #x11 #desktop #protocol"
+

@@ -111,25 +111,24 @@ Roadmap da pós-graduação em SI
 
       {%- endfor -%}
 
-      {%- for item in infosec_items -%}
-        {%- if item.url contains prefix1 -%}
-          {%- assign rel = item.url | replace_first: prefix1, "" -%}
-          {%- unless rel contains "/" -%}
-             {%- if item.url != prefix1 -%}
-                 {%- if forloop.last -%}
-                    {%- assign c2b = "└── " -%}
-                 {%- else -%}
-                    {%- assign c2b = "├── " -%}
-                 {%- endif -%}
+      {%- assign l1_sorted_files = infosec_items | where_exp: "item", "item.url contains prefix1" | sort: "title" -%}
+      {%- for item in l1_sorted_files -%}
+        {%- assign rel = item.url | replace_first: prefix1, "" -%}
+        {%- unless rel contains "/" -%}
+          {%- if item.url != prefix1 -%}
+            {%- if forloop.last -%}
+               {%- assign c2b = "└── " -%}
+            {%- else -%}
+               {%- assign c2b = "├── " -%}
+            {%- endif -%}
   <div class="t-row">
     <span class="t-tree">{{ p1 }}{{ c2b }}</span>
     <a href="{{ item.url }}" class="f file-link {% if item.muted %}file-link-muted{% endif %}">
       {{ item.title | downcase }}
     </a>
   </div>
-             {%- endif -%}
-          {%- endunless -%}
-        {%- endif -%}
+          {%- endif -%}
+        {%- endunless -%}
       {%- endfor -%}
 
     {%- endfor -%}

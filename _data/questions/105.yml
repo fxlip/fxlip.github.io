@@ -1,29 +1,120 @@
 - id: "105-000"
-  topic: "105.X"  
-  question: "xxx"
+  topic: "105.1"
+  question: "Você deseja criar um comando de atalho chamado cdsc para 'cd /home/<nome do usuário>/Scripts/', que funcione para qualquer usuário. Qual comando deve ser utilizado?"
   options:
-    - "xxx"
-    - "xxx"
-    - "xxx"
-    - "xxx"
-    - "xxx"
-  answer: 3
-  comment: "xxx"
+    - 'alias cdsc "cd /home/$USER/Scripts"'
+    - 'alias cdsc="cd $HOME/Scripts"'
+    - 'cdsc=$HOME/Scripts'
+    - 'function cdsc=/home/$USER/Scripts'
+    - 'function cdsc { /home/$USER/Scripts; }'
+  answer: 2
+  comment: "Os alias são exibidos ao se digitar o comando 'alias' sem nenhum argumento. Um novo alias deve ser definido como: 'alias nome=\"comando -argumentos\"'. #alias #bash #shell"
 
 - id: "105-001"
-  topic: "105.X"
-  question: "xxx"
+  topic: "105.1"
+  question: "Depois de declarar a função em seu bash, qual será a saída ao se executar o comando abaixo?"
+  code: |
+    function funcao1 { echo $1 $2; }
+    funcao1 A B C
   options:
-    - "xxx"
-    - "xxx"
-    - "xxx"
-    - "xxx"
-  answer: [2, 4]
-  comment: "xxx"
+    - "A B C"
+    - "B C"
+    - "A B"
+    - "Uma mensagem de erro pois a declaração da função está incorreta"
+    - "Uma mensagem de erro indicando excesso de parâmetros"
+  answer: 3
+  comment: "Uma função pode ser utilizada da mesma forma que um comando, apenas informando seu nome e seus argumentos. Como a função foi escrita para obter dois parâmetros, $1 e $2, apenas os 2 primeiros parâmetros informados são retornados. Os parâmetros excedentes são simplesmente descartados. #bash #function #echo"
 
 - id: "105-002"
-  topic: "105.X"
-  type: "discursive"
-  question: "xxx"
-  answer: "/etc"
-  comment: "xxx"
+  topic: "105.1"
+  question: "Qual dos arquivos um usuário deve modificar para alterar seu próprio ambiente shell?"
+  options:
+    - "/etc/profile"
+    - "/etc/bash.bashrc"
+    - "/etc/.bashrc"
+    - "~/.bashrc"
+    - "~/.bashrc_profile"
+  answer: 4
+  comment: "O ~/.bashrc é executado automaticamente em toda nova sessão de shell bash, logo após o /etc/bash.bashrc. Note que o /etc/profile e o ~/.profile são executados apenas quando um novo login acontece, mas uma nova sessão pode ser aberta sem que seja feito um novo login. #bashrc #bash #profile #shell"
+
+- id: "105-003"
+  topic: "105.1"
+  question: "Qual arquivo é executado, para todos usuários, sempre que um novo shell é iniciado?"
+  options:
+    - "/etc/bash.bashrc"
+    - "/etc/profile"
+    - "/etc/skel"
+    - "/home/profile"
+  answer: 1
+  comment: "O arquivo /etc/bash.bashrc (Padrão Debian) ou /etc/bashrc (Padrão RedHat) é executado em toda nova sessão. Já o arquivo /etc/profile é invocado apenas durante o processo de login inicial. #bashrc #profile #etc #shell"
+
+- id: "105-004"
+  topic: "105.1"
+  question: "Um administrador deseja alterar o prompt de comando dos usuários para incluir uma string com o nome da empresa, tendo por exemplo: 'Empresa - lpi1@linux:/tmp$'. Como isso pode ser feito?"
+  options:
+    - "Alterando a variável de ambiente PS1"
+    - "Alterando a variável de ambiente DISPLAY"
+    - "Alterando a variável local SHELL"
+    - "Criando uma função no /etc/bash.bashrc"
+    - "O prompt possui um valor padrão e só pode ser alterado através de modificações no kernel."
+  answer: 1
+  comment: "A variável de ambiente PS1 (Prompt String 1) é utilizada para definir o formato do prompt principal do terminal shell. Através dela, é possível injetar strings estáticas ou caracteres de escape para exibir informações dinâmicas. #PS1 #env #bash #prompt"
+
+- id: "105-005"
+  topic: "105.2"
+  question: "Em um shell script, como uma instrução IF deve ser finalizada?"
+  options:
+    - 'Pela expressão "done"'
+    - 'Pelo símbolo "}"'
+    - 'Por dois ponto-e-vírgula em sequência ";;"'
+    - 'Pela expressão "end if"'
+    - 'Pela expressão "fi"'
+  answer: 5
+  comment: "O bloco if é encerrado pela instrução 'fi' (if invertido). Outras estruturas seguem lógica similar, como o case que encerra com 'esac'. Já os loops while, for e until utilizam o 'done'. #bash #scripting #if #shell"
+
+- id: "105-006"
+  topic: "105.2"
+  question: "Qual o resultado do comando abaixo?"
+  code: "seq 10 5 50"
+  options:
+    - "Serão exibidas 3 sequências numéricas, de 0 a 10, de 0 a 5 e de 0 a 50"
+    - "Uma sequência numérica de 10 a 50, com intervalo de 5 em 5"
+    - "Uma sequência numérica de 5 a 50, com intervalo de 10 em 10"
+    - "Uma sequência numérica decrescente de 10 a 5"
+    - "A sintaxe do comando está incorreta"
+  answer: 2
+  comment: "O comando seq gera um número por linha seguindo a sintaxe: seq [início] [incremento] [fim]. Se apenas dois argumentos forem passados, o incremento padrão é 1. #seq #bash #coreutils #scripting"
+
+- id: "105-007"
+  topic: "105.2"
+  question: "Quais das instruções abaixo utilizadas em scripts shell está incorreta?"
+  options:
+    - "if [ -f /etc/sudoers ] ; then echo 'O arquivo existe'; fi"
+    - "case $1 in 1|3) echo 'ímpar';; 2|4) echo 'par';; esac"
+    - "for VAR1 in `seq 5` echo 'O valor de $VAR1 é $VAR1' sleep 1 done"
+    - "for i in `grep '/bin/bash' /etc/passwd`; do USUARIO=`echo $i| cut -f1 -d':'`; echo 'Usuário $USUARIO'; done"
+  answer: 3
+  comment: "A estrutura do loop for no bash exige a palavra-chave 'do' para iniciar o bloco de comandos e 'done' para encerrá-lo. Na terceira opção, o 'do' foi omitido, o que causará um erro de sintaxe. #for #bash #loops #syntax"
+
+- id: "105-008"
+  topic: "105.2"
+  question: "Qual o resultado do comando seq 10?"
+  options:
+    - "É exibida uma sequência de números de 0 a 9"
+    - "É exibida uma sequência de números de 1 a 10"
+    - "É exibida uma sequência de números de 10 a 1"
+    - "É exibida uma sequência de números de 0 a 10"
+  answer: 2
+  comment: "Quando apenas um argumento é passado para o comando seq, ele é interpretado como o número final, iniciando a contagem padrão em 1. O resultado é um número por linha até o limite definido. #seq #bash #coreutils #scripting"
+
+- id: "105-009"
+  topic: "105.2"
+  question: "Qual dos comandos abaixo irá exibir na tela, sem erros de sintaxe, a mensagem 'O arquivo existe' apenas quando o arquivo realmente existir?"
+  options:
+    - "[ -f /etc/lpi ] || echo 'O arquivo existe'"
+    - "[ -f /etc/lpi ] && echo 'O arquivo existe'"
+    - "[ -e /etc/lpi ] ; echo 'O arquivo existe'"
+    - "[ /etc/lpi ] | echo 'O arquivo existe'"
+  answer: 2
+  comment: "O operador lógico && (AND) executa o segundo comando apenas se o primeiro retornar sucesso (zero). A opção -f valida se o caminho é um arquivo regular. O operador || (OR) faria o oposto, e o ponto-e-vírgula executaria independente do resultado. #bash #test #operators #scripting"
+

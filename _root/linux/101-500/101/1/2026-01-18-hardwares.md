@@ -18,10 +18,13 @@ hide_footer: true
 - -> Ferramentas e utilitários para manipular dispositivos USB.
 - -> Compreensão conceitual de sysfs, udev e dbus.
 
-`/sys/`
-`/proc/`
-`/dev/`
-#lsmod #lspci #lsusb #modprobe
+`#/sys/`
+`#/proc/`
+`#/dev/`
+`#lsmod`
+`#lspci`
+`#lsusb`
+`#modprobe`
 
 ---
 

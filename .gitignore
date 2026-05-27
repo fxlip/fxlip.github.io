@@ -18,6 +18,7 @@ fxlip.sh
 # Segredos
 .env
 *.pem
+*.key
 
 # IDE
 .vscode/

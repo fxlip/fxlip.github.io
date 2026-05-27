@@ -8,24 +8,26 @@ tags: [104, 1]
 hide_footer: true
 ---
 
-Página de exemplo para mostrar que sou capaz de configurar partições de disco e criar sistemas de arquivos em mídias tais como discos rígidos. Isso inclui trabalhar com partições swap.
+# 104.1
 
-*Principais Áreas de Conhecimento:*
-- Gerenciar tabela de partição MBR e GPT
-- Usar vários comandos mkfs para criar sistemas de arquivos tais como:
-- - ext2/ext3/ext4
-- - XFS
-- - VFAT
-- - exFAT
-- Conhecimento básico dos recursos do Btrfs, incluindo sistema de arquivos em multidispositivos, compressão e subvolumes.
+## Áreas de Conhecimento
+- -> Gerenciar tabela de partição MBR e GPT
+- -> Usar vários comandos mkfs para criar sistemas de arquivos tais como:
+- - - -> ext2/ext3/ext4
+- - - -> XFS
+- - - -> VFAT
+- - - -> exFAT
+- -> Conhecimento básico dos recursos do Btrfs, incluindo sistema de arquivos em multidispositivos, compressão e subvolumes.
 
-`fdisk`
-`gdisk`
-`parted`
-`mkfs`
-`mkswap`
+`#fdisk`
+`#gdisk`
+`#parted`
+`#mkfs`
+`#mkswap`
 
-Começando com fdisk
+---
+
+xxx
 
 ---
 
@@ -48,7 +50,7 @@ Começando com fdisk
 >> @linux/104/2/journaling
 ++ @linux/104/1/exercicios
 ++ @linux/104/1/revisao
-<< @linux/102/5/rpm
+<< @linux/102/6/virtualizacao
     </div>
   </div>
 </div>
