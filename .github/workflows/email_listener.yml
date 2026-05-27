@@ -12,6 +12,9 @@ concurrency:
   group: "email-listener"
   cancel-in-progress: false  # Não cancelar em progresso — pode perder e-mails
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   check_emails_and_generate:
     runs-on: ubuntu-latest
@@ -29,7 +32,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1'
+          ruby-version: '3.3'
 
       - name: Instalar dependências dos scripts
         run: bundle install
