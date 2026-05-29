@@ -37,7 +37,7 @@ jobs:
           cache: 'npm'
 
       - name: Instalar dependências Node
-        run: npm install
+        run: npm ci
 
       - name: Lint JS (ESLint — falha em errors, passa em warnings)
         run: npm run lint

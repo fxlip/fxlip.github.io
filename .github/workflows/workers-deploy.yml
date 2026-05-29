@@ -33,7 +33,7 @@ jobs:
           cache: 'npm'
 
       - name: Instalar dependências Node
-        run: npm install
+        run: npm ci
 
       - name: Testes Worker
         run: npm run test:worker
@@ -60,7 +60,7 @@ jobs:
           cache: 'npm'
 
       - name: Instalar dependências Node
-        run: npm install
+        run: npm ci
 
       - name: Deploy Worker (Cloudflare)
         uses: cloudflare/wrangler-action@v3
