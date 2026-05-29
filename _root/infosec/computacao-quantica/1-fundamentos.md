@@ -196,7 +196,7 @@ math: true
 
 -> Evolução D-Wave: dos 16 qubits do Orion em 2007, a empresa chegou ao D-Wave Advantage com mais de 5000 qubits em 2020.
 
--> Marco histórico: o Orion deslocou a computação quântica do laboratório para o mercado e forçou IBM, Google e Microsoft a acelerarem seus programas de desenvolvimento.
+-> Marco histórico: o Orion deslocou a computação quântica do laboratório para o mercado e forçou IBM, Google e Microsoft a acelerarem seus programas de desenvolvimento. 
 
 ---
 
