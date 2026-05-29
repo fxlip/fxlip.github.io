@@ -16,7 +16,7 @@ end
 # --- Stack de Automação (Scripts Ruby — só CI) ---
 group :automation do
   gem "mail", "~> 2.8"
-  gem "net-imap", "~> 0.2"
+  gem "net-imap", "~> 0.6"
   gem "nokogiri", "~> 1.15"
 end
 
