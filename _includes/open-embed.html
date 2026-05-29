@@ -37,7 +37,7 @@ function video_embed() {
                 theInnerHTML += '" frameborder="0" allowfullscreen></iframe></div>';
                 paragraphs[i].innerHTML = theInnerHTML;
             }
-            if (text.indexOf('vimeo.com') !== -1) {
+            if (parsedUrl.hostname === 'vimeo.com' || parsedUrl.hostname.endsWith('.vimeo.com')) {
                 vimeo_embed(text, paragraphs[i]);
             }
         }

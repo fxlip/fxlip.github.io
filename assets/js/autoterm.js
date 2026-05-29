@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
           htmlBuffer += `
             <div>
-              <span class="t-user">${escapeHtml(displayUser)}</span><span class="t-gray">@</span><span class="t-host">${host}</span><span class="t-gray">:</span><span class="t-path">${path.trim()}</span><span class="t-gray">${symbol}</span>
+              <span class="t-user">${escapeHtml(displayUser)}</span><span class="t-gray">@</span><span class="t-host">${escapeHtml(host)}</span><span class="t-gray">:</span><span class="t-path">${escapeHtml(path.trim())}</span><span class="t-gray">${escapeHtml(symbol)}</span>
               <span class="t-cmd">${escapeHtml(cmd)}</span>
             </div>`;
         } else {
