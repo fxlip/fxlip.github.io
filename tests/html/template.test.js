@@ -15,11 +15,16 @@ import { describe, it, expect } from 'vitest'
 
 const template = readFileSync('_layouts/default.html', 'utf-8')
 
-// Remove blocos JSON-LD (são dados, não JS — não precisam de unsafe-inline)
-const templateWithoutJsonLD = template.replace(
-  /<script\s+type="application\/ld\+json">[\s\S]*?<\/script>/g,
-  ''
-)
+// Remove blocos JSON-LD usando indexOf para evitar backtracking em regex
+const jsonLdOpen  = '<script type="application/ld+json">'
+const scriptClose = '</script>'
+let templateWithoutJsonLD = template
+let _idx = 0
+while ((_idx = templateWithoutJsonLD.indexOf(jsonLdOpen, _idx)) !== -1) {
+  const end = templateWithoutJsonLD.indexOf(scriptClose, _idx)
+  if (end === -1) break
+  templateWithoutJsonLD = templateWithoutJsonLD.slice(0, _idx) + templateWithoutJsonLD.slice(end + scriptClose.length)
+}
 
 // =============================================================================
 // A. CSP — sem Google Fonts (fontes são auto-hospedadas em assets/fonts/)
@@ -41,14 +46,13 @@ describe('CSP — domínios desnecessários', () => {
 
 describe('Scripts — sem inline', () => {
   it('não há <script> inline no template (todo script tem src= ou type=)', () => {
-    // Encontra todas as tags <script>
-    const scriptTags = [...templateWithoutJsonLD.matchAll(/<script([^>]*)>/g)]
-      .map(m => m[1].trim())
-
-    // Todo script deve ter src= (externo) ou type= (dado)
-    const inlineScripts = scriptTags.filter(
-      attrs => !attrs.includes('src=') && !attrs.includes('type=')
-    )
+    // Divide nas tags <script> e verifica atributos pelo trecho até o >
+    const parts = templateWithoutJsonLD.split('<script')
+    const inlineScripts = parts.slice(1).filter(chunk => {
+      const close = chunk.indexOf('>')
+      const attrs = close >= 0 ? chunk.slice(0, close) : chunk
+      return !attrs.includes('src=') && !attrs.includes('type=')
+    })
 
     expect(inlineScripts).toHaveLength(0)
   })

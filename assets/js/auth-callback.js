@@ -52,10 +52,14 @@
     });
   }
 
+  function escapeHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
   function showError(msg, detail) {
     done = true;
-    staticLine('<span class="auth-icon-err">✗</span> <span class="auth-text-err">' + msg + '</span>');
-    if (detail) staticLine('<span class="t-gray">' + detail + '</span>', '', 80);
+    staticLine('<span class="auth-icon-err">✗</span> <span class="auth-text-err">' + escapeHtml(msg) + '</span>');
+    if (detail) staticLine('<span class="t-gray">' + escapeHtml(detail) + '</span>', '', 80);
     staticLine('<a href="/" class="file-link">← voltar</a>', '', 160);
   }
 
@@ -147,9 +151,9 @@
 
         staticLine(
           '<span class="auth-icon-ok">✔</span>'
-          + ' <span style="color:' + color + ';font-weight:600">' + label + '</span>'
+          + ' <span style="color:' + escapeHtml(color) + ';font-weight:600">' + escapeHtml(label) + '</span>'
           + ' conectado'
-          + (username ? ' como <span class="t-cmd">@' + username + '</span>' : ''),
+          + (username ? ' como <span class="t-cmd">@' + escapeHtml(username) + '</span>' : ''),
           'auth-line-ok'
         ).then(function () {
           typeLine('retornando ao perfil...', 't-gray', 340).then(function () {

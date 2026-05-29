@@ -24,7 +24,9 @@ function video_embed() {
     var paragraphs = document.querySelectorAll('p');
     for (var i = 0; i < paragraphs.length; i++) {
         var text = paragraphs[i].innerHTML.trim();
-        if (text.indexOf("http://") === 0 || text.indexOf("https://") === 0) {
+        var parsedUrl = null;
+        try { parsedUrl = new URL(text); } catch (_) {}
+        if (parsedUrl && (parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:')) {
             var youtube_id = get_youtube_id(text);
             if (youtube_id) {
                 var autoplay = text.indexOf('autoplay=1') !== -1 ? 1 : 0;

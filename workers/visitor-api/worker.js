@@ -117,7 +117,8 @@ function refererDomain(req) {
 }
 
 function stripTags(str) {
-  return str ? String(str).replace(/<[^>]*>/g, '').trim() : '';
+  if (!str) return '';
+  return String(str).replace(/</g, '').replace(/>/g, '').trim();
 }
 
 function corsResponse(env, response) {
@@ -187,7 +188,7 @@ async function handleHello(request, env) {
 
   const cleanName = name
     ? (name
-        .replace(/<[^>]*>/g, "")   // strip HTML
+        .replace(/[<>]/g, '')       // remove angle brackets
         .toLowerCase()
         .replace(/\s+/g, "-")      // espaço → traço
         .replace(/[^a-z0-9\u00e0-\u00fa-]/g, "") // só letras, números, traço e acentuadas

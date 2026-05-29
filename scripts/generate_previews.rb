@@ -129,7 +129,7 @@ def fetch_youtube_data(url, vid_id)
   embed_url = "https://www.youtube-nocookie.com/embed/#{vid_id}"
   html = fetch_url(embed_url)
   title = nil
-  if html && html =~ /<title>(.*?) - YouTube<\/title>/
+  if html && html =~ /<title>([^<]*) - YouTube<\/title>/
     title = $1
   end
   title = CGI.unescapeHTML(title) if title
@@ -200,7 +200,10 @@ TARGET_DIRS.each do |dir_name|
 
     # Link interno: salva stub mínimo (só url) para o Liquid renderizar o card skeleton.
     # O JS preenche o conteúdo dinamicamente via fetch (processInternalEmbeds).
-    if link.include?('fxlip.com') || link.include?('felip.com.br') || link.include?('localhost') || link.include?('127.0.0.1')
+    link_host = begin; URI.parse(link).host; rescue URI::InvalidURIError; nil; end
+    if link_host && (link_host == 'fxlip.com' || link_host.end_with?('.fxlip.com') ||
+                     link_host == 'felip.com.br' || link_host.end_with?('.felip.com.br') ||
+                     link_host == 'localhost' || link_host == '127.0.0.1')
       unless previews[slug].is_a?(Hash) && previews[slug]['url'] == link && previews[slug].keys == ['url']
         puts " [STUB] Link interno: #{slug} -> #{link}"
         previews[slug] = { 'url' => link }

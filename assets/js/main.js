@@ -334,7 +334,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // ==========================================================================
 
   function buildProfileTabState(name, pathname) {
-    if (!name) return { href: null, label: null, active: false };
+    if (!name || !/^[a-z0-9À-ú][a-z0-9À-ú-]*$/i.test(name)) return { href: null, label: null, active: false };
     var href   = '/' + name;
     var label  = '@' + name;
     var active = pathname === href || pathname === href + '/';

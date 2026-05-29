@@ -247,7 +247,7 @@ document.addEventListener("DOMContentLoaded", function() {
           // Highlight de [match] (grep-style, colchetes ocultados)
           safeContent = safeContent.replace(
               /\[([^\]]*[a-zA-ZÀ-ú][^\]]*)\]/g,
-              '<span class="t-match">$1</span>'
+              (_, m) => `<span class="t-match">${m.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span>`
           );
 
           htmlBuffer += `<div class="t-out">${safeContent}</div>`;

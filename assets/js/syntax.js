@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
 
       // Keystrokes tipo [CTRL+X], [CTRL+B] + [C] — detecta ANTES do regex
-      if (/^\[.+?\](\s*\+\s*\[.+?\])*$/.test(text)) {
+      if (/^\[[^\]]+\](\s*\+\s*\[[^\]]+\])*$/.test(text)) {
         code.classList.add('c-key');
         return;
       }
@@ -103,23 +103,25 @@ document.addEventListener("DOMContentLoaded", function() {
       // Prioridade especial: sed sempre ciano, conteúdo das aspas em rosa
       if (baseCmd === 'sed') {
         code.classList.add('tag', 'x');
-        const html = text.replace(/(["'])(.+?)\1/g, (m, q, content) =>
+        const esc = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const html = esc.replace(/(["'])(.+?)\1/g, (m, q, content) =>
           `<span class="c-rx">${q}${content}${q}</span>`
         );
-        if (html !== text) code.innerHTML = html;
+        if (html !== esc) code.innerHTML = html;
         return;
       }
 
       // Prioridade especial: ls sempre ciano, glob/expressão em rosa
       if (baseCmd === 'ls') {
         code.classList.add('tag', 'x');
-        const parts = text.split(/(\s+)/);
+        const esc = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const parts = esc.split(/(\s+)/);
         const html = parts.map(part => {
           if (/^\s+$/.test(part) || part === 'ls' || part.startsWith('-')) return part;
           if (/[*?[\]{}]/.test(part)) return `<span class="c-rx">${part}</span>`;
           return part;
         }).join('');
-        if (html !== text) code.innerHTML = html;
+        if (html !== esc) code.innerHTML = html;
         return;
       }
 
