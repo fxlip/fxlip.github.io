@@ -161,7 +161,7 @@ describe('getRelativeTime', () => {
 
   it('retorna "em [mês] de [ano]" para 60+ dias atrás', () => {
     const result = getRelativeTime(dateStringAgo(90 * 24 * 60 * 60 * 1000))
-    expect(result).toMatch(/^em \w+ de \d{4}$/)
+    expect(result).toMatch(/^em [\p{L}]+ de \d{4}$/u)
   })
 
   it('aceita separadores variados (·, -, |)', () => {
