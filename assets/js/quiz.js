@@ -40,6 +40,18 @@
     return `${m}:${ss}`;
   }
 
+  // Rola até a explicação recém-exibida — incentiva a leitura e já aproxima
+  // a próxima questão. Centraliza para manter a questão respondida acima e
+  // a próxima visível abaixo.
+  function scrollToExplanation(qEl) {
+    const target = qEl.querySelector('.quiz-explanation.visible') ||
+                   qEl.querySelector('.quiz-model-answer.visible');
+    if (!target || typeof target.scrollIntoView !== 'function') return;
+    const reduce = window.matchMedia &&
+                   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+  }
+
   // --------------------------------------------------------------------------
   // Persistência de resultados (localStorage, por browser)
   // --------------------------------------------------------------------------
@@ -662,6 +674,7 @@
             if (qEl.dataset.id) wrongIds.add(qEl.dataset.id);
           }
 
+          scrollToExplanation(qEl);
           updateScore();
         });
       });
@@ -696,6 +709,7 @@
         qEl.querySelector('.quiz-explanation')?.classList.add('visible');
         if (allCorrect) { correct++; if (topic) topics[topic].correct++; }
         else if (qEl.dataset.id) wrongIds.add(qEl.dataset.id);
+        scrollToExplanation(qEl);
         updateScore();
       };
 
@@ -734,6 +748,7 @@
         modelAns.classList.add('visible', isCorrect ? 'quiz-disc-correct' : 'quiz-disc-wrong');
         if (explain && explain.textContent.trim()) explain.classList.add('visible');
         if (!isCorrect && qEl.dataset.id) wrongIds.add(qEl.dataset.id);
+        scrollToExplanation(qEl);
         answered++;
         updateScore();
       });
