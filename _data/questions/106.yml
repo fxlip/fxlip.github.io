@@ -112,3 +112,164 @@
   answer: 3
   comment: "Wayland não é um ambiente de desktop, mas sim um protocolo que especifica a comunicação entre o servidor gráfico (compositor) e seus clientes, visando substituir o X11. KDE, Gnome, Xfce e MATE são Desktop Environments completos. #wayland #x11 #desktop #protocol"
 
+- id: "106-011"
+  topic: "106.1"
+  question: "Você deseja configurar sua sessão do bash para que todas as janelas de aplicações gráficas que iniciar, ao invés de serem abertas em sua própria máquina, sejam abertas no servidor X da máquina remota de IP 10.0.0.100. Considerando que esta máquina remota esteja aceitando essas conexões, qual comando você deve executar para definir essa configuração na sua máquina?"
+  options:
+    - "xhost +10.0.0.100"
+    - "export DISPLAY=10.0.0.100:0.0"
+    - "export SCREEN=10.0.0.100"
+    - "xwin -d 10.0.0.100"
+  answer: 2
+  comment: "A variável de ambiente DISPLAY define aonde serão exibidas as janelas do ambiente gráfico, deve ser definida com o IP do destino e exportada. #DISPLAY #X11 #env #remote"
+
+- id: "106-012"
+  topic: "106.3"
+  question: "Das opções abaixo, quais são recursos de acessibilidade disponibilizados em ambientes gráficos no Linux? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "Repeat keys"
+    - "Spice"
+    - "Mouse Keys"
+    - "Screen Reader"
+    - "xauth"
+  answer: [1, 3, 4]
+  comment: "O Repeat Keys permite controlar a entrada repetida de um caractere que é mantido pressionado pelo usuário. O Mouse keys permite o uso do ponteiro do mouse pelo teclado e o Screen Reader permite que o texto que aparece na tela seja lido. #acessibilidade #a11y #desktop #X11"
+
+- id: "106-013"
+  topic: "106.2"
+  question: "Qual é o protocolo de acesso remoto nativo do servidor X11?"
+  options:
+    - "Spice"
+    - "RDP"
+    - "RFB"
+    - "XDMCP"
+  answer: 4
+  comment: "O XDMCP (X Display Manager Control Protocol) é implementado pelo display manager. O protocolo é simples, sem recursos de compressão ou criptografia. #XDMCP #X11 #remote #display-manager"
+
+- id: "106-014"
+  topic: "106.1"
+  question: "Em qual seção do arquivo de configuração do servidor X são definidas as propriedades aplicadas para o Teclado e Mouse?"
+  options:
+    - "ServerLayout"
+    - "GeneralSettings"
+    - "Device"
+    - "InputDevice"
+  answer: 4
+  comment: "Na seção InputDevice, especificações sobre o mouse e teclado podem ser realizadas. Outras seções importantes são: \"Files\" – Caminhos para alguns arquivos importantes, principalmente o FontsPath. \"ServerLayout\" – Configurações Gerais do Servidor X. \"Module\" – Carregamento de módulos extras. \"Monitor\" – Configuração do monitor utilizado. \"Device\" – Configuração da placa de vídeo e driver. \"Screen\" – Combinação do Monitor com o Device, principalmente configuração da resolução da tela. #xorg #InputDevice #X11 #teclado"
+
+- id: "106-015"
+  topic: "106.1"
+  question: "Qual componente do Desktop Environment é responsável pela interface que possibilita o login dos usuários no ambiente?"
+  options:
+    - "Display Manager"
+    - "Login Manager"
+    - "GUI"
+    - "Window Manager"
+  answer: 1
+  comment: "O Display Manager é o responsável por controlar a interface gráfica de login no ambiente gráfico, a tela inicial em que é informado o usuário e a senha. Como exemplo temos o LightDM, GDM, XDM, LXDM e etc. #DisplayManager #login #X11 #desktop"
+
+- id: "106-016"
+  topic: "106.3"
+  question: "Em um servidor X, qual a finalidade do recurso \"Sticky Keys\"?"
+  options:
+    - "Impedir que um mesmo caractere seja incluído múltiplas vezes quando a tecla for continuamente pressionada."
+    - "Auxiliar usuários que possuem dificuldades em pressionar mais de uma tecla ao mesmo tempo."
+    - "Aumentar o tamanho das letras na tela do terminal."
+    - "Possibilitar o uso, através de um mouse, de um teclado virtual que é exibido na tela."
+  answer: 2
+  comment: "O recurso de Sticky Keys ajuda usuários que possuem dificuldades em pressionar mais de uma tecla ao mesmo tempo. #StickyKeys #acessibilidade #a11y #X11"
+
+- id: "106-017"
+  topic: "106.2"
+  question: "Dentre as opções abaixo, quais são Desktop Environments utilizados junto a sistemas GNU/Linux? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "XDM"
+    - "Xfce"
+    - "KDE"
+    - "MInt"
+    - "GNOME"
+  answer: [2, 3, 5]
+  comment: "GNOME, KDE e Xfce são Desktop Environments, além destas temos LXDE, MATE, Cinnamon e vários outras. XDM é um Display Manager e Mint vem da distribuição Linux Mint, o que é diferente de um DE. #desktop #GNOME #KDE #Xfce"
+
+- id: "106-018"
+  topic: "106.1"
+  question: "O administrador deseja configurar o servidor X da máquina 192.168.8.10 para ele aceite conexões vindas da máquina de IP 192.168.8.55. Qual comando deve ser utilizado na máquina que vai receber estas conexões?"
+  options:
+    - "DISPLAY=192.168.8.55:0.0"
+    - "DISPLAY=192.168.8.10:0.0"
+    - "xhost +192.168.8.10"
+    - "xhost +192.168.8.55"
+  answer: 4
+  comment: "O comando xhost é utilizado para definir quais origens podem acessar o servidor X da máquina. Sem argumentos ele exibe as configurações atuais. #xhost #X11 #remote #security"
+
+- id: "106-019"
+  topic: "106.1"
+  type: "discursive"
+  question: "Ao utilizar o recurso de redirecionamento X11 no SSH, qual variável de ambiente será definida automaticamente na máquina remota para possibilitar essa conexão? (Informe apenas o nome da variável)"
+  answer: "DISPLAY"
+  comment: "A variável de ambiente DISPLAY será configurada com a informação da localização do servidor X que será utilizado na conexão. #DISPLAY #X11 #SSH #forwarding"
+
+- id: "106-020"
+  topic: "106.3"
+  question: "Qual configuração de Acessibilidade do ambiente gráfico impede que caso a mesma tecla seja pressionada repetidamente, em um curto espaço de tempo, ela seja impressa de maneira repetida em um documento?"
+  options:
+    - "Bounce Keys"
+    - "Sticky Keys"
+    - "Repeated Keys"
+    - "Toggle Keys"
+  answer: 1
+  comment: "Com o \"Bounce Keys\" habilitado, se o usuário pressionar a mesma teclas duas ou mais vezes rapidamente, a tecla será registrada apenas uma vez. O \"Sticky Keys\" é utilizado para o caso do usuário não ser capaz de pressionar duas teclas ao mesmo tempo. #BounceKeys #acessibilidade #a11y #X11"
+
+- id: "106-021"
+  topic: "106.2"
+  question: "Dos protocolos abaixo, qual é utilizado para acessos remotos a desktops gráficos de maneira segura, com o uso de encriptação?"
+  options:
+    - "SMB"
+    - "XDMCP"
+    - "SPICE"
+    - "XDP"
+    - "VNC"
+  answer: 3
+  comment: "O XDMCP (X Display Manager Control Protocol) é o protocolo nativo do X11. O SPICE (Simple Protocol for Independent Computing Environment) é uma solução completa e segura para acesso remoto. O VNC não é um protocolo, é uma aplicação que utiliza o protoclo RFB (Remote FrameBuffer). #SPICE #XDMCP #VNC #remote"
+
+- id: "106-022"
+  topic: "106.1"
+  type: "discursive"
+  question: "Qual o nome padrão do arquivo de configuração do servidor X11? (Informe apenas o nome do arquivo, sem o caminho completo)"
+  answer: "xorg.conf"
+  comment: "O Xorg X11 tem como principal arquivo de configuração o /etc/xorg.conf. #xorg.conf #X11 #Xorg #config"
+
+- id: "106-023"
+  topic: "106.1"
+  question: "Quais comandos são utilizados para exibir e editar informações de autorização de acesso ao servidor X? (Selecione DUAS Respostas Corretas)"
+  options:
+    - "xaccess"
+    - "xhost"
+    - "xauth"
+    - "xauthority"
+    - "Xorg"
+  answer: [2, 3]
+  comment: "O xhost é utilizado para listar, adicionar e remover IP, Redes, ou Host que podem ou não fazer o acesso remoto ao servidor X. O xauth permite esse controle baseado em hashs, ou magic cookies, que são armazenados no arquivo ~/.Xauthority. #xhost #xauth #X11 #security"
+
+- id: "106-024"
+  topic: "106.2"
+  question: "Qual solução de acesso remoto permite que os clientes acessem diretamente as informações dos dispositivos USB presentes no servidor?"
+  options:
+    - "XDMCP"
+    - "VNC"
+    - "Spice"
+    - "mutter"
+  answer: 3
+  comment: "Um dos recursos do Spice é o \"USB Redirection\", que permite que os clientes utilizem os dispositivos USB dos servidores. #Spice #USB #remote #desktop"
+
+- id: "106-025"
+  topic: "106.3"
+  question: "Qual aplicação provê um recurso de acessibilidade que reproduz um teclado na tela do usuário?"
+  options:
+    - "Orca"
+    - "GOK"
+    - "Kmag"
+    - "BRLTTY"
+  answer: 2
+  comment: "O GOK (Gnome On-Screen Keyboard) é um software que implementa um teclado virtual via interface gráfica permitindo que o usuário possa inserir texto utilizando o mouse. #GOK #acessibilidade #a11y #teclado"
+

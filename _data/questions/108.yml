@@ -195,3 +195,528 @@
   answer: 3
   comment: "A persistência no systemd-journal depende da existência do diretório /var/log/journal/. Se ele não existir (e a configuração estiver como 'auto'), os logs serão voláteis e ficarão em /run/log/journal/, sumindo após o reboot. #systemd #journal #persistence #var-log"
 
+- id: "108-017"
+  topic: "108.2"
+  question: "Qual comando deve ser utilizado dentro de um shell script para que os logs sejam enviados e gerenciados diretamente pelas configurações definidas no rsyslog?"
+  options:
+    - "logger"
+    - "logrotate"
+    - "journalctl"
+    - "printf"
+  answer: 1
+  comment: "O comando logger é utilizado dentro do script, enviando registros de log para os facilities configurados no syslog ou rsyslog. Um exemplo de uso é: logger -p local0.warn \"Mensagem de Warning\". Do lado do systemd, o comando systemd-cat tem função similar. #logger #rsyslog #syslog #logs"
+
+- id: "108-018"
+  topic: "108.2"
+  question: "Dos itens abaixo, quais são serviços utilizados para gerenciamento de logs de um sistema Linux? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "cups"
+    - "syslog-ng"
+    - "rsyslog"
+    - "syslog"
+    - "logger"
+  answer: [2, 3, 4]
+  comment: "Syslog, Rsyslog e Syslog-ng são os softwares gerenciadores de log usados atualmente no Linux. O syslog é o mais antigo e atualmente a maioria das distribuições utiliza o rsyslog. #syslog #rsyslog #syslog-ng #logs"
+
+- id: "108-019"
+  topic: "108.2"
+  question: "O administrador do sistema deseja criar um script e fazer com que ele gere um arquivo de log utilizando os recursos do rsyslogd. Qual facility pode ser utilizado para que o rsyslog possa administrar um arquivo de log específico para o script?"
+  options:
+    - "syslog"
+    - "mail"
+    - "user"
+    - "local0"
+    - "info"
+  answer: 4
+  comment: "O rsyslog disponibiliza os facilities de local0 a local7 para ser utilizado conforme o desejo do administrador do sistema. #rsyslog #facility #local0 #logs"
+
+- id: "108-020"
+  topic: "108.1"
+  question: "Qual comando pode ser utilizado para definir o horário do relógio sistema com o mesmo horário do relógio do hardware (BIOS)?"
+  options:
+    - "hwclock --hctosys"
+    - "hwclock -w"
+    - "date -s"
+    - "timedatectl --systohc"
+  answer: 1
+  comment: "O comando hwclock com os parâmetros -s ou --hctosys definem a hora do sistema a partir da hora da BIOS. As opções -w ou --systohc fazem o oposto, definem o horário da BIOS com base no horário atual do sistema. #hwclock #BIOS #clock #time"
+
+- id: "108-021"
+  topic: "108.1"
+  question: "Qual o principal arquivo de configuração do serviço NTP?"
+  options:
+    - "/etc/ntp/servers.conf"
+    - "/etc/ntp.conf"
+    - "/etc/pool.ntp.conf"
+    - "/etc/services"
+  answer: 2
+  comment: "O arquivo /etc/ntp.conf contém os parâmetros principais do funcionamento do processo ntpd, inclusive os servidores que serão utilizados como fonte dos dados de tempo. #NTP #ntpd #ntp.conf #time"
+
+- id: "108-022"
+  topic: "108.2"
+  question: "Quais opções podem ser usadas junto ao comando journalctl para especificar o período de registros a ser exibido? (Selecione DUAS Respostas Corretas)"
+  options:
+    - "--when"
+    - "--date"
+    - "--since"
+    - "--from"
+    - "--until"
+  answer: [3, 5]
+  comment: "No journalctl, a opção \"--since\" exibe as mensagens a partir da data especificada e a opção \"--until\" exibe as mensagens anteriores à data especifica. #journalctl #systemd #logs #journal"
+
+- id: "108-023"
+  topic: "108.3"
+  question: "Qual a função do arquivo .forward no home de um usuário Linux?"
+  options:
+    - "Indicar outro login para o qual o usuário será redirecionado após digitar usuário e senha"
+    - "Vincular nomes diferentes para o e-mail deste usuário"
+    - "Redirecionar e-mails enviados para a conta deste usuário para um ou vários destinatários diferentes"
+    - "Redirecionar as conexões SSH abertas para esse usuário para outra máquina"
+  answer: 3
+  comment: "Todo usuário pode criar e configurar o arquivo .forward em seu diretório padrão e nele indicar outros e-mail para o qual serão enviados os e-mails que receber em sua conta local. #forward #email #MTA #mail"
+
+- id: "108-024"
+  topic: "108.1"
+  question: "Qual comando pode ser utilizado para verificar se o sistema está utilizando algum serviço de sincronização de data e hora como o protocolo NTP?"
+  options:
+    - "timedatectl"
+    - "ntpdate"
+    - "date --ntp"
+    - "hwclock"
+  answer: 1
+  comment: "O comando timedatectl exibe entre outras informações se o sistema está em sincronia via NTP ou outro serviço relacionado. #timedatectl #NTP #systemd #time"
+
+- id: "108-025"
+  topic: "108.3"
+  type: "discursive"
+  question: "Qual comando deve ser utilizado para efetivar as alterações realizadas no arquivo /etc/aliases? (Informe o comando sem o caminho completo, mas informe os parâmetros, se necessários)"
+  answer: "newaliases"
+  comment: "No arquivo /etc/aliases é possível criar \"apelidos\" para contas internas, ou seja, indicar outros nomes que serão interpretados pelo servidor de e-mail local como contas internas e que na prática serão enviadas a algum dos usuários existentes. Após qualquer alteração nesse arquivo o comando \"newaliases\" deve ser executado, ou o comando \"sendmail -bi\". #newaliases #aliases #MTA #email"
+
+- id: "108-026"
+  topic: "108.4"
+  question: "Qual comando irá listar todos os drivers de impressoras atualmente suportados (mas não necessariamente utilizados) pelo serviço cupsd?"
+  options:
+    - "lpadmin -l"
+    - "lpstat -t"
+    - "lpinfo -m"
+    - "cupd --list"
+  answer: 3
+  comment: "O comando lpinfo é utilizado para exibir os dispositivos e drivers suportados pela base interna do cups. A opção -v mostra todos os dispositivos e protocolos suportados no momento e a opção -m todos os drivers suportados. #lpinfo #CUPS #drivers #impressora"
+
+- id: "108-027"
+  topic: "108.3"
+  question: "Dos comandos abaixo, quais irão exibir a fila de e-mails seja qual for o MTA utilizado? (Selecione DUAS Respostas Corretas)"
+  options:
+    - "sendmail -q"
+    - "sendmail -bp"
+    - "mailq"
+    - "mail -l"
+    - "newaliases"
+  answer: [2, 3]
+  comment: "Os comandos \"mailq\" e \"sendmail -bp\", apesar do nome, podem ser utilizados com qualquer servidor de e-mail, não apenas com o sendmail. Eles mostram a fila de e-mails em processamento ou em espera do servidor de e-mail, e-mails que ainda não foram entregues. #mailq #sendmail #MTA #email"
+
+- id: "108-028"
+  topic: "108.4"
+  type: "discursive"
+  question: "Qual diretório contem os arquivos de configuração do CUPS? (Informe o caminho completo do diretório)"
+  answer: "/etc/cups"
+  comment: "O diretório /etc/cups é a localização dos arquivos de configuração do CUPS, sendo os principais o cupsd.conf, com as configurações gerais do serviço CUPS, e o printers.conf com as definições de cada impressora. #CUPS #cupsd.conf #impressora #etc"
+
+- id: "108-029"
+  topic: "108.1"
+  type: "discursive"
+  question: "Qual comando é utilizado para sincronizar o relógio do hardware com o relógio do sistema? (Informe apenas o comando, sem o caminho ou argumentos)"
+  answer: "hwclock"
+  comment: "O comando hwclock permite que o administrador configure o horário do sistema e o horário do hardware (BIOS). Também é possível definir um horário com base no outro. #hwclock #BIOS #clock #time"
+
+- id: "108-030"
+  topic: "108.1"
+  question: "Qual opção do chronyc é utilizada para exibir informações sobre as fontes de tempo atuais que o chronyd está acessando?"
+  options:
+    - "stats"
+    - "sources"
+    - "activity"
+    - "list"
+  answer: 2
+  comment: "A opção sources exibe informações detalhadas da sincronização de cada servidor e pool configurado e em uso. #chrony #chronyc #NTP #time"
+
+- id: "108-031"
+  topic: "108.2"
+  question: "Qual parâmetro de configuração define o máximo de espaço em disco que poderá ser utilizado pelo logs gerados pelo systemd-journal?"
+  options:
+    - "MaxUse"
+    - "SystemMaxUse"
+    - "SystemKeepFree"
+    - "SystemMaxFileSize"
+  answer: 2
+  comment: "O SystemMaxUse define o limite máximo de uso dos logs persistentes do journal na partição, registros normalmente armazenados no diretório /var/log/journal. O valor padrão é 10%. #systemd #journal #SystemMaxUse #logs"
+
+- id: "108-032"
+  topic: "108.1"
+  question: "Qual comando é utilizado para verificar e monitorar o funcionamento do serviço NTP?"
+  options:
+    - "ntpq"
+    - "hwclock"
+    - "ntpd"
+    - "datetimectl"
+    - "ntpdate"
+  answer: 1
+  comment: "O comando ntpq pode ser utilizado no modo interativo ou em conjunto com diversas opções. Como exemplo, o comando \"ntpq -p\" exibe o status e estatísticas de cada servidor consultado pelo serviço. #ntpq #NTP #ntpd #time"
+
+- id: "108-033"
+  topic: "108.2"
+  question: "Em qual diretório são armazenados de maneira persistente os logs do gerados pelo systemd-journal?"
+  options:
+    - "/var/log"
+    - "/etc/systemd/journal/"
+    - "/var/log/systemd/"
+    - "/var/log/journal/"
+  answer: 4
+  comment: "Os registros são armazenados de maneira persistente no diretório /var/log/journal/. Quando utilizado o armazenamento volátil, o diretório utilizado é o /run/log/journal/. #systemd #journal #persistence #logs"
+
+- id: "108-034"
+  topic: "108.3"
+  question: "Das opções a seguir, quais são MTAs normalmente utilizados em servidores Linux? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "Procmail"
+    - "Sendmail"
+    - "Postfix"
+    - "Postgre"
+    - "Exim"
+  answer: [2, 3, 5]
+  comment: "Os principais MTA (Mail Transfer Agents) ou simplesmente servidores de e-mail, utilizados no Linux são: Sendmail, Postfix, Exim e qmail. PostgreSQL é um banco de dados relacional, Procmail é um utilitário usado em conjunto com um MTA para filtrar e-mails, fazer controle, antispam e etc. #MTA #sendmail #postfix #exim #email"
+
+- id: "108-035"
+  topic: "108.2"
+  question: "Com base na seguinte configuração do arquivo /etc/logrotate.conf é possível afirmar que: (Selecione TRÊS Respostas Corretas)"
+  code: |
+    /var/log/syslog
+    {
+        rotate 7
+        daily
+        missingok
+        notifempty
+        delaycompress
+        compress
+    }
+  options:
+    - "O arquivo será rotacionado a cada 7 dias"
+    - "Arquivos antigos serão compactados com o gzip"
+    - "O arquivo será rotacionado todo dia"
+    - "Os arquivos de log serão rotacionados 7 vezes antes de serem removidos"
+    - "Os arquivos antigos serão apagados a cada 7 dias"
+  answer: [2, 3, 4]
+  comment: "A opção \"daily\" faz com que o arquivo seja rotacionado diariamente. O \"rotate 7\" indica que serão mantidos logs de 7 rotacionamento, no caso 7 dias. A opção \"compress\" indica que os arquivos serão compactados, e por padrão o gzip é utilizado. #logrotate #logs #rotate #compress"
+
+- id: "108-036"
+  topic: "108.2"
+  question: "O administrador deseja configurar o rsyslog para que as mensagens do kernel com prioridade igual ou superior a error sejam registradas no arquivo /var/log/kernel.error. Qual configuração deve ser incluída?"
+  options:
+    - "kernel.error=/var/log/kernel.error"
+    - "kern error   /var/log/kernel.error"
+    - "kern.err   /var/log/kernel.error"
+    - "kern.=err   /var/log/kernel.error"
+  answer: 3
+  comment: "Nas configurações do rsyslog, em /etc/rsyslog.conf ou em arquivos do /etc/rsyslog.d/, deve ser incluída a configuração: facility.priority   arquivo-log. A configuração .err indica prioridade igual ou superior a error, a configuração .=err indica apenas a prioridade error. #rsyslog #kernel #priority #logs"
+
+- id: "108-037"
+  topic: "108.3"
+  type: "discursive"
+  question: "Qual arquivo pode ser configurado pelo administrador do sistema para vincular vários nomes diferentes a um mesmo usuário, de maneira que e-mails enviados a esses nomes alternativos serão enviados sempre para a mesma conta interna? (Informe o caminho completo do arquivo)"
+  answer: "/etc/aliases"
+  comment: "O arquivo /etc/aliases implementará o que é descrito no enunciado. Apenas pode ser editado pelo usuário root e para que suas alterações tenham efeito o comando \"newaliases\" deve ser executado. #aliases #newaliases #MTA #email"
+
+- id: "108-038"
+  topic: "108.4"
+  question: "Qual arquivo de configuração contém todas as impressoras configuradas no serviço de gerenciamento de impressão CUPS?"
+  options:
+    - "/etc/cups/cupsd.conf"
+    - "/etc/cups/printers.conf"
+    - "/etc/cupsd.cfg"
+    - "/etc/cups/classes.conf"
+  answer: 2
+  comment: "O arquivo /etc/cups/printers.conf contém as impressoras adicionadas ao cups e suas propriedades. O arquivo /etc/cups/cupsd.conf é o arquivo principal e de configuração geral do CUPS. #CUPS #printers.conf #impressora #etc"
+
+- id: "108-039"
+  topic: "108.4"
+  question: "Qual o comando utilizado para exibir a fila de impressão de todas as impressoras configuradas no CUPS?"
+  options:
+    - "mailq"
+    - "lpq -a"
+    - "lpr"
+    - "lpc -l"
+    - "lq -q"
+  answer: 2
+  comment: "O comando lpq, sem argumentos mostra os trabalhos da fila de impressão padrão, com a opção -P é possível ver uma fila de impressão específica e com a opção -a as filas de impressão de todas as impressoras são exibidas. #lpq #CUPS #impressora #fila"
+
+- id: "108-040"
+  topic: "108.3"
+  question: "Qual dos seguintes protocolos é relacionado ao termo \"Open Relay\"?"
+  options:
+    - "SMTP"
+    - "POP"
+    - "HTTPS"
+    - "IMAP"
+    - "SSH"
+  answer: 1
+  comment: "Um termo relacionado aos servidores de e-mail e ao protocolo SMTP que deve ser conhecido é o termo \"Open Relay\". Quando um servidor SMTP é configurado de forma que ele permita que qualquer usuário da Internet o use para enviar e-mails, ele é chamado de Open Relay. #SMTP #OpenRelay #MTA #email"
+
+- id: "108-041"
+  topic: "108.4"
+  question: "Em qual diretório ficam armazenados os arquivos enviados para a fila de impressão do CUPS?"
+  options:
+    - "/etc/cupsd/"
+    - "/var/cupsd/"
+    - "/usr/printer/cups/"
+    - "/var/spool/cups/"
+  answer: 4
+  comment: "O diretório /var/spool/cups/ armazenas todos os arquivos enviados para a fila de impressão do cupsd. #CUPS #spool #impressora #fila"
+
+- id: "108-042"
+  topic: "108.3"
+  question: "Qual dos comandos a seguir tem a função de pesquisar e exibir a fila de e-mails do MTA local?"
+  options:
+    - "newaliases"
+    - "aliases"
+    - "mail"
+    - "mailq"
+    - "queue"
+  answer: 4
+  comment: "Os comandos \"mailq\" e \"sendmail -bp\" mostram a fila de e-mails em processamento ou em espera do servidor de e-mail local, e-mails que ainda não foram entregues. #mailq #sendmail #MTA #email"
+
+- id: "108-043"
+  topic: "108.4"
+  question: "Quando comando instrui o sistema a rejeitar trabalhos de impressão enviados para determinada impressora ativa?"
+  options:
+    - "cupsenable"
+    - "cupsdisable"
+    - "cupsaccept"
+    - "cupsreject"
+  answer: 4
+  comment: "O CUPS possui também alguns comandos de administração que valem ser mencionados. Os principais são: cupsenable – Inicia uma impressora desativada; cupsdisable – Pára uma impressora (-c: Cancela todos os jobs da impressora; -r: Especifica uma mensagem com a razão do comando); cupsaccept: Instrui o sistema a aceitar jobs para a impressora informada; cupsreject: Instrui o sistema a rejeitar jobs para a impressora informada. #cupsreject #CUPS #impressora #admin"
+
+- id: "108-044"
+  topic: "108.1"
+  type: "discursive"
+  question: "Qual comando pode ser utilizado para atualizar imediatamente a data e hora do sistema baseado em algum servidor NTP informado como parâmetro? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
+  answer: "ntpdate"
+  comment: "Ao utilizar o comando \"ntpdate pool.ntp.org\" a data e hora do sistema será imediatamente atualizada com base nos dado servidor/pool pool.ntp.org. #ntpdate #NTP #time #sync"
+
+- id: "108-045"
+  topic: "108.1"
+  question: "Quais afirmações abaixo são verdadeiras quanto ao NTP? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "O serviço ntpd utiliza o protocolo UDP na porta 123"
+    - "O serviço ntpd pode utilizar um conjunto de servidores externos para manter a data e hora local precisamente atualizadas"
+    - "O NTP tem como principal função manter o relógio do sistema atualizado com o relógio do hardware"
+    - "O comando \"ntpq -p\" traz informações detalhadas de cada servidor consultado pelo serviço NTP da máquina"
+    - "O NTP é um serviço obrigatório em qualquer máquina Linux"
+  answer: [1, 2, 4]
+  comment: "O NTP é um serviço opcional mas altamente recomendado em servidores Linux. O serviço ntpd consulta servidores remotos, via port UDP/123, e com base em suas informações mantém a data e hora da máquina local atualizados. #NTP #ntpd #ntpq #time"
+
+- id: "108-046"
+  topic: "108.1"
+  question: "Quais parâmetros devem ser utilizados no comando date para que a hora do sistema seja exibida no seguinte formato: \"15:33\"?"
+  options:
+    - "date HH:MM"
+    - "date %H:%M"
+    - "date +%H:%M"
+    - "date +%h:%m"
+  answer: 3
+  comment: "Para se definir o formato de exibição de data e hora do comando date, há várias opções que devem ser incluídas após o indicador +. Entre elas temos %H = hora no formato 0-23, %M = minutos, %m = mês, %I = hora no formado 01-12, entre vários outros. #date #format #time #strftime"
+
+- id: "108-047"
+  topic: "108.2"
+  question: "Em um sistema GNU/Linux, qual o programa responsável por compactar e rotacionar arquivos de log antigos?"
+  options:
+    - "logger"
+    - "logrotate"
+    - "rsyslog"
+    - "syslog-ng"
+    - "systemd-rotate"
+  answer: 2
+  comment: "O logrotate é um programa normalmente executado via crontab que possibilita o controle dos logs gerados pelo sistema, com recursos de rotacionamento, compactação e remoção de logs antigos. #logrotate #logs #rotate #compress"
+
+- id: "108-048"
+  topic: "108.2"
+  question: "Qual das seguintes configurações do rsyslog enviaria todos os logs relacionados ao serviço de e-mail ao servidor de logs remoto central.server.com?"
+  options:
+    - "mail.none -central.server.com"
+    - "mail.* @central.server.com"
+    - "*.mail -central.server.com"
+    - "mail:* central.server.com"
+    - "*.mail @central.server.com"
+  answer: 2
+  comment: "Na sintaxe do rsyslog é usado facility.priority seguido do destino do log. O * indica qualquer tipo de prioridade, e para o envio do registro a um host remoto é usado o @. #rsyslog #facility #remote #logs"
+
+- id: "108-049"
+  topic: "108.2"
+  question: "Qual comando pode ser utilizado para que os registros do systemd-journal sejam removidos de maneira controlada?"
+  options:
+    - "systemd-journal --free"
+    - "journalctl --vacuum-size"
+    - "journalctl --free"
+    - "systemd-journal --clean"
+  answer: 2
+  comment: "A opção vacuum-size do journalctl faz com os registros do tipo \"archive\" presentes diretório /var/log/journal sejam limpos. No caso do vacuum-size o que deve ser limpo é definido em Kb, Mb, Gb e etc. No entanto também pode ser usado o vacuum-time, para se defirir a limpeza com base no tempo e vacuum-file para quantidade de arquivos. #journalctl #vacuum #systemd #logs"
+
+- id: "108-050"
+  topic: "108.3"
+  question: "Em qual arquivo pode ser encontrada a seguinte configuração?"
+  code: |
+    postmaster:     root
+    webmaster:      maria, ana
+    admin:          root
+    hostmaster:     maria
+  options:
+    - "/etc/aliases"
+    - "/etc/alias"
+    - "/etc/newaliases"
+    - "~/.forward"
+  answer: 1
+  comment: "A configuração incluída no arquivo /etc/aliases do enunciado diz que mensagens enviadas para o e-mail webmaster@dominio-interno.com serão encaminhadas aos usuários maria e ana, que realmente devem existir no sistema. #aliases #newaliases #MTA #email"
+
+- id: "108-051"
+  topic: "108.2"
+  question: "Qual diretório contém os arquivos de configuração utilizados pelo serviço de gerenciamento de logs rsyslog?"
+  options:
+    - "/etc/rsyslog.d/"
+    - "/etc/rsyslog.conf.d/"
+    - "/usr/lib/rsyslog/"
+    - "/etc/logrotate.d/"
+  answer: 1
+  comment: "O principal arquivo de configuração é o /etc/rsyslog.conf mas a maioria das configurações são referenciadas nos arquivos presentes no diretório /etc/rsyslog.d/ #rsyslog #rsyslog.d #logs #etc"
+
+- id: "108-052"
+  topic: "108.3"
+  question: "Qual comando é disponibilizado junto pelos MTAs Postfix e Exim como uma forma de compatibilidade às funções oferecidas pelo Sendmail?"
+  options:
+    - "postfix"
+    - "newaliases"
+    - "sendmail"
+    - "postqueue"
+    - "mail"
+  answer: 3
+  comment: "Todos os MTAs, incluindo o Postfix e o Exim, incluem o comando \"sendmail\" como um recurso de compatibilidade ao Sendmail, devido a este MTA ter sido por muito tempo o padrão utilizado na Internet. #sendmail #postfix #exim #MTA"
+
+- id: "108-053"
+  topic: "108.3"
+  question: "Em qual diretório normalmente ficam armazenadas as mensagens recebidas pelos usuários do sistema?"
+  options:
+    - "/usr/spool/mail/"
+    - "/var/mail/"
+    - "/etc/mail/"
+    - "~/mail/"
+  answer: 2
+  comment: "O diretório /var/mail/ contém um arquivo com o nome de cada usuário que possui mensagens recebidas. Outro diretório que pode ter a mesma função é o /var/spool/mail, mas em geral ele é um link para o /var/mail/ #mail #var-mail #MTA #email"
+
+- id: "108-054"
+  topic: "108.4"
+  question: "Das opções abaixo, quais enviarão um trabalho para alguma das filas de impressão do CUPS? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "lpr /etc/passwd"
+    - "grep \"/bin/bash\" /etc/passwd | lpr"
+    - "cat /etc/passwd > lpr"
+    - "echo \"Impressao Teste\" | lpr Impressora2"
+    - "lpr -P Impressora2 ~/Documentos/Relatorio.txt"
+  answer: [1, 2, 5]
+  comment: "O comando lpr pode ser utilizado informando diretamente o arquivo a ser impresso ou recebendo o conteúdo a ser impresso via | (pipe). Sem argumentos o trabalho é enviado para a fila padrão, para especificar uma fila deve ser utilizado a opção -P. #lpr #CUPS #impressora #fila"
+
+- id: "108-055"
+  topic: "108.4"
+  question: "Qual comando um usuário comum pode utilizar para remover todos os trabalhos de impressão que ele enviou?"
+  options:
+    - "lprm -"
+    - "lprm -a"
+    - "lprm --all"
+    - "lprm *"
+  answer: 1
+  comment: "Sem argumentos o lprm remove apenas o último trabalho enviado para a fila. Utilizando o - todos os trabalhos daquele usuário são removidos da fila. #lprm #CUPS #impressora #fila"
+
+- id: "108-056"
+  topic: "108.2"
+  question: "Das listas abaixo, qual está com as prioridades do syslog/rsyslog ordenadas de maneira correta, começando da mais crítica?"
+  options:
+    - "emerg, crit, alert, warning"
+    - "emerg, err, alert, warning"
+    - "err, alert, warning, notice"
+    - "alert, crit, err, warning"
+  answer: 4
+  comment: "A ordem de prioridade, a partir do mais crítico é: emerg, alert, crit, err, warning, notice, info, debug, none. #rsyslog #priority #syslog #logs"
+
+- id: "108-057"
+  topic: "108.2"
+  question: "Qual \"priority\" deve ser utilizado nas configurações do rsyslog para excluir todas as mensagens de log de determinado \"facility\"?"
+  options:
+    - "null"
+    - "*"
+    - "blank"
+    - "none"
+  answer: 4
+  comment: "A configuração \"none\" indica que não será registrado nenhum tipo de log, de nenhuma \"priority\", para determinado tipo de registro (facility). #rsyslog #priority #none #logs"
+
+- id: "108-058"
+  topic: "108.1"
+  question: "Qual opção do arquivo /etc/ntp.conf especifica o endereço da fonte NTP a ser utilizada para o ajuste de tempo?"
+  options:
+    - "nameserver"
+    - "host"
+    - "server"
+    - "address"
+  answer: 3
+  comment: "No ntp.conf, o parâmetro \"server\" determina o endereço remoto a ser utilizado como fonte para o serviço NTP. Também é comum o uso do parâmetro \"pool\", que tem um melhor gerenciamento quando é utilizado um endereço com um conjunto (pool) de servidores. #NTP #ntp.conf #server #time"
+
+- id: "108-059"
+  topic: "108.1"
+  question: "Qual opção de configuração do chrony é utilizada para acelerar o processo de sincronização inicial com um servidor NTP?"
+  options:
+    - "fast"
+    - "iburst"
+    - "speed"
+    - "sync"
+    - "flash"
+  answer: 2
+  comment: "Com a opção iburst, o intervalo entre as primeiras solicitações enviadas ao servidor será menor, de 2 segundos ou menos, o que permite ao chronyd fazer a primeira atualização do relógio logo após o início. #chrony #iburst #NTP #time"
+
+- id: "108-060"
+  topic: "108.3"
+  question: "Qual arquivo deve ser configurado por um usuário comum para que as mensagens enviadas para sua conta interna sejam automaticamente encaminhadas também para um e-mail externo?"
+  options:
+    - "/etc/aliases"
+    - "~/.aliases"
+    - "/etc/forward"
+    - "~/.forward"
+  answer: 4
+  comment: "Todo usuário pode criar e configurar o arquivo .forward para realizar esse redirecionamento. Apenas o usuário root pode configurar o arquivo /etc/aliases. #forward #aliases #MTA #email"
+
+- id: "108-061"
+  topic: "108.2"
+  question: "Quais dos seguintes \"facilities\" são válidos nas configurações do rsyslog? (Selecione TRÊS Respostas Corretas)"
+  options:
+    - "local5"
+    - "info"
+    - "mail"
+    - "kern"
+    - "system"
+  answer: [1, 3, 4]
+  comment: "kern, mail, local0-7, são alguns dos facilities aceitos pelo rsyslog. Outros podem ser vistos nesse link: https://wiki.gentoo.org/wiki/Rsyslog. #rsyslog #facility #logs #syslog"
+
+- id: "108-062"
+  topic: "108.1"
+  question: "Qual o principal objetivo do projeto pool.ntp.org?"
+  options:
+    - "Registrar e reportar eventuais falhas de segurança do protocolo NTP"
+    - "Fornecer as fontes e a documentação da aplicação NTPD"
+    - "Fornecer um cluster virtual de servidores de tempo através do serviço NTP"
+    - "Disponibilizar os arquivos de fuso horário que são armazenados no diretório /usr/share/zoneinfo"
+  answer: 3
+  comment: "O projeto pool.ntp.org é um grande cluster virtual de servidores de tempo fornecendo um serviço NTP confiável e fácil de usar para milhões de clientes. #NTP #pool.ntp.org #time #sync"
+
+- id: "108-063"
+  topic: "108.2"
+  type: "discursive"
+  question: "Qual comando tem a função de examinar os logs do journal do serviço systemd? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
+  answer: "journalctl"
+  comment: "O serviço systemd possui um registro de logs específico chamado de journal e o comando journalctl é a ferramenta desenhada especificamente para consultar esses registros. #journalctl #systemd #journal #logs"
+

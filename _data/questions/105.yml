@@ -118,3 +118,369 @@
   answer: 2
   comment: "O operador lógico && (AND) executa o segundo comando apenas se o primeiro retornar sucesso (zero). A opção -f valida se o caminho é um arquivo regular. O operador || (OR) faria o oposto, e o ponto-e-vírgula executaria independente do resultado. #bash #test #operators #scripting"
 
+- id: "105-010"
+  topic: "105.1"
+  question: "Qual comando pode ser usado para fazer com que a variável NOME também fique visível para as sessões abertas a partir da sessão em que a variável foi declarada?"
+  options:
+    - "set NOME"
+    - "env $NOME"
+    - "export NOME"
+    - "export $NOME"
+  answer: 3
+  comment: "Ao exportar uma variável com o comando \"export\", todos os sub-shell passam a enxergar essa variável, diz-se então que ela é uma variável global. Atenção pois no uso do export a variável não deve ser informada com o $. #export #env #variaveis #bash #shell"
+
+- id: "105-011"
+  topic: "105.2"
+  question: "Qual saída o comando \"seq 2 4 20\" produz?"
+  options:
+    - "4 6 8 10 12 14 16 18 20"
+    - "2\n6\n10\n14\n18"
+    - "2 6 10 14 18"
+    - "4\n6\n8\n10\n12\n14\n16\n18\n20"
+  answer: 2
+  comment: "O resultado do comando seq sempre irá gerar um número por linha. Além disso, a sintaxe pode ser: seq <número-final>; seq <primeiro-número> <último-numero>; seq <primeiro-número> <incremento> <último-numero>. #seq #bash #coreutils #scripting"
+
+- id: "105-012"
+  topic: "105.1"
+  question: "Considerando a função declarada no bash abaixo, como a função soma pode ser executada?"
+  code: |
+    $ function soma() {
+    > VALOR=`expr $1 + $2`;
+    > echo "A soma de $1 + $2 é igual a $VALOR";
+    > }
+  options:
+    - "soma(1,2)"
+    - "function soma 1 2"
+    - "soma 1 2"
+    - "soma 1 + 2"
+  answer: 3
+  comment: "Uma função pode ser utilizada da mesma forma que um comando, apenas informando seu nome e seus argumentos. #bash #function #shell #scripting"
+
+- id: "105-013"
+  topic: "105.1"
+  question: "O administrador deseja incluir um novo diretório na variável de ambiente PATH. Essa mudança deve ser definida no momento do login de todos os usuários do sistema. Os usuários não podem conseguir remover essa configuração de maneira permanente. Qual a melhor forma de realizar essa configuração?"
+  options:
+    - "Exportando a variável de ambiente PATH"
+    - "Realizando a definição da variável PATH no arquivo /etc/profile"
+    - "Alterando o arquivo ~/.profile de cada usuário do sistema"
+    - "Realizando a configuração da variável PATH no arquivo /etc/login.defs"
+    - "Incluindo a configuração da variável PATH no arquivo /etc/skel/.bashrc"
+  answer: 2
+  comment: "O arquivo /etc/profile é executado no processo de login de todos os usuários mas só pode ser editado pelo usuário administrador do sistema (root). #profile #PATH #env #login #shell"
+
+- id: "105-014"
+  topic: "105.2"
+  question: "Qual declaração deve ser realizada em um shell script para definir que ele deve ser interpretado pelo shell /bin/ksh?"
+  options:
+    - "export /bin/ksh"
+    - "declare /bin/ksh"
+    - "#!/bin/ksh"
+    - "set /bin/ksh"
+  answer: 3
+  comment: "A primeira linha de um shell script deve informar qual shell deve ser usado para interpretar o script, e isso é feito pelo indicador #!, termos conhecido por shebang. #shebang #bash #scripting #ksh"
+
+- id: "105-015"
+  topic: "105.1"
+  type: "discursive"
+  question: "Qual o comando utilizado para remover um alias definido na sessão atual do bash? (Informe apenas o comando, sem o caminho ou argumentos)"
+  answer: "unalias"
+  comment: "O comando unalias é interno ao bash e remove as definições de alias da sessão atual. A sintaxe é: unalias <nome-alias>. #unalias #alias #bash #shell"
+
+- id: "105-016"
+  topic: "105.2"
+  question: "Qual a saída que o comando seguinte produzirá?"
+  code: |
+    echo 'a b c d e' | while read var1 var2 var3; do
+    > echo $var3 $var2 $var1
+    > done
+  options:
+    - "a b c"
+    - "a b c d e"
+    - "c b a"
+    - "c d e b a"
+  answer: 4
+  comment: "Como 3 variáveis estão sendo lidas pelo comando read, e temos 5 valores sendo informados, 'a' será associado a var1, 'b' será associado a var2 e 'c d e' associado a var3. Atenção pois este é um comportamento do comando read, o mesmo NÃO acontece com os parâmetros de um script. #read #bash #scripting #while"
+
+- id: "105-017"
+  topic: "105.2"
+  question: "Qual opção do comando test é utilizada para verificar se um arquivo existe e é um arquivo regular?"
+  options:
+    - "-d"
+    - "-e"
+    - "-f"
+    - "-z"
+  answer: 3
+  comment: "A opção -e verifica se um arquivo existe, mas a opção -f verifica se além do arquivo existir, é um arquivo regular. Por exemplo, para um diretório, o -e terá resultado como verdadeiro (0) e o -f resultará em falso (1). #test #bash #scripting #conditionals"
+
+- id: "105-018"
+  topic: "105.1"
+  question: "Qual comando irá exibir todas as variáveis e funções definidas na sessão atual?"
+  options:
+    - "env"
+    - "echo $ENVIRONMENT"
+    - "export"
+    - "set"
+  answer: 4
+  comment: "O comando set mostra todas as variáveis, exportadas ou não, além das funções definidas na sessão atual. O comando env mostra apenas as variáveis que foram exportadas. #set #env #variaveis #bash #shell"
+
+- id: "105-019"
+  topic: "105.1"
+  question: "Qual comando vai exibir o PID do shell atual?"
+  options:
+    - "cat /proc/stat"
+    - "echo $?"
+    - "echo $$"
+    - "dmesg"
+    - "echo $SHELL"
+  answer: 3
+  comment: "O comando \"echo $$\" exibe o PID (Process ID) do shell em que se está conectado. #PID #bash #shell #variaveis"
+
+- id: "105-020"
+  topic: "105.1"
+  question: "Qual arquivo de definições do ambiente é executado sempre que uma sessão do bash é encerrada?"
+  options:
+    - "~/.bash_exit"
+    - "~/.profile"
+    - "~/.bashrc"
+    - "~/.bash_logout"
+    - "~/.bash_profile"
+  answer: 4
+  comment: "Ao encerrar uma sessão do bash, todas as definições e comandos inseridos no arquivo .bash_logout serão executados, por exemplo a remoção de um arquivo temporário ou um registro de log. #bash_logout #bash #shell #logout"
+
+- id: "105-021"
+  topic: "105.1"
+  type: "discursive"
+  question: "Qual comando o usuário pode utilizar para exibir todas as configurações de alias da sua sessão do bash? (Informe apenas o comando, sem o seu caminho ou argumentos)"
+  answer: "alias"
+  comment: "Os alias são exibidos ao se digitar o comando \"alias\" sem nenhum argumento. Um novo alias deve ser definido como: \"alias nome='comando --argumentos'\" #alias #bash #shell"
+
+- id: "105-022"
+  topic: "105.2"
+  question: "Qual será o resultado da seguinte instrução em um shell script?"
+  code: |
+    for i in `seq 0 3`
+    do
+        echo Valor $i
+    done
+  options:
+    - "Valor 0 1 2 3"
+    - "Valor 1 Valor 2 Valor 3"
+    - "Valor 0 Valor 1 Valor 2 Valor 3"
+    - "Valor 1 2 3"
+  answer: 3
+  comment: "Em cada loop a variável $i receberá um valor de 0 a 3, que será impressa após a palavra \"Valor\" pelo comando echo. #for #seq #bash #scripting"
+
+- id: "105-023"
+  topic: "105.2"
+  question: "Qual instrução pode ser utilizada para que o diretório /opt/relatorio/ seja criado apenas se o arquivo /etc/status existir?"
+  options:
+    - "[ -f /etc/status ] || mkdir /opt/relatorio"
+    - "[ -e /etc/status ] && mkdir /opt/relatorio"
+    - "[ /etc/status ] || mkdir /opt/relatorio"
+    - "mkdir /opt/relatorio && [ -f /etc/status ]"
+  answer: 2
+  comment: "No comando test, ou [ ], o -e indica se o arquivo ou diretório indicado existe, o -f tem o mesmo efeito mas apenas para arquivos. O uso do && faz com que o segundo comando só seja executado se o primeiro for executado com sucesso, o || é o contrário, o segundo comando só é executado se o primeiro tiver retorno de erro, diferente de 0. #test #operators #bash #scripting"
+
+- id: "105-024"
+  topic: "105.2"
+  question: "Considerando o script Exercicio.sh com as seguintes permissões, podemos afirmar que: (Selecione TRÊS Respostas Corretas)"
+  code: "-rwxr-xr-- 1 antonio suporte  262 ago 17 11:28 Exercicio.sh"
+  options:
+    - "O usuário antonio é o dono do script e pode executá-lo sem restrições."
+    - "O usuário jose, que não faz parte do grupo suporte, pode executar o script com restrições."
+    - "O usuário carlos, que faz parte do grupo suporte, pode executar o script."
+    - "O usuário maria, que faz parte do grupo suporte, não tem permissão de executar o script."
+    - "O usuário daniel, que não faz parte do grupo suporte, não tem permissão de utilizar o script."
+  answer: [1, 3, 5]
+  comment: "As permissões mostram que além do usuário dono do arquivo, qualquer usuário membro do grupo suporte tem permissão de execução do script, pela presença do caractere \"x\". #permissoes #chmod #bash #scripting"
+
+- id: "105-025"
+  topic: "105.2"
+  question: "Em um Shell Script, qual parâmetro especial contém a quantidade de argumentos informados no momento da execução do script?"
+  options:
+    - "$#"
+    - "$?"
+    - "$$"
+    - "$*"
+    - "$!"
+  answer: 1
+  comment: "O $# retorna a quantidade de parâmetros enviado pelo usuário no momento da execução. O $? é o código de retorno do último comando executado, o $$ o PID do processo/script atual e $* retorna todos os argumentos informados. #bash #parametros #scripting #shell"
+
+- id: "105-026"
+  topic: "105.1"
+  question: "Como um usuário pode definir através de um comando o shell que ele irá utilizar após cada login?"
+  options:
+    - "setenv"
+    - "chsh"
+    - "chage"
+    - "env"
+    - "set"
+  answer: 2
+  comment: "O comando chsh perguntará ao usuário qual shell ele deseja utilizar por padrão e essa configuração será incluída no arquivo /etc/passwd, tendo efeito no próximo login do usuário. A opção -s permite a definição do shell usado diretamente no comando, por exemplo: \"chsh -s /bin/ksh ricardo\" #chsh #shell #passwd #login"
+
+- id: "105-027"
+  topic: "105.2"
+  question: "Qual sintaxe da instrução for irá exibir linha a linha o conteúdo do arquivo alunos.txt?"
+  options:
+    - "for i in (cat alunos.txt); do echo $i; done"
+    - "for i in [cat alunos.txt]; do echo $i; done"
+    - "for i in `cat alunos.txt`; do echo $i ; done"
+    - "for i in alunos.txt; do echo $i; done"
+  answer: 3
+  comment: "A instrução for utiliza um comando que retornará uma sequência de entradas, que será analisada e executada linha a linha, em cada loop da instrução. #for #bash #scripting #loops"
+
+- id: "105-028"
+  topic: "105.2"
+  question: "Qual comando no shell verifica se o valor da variável VAR1 é maior ou igual que o valor da variável VAR2?"
+  options:
+    - "test $VAR1 >= VAR2"
+    - "test $VAR1 -gt $VAR2"
+    - "[ $VAR1 -ge $VAR2 ]"
+    - "[ $VAR1 -le $VAR2 ]"
+  answer: 3
+  comment: "A opção -ge do comando \"test\" significa \"maior ou igual (greater or equal)\". O comando test pode ser substituído pela sintaxe [ ] . #test #operators #bash #scripting"
+
+- id: "105-029"
+  topic: "105.1"
+  question: "Qual dos seguintes comandos exibe todas as variáveis do ambiente do shell atual?"
+  options:
+    - "set"
+    - "getenv"
+    - "ps"
+    - "lsshow"
+    - "lspci"
+  answer: 1
+  comment: "O comando set exibe todas as variáveis locais. Vale mencionar também o comando env, que exibe as variáveis globais, que foram exportadas. #set #env #variaveis #shell"
+
+- id: "105-030"
+  topic: "105.1"
+  question: "Qual arquivo de definições de ambiente é executado para todos os usuários após o processo de login?"
+  options:
+    - "/etc/profile"
+    - "/etc/login"
+    - "/etc/login.defs"
+    - "/etc/bash_profile"
+  answer: 1
+  comment: "O arquivo /etc/profile é executado para todos os usuários após um evento de login. O arquivo /etc/bash.bashrc é executado em cada nova sessão. Se após logado, uma nova sessão é iniciada, apenas o /etc/bash.bashrc é executado. #profile #login #bash #shell"
+
+- id: "105-031"
+  topic: "105.1"
+  question: "Qual dos comandos abaixo pode ser utilizado para executar um script na sessão atual do bash?"
+  options:
+    - "execute"
+    - "source"
+    - "function"
+    - "run"
+    - "exec"
+  answer: 2
+  comment: "O comando \"source\" permite ao usuário indicar um arquivo/script que será executado na sessão atual do shell, e não em uma sub-sessão, utilizar \". arquivo\" tem o mesmo efeito. #source #bash #scripting #shell"
+
+- id: "105-032"
+  topic: "105.2"
+  question: "Com relação às instruções condicionais e de loop utilizadas em shell scripts, quais afirmações são verdadeiras? (Selecione 3 Respostas)"
+  options:
+    - "Na instrução condicional \"if\" do shell script, a condição (verdadeiro ou falso) é determinada pelo código de saída do comando informado após a declaração \"if\"."
+    - "A instrução if sempre é utilizada em conjunto com o comando \"test\", mesmo que no formato [ expressão ]."
+    - "A instrução \"for i in {1..5}\" atribui à variável $i, em cada loop, um valor de 1 a 5."
+    - "A instrução \"until\" atua de forma inversa à instrução \"while\", as instruções são executadas enquanto a expressão informada for falsa."
+    - "No shell script, a instrução \"while\" pode ser finalizada apenas com o símbolo }."
+  answer: [1, 3, 4]
+  comment: "Após a instrução if um comando deve ser informando, podendo ser tanto o comando test para gerar uma condição, quanto um comando normal como um grep por exemplo, a execução desse comando vai gerar um código de saída, 0 é considerado verdadeiro, e diferente de 0 falso. A instrução while executa o loop enquanto a condição informada for verdadeira, a instrução until executa o loop até que a instrução informada seja verdadeira. #if #while #until #for #bash"
+
+- id: "105-033"
+  topic: "105.2"
+  question: "O script parametro.sh tem o conteúdo abaixo. Qual saída será obtida ao se executar o script com \"./parametro.sh A B C D E\"?"
+  code: |
+    #!/bin/bash
+    echo $1 $2 $3
+  options:
+    - "A B C D E"
+    - "A B C"
+    - "echo A B C"
+    - "A\nB\nC\nD\nE"
+    - "parametro.sh: unknown option"
+  answer: 2
+  comment: "Ao se utilizar parâmetros em scripts, cada valor informado será associado a uma variável de parâmetro. Observe a diferença desse comportamento com o do comando read. #bash #parametros #scripting #shell"
+
+- id: "105-034"
+  topic: "105.1"
+  question: "Qual comando irá exibir o código de saída do comando executado anteriormente no shell?"
+  options:
+    - "echo $PWD"
+    - "echo $OLDPWD"
+    - "echo $$"
+    - "echo $?"
+    - "echo $#"
+  answer: 4
+  comment: "O comando \"echo $?\" exibe o código de retorno (ou \"exit code\", ou \"return code\", ou \"exit status\") do comando executado anteriormente ao echo. #bash #exit-status #shell #variaveis"
+
+- id: "105-035"
+  topic: "105.1"
+  question: "Quais arquivos são executados automaticamente em toda nova sessão de shell bash? (Selecione 2 Respostas Corretas)"
+  options:
+    - "/etc/profile"
+    - "/etc/bash.bashrc"
+    - "~/.profilerc"
+    - "~/.profile"
+    - "~/.bashrc"
+  answer: [2, 5]
+  comment: "O ~/.bashrc é executado automaticamente em toda nova sessão de shell bash, logo após o /etc/bash.bashrc. Note que o /etc/profile e o ~/.profile são executados apenas quando um novo login acontece, mas uma nova sessão pode ser aberta sem que seja feito um novo login. #bashrc #bash.bashrc #bash #shell"
+
+- id: "105-036"
+  topic: "105.2"
+  question: "Qual a função do comando: test -x /opt/exercicio1.sh ?"
+  options:
+    - "Definir permissão de execução no script exercicio1.sh"
+    - "Verificar se o arquivo exercicio1.sh existe"
+    - "Verificar se o arquivo exercicio1.sh existe e se tem permissão de execução"
+    - "Verificar se o arquivo exercicio1.sh tem permissão de escrita"
+  answer: 3
+  comment: "A opção -x além de verificar se o arquivo existe, verifica se possui a permissão de execução, função semelhante das opções -r (read/leitura) e -w (write/escrita). Outras opções importantes para aquivos são -f que verifica se o arquivo existe e se é um arquivo regular (não um diretório ou device) e a opção -e que apenas verifica se o arquivo existe. #test #permissoes #bash #scripting"
+
+- id: "105-037"
+  topic: "105.2"
+  question: "Quais comandos a seguir podem ser utilizados para atribuir o resultado no comando \"hostname\" à variável nome? (Selecione 2 Respostas Corretas)"
+  options:
+    - "NOME=\"hostname\""
+    - "NOME=`hostname`"
+    - "NOME=$(hostname)"
+    - "NOME=${hostname}"
+    - "NOME < `hostname`"
+  answer: [2, 3]
+  comment: "A substituição de comandos pode ser feita através do uso do comando entre crases `comando`, ou dentro de $(comando). #bash #command-substitution #scripting #shell"
+
+- id: "105-038"
+  topic: "105.1"
+  question: "Qual arquivo presente no diretório HOME de um usuário pode utilizado para definição de teclas de atalho no bash?"
+  options:
+    - ".bashrc"
+    - ".inputrc"
+    - ".profile"
+    - ".alias"
+  answer: 2
+  comment: "O arquivo .inputrc pode ser utilizado na configuração de teclas de atalho e de como o shell responde às teclas. O arquivo /etc/inputrc também pode ser utilizado aplicando-se a todos os usuários. #inputrc #readline #bash #shell"
+
+- id: "105-039"
+  topic: "105.1"
+  question: "Das opções abaixo, quais são declarações de função válidas no bash? (Selecione 3 Respostas)"
+  options:
+    - "function exame () { echo \"Simulado LPIC-1\"; }"
+    - "function exame { echo \"Simulado LPIC-1\"; }"
+    - "function exame () { echo \"Simulado LPIC-1\" };"
+    - "exame() { echo \"Simulado LPIC-1\"; }"
+    - "exame { echo \"Simulado LPIC-1\"; }"
+  answer: [1, 2, 4]
+  comment: "Na declaração de uma função a palavra \"function\" pode ou não ser utilizada, é opcional. Usando o funcion, o uso do () é opcional, mas sem ele é obrigatório, e após isso a sequencia de comando entre {}, cada comando finalizado com o ; #function #bash #scripting #shell"
+
+- id: "105-040"
+  topic: "105.2"
+  question: "Quais das seguintes opções do comando test podem ser utilizadas para comparações entre valores numéricos? (Selecione 3 Respostas Corretas)"
+  options:
+    - "-d"
+    - "-gt"
+    - "-nt"
+    - "!="
+    - "-le"
+  answer: [2, 4, 5]
+  comment: "Dentre as opções listadas temos: -d : Verifica se um arquivo existe e é um diretório; -gt : Verifica se o VALOR1 é maior que (greater than) o VALOR2; -nt : Verifica se o Arquivo1 é mais novo que o Arquivo2; = : Verifica se o VALOR1 é diferente que o VALOR2. Também funciona para strings; -le : Verifica se o VALOR1 é menor ou igual (less than or equal) ao VALOR2. #test #operators #bash #scripting"
+
