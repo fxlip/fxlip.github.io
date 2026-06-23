@@ -1019,12 +1019,13 @@ function buildTopicLine(name, stats, opts = {}) {
     sep +
     `<span class="${bad ? 'quiz-fail' : 'quiz-pass'}">${escapeHtml(tPctStr)}</span>`
 
-  if (delta !== undefined && delta !== null) {
+  if (delta !== undefined) {
     const display = deltaLabel !== undefined
       ? deltaLabel
-      : formatDeltaLabel(delta)
-    const dClass  = delta === 0 ? 'quiz-sc-label' : (delta > 0 ? 'quiz-pass' : 'quiz-fail')
-    html += ` <span class="${dClass}">${display}</span>`
+      : (delta === null ? '(  --)' : formatDeltaLabel(delta))
+    const dClass  = (delta === null || delta === 0) ? 'quiz-sc-label'
+      : (delta > 0 ? 'quiz-pass' : 'quiz-fail')
+    html += sep + `<span class="${dClass}">${display}</span>`
   }
 
   if (showRevisar) {
@@ -1113,9 +1114,22 @@ describe('buildTopicLine', () => {
     expect(html.split('<span').length - 1).toBe(5)
   })
 
-  it('produz 6 spans com delta (sem sep antes do delta)', () => {
+  it('produz 7 spans com delta (coluna própria: sep + span do delta)', () => {
     const html = buildTopicLine('103.1', { correct: 4, total: 5 }, { delta: 1 })
-    expect(html.split('<span').length - 1).toBe(6)
+    expect(html.split('<span').length - 1).toBe(7)
+  })
+
+  it('delta nulo (sem base anterior) exibe placeholder (  --) em coluna própria', () => {
+    const html = buildTopicLine('103.1', { correct: 4, total: 5 }, { delta: null })
+    expect(html).toContain('(  --)')
+    expect(html).toContain('quiz-sc-label')
+    // coluna presente: 7 spans (incluindo o separador antes do delta)
+    expect(html.split('<span').length - 1).toBe(7)
+  })
+
+  it('delta undefined (Nível 1) não cria coluna de delta — 5 spans', () => {
+    const html = buildTopicLine('103.1', { correct: 4, total: 5 }, { delta: undefined })
+    expect(html.split('<span').length - 1).toBe(5)
   })
 
   it('usa deltaLabel quando fornecido em vez de calcular a string', () => {
@@ -1162,5 +1176,45 @@ describe('buildTopicLine', () => {
     const html = buildTopicLine('<103>', { correct: 1, total: 1 })
     expect(html).not.toContain('<103>')
     expect(html).toContain('&lt;103&gt;')
+  })
+})
+
+// =============================================================================
+// aggregateByExam — agrega subtópicos (105.1, 105.2, ...) por exame (105, ...)
+// Duplicada de assets/js/quiz.js para teste isolado.
+// =============================================================================
+
+function aggregateByExam(topicsMap) {
+  const agg = {}
+  for (const [name, s] of Object.entries(topicsMap || {})) {
+    const key = name.split('.')[0]
+    if (!agg[key]) agg[key] = { correct: 0, total: 0 }
+    agg[key].correct += s.correct || 0
+    agg[key].total   += s.total   || 0
+  }
+  return agg
+}
+
+describe('aggregateByExam', () => {
+  it('soma correct/total dos subtópicos sob o mesmo prefixo de exame', () => {
+    const out = aggregateByExam({
+      '105.1': { correct: 4, total: 4 },
+      '105.2': { correct: 2, total: 4 },
+      '106.1': { correct: 1, total: 2 },
+    })
+    expect(out).toEqual({
+      '105': { correct: 6, total: 8 },
+      '106': { correct: 1, total: 2 },
+    })
+  })
+
+  it('mapa vazio ou nulo retorna objeto vazio', () => {
+    expect(aggregateByExam({})).toEqual({})
+    expect(aggregateByExam(null)).toEqual({})
+  })
+
+  it('tolera campos ausentes (correct/total) tratando-os como 0', () => {
+    const out = aggregateByExam({ '109.4': {}, '109.1': { correct: 3, total: 5 } })
+    expect(out['109']).toEqual({ correct: 3, total: 5 })
   })
 })

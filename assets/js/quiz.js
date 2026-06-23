@@ -216,15 +216,28 @@
     return shuffle([...selected.values()]);
   }
 
-  function saveLevel2State(wrongQuestions, usedIds, examId) {
+  function saveLevel2State(wrongQuestions, usedIds, examId, prevTopics) {
     try {
       localStorage.setItem(LEVEL2_KEY, JSON.stringify({
         ts:             Date.now(),
         examId:         examId,
         usedIds:        usedIds,
         wrongQuestions: wrongQuestions,
+        prevTopics:     prevTopics || null,  // breakdown do nível anterior, p/ deltas
       }));
     } catch (_) {}
+  }
+
+  // Agrega um mapa de tópicos (105.1, 105.2, ...) por exame (105, 106, ...).
+  function aggregateByExam(topicsMap) {
+    const agg = {};
+    for (const [name, s] of Object.entries(topicsMap || {})) {
+      const key = name.split('.')[0];
+      if (!agg[key]) agg[key] = { correct: 0, total: 0 };
+      agg[key].correct += s.correct || 0;
+      agg[key].total   += s.total   || 0;
+    }
+    return agg;
   }
 
   function loadLevel2State() {
@@ -310,10 +323,14 @@
       sep +
       `<span class="${bad ? 'quiz-fail' : 'quiz-pass'}">${escapeHtml(tPctStr)}</span>`;
 
-    if (delta !== undefined && delta !== null) {
-      const display = deltaLabel !== undefined ? deltaLabel : formatDeltaLabel(delta);
-      const dClass  = delta === 0 ? 'quiz-sc-label' : (delta > 0 ? 'quiz-pass' : 'quiz-fail');
-      html += ` <span class="${dClass}">${display}</span>`;
+    // Coluna de delta vs nível anterior (presente do Nível 2 em diante).
+    // `undefined` → sem coluna (Nível 1); `null` → sem base anterior → '(  --)'.
+    if (delta !== undefined) {
+      const display = deltaLabel !== undefined ? deltaLabel
+                    : (delta === null ? '(  --)' : formatDeltaLabel(delta));
+      const dClass  = (delta === null || delta === 0) ? 'quiz-sc-label'
+                    : (delta > 0 ? 'quiz-pass' : 'quiz-fail');
+      html += sep + `<span class="${dClass}">${escapeHtml(display)}</span>`;
     }
 
     if (showRevisar) {
@@ -421,11 +438,14 @@
     const restored   = loadSession(sessionKey);
     const isRestore  = !!(restored && !restored.finished && restored.html);
 
-    const prevScores = isHigherLevel ? loadScores() : null;  // captura antes de saveExamScores sobrescrever
+    // Breakdown por tópico do nível anterior (para os deltas). Vem pelo
+    // level-state (geração) ou pela própria sessão (refresh no meio do nível).
+    let prevTopics = null;
 
     if (isRestore) {
       // Restaura a sessão exata salva (mesmas questões, ordem e marcações já feitas)
       container.innerHTML = restored.html;
+      prevTopics = restored.prevTopics || null;
     } else {
       // Guarda: acesso direto a ?level=N sem progressão orgânica → volta ao simulado base
       if (isHigherLevel) {
@@ -437,6 +457,7 @@
       }
 
       const lvl2State = isHigherLevel ? loadLevel2State() : null;
+      prevTopics = lvl2State?.prevTopics || null;
       let questions;
       if (isHigherLevel && lvl2State && lvl2State.wrongQuestions.length > 0) {
         clearLevel2State();
@@ -460,12 +481,10 @@
       if (window.applyHashMentions) window.applyHashMentions(container);
     }
 
-    // Estado do simulado (total/mcTotal derivados do DOM — serve geração e restauração)
+    // Estado do simulado (total derivado do DOM — serve geração e restauração)
     const total    = container.querySelectorAll('.quiz-q').length;
-    const mcTotal  = container.querySelectorAll('.quiz-q:not(.quiz-discursive)').length || 1;
     let answered   = 0;
-    let correct    = 0;
-    let correctAll = 0;            // acertos totais (inclui discursivas) p/ % de acerto
+    let correctAll = 0;            // acertos totais (MC + discursivas) — base do placar
     let timerSecs  = 0;
     let timerInterval = null;
     let finished   = false;
@@ -527,8 +546,8 @@
       saveSession(sessionKey, {
         v: 1, level: currentLevel, finished: false,
         html: container.innerHTML,
-        answered, correct, correctAll, startedAt,
-        wrongIds: [...wrongIds], topics,
+        answered, correctAll, startedAt,
+        wrongIds: [...wrongIds], topics, prevTopics,
       });
     };
 
@@ -565,31 +584,30 @@
       if (!scoreEl || !headerBody) return;
 
       {
-        const pct  = Math.round((correct / mcTotal) * 100);
+        const pct  = Math.round((correctAll / (total || 1)) * 100);
         const pass = pct >= 70;
 
-        // Delta geral (só em Nível 2+): pct atual vs pct do Nível 1
+        // Delta geral (só em Nível 2+): pct atual vs pct do nível anterior.
         let overallDeltaHtml = '';
-        if (isHigherLevel && prevScores) {
-          const l1Map = prevScores[Object.keys(topics)[0]?.split('.')[0]] || {};
+        if (isHigherLevel && prevTopics) {
           let prevC = 0, prevT = 0;
-          for (const entry of Object.values(l1Map)) {
+          for (const entry of Object.values(prevTopics)) {
             if (entry && typeof entry === 'object') {
               prevC += entry.correct || 0;
               prevT += entry.total   || 0;
             }
           }
-          const overallDelta = calcTopicDelta(prevC, prevT, correct, mcTotal);
+          const overallDelta = calcTopicDelta(prevC, prevT, correctAll, total);
           if (overallDelta !== null) {
             const dClass = overallDelta === 0 ? 'quiz-sc-label' : (overallDelta > 0 ? 'quiz-pass' : 'quiz-fail');
-            overallDeltaHtml = ` <span class="${dClass}">${formatDeltaLabel(overallDelta)}</span>`;
+            overallDeltaHtml = `<span class="quiz-sc-label"> · </span><span class="${dClass}">${formatDeltaLabel(overallDelta)}</span>`;
           }
         }
 
         // Linha final: contador vira acertos/total e a % ao vivo é
         // substituída pela % oficial (mesmos spans → sem duplicar).
         const countEl = document.getElementById('quiz-sc-count');
-        if (countEl) countEl.textContent = formatCount(correct, mcTotal);
+        if (countEl) countEl.textContent = formatCount(correctAll, total);
         const pctEl = document.getElementById('quiz-sc-answered');
         if (pctEl) {
           pctEl.className   = pass ? 'quiz-pass' : 'quiz-fail';
@@ -625,69 +643,34 @@
             ([, a], [, b]) => (a.correct / a.total) - (b.correct / b.total)
           );
 
-          // Simulado completo (type=prova): agrega subtópicos por exame (101, 102, ...)
+          // Simulado completo (type=prova): agrega subtópicos por exame (105, 106, ...)
           const examMeta  = window.__examMeta;
           const isProva   = examMeta && examMeta.type === 'prova';
           const displayLines = isProva
-            ? (() => {
-                const agg = {};
-                for (const [name, stats] of Object.entries(topics)) {
-                  const key = name.split('.')[0];
-                  if (!agg[key]) agg[key] = { correct: 0, total: 0 };
-                  agg[key].correct += stats.correct;
-                  agg[key].total   += stats.total;
-                }
-                return Object.entries(agg).sort(
-                  ([, a], [, b]) => (a.correct / a.total) - (b.correct / b.total)
-                );
-              })()
+            ? Object.entries(aggregateByExam(topics)).sort(
+                ([, a], [, b]) => (a.correct / a.total) - (b.correct / b.total)
+              )
             : sorted;
 
-          // Prova + Nível 2: agrega scores do Nível 1 por prefixo de exame
-          let l1ProvaAgg = null;
-          if (isHigherLevel && isProva) {
-            const l1Scores = prevScores?.[examId] || {};
-            l1ProvaAgg = {};
-            for (const [subtopic, entry] of Object.entries(l1Scores)) {
-              const key = subtopic.split('.')[0];
-              if (!l1ProvaAgg[key]) l1ProvaAgg[key] = { correct: 0, total: 0 };
-              if (entry && typeof entry === 'object') {
-                l1ProvaAgg[key].correct += entry.correct || 0;
-                l1ProvaAgg[key].total   += entry.total   || 0;
-              }
-            }
-          }
+          // Breakdown do nível anterior na mesma granularidade das linhas:
+          // agregado por exame (prova) ou por subtópico (tópico).
+          const prevMap = isHigherLevel && prevTopics
+            ? (isProva ? aggregateByExam(prevTopics) : prevTopics)
+            : null;
 
           displayLines.forEach(([name, stats]) => {
             const line = document.createElement('div');
             line.className = 't-out';
 
-            let delta      = null;
-            let deltaLabel = undefined;
-
-            if (isHigherLevel) {
-              if (isProva && l1ProvaAgg && l1ProvaAgg[name]) {
-                const l1 = l1ProvaAgg[name];
-                const d  = calcTopicDelta(l1.correct, l1.total, stats.correct, stats.total);
-                if (d !== null) {
-                  delta      = d;
-                  deltaLabel = formatDeltaLabel(d);
-                }
-              } else if (!isProva) {
-                const l1Entry = prevScores?.[examId]?.[name];
-                if (l1Entry && typeof l1Entry === 'object') {
-                  const d = calcTopicDelta(l1Entry.correct, l1Entry.total, stats.correct, stats.total);
-                  if (d !== null) {
-                    delta      = d;
-                    deltaLabel = formatDeltaLabel(d);
-                  }
-                }
-              }
+            // A partir do Nível 2 a coluna de delta aparece em TODOS os tópicos.
+            // `undefined` (Nível 1) → sem coluna; `null` → sem base anterior.
+            let delta = isHigherLevel ? null : undefined;
+            if (prevMap && prevMap[name]) {
+              delta = calcTopicDelta(prevMap[name].correct, prevMap[name].total, stats.correct, stats.total);
             }
 
             line.innerHTML = buildTopicLine(name, stats, {
               delta,
-              deltaLabel,
               displayName:  isProva ? ` ${name} ` : undefined,
               showRevisar:  stats.correct < stats.total,
             });
@@ -744,7 +727,7 @@
         if (wrongIds.size > 0 && pct < 100) {
           const wrongQs  = [...wrongIds].map(id => qById[id]).filter(Boolean);
           const usedIds  = [...container.querySelectorAll('.quiz-q')].map(el => el.dataset.id).filter(Boolean);
-          saveLevel2State(wrongQs, usedIds, examId);
+          saveLevel2State(wrongQs, usedIds, examId, topics);
 
           const nextLevel = currentLevel + 1;
           const errLabel  = wrongIds.size === 1 ? '1 questão errada' : `${wrongIds.size} questões erradas`;
@@ -784,7 +767,6 @@
 
           if (idx === correctIdx) {
             li.classList.add('quiz-correct');
-            correct++;
             correctAll++;
             if (topic) topics[topic].correct++;
           } else {
@@ -826,7 +808,7 @@
 
         answered++;
         qEl.querySelector('.quiz-explanation')?.classList.add('visible');
-        if (allCorrect) { correct++; correctAll++; if (topic) topics[topic].correct++; }
+        if (allCorrect) { correctAll++; if (topic) topics[topic].correct++; }
         else if (qEl.dataset.id) wrongIds.add(qEl.dataset.id);
         scrollToExplanation(qEl);
         updateScore();
@@ -843,11 +825,19 @@
 
     // Questões discursivas (Enter envia, Esc tira foco)
     container.querySelectorAll('.quiz-discursive').forEach(qEl => {
+      const topic    = normalizeTopic(qEl.dataset.topic);
       const textarea = qEl.querySelector('.quiz-textarea');
       const inputLi  = qEl.querySelector('.quiz-disc-input-li');
       const modelAns = qEl.querySelector('.quiz-model-answer');
       const explain  = qEl.querySelector('.quiz-explanation');
       let discAns;
+
+      // Discursiva tem gabarito exato (checkDiscursiveAnswer) → conta no tópico
+      // como qualquer outra questão.
+      if (topic) {
+        if (!topics[topic]) topics[topic] = { correct: 0, total: 0 };
+        topics[topic].total++;
+      }
       try { discAns = JSON.parse(qEl.dataset.discAnswer || '""'); }
       catch (_) { discAns = qEl.dataset.discAnswer || ''; }
 
@@ -864,7 +854,7 @@
         textarea.disabled = true;
 
         const isCorrect = checkDiscursiveAnswer(textarea.value, discAns);
-        if (isCorrect) correctAll++;
+        if (isCorrect) { correctAll++; if (topic) topics[topic].correct++; }
         modelAns.classList.add('visible', isCorrect ? 'quiz-disc-correct' : 'quiz-disc-wrong');
         if (explain && explain.textContent.trim()) explain.classList.add('visible');
         if (!isCorrect && qEl.dataset.id) wrongIds.add(qEl.dataset.id);
@@ -879,7 +869,6 @@
     // --------------------------------------------------------------------------
     if (isRestore) {
       answered   = restored.answered   || 0;
-      correct    = restored.correct    || 0;
       correctAll = restored.correctAll || 0;
       (restored.wrongIds || []).forEach(id => wrongIds.add(id));
       if (restored.topics) {
