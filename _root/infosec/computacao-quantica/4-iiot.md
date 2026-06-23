@@ -27,6 +27,7 @@ math: true
 
 -> AMQP (Advanced Message Queuing Protocol): Protocolo wire ponto a ponto aberto operando sobre TCP. É assíncrono, multicanal e voltado para cenários corporativos complexos que exigem alta interoperabilidade de middlewares (MOM).
 
+---
 
 ## Industrial Analytics & Ferramentas Cognitivas
 

@@ -11,6 +11,7 @@ math: true
 
 # Borda, Névoa e Nuvem
 
+- 
 
 -> Camada de Nuvem (Cloud): Data centers centralizados encarregados do controle central, armazenamento massivo e processamento de big data. A nuvem exige que você "leve os dados até o processamento".
 
@@ -20,8 +21,6 @@ math: true
 
 
 ---
-
-# Componentes Críticos e Vetores de Autonomia
 
 ## Inteligência Artificial na Borda
 
@@ -33,7 +32,9 @@ math: true
 
 -> Privacidade: Retém o dado bruto na origem, reduzindo a exposição a servidores de terceiros.
 
-## Edge Blockchain e Arquiteturas Colaborativas (MoCA)
+---
+
+## Edge Blockchain e Arquiteturas Colaborativas
 
 -> Imutabilidade Distribuída: O uso combinado de ledgers imutáveis na borda reduz custos de auditoria, acelera o tempo de resposta e descentraliza o controle de ativos.
 
