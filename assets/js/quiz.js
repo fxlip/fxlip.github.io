@@ -363,6 +363,34 @@
   // Inicialização principal
   // --------------------------------------------------------------------------
 
+  // Persistência da sessão em andamento (sobrevive a refresh) ------------------
+  const SESSION_KEY = 'fxlip_quiz_session';
+  function sessionKeyFor(level) {
+    return window.location.pathname + '|' + level;
+  }
+  function loadAllSessions() {
+    try { return JSON.parse(localStorage.getItem(SESSION_KEY)) || {}; }
+    catch (_) { return {}; }
+  }
+  function loadSession(key) {
+    const s = loadAllSessions()[key];
+    return (s && s.v === 1) ? s : null;
+  }
+  function saveSession(key, data) {
+    try {
+      const all = loadAllSessions();
+      all[key] = data;
+      localStorage.setItem(SESSION_KEY, JSON.stringify(all));
+    } catch (_) {}
+  }
+  function clearSession(key) {
+    try {
+      const all = loadAllSessions();
+      delete all[key];
+      localStorage.setItem(SESSION_KEY, JSON.stringify(all));
+    } catch (_) {}
+  }
+
   function initQuizFromBank() {
     const bank      = window.__questionBank;
     const config    = window.__quizConfig;
@@ -374,50 +402,64 @@
     const currentLevel  = parseInt(new URLSearchParams(window.location.search).get('level') || '1', 10);
     const isHigherLevel = currentLevel > 1;
 
-    // Guarda: acesso direto a ?level=N sem progressão orgânica → redireciona para o simulado base
-    if (isHigherLevel) {
-      const state = loadLevel2State();
-      if (!state || state.wrongQuestions.length === 0) {
-        window.location.replace(window.location.pathname);
-        return;
-      }
-    }
+    const sessionKey = sessionKeyFor(currentLevel);
+    const restored   = loadSession(sessionKey);
+    const isRestore  = !!(restored && !restored.finished && restored.html);
 
     const prevScores = isHigherLevel ? loadScores() : null;  // captura antes de saveExamScores sobrescrever
-    const lvl2State  = isHigherLevel ? loadLevel2State() : null;
 
-    let questions;
-    if (isHigherLevel && lvl2State && lvl2State.wrongQuestions.length > 0) {
-      clearLevel2State();
-      const totalCount = Object.values(config).reduce((a, b) => a + b, 0);
-      const fromLevel2 = selectLevel2Questions(
-        bank,
-        lvl2State.wrongQuestions,
-        lvl2State.usedIds || [],
-        totalCount,
-        config
-      );
-      questions = fromLevel2.length > 0 ? fromLevel2 : selectQuestions(bank, config);
+    if (isRestore) {
+      // Restaura a sessão exata salva (mesmas questões, ordem e marcações já feitas)
+      container.innerHTML = restored.html;
     } else {
-      questions = selectQuestions(bank, config);
+      // Guarda: acesso direto a ?level=N sem progressão orgânica → volta ao simulado base
+      if (isHigherLevel) {
+        const state = loadLevel2State();
+        if (!state || state.wrongQuestions.length === 0) {
+          window.location.replace(window.location.pathname);
+          return;
+        }
+      }
+
+      const lvl2State = isHigherLevel ? loadLevel2State() : null;
+      let questions;
+      if (isHigherLevel && lvl2State && lvl2State.wrongQuestions.length > 0) {
+        clearLevel2State();
+        const totalCount = Object.values(config).reduce((a, b) => a + b, 0);
+        const fromLevel2 = selectLevel2Questions(
+          bank,
+          lvl2State.wrongQuestions,
+          lvl2State.usedIds || [],
+          totalCount,
+          config
+        );
+        questions = fromLevel2.length > 0 ? fromLevel2 : selectQuestions(bank, config);
+      } else {
+        questions = selectQuestions(bank, config);
+      }
+
+      // Renderiza questões sorteadas
+      container.innerHTML = questions.map(renderQuestion).join('');
+
+      // Processa hashtags nos comentários das questões (#bash, #find, etc.)
+      if (window.applyHashMentions) window.applyHashMentions(container);
     }
 
-    // Renderiza questões sorteadas
-    container.innerHTML = questions.map(renderQuestion).join('');
-
-    // Processa hashtags nos comentários das questões (#bash, #find, etc.)
-    if (window.applyHashMentions) window.applyHashMentions(container);
-
-    // Estado do simulado
-    const total    = questions.length;
-    const mcTotal  = questions.filter(q => q.type !== 'discursive').length || 1;
+    // Estado do simulado (total/mcTotal derivados do DOM — serve geração e restauração)
+    const total    = container.querySelectorAll('.quiz-q').length;
+    const mcTotal  = container.querySelectorAll('.quiz-q:not(.quiz-discursive)').length || 1;
     let answered   = 0;
     let correct    = 0;
+    let correctAll = 0;            // acertos totais (inclui discursivas) p/ % de acerto
     let timerSecs  = 0;
     let timerInterval = null;
+    let finished   = false;
+    let startedAt  = null;         // epoch (ms) em que o cronômetro começou
+    const EXAM_SECONDS = 90 * 60;  // duração oficial do simulado (90 min)
+    const TIMER_TOGGLE = 60;       // alterna corrido/decrescente a cada N segundos
     const topics   = {};
     const wrongIds = new Set();  // IDs das questões erradas (para Nível 2)
-    const qById    = Object.fromEntries(questions.filter(q => q.id).map(q => [q.id, q]));
+    const qById    = Object.fromEntries(bank.filter(q => q.id).map(q => [q.id, q]));
 
     // Injeta placar no terminal-body do header
     const headerBody = document.querySelector('header .terminal-body');
@@ -430,8 +472,7 @@
       scoreEl.innerHTML =
         `<span id="quiz-timer" class="quiz-sc-num">00:00</span>` +
         `<span class="quiz-sc-label"> · </span>` +
-        `<span id="quiz-sc-answered" class="quiz-sc-num"> 0</span>` +
-        `<span class="quiz-sc-label">/${String(total).padEnd(2, ' ')}</span>`;
+        `<span id="quiz-sc-answered" class="quiz-sc-num" title="acerto nas questões já respondidas">--%</span>`;
       headerBody.appendChild(scoreEl);
     }
 
@@ -439,24 +480,71 @@
     // Atualização de placar
     // --------------------------------------------------------------------------
 
+    // Renderiza o timer alternando entre tempo corrido (MM:SS) e tempo
+    // decrescente dos 90 min (-MM:SS), trocando a cada TIMER_TOGGLE segundos.
+    const renderTimer = () => {
+      const timerEl = document.getElementById('quiz-timer');
+      if (!timerEl) return;
+      const showCountdown = Math.floor(timerSecs / TIMER_TOGGLE) % 2 === 1;
+      if (showCountdown) {
+        timerEl.textContent = '-' + formatTime(Math.max(0, EXAM_SECONDS - timerSecs));
+        timerEl.classList.add('quiz-timer-down');
+      } else {
+        timerEl.textContent = formatTime(timerSecs);
+        timerEl.classList.remove('quiz-timer-down');
+      }
+    };
+
+    const startTimer = () => {
+      if (timerInterval) return;
+      timerInterval = setInterval(() => {
+        timerSecs++;
+        renderTimer();
+        if (!finished && timerSecs >= EXAM_SECONDS) finalizeExam();  // tempo esgotado
+      }, 1000);
+    };
+
+    // Salva a sessão atual (DOM + placar) para sobreviver a um refresh
+    const persist = () => {
+      if (finished) return;
+      saveSession(sessionKey, {
+        v: 1, level: currentLevel, finished: false,
+        html: container.innerHTML,
+        answered, correct, correctAll, startedAt,
+        wrongIds: [...wrongIds], topics,
+      });
+    };
+
     const updateScore = () => {
       const ansEl = document.getElementById('quiz-sc-answered');
-      if (ansEl) ansEl.textContent = String(answered).padStart(2, ' ');
-
-      // Inicia o timer na primeira resposta
-      if (answered === 1 && !timerInterval) {
-        timerInterval = setInterval(() => {
-          timerSecs++;
-          const timerEl = document.getElementById('quiz-timer');
-          if (timerEl) timerEl.textContent = formatTime(timerSecs);
-        }, 1000);
+      if (ansEl) {
+        ansEl.textContent = answered
+          ? Math.round((correctAll / answered) * 100) + '%'
+          : '--%';
       }
 
-      // Resultado final quando todas as questões forem respondidas
-      if (answered === total) {
-        clearInterval(timerInterval);
-        if (!scoreEl || !headerBody) return;
+      // Inicia o cronômetro na primeira resposta
+      if (answered === 1 && !timerInterval) {
+        startedAt = Date.now();
+        startTimer();
+      }
 
+      if (answered === total) { finalizeExam(); return; }  // respondeu tudo
+      persist();
+    };
+
+    // Finaliza o simulado: ao responder todas as questões ou quando o tempo (90 min)
+    // se esgota. Idempotente (guarda em `finished`).
+    function finalizeExam() {
+      if (finished) return;
+      finished = true;
+      clearInterval(timerInterval);
+      clearSession(sessionKey);
+      container.classList.add('quiz-finished');
+      renderTimer();
+      if (!scoreEl || !headerBody) return;
+
+      {
         const pct  = Math.round((correct / mcTotal) * 100);
         const pass = pct >= 70;
 
@@ -626,7 +714,7 @@
         // Botão Nível 2 — disponível quando houver mais de 1 erro
         if (wrongIds.size > 1 && !pass) {
           const wrongQs  = [...wrongIds].map(id => qById[id]).filter(Boolean);
-          const usedIds  = questions.map(q => q.id).filter(Boolean);
+          const usedIds  = [...container.querySelectorAll('.quiz-q')].map(el => el.dataset.id).filter(Boolean);
           saveLevel2State(wrongQs, usedIds, examId);
 
           const nextLevel = currentLevel + 1;
@@ -638,7 +726,7 @@
           headerBody.appendChild(lvl2Line);
         }
       }
-    };
+    }
 
     // --------------------------------------------------------------------------
     // Event listeners nas questões renderizadas
@@ -658,7 +746,7 @@
 
       items.forEach((li, idx) => {
         li.addEventListener('click', () => {
-          if (qEl.classList.contains('quiz-answered')) return;
+          if (finished || qEl.classList.contains('quiz-answered')) return;
 
           qEl.classList.add('quiz-answered');
           answered++;
@@ -667,6 +755,7 @@
           if (idx === correctIdx) {
             li.classList.add('quiz-correct');
             correct++;
+            correctAll++;
             if (topic) topics[topic].correct++;
           } else {
             li.classList.add('quiz-wrong');
@@ -692,7 +781,7 @@
       }
 
       const submit = () => {
-        if (qEl.classList.contains('quiz-answered')) return;
+        if (finished || qEl.classList.contains('quiz-answered')) return;
         qEl.classList.add('quiz-answered');
 
         let allCorrect = true;
@@ -707,7 +796,7 @@
 
         answered++;
         qEl.querySelector('.quiz-explanation')?.classList.add('visible');
-        if (allCorrect) { correct++; if (topic) topics[topic].correct++; }
+        if (allCorrect) { correct++; correctAll++; if (topic) topics[topic].correct++; }
         else if (qEl.dataset.id) wrongIds.add(qEl.dataset.id);
         scrollToExplanation(qEl);
         updateScore();
@@ -715,7 +804,7 @@
 
       items.forEach(li => {
         li.addEventListener('click', () => {
-          if (qEl.classList.contains('quiz-answered')) return;
+          if (finished || qEl.classList.contains('quiz-answered')) return;
           li.classList.toggle('quiz-selected');
           if (qEl.querySelectorAll('li.quiz-selected').length === correctIdxs.length) submit();
         });
@@ -739,12 +828,13 @@
         if (e.key === 'Escape') { e.preventDefault(); textarea.blur(); return; }
         if (e.key !== 'Enter') return;
         e.preventDefault();
-        if (qEl.classList.contains('quiz-answered')) return;
+        if (finished || qEl.classList.contains('quiz-answered')) return;
 
         qEl.classList.add('quiz-answered');
         textarea.disabled = true;
 
         const isCorrect = checkDiscursiveAnswer(textarea.value, discAns);
+        if (isCorrect) correctAll++;
         modelAns.classList.add('visible', isCorrect ? 'quiz-disc-correct' : 'quiz-disc-wrong');
         if (explain && explain.textContent.trim()) explain.classList.add('visible');
         if (!isCorrect && qEl.dataset.id) wrongIds.add(qEl.dataset.id);
@@ -753,6 +843,40 @@
         updateScore();
       });
     });
+
+    // --------------------------------------------------------------------------
+    // Restauração da sessão (após refresh) ou gravação da sessão recém-gerada
+    // --------------------------------------------------------------------------
+    if (isRestore) {
+      answered   = restored.answered   || 0;
+      correct    = restored.correct    || 0;
+      correctAll = restored.correctAll || 0;
+      (restored.wrongIds || []).forEach(id => wrongIds.add(id));
+      if (restored.topics) {
+        for (const [t, s] of Object.entries(restored.topics)) {
+          if (!topics[t]) topics[t] = { correct: 0, total: s.total || 0 };
+          topics[t].correct = s.correct || 0;
+        }
+      }
+      startedAt = restored.startedAt || null;
+
+      const ansEl = document.getElementById('quiz-sc-answered');
+      if (ansEl) {
+        ansEl.textContent = answered ? Math.round((correctAll / answered) * 100) + '%' : '--%';
+      }
+
+      if (startedAt) {
+        timerSecs = Math.floor((Date.now() - startedAt) / 1000);
+        renderTimer();
+        // Conclui se o tempo já se esgotou enquanto fora, ou se tudo já fora respondido
+        if (answered >= total || timerSecs >= EXAM_SECONDS) finalizeExam();
+        else startTimer();
+      } else if (answered >= total) {
+        finalizeExam();
+      }
+    } else {
+      persist();  // grava a sessão inicial para sobreviver a um refresh imediato
+    }
   }
 
   document.addEventListener('DOMContentLoaded', () => {

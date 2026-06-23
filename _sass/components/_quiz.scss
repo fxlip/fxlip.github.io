@@ -186,6 +186,11 @@
   color: var(--accent-cyan);
 }
 
+/* Timer em modo decrescente (contagem regressiva dos 90 min) */
+#quiz-timer.quiz-timer-down {
+  color: var(--green);
+}
+
 .quiz-sc-correct-num {
   color: var(--green);
 }
