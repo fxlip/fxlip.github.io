@@ -472,7 +472,7 @@
     - "systemctl list-timers"
     - "systemctl timers-show"
   answer: 3
-  comment: "O comando \"systemctl list-timers exibe todos os agendamentos (timers) ativos pelo systemd. A opção --all inclui também os timers inativos. #systemd #timer #list-timers"
+  comment: "O comando systemctl list-timers exibe todos os agendamentos (timers) ativos pelo systemd. A opção --all inclui também os timers inativos. #systemd #timer #list-timers"
 
 - id: "107-044"
   topic: "107.2"

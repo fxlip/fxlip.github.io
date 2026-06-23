@@ -739,17 +739,19 @@
           });
         }
 
-        // Botão Nível 2 — disponível quando houver mais de 1 erro
-        if (wrongIds.size > 1 && !pass) {
+        // Botão de próximo nível — disponível enquanto não atingir 100%,
+        // para continuar o desafio (mesmo já tendo passado dos 70%).
+        if (wrongIds.size > 0 && pct < 100) {
           const wrongQs  = [...wrongIds].map(id => qById[id]).filter(Boolean);
           const usedIds  = [...container.querySelectorAll('.quiz-q')].map(el => el.dataset.id).filter(Boolean);
           saveLevel2State(wrongQs, usedIds, examId);
 
           const nextLevel = currentLevel + 1;
+          const errLabel  = wrongIds.size === 1 ? '1 questão errada' : `${wrongIds.size} questões erradas`;
           const lvl2Line  = document.createElement('div');
           lvl2Line.className = 't-out quiz-lvl2-line';
           lvl2Line.innerHTML =
-            `<span class="quiz-sc-label">${wrongIds.size} questões erradas -&gt; </span>` +
+            `<span class="quiz-sc-label">${errLabel} -&gt; </span>` +
             `<a href="?level=${nextLevel}" class="mention-link">[nível ${nextLevel}]</a>`;
           headerBody.appendChild(lvl2Line);
         }
