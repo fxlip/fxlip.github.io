@@ -34,6 +34,7 @@ math: true
 
 ---
 
+
 ## Edge Blockchain e Arquiteturas Colaborativas
 
 -> Imutabilidade Distribuída: O uso combinado de ledgers imutáveis na borda reduz custos de auditoria, acelera o tempo de resposta e descentraliza o controle de ativos.

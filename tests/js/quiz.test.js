@@ -37,6 +37,14 @@ function formatTime(s) {
   return `${m}:${ss}`
 }
 
+function formatCount(answered, total) {
+  return `${String(answered).padStart(2, ' ')}/${String(total ?? 0).padEnd(2, ' ')}`
+}
+
+function formatLivePct(pct) {
+  return (pct == null ? ' --' : String(pct).padStart(3, ' ')) + '%'
+}
+
 function shuffleOptions(options, answer) {
   const tagged   = options.map((text, i) => ({ text, correct: i === answer - 1 }))
   const shuffled = shuffle(tagged)
@@ -157,6 +165,42 @@ describe('formatTime', () => {
   it('mantém zero à esquerda em minutos e segundos', () => {
     expect(formatTime(61)).toBe('01:01')
     expect(formatTime(9)).toBe('00:09')
+  })
+})
+
+// =============================================================================
+// Testes: formatCount — contador "respondidas/total" do header
+// =============================================================================
+
+describe('formatCount', () => {
+  it('alinha acerto à direita e total à esquerda em 2 colunas', () => {
+    expect(formatCount(4, 8)).toBe(' 4/8 ')
+    expect(formatCount(0, 2)).toBe(' 0/2 ')
+  })
+
+  it('mantém alinhamento com números de 2 dígitos', () => {
+    expect(formatCount(10, 12)).toBe('10/12')
+    expect(formatCount(3, 10)).toBe(' 3/10')
+  })
+
+  it('total ausente vira 0', () => {
+    expect(formatCount(0)).toBe(' 0/0 ')
+  })
+})
+
+// =============================================================================
+// Testes: formatLivePct — % de acerto ao vivo alinhada em 3 colunas
+// =============================================================================
+
+describe('formatLivePct', () => {
+  it('null/sem respostas exibe " --%"', () => {
+    expect(formatLivePct(null)).toBe(' --%')
+  })
+
+  it('alinha a porcentagem em 3 colunas, igual ao resultado final', () => {
+    expect(formatLivePct(0)).toBe('  0%')
+    expect(formatLivePct(42)).toBe(' 42%')
+    expect(formatLivePct(100)).toBe('100%')
   })
 })
 

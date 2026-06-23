@@ -40,16 +40,31 @@
     return `${m}:${ss}`;
   }
 
-  // Rola até a explicação recém-exibida — incentiva a leitura e já aproxima
-  // a próxima questão. Centraliza para manter a questão respondida acima e
-  // a próxima visível abaixo.
+  // Contador "respondidas/total" no header — mesmo alinhamento das linhas de
+  // resultado (buildTopicLine): correto à direita em 2, total à esquerda em 2.
+  function formatCount(answered, total) {
+    return `${String(answered).padStart(2, ' ')}/${String(total ?? 0).padEnd(2, ' ')}`;
+  }
+
+  // Percentagem de acerto ao vivo, alinhada em 3 colunas como no resultado
+  // final. `null`/sem respostas → " --%".
+  function formatLivePct(pct) {
+    return (pct == null ? ' --' : String(pct).padStart(3, ' ')) + '%';
+  }
+
+  // Desce a tela até a explicação recém-exibida — alinha o topo dela logo
+  // abaixo do header sticky (descontando sua altura) para incentivar a leitura.
   function scrollToExplanation(qEl) {
     const target = qEl.querySelector('.quiz-explanation.visible') ||
                    qEl.querySelector('.quiz-model-answer.visible');
-    if (!target || typeof target.scrollIntoView !== 'function') return;
+    if (!target || typeof target.getBoundingClientRect !== 'function') return;
+    if (typeof window.scrollTo !== 'function') return;
+    const header = document.querySelector('header');
+    const offset = (header ? header.getBoundingClientRect().height : 0) + 12;
     const reduce = window.matchMedia &&
                    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    const top = window.scrollY + target.getBoundingClientRect().top - offset;
+    window.scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
   }
 
   // --------------------------------------------------------------------------
@@ -456,7 +471,7 @@
     let finished   = false;
     let startedAt  = null;         // epoch (ms) em que o cronômetro começou
     const EXAM_SECONDS = 90 * 60;  // duração oficial do simulado (90 min)
-    const TIMER_TOGGLE = 60;       // alterna corrido/decrescente a cada N segundos
+    const COUNTDOWN_AT = 30 * 60;  // passa a decrescer nos últimos 30 min
     const topics   = {};
     const wrongIds = new Set();  // IDs das questões erradas (para Nível 2)
     const qById    = Object.fromEntries(bank.filter(q => q.id).map(q => [q.id, q]));
@@ -472,7 +487,9 @@
       scoreEl.innerHTML =
         `<span id="quiz-timer" class="quiz-sc-num">00:00</span>` +
         `<span class="quiz-sc-label"> · </span>` +
-        `<span id="quiz-sc-answered" class="quiz-sc-num" title="acerto nas questões já respondidas">--%</span>`;
+        `<span id="quiz-sc-count" class="quiz-sc-label" title="questões respondidas">${formatCount(0, total)}</span>` +
+        `<span class="quiz-sc-label"> · </span>` +
+        `<span id="quiz-sc-answered" class="quiz-sc-num" title="acerto nas questões já respondidas">${formatLivePct(null)}</span>`;
       headerBody.appendChild(scoreEl);
     }
 
@@ -480,14 +497,14 @@
     // Atualização de placar
     // --------------------------------------------------------------------------
 
-    // Renderiza o timer alternando entre tempo corrido (MM:SS) e tempo
-    // decrescente dos 90 min (-MM:SS), trocando a cada TIMER_TOGGLE segundos.
+    // Renderiza o timer: sempre crescente (MM:SS) e só passa a decrescer
+    // (-MM:SS) nos últimos 30 min, contando o tempo restante até o fim.
     const renderTimer = () => {
       const timerEl = document.getElementById('quiz-timer');
       if (!timerEl) return;
-      const showCountdown = Math.floor(timerSecs / TIMER_TOGGLE) % 2 === 1;
-      if (showCountdown) {
-        timerEl.textContent = '-' + formatTime(Math.max(0, EXAM_SECONDS - timerSecs));
+      const remaining = EXAM_SECONDS - timerSecs;
+      if (remaining <= COUNTDOWN_AT) {
+        timerEl.textContent = formatTime(Math.max(0, remaining));
         timerEl.classList.add('quiz-timer-down');
       } else {
         timerEl.textContent = formatTime(timerSecs);
@@ -516,11 +533,14 @@
     };
 
     const updateScore = () => {
+      const countEl = document.getElementById('quiz-sc-count');
+      if (countEl) countEl.textContent = formatCount(answered, total);
+
       const ansEl = document.getElementById('quiz-sc-answered');
       if (ansEl) {
-        ansEl.textContent = answered
-          ? Math.round((correctAll / answered) * 100) + '%'
-          : '--%';
+        ansEl.textContent = formatLivePct(
+          answered ? Math.round((correctAll / answered) * 100) : null
+        );
       }
 
       // Inicia o cronômetro na primeira resposta
@@ -566,9 +586,17 @@
           }
         }
 
+        // Linha final: contador vira acertos/total e a % ao vivo é
+        // substituída pela % oficial (mesmos spans → sem duplicar).
+        const countEl = document.getElementById('quiz-sc-count');
+        if (countEl) countEl.textContent = formatCount(correct, mcTotal);
+        const pctEl = document.getElementById('quiz-sc-answered');
+        if (pctEl) {
+          pctEl.className   = pass ? 'quiz-pass' : 'quiz-fail';
+          pctEl.textContent = formatLivePct(pct);
+        }
+
         scoreEl.innerHTML +=
-          `<span class="quiz-sc-label"> · </span>` +
-          `<span class="${pass ? 'quiz-pass' : 'quiz-fail'}">${String(pct).padStart(3, ' ')}%</span>` +
           overallDeltaHtml +
           `<span class="quiz-sc-label"> · </span>` +
           `<span class="${pass ? 'quiz-pass' : 'quiz-fail'}">[${pass ? 'aprovado' : 'reprovado'}]</span>`;
@@ -860,9 +888,11 @@
       }
       startedAt = restored.startedAt || null;
 
+      const countEl = document.getElementById('quiz-sc-count');
+      if (countEl) countEl.textContent = formatCount(answered, total);
       const ansEl = document.getElementById('quiz-sc-answered');
       if (ansEl) {
-        ansEl.textContent = answered ? Math.round((correctAll / answered) * 100) + '%' : '--%';
+        ansEl.textContent = formatLivePct(answered ? Math.round((correctAll / answered) * 100) : null);
       }
 
       if (startedAt) {
