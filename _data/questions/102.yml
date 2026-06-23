@@ -92,7 +92,7 @@
     - "O disco contém 2 partições primárias e duas estendidas"
     - "Ou /dev/sda1 ou /dev/sda2 é uma partição estendida"
   answer: 5
-  comment: "No particionamento MBR, há um limite de 4 partições primárias ou 3 primárias e 1 estendida na qual serão associadas as partições lógicas. As partições primárias e estendidas serão sempre de 1 a 4 (sda1, sda2, sda3 e sda4) e as partições lógicas a partir de 5 (sda5 e etc). #mbr"
+  comment: "No particionamento MBR, há um limite de 4 partições primárias ou 3 primárias e 1 estendida na qual serão associadas as partições lógicas. As partições primárias e estendidas serão sempre de 1 a 4 (sda1, sda2, sda3 e sda4) e as partições lógicas a partir de 5 (sda5 e etc). #MBR"
 
 - id: "102-010"
   topic: "102.2"
@@ -248,7 +248,7 @@
     - "FAT"
     - "btrfs"
   answer: 4
-  comment: "Sistemas que utilizam o UEFI como firmware possuem uma partição especial chamada ESP (EFI System Partition), que é montada no diretório /boot/efi/. Nesse diretório estão localizados os bootloaders que serão utilizados no processo de boot. Essa partição deve ser sempre do tipo FAT. #efi"
+  comment: "Sistemas que utilizam o UEFI como firmware possuem uma partição especial chamada ESP (EFI System Partition), que é montada no diretório /boot/efi/. Nesse diretório estão localizados os bootloaders que serão utilizados no processo de boot. Essa partição deve ser sempre do tipo FAT. #EFI"
 
 - id: "102-023"
   topic: "102.5"
@@ -322,7 +322,7 @@
     - "/boot/esp"
     - "/efi"
   answer: 2
-  comment: "Sistemas que utilizam o UEFI como firmare possuem uma partição especial chamada ESP (EFI System Partition), que é montada no diretório /boot/efi/. Nesse diretório estão localizados os bootloaders que serão utilizados no processo de boot. Essa partição deve ser sempre do tipo FAT. #uefi #esp"
+  comment: "Sistemas que utilizam o UEFI como firmare possuem uma partição especial chamada ESP (EFI System Partition), que é montada no diretório /boot/efi/. Nesse diretório estão localizados os bootloaders que serão utilizados no processo de boot. Essa partição deve ser sempre do tipo FAT. #UEFI #ESP"
 
 - id: "102-030"
   topic: "102.4"
@@ -514,7 +514,7 @@
     - "GPT (GUID Partition)"
     - "PG (Physical Group)"
   answer: [1, 2, 3]
-  comment: "O LVM (Logical Volume Manager) possui 5 elementos principais: PV (Physical Volume) — disco ou partição física; VG (Volume Group) — agrupamento de PVs; LV (Logical Volume) — volume lógico criado dentro de um VG; PE (Physical Extent) e LE (Logical Extent) — unidades mínimas de alocação. GPT é um esquema de particionamento, não um elemento do LVM. #lvm #pv #vg #lv"
+  comment: "O LVM (Logical Volume Manager) possui 5 elementos principais: PV (Physical Volume) — disco ou partição física; VG (Volume Group) — agrupamento de PVs; LV (Logical Volume) — volume lógico criado dentro de um VG; PE (Physical Extent) e LE (Logical Extent) — unidades mínimas de alocação. GPT é um esquema de particionamento, não um elemento do LVM. #LVM #pv #vg #lv"
 
 - id: "102-047"
   topic: "102.2"
@@ -538,7 +538,7 @@
     - "128"
     - "Ilimitado"
   answer: 2
-  comment: "O MBR (Master Boot Record) suporta no máximo 4 partições primárias. Uma alternativa comum é usar 3 partições primárias e 1 estendida, dentro da qual são criadas partições lógicas (em quantidade maior). Para discos maiores ou mais partições, recomenda-se o GPT. #mbr"
+  comment: "O MBR (Master Boot Record) suporta no máximo 4 partições primárias. Uma alternativa comum é usar 3 partições primárias e 1 estendida, dentro da qual são criadas partições lógicas (em quantidade maior). Para discos maiores ou mais partições, recomenda-se o GPT. #MBR"
 
 - id: "102-049"
   topic: "102.4"
@@ -647,7 +647,7 @@
     - "A partição /dev/sda4 deve ser criada para evitar erros lógicos"
     - "Duas das partições do sistema são do tipo estendida"
   answer: [1, 2]
-  comment: "O particionamento MBR permite no máximo 4 partições primárias, ou 3 primárias e 1 estendida. Na partição estendida são associadas as partições lógicas. Partições primárias ou estendidas são numeradas de 1 a 4, partições lógicas são numeradas a partir de 5. Dessa forma, a existência das partições 5 e 6 significa que existem 2 partições lógicas, e consequentemente 1 das partições 1, 2 ou 3 é necessariamente uma partição estendida. Não é obrigatório que todas as partições 1, 2, 3 e 4 existam, pode haver apenas as partições 1 e 3 por exemplo, mas as partições lógicas devem seguir a sequência a partir de 5. #mbr #partição #lógica #estendida"
+  comment: "O particionamento MBR permite no máximo 4 partições primárias, ou 3 primárias e 1 estendida. Na partição estendida são associadas as partições lógicas. Partições primárias ou estendidas são numeradas de 1 a 4, partições lógicas são numeradas a partir de 5. Dessa forma, a existência das partições 5 e 6 significa que existem 2 partições lógicas, e consequentemente 1 das partições 1, 2 ou 3 é necessariamente uma partição estendida. Não é obrigatório que todas as partições 1, 2, 3 e 4 existam, pode haver apenas as partições 1 e 3 por exemplo, mas as partições lógicas devem seguir a sequência a partir de 5. #MBR"
 
 - id: "102-059"
   topic: "102.1"
@@ -659,7 +659,7 @@
     - "Boot loaders a serem utilizados no processo de boot"
     - "Dados referentes ao Master Boot Record"
   answer: 4
-  comment: "Sistemas que utilizam o UEFI como firmware possuem uma partição especial chamada ESP (EFI System Partition), que é montada no diretório /boot/efi/. Nesse diretório estão localizados os bootloaders que serão utilizados no processo de boot. Essa partição deve ser sempre do tipo FAT. #uefi #esp #efi #bootloader #partição"
+  comment: "Sistemas que utilizam o UEFI como firmware possuem uma partição especial chamada ESP (EFI System Partition), que é montada no diretório /boot/efi/. Nesse diretório estão localizados os bootloaders que serão utilizados no processo de boot. Essa partição deve ser sempre do tipo FAT. #UEFI #ESP #EFI #bootloader"
 
 - id: "102-060"
   topic: "102.2"
@@ -670,7 +670,7 @@
     - "dd if=/dev/sda of=backup.mbr bs=512"
     - "dd if=/dev/sda of=backup.mbr bs=446 count=1"
   answer: 4
-  comment: "Os 512 primeiros bytes de um dispositivo são reservados à área de MBR (Master Boot Record), sendo que nos primeiros 446 bytes estão reservados para o bootloader, os 64 bytes seguintes armazenam a tabela de partições, e os últimos 2 bytes são referentes ao \"número mágico\", um número de verificação. Com base nisso o comando dd pode ser utilizado na criação e restauro de backups da MBR. #dd #mbr #bootloader"
+  comment: "Os 512 primeiros bytes de um dispositivo são reservados à área de MBR (Master Boot Record), sendo que nos primeiros 446 bytes estão reservados para o bootloader, os 64 bytes seguintes armazenam a tabela de partições, e os últimos 2 bytes são referentes ao \"número mágico\", um número de verificação. Com base nisso o comando dd pode ser utilizado na criação e restauro de backups da MBR. #dd #MBR #bootloader"
 
 - id: "102-061"
   topic: "102.2"
@@ -727,7 +727,7 @@
     - "Criptografia dos discos e volumes do sistema"
     - "Criação de snapshots para registro dos estados de cada volume"
   answer: [1, 2, 5]
-  comment: "O LVM permite a alocação dinâmica dos dispositivos de armazenamento em Volume Groups (VG) e Logical Volumes (LV), que podem ser ajustados e redimensionados conforme as necessidades do sistema. Também está disponível o recurso de Snapshot, que permite a geração de uma \"foto\" do volume lógico, que pode ser posteriormente recuperada. #lvm"
+  comment: "O LVM permite a alocação dinâmica dos dispositivos de armazenamento em Volume Groups (VG) e Logical Volumes (LV), que podem ser ajustados e redimensionados conforme as necessidades do sistema. Também está disponível o recurso de Snapshot, que permite a geração de uma \"foto\" do volume lógico, que pode ser posteriormente recuperada. #LVM"
 
 - id: "102-066"
   topic: "102.3"
@@ -769,7 +769,7 @@
     - "/home"
     - "/var"
   answer: [2, 3]
-  comment: "Alguns diretórios não podem ser montados em partições diferentes da partição /. A partição / é a primeira a ser montada e após isso arquivos de configuração e ferramentas serão utilizados para finalizar a inicialização do sistema. Os diretórios que devem estar na mesma partição são: /etc, /sbin, /bin, /lib, /media, /mnt, /proc, /sys, /dev. #sbin #etc"
+  comment: "Alguns diretórios não podem ser montados em partições diferentes da partição /. A partição / é a primeira a ser montada e após isso arquivos de configuração e ferramentas serão utilizados para finalizar a inicialização do sistema. Os diretórios que devem estar na mesma partição são: /etc, /sbin, /bin, /lib, /media, /mnt, /proc, /sys, /dev. #sbin"
 
 - id: "102-070"
   topic: "102.6"

@@ -27,7 +27,7 @@
   type: "discursive"
   question: "Você deseja executar uma aplicação X na sua máquina local, mas ela deve ser exibida no primeiro servidor de exibição de foo. O comando é \"xapplication -display __________\" (Não use números de tela)"
   answer: "foo:0"
-  comment: "A sintaxe do display no X11 segue o padrão hostname:display_number.screen_number. Como a questão pede o primeiro servidor de exibição (0) e proíbe o número da tela (o que vem depois do ponto), o preenchimento correto é apenas o nome do host seguido de :0. #X11 #display"
+  comment: "A sintaxe do display no X11 segue o padrão hostname:display_number.screen_number. Como a questão pede o primeiro servidor de exibição (0) e proíbe o número da tela (o que vem depois do ponto), o preenchimento correto é apenas o nome do host seguido de :0. #X11 #DISPLAY"
 
 - id: "106-004"
   topic: "106.1"
@@ -39,7 +39,7 @@
     - "Na seção Screen, Sub-Seção Display, opção Modes"
     - "Na seção ServerLayout, Sub-Seção Screen, opção Resolution"
   answer: 4
-  comment: "A seção 'Screen' é onde ocorre o vínculo entre o Monitor e o Device (placa de vídeo). Dentro dela, a subseção 'Display' define as profundidades de cor e a opção 'Modes' especifica as resoluções de tela suportadas. #xorg #x11 #display #modes"
+  comment: "A seção 'Screen' é onde ocorre o vínculo entre o Monitor e o Device (placa de vídeo). Dentro dela, a subseção 'Display' define as profundidades de cor e a opção 'Modes' especifica as resoluções de tela suportadas. #Xorg #X11 #DISPLAY"
 
 - id: "106-005"
   topic: "106.1"
@@ -51,7 +51,7 @@
     - "A versão do servidor em execução na máquina 10.0.0.50 é a 1.0"
     - "A variável de ambiente DISPLAY não tem relação com o servidor X."
   answer: 1
-  comment: "A variável DISPLAY segue o formato 'hostname:número_do_servidor.número_da_tela'. Como a contagem inicia em 0, o valor ':1' indica o segundo servidor gráfico (display) da máquina. #DISPLAY #X11 #networking #env"
+  comment: "A variável DISPLAY segue o formato 'hostname:número_do_servidor.número_da_tela'. Como a contagem inicia em 0, o valor ':1' indica o segundo servidor gráfico (display) da máquina. #DISPLAY #X11 #env"
 
 - id: "106-006"
   topic: "106.1"
@@ -63,7 +63,7 @@
     - "xaccess +server1.domain.com"
     - "Xorg -connect server1.domain.com"
   answer: 3
-  comment: "O comando xhost controla o acesso ao servidor X baseado em hosts. O prefixo '+' concede permissão explicitamente ao host especificado. Sem argumentos, o xhost lista as permissões atuais. #xhost #x11 #security #network"
+  comment: "O comando xhost controla o acesso ao servidor X baseado em hosts. O prefixo '+' concede permissão explicitamente ao host especificado. Sem argumentos, o xhost lista as permissões atuais. #xhost #X11"
 
 - id: "106-007"
   topic: "106.3"
@@ -75,7 +75,7 @@
     - "Sticky Keys"
     - "On-Screen Keyboard"
   answer: 2
-  comment: "O recurso Bounce Keys (Teclas de Repercussão) ignora pressões repetidas da mesma tecla em um curto intervalo de tempo. Diferente dele, o Sticky Keys permite acionar teclas modificadoras sequencialmente, e o Slow Keys exige que a tecla seja mantida pressionada por um tempo mínimo. #accessibility #x11 #keyboard #bouncekeys"
+  comment: "O recurso Bounce Keys (Teclas de Repercussão) ignora pressões repetidas da mesma tecla em um curto intervalo de tempo. Diferente dele, o Sticky Keys permite acionar teclas modificadoras sequencialmente, e o Slow Keys exige que a tecla seja mantida pressionada por um tempo mínimo. #X11 #BounceKeys"
 
 - id: "106-008"
   topic: "106.1"
@@ -87,7 +87,7 @@
     - "Window Manager"
     - "DE"
   answer: 4
-  comment: "O Window Manager (Gerenciador de Janelas) é o componente que controla a aparência e o posicionamento das janelas. Exemplos incluem Mutter (GNOME), KWin (KDE) e Xfwm (Xfce). #windowmanager #desktop #gui #x11"
+  comment: "O Window Manager (Gerenciador de Janelas) é o componente que controla a aparência e o posicionamento das janelas. Exemplos incluem Mutter (GNOME), KWin (KDE) e Xfwm (Xfce). #windowmanager #X11"
 
 - id: "106-009"
   topic: "106.1"
@@ -98,7 +98,7 @@
     - "$HOME/.Xlogs"
     - "$HOME/.xsession-errors"
   answer: 4
-  comment: "O arquivo ~/.xsession-errors armazena mensagens de erro, avisos e logs de aplicativos executados durante a sessão gráfica do usuário. É o primeiro lugar onde um administrador deve olhar quando um aplicativo GUI falha em iniciar ou fecha inesperadamente. #xsession-errors #X11 #logs #troubleshooting"
+  comment: "O arquivo ~/.xsession-errors armazena mensagens de erro, avisos e logs de aplicativos executados durante a sessão gráfica do usuário. É o primeiro lugar onde um administrador deve olhar quando um aplicativo GUI falha em iniciar ou fecha inesperadamente. #xsession-errors #X11"
 
 - id: "106-010"
   topic: "106.2"
@@ -110,7 +110,7 @@
     - "Xfce"
     - "MATE"
   answer: 3
-  comment: "Wayland não é um ambiente de desktop, mas sim um protocolo que especifica a comunicação entre o servidor gráfico (compositor) e seus clientes, visando substituir o X11. KDE, Gnome, Xfce e MATE são Desktop Environments completos. #wayland #x11 #desktop #protocol"
+  comment: "Wayland não é um ambiente de desktop, mas sim um protocolo que especifica a comunicação entre o servidor gráfico (compositor) e seus clientes, visando substituir o X11. KDE, Gnome, Xfce e MATE são Desktop Environments completos. #wayland #X11"
 
 - id: "106-011"
   topic: "106.1"
@@ -121,7 +121,7 @@
     - "export SCREEN=10.0.0.100"
     - "xwin -d 10.0.0.100"
   answer: 2
-  comment: "A variável de ambiente DISPLAY define aonde serão exibidas as janelas do ambiente gráfico, deve ser definida com o IP do destino e exportada. #DISPLAY #X11 #env #remote"
+  comment: "A variável de ambiente DISPLAY define aonde serão exibidas as janelas do ambiente gráfico, deve ser definida com o IP do destino e exportada. #DISPLAY #X11 #env"
 
 - id: "106-012"
   topic: "106.3"
@@ -133,7 +133,7 @@
     - "Screen Reader"
     - "xauth"
   answer: [1, 3, 4]
-  comment: "O Repeat Keys permite controlar a entrada repetida de um caractere que é mantido pressionado pelo usuário. O Mouse keys permite o uso do ponteiro do mouse pelo teclado e o Screen Reader permite que o texto que aparece na tela seja lido. #acessibilidade #a11y #desktop #X11"
+  comment: "O Repeat Keys permite controlar a entrada repetida de um caractere que é mantido pressionado pelo usuário. O Mouse keys permite o uso do ponteiro do mouse pelo teclado e o Screen Reader permite que o texto que aparece na tela seja lido. #X11"
 
 - id: "106-013"
   topic: "106.2"
@@ -144,7 +144,7 @@
     - "RFB"
     - "XDMCP"
   answer: 4
-  comment: "O XDMCP (X Display Manager Control Protocol) é implementado pelo display manager. O protocolo é simples, sem recursos de compressão ou criptografia. #XDMCP #X11 #remote #display-manager"
+  comment: "O XDMCP (X Display Manager Control Protocol) é implementado pelo display manager. O protocolo é simples, sem recursos de compressão ou criptografia. #XDMCP #X11 #DisplayManager"
 
 - id: "106-014"
   topic: "106.1"
@@ -155,7 +155,7 @@
     - "Device"
     - "InputDevice"
   answer: 4
-  comment: "Na seção InputDevice, especificações sobre o mouse e teclado podem ser realizadas. Outras seções importantes são: \"Files\" – Caminhos para alguns arquivos importantes, principalmente o FontsPath. \"ServerLayout\" – Configurações Gerais do Servidor X. \"Module\" – Carregamento de módulos extras. \"Monitor\" – Configuração do monitor utilizado. \"Device\" – Configuração da placa de vídeo e driver. \"Screen\" – Combinação do Monitor com o Device, principalmente configuração da resolução da tela. #xorg #InputDevice #X11 #teclado"
+  comment: "Na seção InputDevice, especificações sobre o mouse e teclado podem ser realizadas. Outras seções importantes são: \"Files\" – Caminhos para alguns arquivos importantes, principalmente o FontsPath. \"ServerLayout\" – Configurações Gerais do Servidor X. \"Module\" – Carregamento de módulos extras. \"Monitor\" – Configuração do monitor utilizado. \"Device\" – Configuração da placa de vídeo e driver. \"Screen\" – Combinação do Monitor com o Device, principalmente configuração da resolução da tela. #Xorg #InputDevice #X11"
 
 - id: "106-015"
   topic: "106.1"
@@ -166,7 +166,7 @@
     - "GUI"
     - "Window Manager"
   answer: 1
-  comment: "O Display Manager é o responsável por controlar a interface gráfica de login no ambiente gráfico, a tela inicial em que é informado o usuário e a senha. Como exemplo temos o LightDM, GDM, XDM, LXDM e etc. #DisplayManager #login #X11 #desktop"
+  comment: "O Display Manager é o responsável por controlar a interface gráfica de login no ambiente gráfico, a tela inicial em que é informado o usuário e a senha. Como exemplo temos o LightDM, GDM, XDM, LXDM e etc. #DisplayManager #login #X11"
 
 - id: "106-016"
   topic: "106.3"
@@ -177,7 +177,7 @@
     - "Aumentar o tamanho das letras na tela do terminal."
     - "Possibilitar o uso, através de um mouse, de um teclado virtual que é exibido na tela."
   answer: 2
-  comment: "O recurso de Sticky Keys ajuda usuários que possuem dificuldades em pressionar mais de uma tecla ao mesmo tempo. #StickyKeys #acessibilidade #a11y #X11"
+  comment: "O recurso de Sticky Keys ajuda usuários que possuem dificuldades em pressionar mais de uma tecla ao mesmo tempo. #StickyKeys #X11"
 
 - id: "106-017"
   topic: "106.2"
@@ -189,7 +189,7 @@
     - "MInt"
     - "GNOME"
   answer: [2, 3, 5]
-  comment: "GNOME, KDE e Xfce são Desktop Environments, além destas temos LXDE, MATE, Cinnamon e vários outras. XDM é um Display Manager e Mint vem da distribuição Linux Mint, o que é diferente de um DE. #desktop #GNOME #KDE #Xfce"
+  comment: "GNOME, KDE e Xfce são Desktop Environments, além destas temos LXDE, MATE, Cinnamon e vários outras. XDM é um Display Manager e Mint vem da distribuição Linux Mint, o que é diferente de um DE. #GNOME #KDE #Xfce"
 
 - id: "106-018"
   topic: "106.1"
@@ -200,14 +200,14 @@
     - "xhost +192.168.8.10"
     - "xhost +192.168.8.55"
   answer: 4
-  comment: "O comando xhost é utilizado para definir quais origens podem acessar o servidor X da máquina. Sem argumentos ele exibe as configurações atuais. #xhost #X11 #remote #security"
+  comment: "O comando xhost é utilizado para definir quais origens podem acessar o servidor X da máquina. Sem argumentos ele exibe as configurações atuais. #xhost #X11"
 
 - id: "106-019"
   topic: "106.1"
   type: "discursive"
   question: "Ao utilizar o recurso de redirecionamento X11 no SSH, qual variável de ambiente será definida automaticamente na máquina remota para possibilitar essa conexão? (Informe apenas o nome da variável)"
   answer: "DISPLAY"
-  comment: "A variável de ambiente DISPLAY será configurada com a informação da localização do servidor X que será utilizado na conexão. #DISPLAY #X11 #SSH #forwarding"
+  comment: "A variável de ambiente DISPLAY será configurada com a informação da localização do servidor X que será utilizado na conexão. #DISPLAY #X11 #SSH"
 
 - id: "106-020"
   topic: "106.3"
@@ -218,7 +218,7 @@
     - "Repeated Keys"
     - "Toggle Keys"
   answer: 1
-  comment: "Com o \"Bounce Keys\" habilitado, se o usuário pressionar a mesma teclas duas ou mais vezes rapidamente, a tecla será registrada apenas uma vez. O \"Sticky Keys\" é utilizado para o caso do usuário não ser capaz de pressionar duas teclas ao mesmo tempo. #BounceKeys #acessibilidade #a11y #X11"
+  comment: "Com o \"Bounce Keys\" habilitado, se o usuário pressionar a mesma teclas duas ou mais vezes rapidamente, a tecla será registrada apenas uma vez. O \"Sticky Keys\" é utilizado para o caso do usuário não ser capaz de pressionar duas teclas ao mesmo tempo. #BounceKeys #X11"
 
 - id: "106-021"
   topic: "106.2"
@@ -230,14 +230,14 @@
     - "XDP"
     - "VNC"
   answer: 3
-  comment: "O XDMCP (X Display Manager Control Protocol) é o protocolo nativo do X11. O SPICE (Simple Protocol for Independent Computing Environment) é uma solução completa e segura para acesso remoto. O VNC não é um protocolo, é uma aplicação que utiliza o protoclo RFB (Remote FrameBuffer). #SPICE #XDMCP #VNC #remote"
+  comment: "O XDMCP (X Display Manager Control Protocol) é o protocolo nativo do X11. O SPICE (Simple Protocol for Independent Computing Environment) é uma solução completa e segura para acesso remoto. O VNC não é um protocolo, é uma aplicação que utiliza o protoclo RFB (Remote FrameBuffer). #SPICE #XDMCP #VNC"
 
 - id: "106-022"
   topic: "106.1"
   type: "discursive"
   question: "Qual o nome padrão do arquivo de configuração do servidor X11? (Informe apenas o nome do arquivo, sem o caminho completo)"
   answer: "xorg.conf"
-  comment: "O Xorg X11 tem como principal arquivo de configuração o /etc/xorg.conf. #xorg.conf #X11 #Xorg #config"
+  comment: "O Xorg X11 tem como principal arquivo de configuração o /etc/xorg.conf. #xorg.conf #X11 #Xorg"
 
 - id: "106-023"
   topic: "106.1"
@@ -249,7 +249,7 @@
     - "xauthority"
     - "Xorg"
   answer: [2, 3]
-  comment: "O xhost é utilizado para listar, adicionar e remover IP, Redes, ou Host que podem ou não fazer o acesso remoto ao servidor X. O xauth permite esse controle baseado em hashs, ou magic cookies, que são armazenados no arquivo ~/.Xauthority. #xhost #xauth #X11 #security"
+  comment: "O xhost é utilizado para listar, adicionar e remover IP, Redes, ou Host que podem ou não fazer o acesso remoto ao servidor X. O xauth permite esse controle baseado em hashs, ou magic cookies, que são armazenados no arquivo ~/.Xauthority. #xhost #xauth #X11"
 
 - id: "106-024"
   topic: "106.2"
@@ -260,7 +260,7 @@
     - "Spice"
     - "mutter"
   answer: 3
-  comment: "Um dos recursos do Spice é o \"USB Redirection\", que permite que os clientes utilizem os dispositivos USB dos servidores. #Spice #USB #remote #desktop"
+  comment: "Um dos recursos do Spice é o \"USB Redirection\", que permite que os clientes utilizem os dispositivos USB dos servidores. #SPICE #USB"
 
 - id: "106-025"
   topic: "106.3"
@@ -271,5 +271,5 @@
     - "Kmag"
     - "BRLTTY"
   answer: 2
-  comment: "O GOK (Gnome On-Screen Keyboard) é um software que implementa um teclado virtual via interface gráfica permitindo que o usuário possa inserir texto utilizando o mouse. #GOK #acessibilidade #a11y #teclado"
+  comment: "O GOK (Gnome On-Screen Keyboard) é um software que implementa um teclado virtual via interface gráfica permitindo que o usuário possa inserir texto utilizando o mouse. #GOK"
 

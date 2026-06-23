@@ -46,7 +46,7 @@
     - "/etc/skel"
     - "/home/profile"
   answer: 1
-  comment: "O arquivo /etc/bash.bashrc (Padrão Debian) ou /etc/bashrc (Padrão RedHat) é executado em toda nova sessão. Já o arquivo /etc/profile é invocado apenas durante o processo de login inicial. #bashrc #profile #etc #shell"
+  comment: "O arquivo /etc/bash.bashrc (Padrão Debian) ou /etc/bashrc (Padrão RedHat) é executado em toda nova sessão. Já o arquivo /etc/profile é invocado apenas durante o processo de login inicial. #bashrc #profile #shell"
 
 - id: "105-004"
   topic: "105.1"
@@ -58,7 +58,7 @@
     - "Criando uma função no /etc/bash.bashrc"
     - "O prompt possui um valor padrão e só pode ser alterado através de modificações no kernel."
   answer: 1
-  comment: "A variável de ambiente PS1 (Prompt String 1) é utilizada para definir o formato do prompt principal do terminal shell. Através dela, é possível injetar strings estáticas ou caracteres de escape para exibir informações dinâmicas. #PS1 #env #bash #prompt"
+  comment: "A variável de ambiente PS1 (Prompt String 1) é utilizada para definir o formato do prompt principal do terminal shell. Através dela, é possível injetar strings estáticas ou caracteres de escape para exibir informações dinâmicas. #PS1 #env #bash"
 
 - id: "105-005"
   topic: "105.2"
@@ -70,7 +70,7 @@
     - 'Pela expressão "end if"'
     - 'Pela expressão "fi"'
   answer: 5
-  comment: "O bloco if é encerrado pela instrução 'fi' (if invertido). Outras estruturas seguem lógica similar, como o case que encerra com 'esac'. Já os loops while, for e until utilizam o 'done'. #bash #scripting #if #shell"
+  comment: "O bloco if é encerrado pela instrução 'fi' (if invertido). Outras estruturas seguem lógica similar, como o case que encerra com 'esac'. Já os loops while, for e until utilizam o 'done'. #bash #if #shell"
 
 - id: "105-006"
   topic: "105.2"
@@ -83,7 +83,7 @@
     - "Uma sequência numérica decrescente de 10 a 5"
     - "A sintaxe do comando está incorreta"
   answer: 2
-  comment: "O comando seq gera um número por linha seguindo a sintaxe: seq [início] [incremento] [fim]. Se apenas dois argumentos forem passados, o incremento padrão é 1. #seq #bash #coreutils #scripting"
+  comment: "O comando seq gera um número por linha seguindo a sintaxe: seq [início] [incremento] [fim]. Se apenas dois argumentos forem passados, o incremento padrão é 1. #seq #bash"
 
 - id: "105-007"
   topic: "105.2"
@@ -94,7 +94,7 @@
     - "for VAR1 in `seq 5` echo 'O valor de $VAR1 é $VAR1' sleep 1 done"
     - "for i in `grep '/bin/bash' /etc/passwd`; do USUARIO=`echo $i| cut -f1 -d':'`; echo 'Usuário $USUARIO'; done"
   answer: 3
-  comment: "A estrutura do loop for no bash exige a palavra-chave 'do' para iniciar o bloco de comandos e 'done' para encerrá-lo. Na terceira opção, o 'do' foi omitido, o que causará um erro de sintaxe. #for #bash #loops #syntax"
+  comment: "A estrutura do loop for no bash exige a palavra-chave 'do' para iniciar o bloco de comandos e 'done' para encerrá-lo. Na terceira opção, o 'do' foi omitido, o que causará um erro de sintaxe. #for #bash"
 
 - id: "105-008"
   topic: "105.2"
@@ -105,7 +105,7 @@
     - "É exibida uma sequência de números de 10 a 1"
     - "É exibida uma sequência de números de 0 a 10"
   answer: 2
-  comment: "Quando apenas um argumento é passado para o comando seq, ele é interpretado como o número final, iniciando a contagem padrão em 1. O resultado é um número por linha até o limite definido. #seq #bash #coreutils #scripting"
+  comment: "Quando apenas um argumento é passado para o comando seq, ele é interpretado como o número final, iniciando a contagem padrão em 1. O resultado é um número por linha até o limite definido. #seq #bash"
 
 - id: "105-009"
   topic: "105.2"
@@ -116,7 +116,7 @@
     - "[ -e /etc/lpi ] ; echo 'O arquivo existe'"
     - "[ /etc/lpi ] | echo 'O arquivo existe'"
   answer: 2
-  comment: "O operador lógico && (AND) executa o segundo comando apenas se o primeiro retornar sucesso (zero). A opção -f valida se o caminho é um arquivo regular. O operador || (OR) faria o oposto, e o ponto-e-vírgula executaria independente do resultado. #bash #test #operators #scripting"
+  comment: "O operador lógico && (AND) executa o segundo comando apenas se o primeiro retornar sucesso (zero). A opção -f valida se o caminho é um arquivo regular. O operador || (OR) faria o oposto, e o ponto-e-vírgula executaria independente do resultado. #bash #test"
 
 - id: "105-010"
   topic: "105.1"
@@ -127,7 +127,7 @@
     - "export NOME"
     - "export $NOME"
   answer: 3
-  comment: "Ao exportar uma variável com o comando \"export\", todos os sub-shell passam a enxergar essa variável, diz-se então que ela é uma variável global. Atenção pois no uso do export a variável não deve ser informada com o $. #export #env #variaveis #bash #shell"
+  comment: "Ao exportar uma variável com o comando \"export\", todos os sub-shell passam a enxergar essa variável, diz-se então que ela é uma variável global. Atenção pois no uso do export a variável não deve ser informada com o $. #export #env #bash #shell"
 
 - id: "105-011"
   topic: "105.2"
@@ -138,7 +138,7 @@
     - "2 6 10 14 18"
     - "4\n6\n8\n10\n12\n14\n16\n18\n20"
   answer: 2
-  comment: "O resultado do comando seq sempre irá gerar um número por linha. Além disso, a sintaxe pode ser: seq <número-final>; seq <primeiro-número> <último-numero>; seq <primeiro-número> <incremento> <último-numero>. #seq #bash #coreutils #scripting"
+  comment: "O resultado do comando seq sempre irá gerar um número por linha. Além disso, a sintaxe pode ser: seq <número-final>; seq <primeiro-número> <último-numero>; seq <primeiro-número> <incremento> <último-numero>. #seq #bash"
 
 - id: "105-012"
   topic: "105.1"
@@ -154,7 +154,7 @@
     - "soma 1 2"
     - "soma 1 + 2"
   answer: 3
-  comment: "Uma função pode ser utilizada da mesma forma que um comando, apenas informando seu nome e seus argumentos. #bash #function #shell #scripting"
+  comment: "Uma função pode ser utilizada da mesma forma que um comando, apenas informando seu nome e seus argumentos. #bash #function #shell"
 
 - id: "105-013"
   topic: "105.1"
@@ -177,7 +177,7 @@
     - "#!/bin/ksh"
     - "set /bin/ksh"
   answer: 3
-  comment: "A primeira linha de um shell script deve informar qual shell deve ser usado para interpretar o script, e isso é feito pelo indicador #!, termos conhecido por shebang. #shebang #bash #scripting #ksh"
+  comment: "A primeira linha de um shell script deve informar qual shell deve ser usado para interpretar o script, e isso é feito pelo indicador #!, termos conhecido por shebang. #shebang #bash #ksh"
 
 - id: "105-015"
   topic: "105.1"
@@ -199,7 +199,7 @@
     - "c b a"
     - "c d e b a"
   answer: 4
-  comment: "Como 3 variáveis estão sendo lidas pelo comando read, e temos 5 valores sendo informados, 'a' será associado a var1, 'b' será associado a var2 e 'c d e' associado a var3. Atenção pois este é um comportamento do comando read, o mesmo NÃO acontece com os parâmetros de um script. #read #bash #scripting #while"
+  comment: "Como 3 variáveis estão sendo lidas pelo comando read, e temos 5 valores sendo informados, 'a' será associado a var1, 'b' será associado a var2 e 'c d e' associado a var3. Atenção pois este é um comportamento do comando read, o mesmo NÃO acontece com os parâmetros de um script. #read #bash #while"
 
 - id: "105-017"
   topic: "105.2"
@@ -210,7 +210,7 @@
     - "-f"
     - "-z"
   answer: 3
-  comment: "A opção -e verifica se um arquivo existe, mas a opção -f verifica se além do arquivo existir, é um arquivo regular. Por exemplo, para um diretório, o -e terá resultado como verdadeiro (0) e o -f resultará em falso (1). #test #bash #scripting #conditionals"
+  comment: "A opção -e verifica se um arquivo existe, mas a opção -f verifica se além do arquivo existir, é um arquivo regular. Por exemplo, para um diretório, o -e terá resultado como verdadeiro (0) e o -f resultará em falso (1). #test #bash"
 
 - id: "105-018"
   topic: "105.1"
@@ -221,7 +221,7 @@
     - "export"
     - "set"
   answer: 4
-  comment: "O comando set mostra todas as variáveis, exportadas ou não, além das funções definidas na sessão atual. O comando env mostra apenas as variáveis que foram exportadas. #set #env #variaveis #bash #shell"
+  comment: "O comando set mostra todas as variáveis, exportadas ou não, além das funções definidas na sessão atual. O comando env mostra apenas as variáveis que foram exportadas. #set #env #bash #shell"
 
 - id: "105-019"
   topic: "105.1"
@@ -233,7 +233,7 @@
     - "dmesg"
     - "echo $SHELL"
   answer: 3
-  comment: "O comando \"echo $$\" exibe o PID (Process ID) do shell em que se está conectado. #PID #bash #shell #variaveis"
+  comment: "O comando \"echo $$\" exibe o PID (Process ID) do shell em que se está conectado. #PID #bash #shell"
 
 - id: "105-020"
   topic: "105.1"
@@ -268,7 +268,7 @@
     - "Valor 0 Valor 1 Valor 2 Valor 3"
     - "Valor 1 2 3"
   answer: 3
-  comment: "Em cada loop a variável $i receberá um valor de 0 a 3, que será impressa após a palavra \"Valor\" pelo comando echo. #for #seq #bash #scripting"
+  comment: "Em cada loop a variável $i receberá um valor de 0 a 3, que será impressa após a palavra \"Valor\" pelo comando echo. #for #seq #bash"
 
 - id: "105-023"
   topic: "105.2"
@@ -279,7 +279,7 @@
     - "[ /etc/status ] || mkdir /opt/relatorio"
     - "mkdir /opt/relatorio && [ -f /etc/status ]"
   answer: 2
-  comment: "No comando test, ou [ ], o -e indica se o arquivo ou diretório indicado existe, o -f tem o mesmo efeito mas apenas para arquivos. O uso do && faz com que o segundo comando só seja executado se o primeiro for executado com sucesso, o || é o contrário, o segundo comando só é executado se o primeiro tiver retorno de erro, diferente de 0. #test #operators #bash #scripting"
+  comment: "No comando test, ou [ ], o -e indica se o arquivo ou diretório indicado existe, o -f tem o mesmo efeito mas apenas para arquivos. O uso do && faz com que o segundo comando só seja executado se o primeiro for executado com sucesso, o || é o contrário, o segundo comando só é executado se o primeiro tiver retorno de erro, diferente de 0. #test #bash"
 
 - id: "105-024"
   topic: "105.2"
@@ -292,7 +292,7 @@
     - "O usuário maria, que faz parte do grupo suporte, não tem permissão de executar o script."
     - "O usuário daniel, que não faz parte do grupo suporte, não tem permissão de utilizar o script."
   answer: [1, 3, 5]
-  comment: "As permissões mostram que além do usuário dono do arquivo, qualquer usuário membro do grupo suporte tem permissão de execução do script, pela presença do caractere \"x\". #permissoes #chmod #bash #scripting"
+  comment: "As permissões mostram que além do usuário dono do arquivo, qualquer usuário membro do grupo suporte tem permissão de execução do script, pela presença do caractere \"x\". #chmod #bash"
 
 - id: "105-025"
   topic: "105.2"
@@ -304,7 +304,7 @@
     - "$*"
     - "$!"
   answer: 1
-  comment: "O $# retorna a quantidade de parâmetros enviado pelo usuário no momento da execução. O $? é o código de retorno do último comando executado, o $$ o PID do processo/script atual e $* retorna todos os argumentos informados. #bash #parametros #scripting #shell"
+  comment: "O $# retorna a quantidade de parâmetros enviado pelo usuário no momento da execução. O $? é o código de retorno do último comando executado, o $$ o PID do processo/script atual e $* retorna todos os argumentos informados. #bash #shell"
 
 - id: "105-026"
   topic: "105.1"
@@ -327,7 +327,7 @@
     - "for i in `cat alunos.txt`; do echo $i ; done"
     - "for i in alunos.txt; do echo $i; done"
   answer: 3
-  comment: "A instrução for utiliza um comando que retornará uma sequência de entradas, que será analisada e executada linha a linha, em cada loop da instrução. #for #bash #scripting #loops"
+  comment: "A instrução for utiliza um comando que retornará uma sequência de entradas, que será analisada e executada linha a linha, em cada loop da instrução. #for #bash"
 
 - id: "105-028"
   topic: "105.2"
@@ -338,7 +338,7 @@
     - "[ $VAR1 -ge $VAR2 ]"
     - "[ $VAR1 -le $VAR2 ]"
   answer: 3
-  comment: "A opção -ge do comando \"test\" significa \"maior ou igual (greater or equal)\". O comando test pode ser substituído pela sintaxe [ ] . #test #operators #bash #scripting"
+  comment: "A opção -ge do comando \"test\" significa \"maior ou igual (greater or equal)\". O comando test pode ser substituído pela sintaxe [ ] . #test #bash"
 
 - id: "105-029"
   topic: "105.1"
@@ -350,7 +350,7 @@
     - "lsshow"
     - "lspci"
   answer: 1
-  comment: "O comando set exibe todas as variáveis locais. Vale mencionar também o comando env, que exibe as variáveis globais, que foram exportadas. #set #env #variaveis #shell"
+  comment: "O comando set exibe todas as variáveis locais. Vale mencionar também o comando env, que exibe as variáveis globais, que foram exportadas. #set #env #shell"
 
 - id: "105-030"
   topic: "105.1"
@@ -373,7 +373,7 @@
     - "run"
     - "exec"
   answer: 2
-  comment: "O comando \"source\" permite ao usuário indicar um arquivo/script que será executado na sessão atual do shell, e não em uma sub-sessão, utilizar \". arquivo\" tem o mesmo efeito. #source #bash #scripting #shell"
+  comment: "O comando \"source\" permite ao usuário indicar um arquivo/script que será executado na sessão atual do shell, e não em uma sub-sessão, utilizar \". arquivo\" tem o mesmo efeito. #source #bash #shell"
 
 - id: "105-032"
   topic: "105.2"
@@ -400,7 +400,7 @@
     - "A\nB\nC\nD\nE"
     - "parametro.sh: unknown option"
   answer: 2
-  comment: "Ao se utilizar parâmetros em scripts, cada valor informado será associado a uma variável de parâmetro. Observe a diferença desse comportamento com o do comando read. #bash #parametros #scripting #shell"
+  comment: "Ao se utilizar parâmetros em scripts, cada valor informado será associado a uma variável de parâmetro. Observe a diferença desse comportamento com o do comando read. #bash #shell"
 
 - id: "105-034"
   topic: "105.1"
@@ -412,7 +412,7 @@
     - "echo $?"
     - "echo $#"
   answer: 4
-  comment: "O comando \"echo $?\" exibe o código de retorno (ou \"exit code\", ou \"return code\", ou \"exit status\") do comando executado anteriormente ao echo. #bash #exit-status #shell #variaveis"
+  comment: "O comando \"echo $?\" exibe o código de retorno (ou \"exit code\", ou \"return code\", ou \"exit status\") do comando executado anteriormente ao echo. #bash #exit-status #shell"
 
 - id: "105-035"
   topic: "105.1"
@@ -435,7 +435,7 @@
     - "Verificar se o arquivo exercicio1.sh existe e se tem permissão de execução"
     - "Verificar se o arquivo exercicio1.sh tem permissão de escrita"
   answer: 3
-  comment: "A opção -x além de verificar se o arquivo existe, verifica se possui a permissão de execução, função semelhante das opções -r (read/leitura) e -w (write/escrita). Outras opções importantes para aquivos são -f que verifica se o arquivo existe e se é um arquivo regular (não um diretório ou device) e a opção -e que apenas verifica se o arquivo existe. #test #permissoes #bash #scripting"
+  comment: "A opção -x além de verificar se o arquivo existe, verifica se possui a permissão de execução, função semelhante das opções -r (read/leitura) e -w (write/escrita). Outras opções importantes para aquivos são -f que verifica se o arquivo existe e se é um arquivo regular (não um diretório ou device) e a opção -e que apenas verifica se o arquivo existe. #test #bash"
 
 - id: "105-037"
   topic: "105.2"
@@ -447,7 +447,7 @@
     - "NOME=${hostname}"
     - "NOME < `hostname`"
   answer: [2, 3]
-  comment: "A substituição de comandos pode ser feita através do uso do comando entre crases `comando`, ou dentro de $(comando). #bash #command-substitution #scripting #shell"
+  comment: "A substituição de comandos pode ser feita através do uso do comando entre crases `comando`, ou dentro de $(comando). #bash #command-substitution #shell"
 
 - id: "105-038"
   topic: "105.1"
@@ -470,7 +470,7 @@
     - "exame() { echo \"Simulado LPIC-1\"; }"
     - "exame { echo \"Simulado LPIC-1\"; }"
   answer: [1, 2, 4]
-  comment: "Na declaração de uma função a palavra \"function\" pode ou não ser utilizada, é opcional. Usando o funcion, o uso do () é opcional, mas sem ele é obrigatório, e após isso a sequencia de comando entre {}, cada comando finalizado com o ; #function #bash #scripting #shell"
+  comment: "Na declaração de uma função a palavra \"function\" pode ou não ser utilizada, é opcional. Usando o funcion, o uso do () é opcional, mas sem ele é obrigatório, e após isso a sequencia de comando entre {}, cada comando finalizado com o ; #function #bash #shell"
 
 - id: "105-040"
   topic: "105.2"
@@ -482,5 +482,5 @@
     - "!="
     - "-le"
   answer: [2, 4, 5]
-  comment: "Dentre as opções listadas temos: -d : Verifica se um arquivo existe e é um diretório; -gt : Verifica se o VALOR1 é maior que (greater than) o VALOR2; -nt : Verifica se o Arquivo1 é mais novo que o Arquivo2; = : Verifica se o VALOR1 é diferente que o VALOR2. Também funciona para strings; -le : Verifica se o VALOR1 é menor ou igual (less than or equal) ao VALOR2. #test #operators #bash #scripting"
+  comment: "Dentre as opções listadas temos: -d : Verifica se um arquivo existe e é um diretório; -gt : Verifica se o VALOR1 é maior que (greater than) o VALOR2; -nt : Verifica se o Arquivo1 é mais novo que o Arquivo2; = : Verifica se o VALOR1 é diferente que o VALOR2. Também funciona para strings; -le : Verifica se o VALOR1 é menor ou igual (less than or equal) ao VALOR2. #test #bash"
 

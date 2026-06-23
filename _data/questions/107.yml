@@ -9,7 +9,7 @@
     - "O registro não contém a senha do usuário"
     - "O valor do UID está representado como um x."
   answer: 3
-  comment: "A entrada apresentada possui apenas 6 campos, enquanto o padrão do /etc/passwd exige 7. No exemplo, após o UID (1230), o campo GID foi omitido, pulando diretamente para o comentário (Gecos). A estrutura correta deve ser: nome:senha:UID:GID:comentário:home:shell. #etc #passwd #users #linux"
+  comment: "A entrada apresentada possui apenas 6 campos, enquanto o padrão do /etc/passwd exige 7. No exemplo, após o UID (1230), o campo GID foi omitido, pulando diretamente para o comentário (Gecos). A estrutura correta deve ser: nome:senha:UID:GID:comentário:home:shell. #passwd"
 
 - id: "107-001"
   topic: "107.1"
@@ -20,7 +20,7 @@
     - "usermod -c aluno1 -d /usr/aluno1"
     - "newuser aluno1 -d /usr/aluno1"
   answer: 2
-  comment: "O comando useradd com a flag -d permite especificar um diretório home customizado durante a criação da conta. O comando usermod seria utilizado apenas para modificar uma conta já existente. #useradd #home #directory #linux"
+  comment: "O comando useradd com a flag -d permite especificar um diretório home customizado durante a criação da conta. O comando usermod seria utilizado apenas para modificar uma conta já existente. #useradd #HOME"
 
 - id: "107-002"
   topic: "107.1"
@@ -31,7 +31,7 @@
     - "userdel"
     - "chage -E0"
   answer: 3
-  comment: "O comando userdel remove permanentemente o usuário do sistema. Para bloqueios temporários, utiliza-se o travamento da senha (passwd -l, usermod -L) ou a expiração imediata da conta (chage -E0). #userdel #lock #passwd #chage"
+  comment: "O comando userdel remove permanentemente o usuário do sistema. Para bloqueios temporários, utiliza-se o travamento da senha (passwd -l, usermod -L) ou a expiração imediata da conta (chage -E0). #userdel #passwd #chage"
 
 - id: "107-003"
   topic: "107.1"
@@ -55,7 +55,7 @@
     - "groupadd omesmobanco -u carlosalberto"
     - "usermod -a -G omesmobanco carlosalberto"
   answer: 5
-  comment: "A flag -G define grupos suplementares, mas se usada sozinha, ela substitui os grupos atuais pelos novos. A flag -a (append) deve ser usada em conjunto para garantir que o usuário seja apenas adicionado ao novo grupo, mantendo os anteriores. #usermod #groups #append #linux"
+  comment: "A flag -G define grupos suplementares, mas se usada sozinha, ela substitui os grupos atuais pelos novos. A flag -a (append) deve ser usada em conjunto para garantir que o usuário seja apenas adicionado ao novo grupo, mantendo os anteriores. #usermod #groups"
 
 - id: "107-005"
   topic: "107.2"
@@ -66,7 +66,7 @@
     - "30 6,13,22 * * * /usr/bin/cleanup.sh"
     - "30 6,13,22 1-3 * * /usr/bin/cleanup.sh"
   answer: 3
-  comment: "Os campos do cron são: minuto, hora, dia, mês e dia da semana. A opção correta define a execução aos 30 minutos das horas 6, 13 e 22, totalizando 3 vezes ao dia em qualquer data. A primeira opção executaria a cada 3 minutos, resultando em 480 execuções diárias. #cron #crontab #scheduling #bash"
+  comment: "Os campos do cron são: minuto, hora, dia, mês e dia da semana. A opção correta define a execução aos 30 minutos das horas 6, 13 e 22, totalizando 3 vezes ao dia em qualquer data. A primeira opção executaria a cada 3 minutos, resultando em 480 execuções diárias. #cron #crontab #bash"
 
 - id: "107-006"
   topic: "107.2"
@@ -78,7 +78,7 @@
     - "at +18:00"
     - "systemd-run now +9hour"
   answer: 1
-  comment: "O comando 'at' é utilizado para agendamentos únicos (non-recurring). Ele aceita formatos de tempo flexíveis como '6pm', '18:00' ou palavras-chave como 'teatime'. Após o comando, o usuário deve informar o script ou comando a ser executado. #at #scheduling #batch #linux"
+  comment: "O comando 'at' é utilizado para agendamentos únicos (non-recurring). Ele aceita formatos de tempo flexíveis como '6pm', '18:00' ou palavras-chave como 'teatime'. Após o comando, o usuário deve informar o script ou comando a ser executado. #at #batch"
 
 - id: "107-007"
   topic: "107.2"
@@ -90,7 +90,7 @@
     - "crontab -u suporte -f regras.txt"
     - "cat regras.txt > crontab suporte"
   answer: 3
-  comment: "O comando 'crontab -u <usuario>' permite que o root gerencie tabelas de outros usuários. Ao passar o nome de um arquivo como argumento final, o conteúdo desse arquivo substitui integralmente a crontab atual do usuário alvo. #crontab #cron #root #administration"
+  comment: "O comando 'crontab -u <usuario>' permite que o root gerencie tabelas de outros usuários. Ao passar o nome de um arquivo como argumento final, o conteúdo desse arquivo substitui integralmente a crontab atual do usuário alvo. #crontab #cron #root"
 
 - id: "107-008"
   topic: "107.3"
@@ -102,7 +102,7 @@
     - "LC_ALL"
     - "LC_SUPER"
   answer: 4
-  comment: "A variável LC_ALL tem precedência sobre todas as outras variáveis de categoria (LC_TIME, LC_NUMERIC, etc.) e sobre a variável LANG. A única variável que pode superá-la em contextos específicos de tradução de interface é a LANGUAGE. #LC_ALL #locale #i18n #env"
+  comment: "A variável LC_ALL tem precedência sobre todas as outras variáveis de categoria (LC_TIME, LC_NUMERIC, etc.) e sobre a variável LANG. A única variável que pode superá-la em contextos específicos de tradução de interface é a LANGUAGE. #LC_ALL #locale #env"
 
 - id: "107-009"
   topic: "107.3"
@@ -125,7 +125,7 @@
     - "/etc/localtime/"
     - "/usr/local/timezone/"
   answer: 2
-  comment: "O diretório /usr/share/zoneinfo/ funciona como o banco de dados mestre de fusos horários do sistema. O arquivo /etc/localtime geralmente é um link simbólico que aponta para um desses arquivos específicos. #zoneinfo #timezone #fhs #linux"
+  comment: "O diretório /usr/share/zoneinfo/ funciona como o banco de dados mestre de fusos horários do sistema. O arquivo /etc/localtime geralmente é um link simbólico que aponta para um desses arquivos específicos. #zoneinfo #timezone #FHS"
 
 - id: "107-011"
   topic: "107.2"
@@ -137,7 +137,7 @@
     - "OnStartupSec"
     - "OnActiveSec"
   answer: 3
-  comment: "O parâmetro 'OnBootSec' define um timer relativo ao momento em que a máquina foi ligada. Diferente do cron, o systemd-timer permite agendamentos baseados em eventos monótonos (como o boot ou a ativação da unidade). #systemd #timer #boot #scheduling"
+  comment: "O parâmetro 'OnBootSec' define um timer relativo ao momento em que a máquina foi ligada. Diferente do cron, o systemd-timer permite agendamentos baseados em eventos monótonos (como o boot ou a ativação da unidade). #systemd #timer #boot"
 
 - id: "107-012"
   topic: "107.1"
@@ -149,7 +149,7 @@
     - "Com o comando usermod, é necessário utilizar a opção -a junto com a opção -G para adicionar novos grupos complementares sem que os grupos anteriores sejam perdidos"
     - "A associação de um usuário a um grupo é opcional no Linux"
   answer: [1, 2, 4]
-  comment: "O comando groupmod pode alterar tanto o GID quanto o nome de um grupo existente. No GNU/Linux, todo usuário deve estar associado a pelo menos um grupo. #grupos #groupmod #usermod #groupdel"
+  comment: "O comando groupmod pode alterar tanto o GID quanto o nome de um grupo existente. No GNU/Linux, todo usuário deve estar associado a pelo menos um grupo. #groupmod #usermod #groupdel"
 
 - id: "107-013"
   topic: "107.1"
@@ -160,7 +160,7 @@
     - "chgrp suporte analista1"
     - "usermod -g suporte analista1"
   answer: 4
-  comment: "A opção -g do usermod define o grupo primário de um usuário. A opção -G define os grupos adicionais. #usermod #grupos #GID #usuarios"
+  comment: "A opção -g do usermod define o grupo primário de um usuário. A opção -G define os grupos adicionais. #usermod #GID"
 
 - id: "107-014"
   topic: "107.1"
@@ -171,7 +171,7 @@
     - "userdel -r"
     - "userdel -m"
   answer: 3
-  comment: "Por padrão o userdel não remove o diretório padrão do usuário, para que isso aconteça deve ser utilizada a opção -r. #userdel #usuarios #home #cleanup"
+  comment: "Por padrão o userdel não remove o diretório padrão do usuário, para que isso aconteça deve ser utilizada a opção -r. #userdel #HOME"
 
 - id: "107-015"
   topic: "107.1"
@@ -184,7 +184,7 @@
     - "O campo de descrição do usuário foi preenchido apenas com \"x\"."
     - "O Grupo Principal do Usuário é o 1002"
   answer: [1, 3, 5]
-  comment: "Os campos do arquivo /etc/passwd são referentes a: 1. Login do Usuário; 2. Senha/Localização da Senha. O caractere \"x\" indica que a senha está registrada no arquivo /etc/shadow de maneira criptografada; 3. UID – Id do Usuário; 4. ID – Grupo Padrão do Usuário; 5. Comentário ou Descrição; 6. Diretório Padrão; 7. Shell Padrão. #passwd #UID #GID #shadow #usuarios"
+  comment: "Os campos do arquivo /etc/passwd são referentes a: 1. Login do Usuário; 2. Senha/Localização da Senha. O caractere \"x\" indica que a senha está registrada no arquivo /etc/shadow de maneira criptografada; 3. UID – Id do Usuário; 4. ID – Grupo Padrão do Usuário; 5. Comentário ou Descrição; 6. Diretório Padrão; 7. Shell Padrão. #passwd #UID #GID #shadow"
 
 - id: "107-016"
   topic: "107.2"
@@ -195,7 +195,7 @@
     - "Nenhum usuário, nem mesmo root, conseguirá utilizar o recurso do at."
     - "Todos os usuários que não estiverem listados no arquivo /etc/at.deny poderão utilizar recursos do at,"
   answer: 2
-  comment: "O arquivo /etc/at.allow indica quais usuários podem usar o at. Caso exista e esteja vazio, nenhum usuário está autorizado a utilizar o at. Caso o arquivo não exista, o arquivo /etc/at.deny será consultado e os usuários listados serão bloqueados. Se nenhum dos 2 arquivos existir, ou se ambos estiverem em branco, apenas o root poderá usar o at. #at #at.allow #at.deny #scheduling"
+  comment: "O arquivo /etc/at.allow indica quais usuários podem usar o at. Caso exista e esteja vazio, nenhum usuário está autorizado a utilizar o at. Caso o arquivo não exista, o arquivo /etc/at.deny será consultado e os usuários listados serão bloqueados. Se nenhum dos 2 arquivos existir, ou se ambos estiverem em branco, apenas o root poderá usar o at. #at #at.allow #at.deny"
 
 - id: "107-017"
   topic: "107.2"
@@ -206,7 +206,7 @@
     - "/var/lock/crontab/"
     - "/var/crontab/"
   answer: 2
-  comment: "No diretório /var/spool/cron haverá um arquivo texto com o nome de cada usuário contendo os agendamentos. No caso de sistemas baseados no Debian, o diretório será mais especificamente o /var/spool/cron/crontab/ #cron #crontab #spool #scheduling"
+  comment: "No diretório /var/spool/cron haverá um arquivo texto com o nome de cada usuário contendo os agendamentos. No caso de sistemas baseados no Debian, o diretório será mais especificamente o /var/spool/cron/crontab/ #cron #crontab #spool"
 
 - id: "107-018"
   topic: "107.1"
@@ -217,14 +217,14 @@
     - "usermod -M 30 analista1"
     - "passwd -M 30 analista1"
   answer: 1
-  comment: "No comando chage, a opção -M define o número máximo de dias em que a senha pode ser mantida antes de ser alterada. #chage #senha #aging #usuarios"
+  comment: "No comando chage, a opção -M define o número máximo de dias em que a senha pode ser mantida antes de ser alterada. #chage #aging"
 
 - id: "107-019"
   topic: "107.2"
   type: "discursive"
   question: "Qual arquivo contém os agendamentos da cron de uso geral de um sistema Linux, sendo administrado pelo usuário root? (Informe o caminho completo do arquivo)"
   answer: "/etc/crontab"
-  comment: "O arquivo /etc/crontab contém agendamentos do sistema, não relacionados diretamente a nenhum usuário mas só pode ser alterado pelo usuário root. Esse arquivo também é normalmente utilizado para invocar os scripts localizados nos diretórios /etc/cron.hourly/ , /etc/cron.daily/, /etc/cron.weekly/ e /etc/cron.montly/. #crontab #cron #scheduling #etc"
+  comment: "O arquivo /etc/crontab contém agendamentos do sistema, não relacionados diretamente a nenhum usuário mas só pode ser alterado pelo usuário root. Esse arquivo também é normalmente utilizado para invocar os scripts localizados nos diretórios /etc/cron.hourly/ , /etc/cron.daily/, /etc/cron.weekly/ e /etc/cron.montly/. #crontab #cron"
 
 - id: "107-020"
   topic: "107.3"
@@ -235,14 +235,14 @@
     - "timedatectl"
     - "locale"
   answer: 4
-  comment: "O comando \"locale\" irá exibir todas as definições atuais das variáveis LANG, LANGUAGE e LC_* #locale #i18n #l10n #LANG"
+  comment: "O comando \"locale\" irá exibir todas as definições atuais das variáveis LANG, LANGUAGE e LC_* #locale #LANG"
 
 - id: "107-021"
   topic: "107.3"
   type: "discursive"
   question: "Em qual diretório podem ser encontrados todos os arquivos de timezones disponíveis no sistema? (Informe o caminho completo do diretório)"
   answer: "/usr/share/zoneinfo"
-  comment: "No diretório /usr/share/zoneinfo/ são encontrados arquivos de configurações de fuso horário e horário de verão de todas as localizações possíveis. O arquivo /etc/localtime é normalmente um link para algum desses arquivos. #zoneinfo #timezone #localtime #i18n"
+  comment: "No diretório /usr/share/zoneinfo/ são encontrados arquivos de configurações de fuso horário e horário de verão de todas as localizações possíveis. O arquivo /etc/localtime é normalmente um link para algum desses arquivos. #zoneinfo #timezone #localtime"
 
 - id: "107-022"
   topic: "107.2"
@@ -254,14 +254,14 @@
     - "systemd-cat +10m /opt/software/report.sh"
     - "at +10m /opt/software/report.sh"
   answer: [1, 3]
-  comment: "O comando systemd-run cria um job no systemd-timers conforme as opções utilizadas. A opção --on-active é equivalente ao OnActiveSec e define um tempo a partir da execução do próprio timer. A sintaxe do comando at deve informar o arquivo pelo -f e a indicação do tempo. #at #systemd-run #timer #scheduling"
+  comment: "O comando systemd-run cria um job no systemd-timers conforme as opções utilizadas. A opção --on-active é equivalente ao OnActiveSec e define um tempo a partir da execução do próprio timer. A sintaxe do comando at deve informar o arquivo pelo -f e a indicação do tempo. #at #systemd-run #timer"
 
 - id: "107-023"
   topic: "107.3"
   type: "discursive"
   question: "Qual variável de ambiente pode ser definida para que um usuário específico utilize um timezone diferente do configurado na máquina Linux? (Informe apenas o nome da variável)"
   answer: "TZ"
-  comment: "Um usuário pode configurar manualmente a variável de ambiente TZ, ou defini-lá em algum dos arquivos de definição de ambiente (.profile, .bashrc) para que sua sessão utilize um fuso horário diferente do padrão da máquina. #TZ #timezone #env #i18n"
+  comment: "Um usuário pode configurar manualmente a variável de ambiente TZ, ou defini-lá em algum dos arquivos de definição de ambiente (.profile, .bashrc) para que sua sessão utilize um fuso horário diferente do padrão da máquina. #TZ #timezone #env"
 
 - id: "107-024"
   topic: "107.1"
@@ -272,7 +272,7 @@
     - "chage -S sistema"
     - "usermod -s sistema"
   answer: 2
-  comment: "A opção -l do comando chage mostra diversas informações sobre as propriedades de login do usuário, extraídas do arquivo /etc/shadow. O comando \"passwd -S\" também retorna a informação. #chage #senha #shadow #usuarios"
+  comment: "A opção -l do comando chage mostra diversas informações sobre as propriedades de login do usuário, extraídas do arquivo /etc/shadow. O comando \"passwd -S\" também retorna a informação. #chage #shadow"
 
 - id: "107-025"
   topic: "107.1"
@@ -281,7 +281,7 @@
   answer:
     - "/etc/skel"
     - "/etc/skel/"
-  comment: "Todos os arquivos e sub-diretórios presentes no diretório /etc/skel/ serão copiados para o diretório home do novo usuário. #skel #useradd #home #usuarios"
+  comment: "Todos os arquivos e sub-diretórios presentes no diretório /etc/skel/ serão copiados para o diretório home do novo usuário. #skel #useradd #HOME"
 
 - id: "107-026"
   topic: "107.1"
@@ -293,14 +293,14 @@
     - "A mensagem a ser exibida após o login."
     - "O shell padrão do usuário."
   answer: [1, 2, 5]
-  comment: "O comando useradd permite definir diversos aspectos da conta do usuário no momento da sua criação, da mesma forma que estes podem ser alterados pelo usermod. Entre eles estão o UID, Shell padrão, diretório padrão e outros como grupos primários e suplementares e diversos outros que podem ser consultados pelo useradd --help. #useradd #usuarios #UID #shell"
+  comment: "O comando useradd permite definir diversos aspectos da conta do usuário no momento da sua criação, da mesma forma que estes podem ser alterados pelo usermod. Entre eles estão o UID, Shell padrão, diretório padrão e outros como grupos primários e suplementares e diversos outros que podem ser consultados pelo useradd --help. #useradd #UID #shell"
 
 - id: "107-027"
   topic: "107.1"
   type: "discursive"
   question: "Em qual arquivo é definido o shell que será usado por cada usuário do sistema após o login? (Informe o caminho completo do arquivo)"
   answer: "/etc/passwd"
-  comment: "O shell padrão é indicado no último campo de cada registro do arquivo /etc/passwd. Em geral é utilizado /bin/bash, além de outros shells, uma outra opção é o uso do /bin/false para impedir que um usuário faça login no sistema. #passwd #shell #usuarios #login"
+  comment: "O shell padrão é indicado no último campo de cada registro do arquivo /etc/passwd. Em geral é utilizado /bin/bash, além de outros shells, uma outra opção é o uso do /bin/false para impedir que um usuário faça login no sistema. #passwd #shell #login"
 
 - id: "107-028"
   topic: "107.1"
@@ -311,7 +311,7 @@
     - "groups"
     - "chgrp"
   answer: 1
-  comment: "O comando groupdel tem a função de remover completamente um grupo do sistema. #groupdel #grupos #usuarios #admin"
+  comment: "O comando groupdel tem a função de remover completamente um grupo do sistema. #groupdel"
 
 - id: "107-029"
   topic: "107.2"
@@ -322,7 +322,7 @@
     - "OnSchedule="
     - "OnCalendar="
   answer: 4
-  comment: "Nas configurações das unidades de agendamento do systemd-timer, o parâmetro OnCalendar= é usado para definir quando o serviço relacionado será executado. O tempo é definido com \"DiasdaSemana Ano-Mês-Dia Hora:Minuto:Segundo\". Detalhes e mais exemplos podem ser vistos pelo \"man systemd.time\". #systemd #timer #OnCalendar #scheduling"
+  comment: "Nas configurações das unidades de agendamento do systemd-timer, o parâmetro OnCalendar= é usado para definir quando o serviço relacionado será executado. O tempo é definido com \"DiasdaSemana Ano-Mês-Dia Hora:Minuto:Segundo\". Detalhes e mais exemplos podem ser vistos pelo \"man systemd.time\". #systemd #timer #OnCalendar"
 
 - id: "107-030"
   topic: "107.3"
@@ -333,7 +333,7 @@
     - "TZ_DATETIME"
     - "LANG_TIME"
   answer: 2
-  comment: "Uma série de variáveis de ambiente iniciadas por LC_ definem as configurações de localização para diversos tipos de dados, entre eles o LC_TIME para data e hora, LC_MESSAGES para mensagens informativas do sistema, o LC_MONETARY para unidades monetárias e etc. #LC_TIME #locale #i18n #l10n"
+  comment: "Uma série de variáveis de ambiente iniciadas por LC_ definem as configurações de localização para diversos tipos de dados, entre eles o LC_TIME para data e hora, LC_MESSAGES para mensagens informativas do sistema, o LC_MONETARY para unidades monetárias e etc. #LC_TIME #locale"
 
 - id: "107-031"
   topic: "107.3"
@@ -345,7 +345,7 @@
     - "locale"
     - "dd"
   answer: 3
-  comment: "O comando iconv é usado para converter a codificação de caracteres de um arquivo para outro tipo de codificação. #iconv #encoding #UTF-8 #i18n"
+  comment: "O comando iconv é usado para converter a codificação de caracteres de um arquivo para outro tipo de codificação. #iconv #UTF-8"
 
 - id: "107-032"
   topic: "107.2"
@@ -357,14 +357,14 @@
     - "at coffeetime"
     - "at 4:00"
   answer: [1, 2]
-  comment: "O comando at permite que um horário seja informado como 1600 ou 16:00. O at também permite o uso de palavras como now (agora), noon (meio-dia), midnight (meia-noite) e teatime (16:00). #at #scheduling #teatime #cron"
+  comment: "O comando at permite que um horário seja informado como 1600 ou 16:00. O at também permite o uso de palavras como now (agora), noon (meio-dia), midnight (meia-noite) e teatime (16:00). #at #teatime #cron"
 
 - id: "107-033"
   topic: "107.2"
   type: "discursive"
   question: "Ao tentar criar um agendamento, o usuário está recebendo uma mensagem de que não está autorizado a utilizar o programa da crontab. Qual arquivo precisa ser modificado para liberar o acesso desse usuário ao recurso de crontab? (Informe o caminho completo do arquivo)"
   answer: "/etc/cron.allow"
-  comment: "Adicionando o usuário ao arquivo /etc/cron.allow, ele será autorizada a utilizar a ferramenta da crontab. Lembrando que o arquivo /etc/cron.allow é o primeiro a ser lido, caso um usuário esteja listado no cron.allow seu uso é liberado, não importando se ele também esteja listado no cron.deny. O arquivo cron.allow vazio indica que nenhum usuário pode usar o serviço. O arquivo cron.deny vazio indica que todos os usuários podem usar o serviço. Se os dois arquivos estiverem em branco, nenhum usuário pode usar o recurso. #cron.allow #cron.deny #crontab #scheduling"
+  comment: "Adicionando o usuário ao arquivo /etc/cron.allow, ele será autorizada a utilizar a ferramenta da crontab. Lembrando que o arquivo /etc/cron.allow é o primeiro a ser lido, caso um usuário esteja listado no cron.allow seu uso é liberado, não importando se ele também esteja listado no cron.deny. O arquivo cron.allow vazio indica que nenhum usuário pode usar o serviço. O arquivo cron.deny vazio indica que todos os usuários podem usar o serviço. Se os dois arquivos estiverem em branco, nenhum usuário pode usar o recurso. #cron.allow #cron.deny #crontab"
 
 - id: "107-034"
   topic: "107.2"
@@ -375,14 +375,14 @@
     - "crontab -v"
     - "crontab -l"
   answer: 4
-  comment: "O comando \"crontab -l\" lista os agendamentos do usuário atual. O usuário root pode ainda usar a opção -u para visualizar os agendamentos de um usuário específico. #crontab #cron #scheduling #listing"
+  comment: "O comando \"crontab -l\" lista os agendamentos do usuário atual. O usuário root pode ainda usar a opção -u para visualizar os agendamentos de um usuário específico. #crontab #cron"
 
 - id: "107-035"
   topic: "107.3"
   type: "discursive"
   question: "Qual arquivo define o fuso horário utilizado pelo sistema através de um link ou cópia de um arquivo do diretório /usr/share/zoneinfo? (Informe o caminho completo do arquivo)"
   answer: "/etc/localtime"
-  comment: "O arquivo /etc/localtime pode ser tanto um link para um dos arquivos do /usr/share/zoneinfo/, quanto uma cópia de um desses arquivos. #localtime #timezone #zoneinfo #i18n"
+  comment: "O arquivo /etc/localtime pode ser tanto um link para um dos arquivos do /usr/share/zoneinfo/, quanto uma cópia de um desses arquivos. #localtime #timezone #zoneinfo"
 
 - id: "107-036"
   topic: "107.3"
@@ -393,14 +393,14 @@
     - "locale"
     - "timezone"
   answer: 2
-  comment: "O comando \"dpkg-reconfigure tzdata\" permite ao administrador definir as configurações de fuso horário, através da reconfiguração do pacote tzdata. O comando tzselect apenas seleciona o estado e fuso horário para posterior configuração. #tzdata #timezone #dpkg #i18n"
+  comment: "O comando \"dpkg-reconfigure tzdata\" permite ao administrador definir as configurações de fuso horário, através da reconfiguração do pacote tzdata. O comando tzselect apenas seleciona o estado e fuso horário para posterior configuração. #tzdata #timezone #dpkg"
 
 - id: "107-037"
   topic: "107.1"
   type: "discursive"
   question: "Qual comando é usado para adicionar um novo grupo ao sistema? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
   answer: "groupadd"
-  comment: "O comando groupadd cria um novo grupo no sistema. Com isso uma nova entrada é incluída no arquivo /etc/group. #groupadd #grupos #group #usuarios"
+  comment: "O comando groupadd cria um novo grupo no sistema. Com isso uma nova entrada é incluída no arquivo /etc/group. #groupadd #group"
 
 - id: "107-038"
   topic: "107.3"
@@ -423,7 +423,7 @@
     - "O usuário não poderá utilizar nenhum recurso da cron."
     - "O usuário não poderá visualizar, editar ou criar novos agendamentos, mas os agendamentos realizados anteriormente continuarão funcionando."
   answer: 1
-  comment: "O arquivo /etc/cron.allow é o primeiro a ser lido, caso um usuário esteja listado no cron.allow seu uso é liberado, não importando se ele também esteja listado no cron.deny. O arquivo cron.allow vazio indica que nenhum usuário pode usar o serviço. O arquivo cron.deny vazio indica que todos os usuários podem usar o serviço. Se os dois arquivos estiverem em branco, nenhum usuário pode usar o recurso. #cron.allow #cron.deny #crontab #scheduling"
+  comment: "O arquivo /etc/cron.allow é o primeiro a ser lido, caso um usuário esteja listado no cron.allow seu uso é liberado, não importando se ele também esteja listado no cron.deny. O arquivo cron.allow vazio indica que nenhum usuário pode usar o serviço. O arquivo cron.deny vazio indica que todos os usuários podem usar o serviço. Se os dois arquivos estiverem em branco, nenhum usuário pode usar o recurso. #cron.allow #cron.deny #crontab"
 
 - id: "107-040"
   topic: "107.2"
@@ -439,7 +439,7 @@
     - "O script log-check.sh será executado em todo minuto 10 de cada hora."
     - "O script relatorio.sh nunca será executado durante o final de semana (sábado e domingo)."
   answer: [2, 3, 5]
-  comment: "Os 5 campos de um agendamento de crontab são: minuto hora dia-do-mes mes dia-da-semana. O uso de */10 indica a cada 10 minutos, a cada 10 dias e etc. O uso de 9-18 indica um range, por exemplo, das horas 9 à 18. O uso de 5,10,15,20 indica diversos valores específicos, por exemplo os minutos 5,10,15,20. O último campo é referente ao dia da semana, 0 e 7 indicam o domingo, 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta e 6=sábado. #crontab #cron #scheduling #syntax"
+  comment: "Os 5 campos de um agendamento de crontab são: minuto hora dia-do-mes mes dia-da-semana. O uso de */10 indica a cada 10 minutos, a cada 10 dias e etc. O uso de 9-18 indica um range, por exemplo, das horas 9 à 18. O uso de 5,10,15,20 indica diversos valores específicos, por exemplo os minutos 5,10,15,20. O último campo é referente ao dia da semana, 0 e 7 indicam o domingo, 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta e 6=sábado. #crontab #cron"
 
 - id: "107-041"
   topic: "107.1"
@@ -450,7 +450,7 @@
     - "-f"
     - "-d"
   answer: 1
-  comment: "Para forçar a criação do diretório padrão do usuário é preciso utilizar a opção -m. A opção -d possibilita o administrador a definir um diretório diferente do /home/usuario. #useradd #home #usuarios #skel"
+  comment: "Para forçar a criação do diretório padrão do usuário é preciso utilizar a opção -m. A opção -d possibilita o administrador a definir um diretório diferente do /home/usuario. #useradd #HOME #skel"
 
 - id: "107-042"
   topic: "107.3"
@@ -461,7 +461,7 @@
     - "LANG=UTF-8"
     - "LANG=none"
   answer: 1
-  comment: "Definir a variável LANG com o valor C é uma prática comum em scripts ou programas que devem utilizar sempre as mesmas definições de localização, independente de onde ele estiver sendo executado. #LANG #locale #i18n #scripting"
+  comment: "Definir a variável LANG com o valor C é uma prática comum em scripts ou programas que devem utilizar sempre as mesmas definições de localização, independente de onde ele estiver sendo executado. #LANG #locale"
 
 - id: "107-043"
   topic: "107.2"
@@ -472,21 +472,21 @@
     - "systemctl list-timers"
     - "systemctl timers-show"
   answer: 3
-  comment: "O comando \"systemctl list-timers exibe todos os agendamentos (timers) ativos pelo systemd. A opção --all inclui também os timers inativos. #systemd #timer #list-timers #scheduling"
+  comment: "O comando \"systemctl list-timers exibe todos os agendamentos (timers) ativos pelo systemd. A opção --all inclui também os timers inativos. #systemd #timer #list-timers"
 
 - id: "107-044"
   topic: "107.2"
   type: "discursive"
   question: "Qual comando é utilizado para remover um agendamento feito pelo at? (Informe apenas o comando, sem o caminho ou argumentos)"
   answer: "atrm"
-  comment: "Um job agendado pelo at pode ser removido pelo comando atrm, no entanto as opções \"at -r\" e \"at -d\" também são aceitas. #atrm #at #scheduling #cron"
+  comment: "Um job agendado pelo at pode ser removido pelo comando atrm, no entanto as opções \"at -r\" e \"at -d\" também são aceitas. #atrm #at #cron"
 
 - id: "107-045"
   topic: "107.1"
   type: "discursive"
   question: "Em qual arquivo de configuração são registradas propriedades de login do usuário como o número máximo de dias que o usuário pode usar a mesma senha e quando a conta será bloqueada? (Informe o caminho completo do arquivo)"
   answer: "/etc/shadow"
-  comment: "O arquivo /etc/shadow contém o hash da senha de cada usuário além de diversas configurações referentes à senha do usuário, como limite para alteração de senha, data da última alteração e etc. #shadow #senha #aging #usuarios"
+  comment: "O arquivo /etc/shadow contém o hash da senha de cada usuário além de diversas configurações referentes à senha do usuário, como limite para alteração de senha, data da última alteração e etc. #shadow #aging"
 
 - id: "107-046"
   topic: "107.1"
@@ -498,14 +498,14 @@
     - "echo $GROUPS"
     - "groupinfo"
   answer: [1, 2]
-  comment: "De maneira um pouco diferente, os comandos groups e id mostram todos os grupos, primário e adicionais, que um usuário pertence. #groups #id #grupos #usuarios"
+  comment: "De maneira um pouco diferente, os comandos groups e id mostram todos os grupos, primário e adicionais, que um usuário pertence. #groups #id"
 
 - id: "107-047"
   topic: "107.1"
   type: "discursive"
   question: "Em qual arquivo de configuração fica registrado o grupo primário dos usuários do sistema? (Informe o caminho completo do arquivo)"
   answer: "/etc/passwd"
-  comment: "O grupo primário de um usuário (GID) é definido pelo quarto campo do arquivo /etc/passwd. #passwd #GID #grupos #usuarios"
+  comment: "O grupo primário de um usuário (GID) é definido pelo quarto campo do arquivo /etc/passwd. #passwd #GID"
 
 - id: "107-048"
   topic: "107.1"
@@ -516,7 +516,7 @@
     - "/etc/group"
     - "/etc/login"
   answer: 3
-  comment: "No arquivo /etc/group é possível ver os grupos adicionais de cada usuário. O /etc/passwd contém apenas o grupo primário. #group #grupos #usuarios #suplementares"
+  comment: "No arquivo /etc/group é possível ver os grupos adicionais de cada usuário. O /etc/passwd contém apenas o grupo primário. #group"
 
 - id: "107-049"
   topic: "107.1"
@@ -528,7 +528,7 @@
     - "usergrp"
     - "gpasswd"
   answer: 5
-  comment: "A opção -d do gpasswd remove um usuário de um grupo. Também pode ser usado o comando usermod para redefinir a lista de grupos do usuário. #gpasswd #grupos #usermod #usuarios"
+  comment: "A opção -d do gpasswd remove um usuário de um grupo. Também pode ser usado o comando usermod para redefinir a lista de grupos do usuário. #gpasswd #usermod"
 
 - id: "107-050"
   topic: "107.1"
@@ -541,7 +541,7 @@
     - "A letra x no segundo campo indica que o usuário está bloqueado"
     - "O shell padrão do usuário sistema1 é /bin/ksh"
   answer: [1, 2, 5]
-  comment: "O primeiro campo é o login do usuário, o \"x\" no segundo campo indica que a senha será encontrada em formato hash no arquivo /etc/shadow, o terceiro campo é o ID do usuário (UID), o quarto o grupo primário (GID), o quinto a descrição do usuário, o sexto o home do usuário e o sétimo e último o shell utilizado pelo usuário após login. #passwd #UID #GID #usuarios"
+  comment: "O primeiro campo é o login do usuário, o \"x\" no segundo campo indica que a senha será encontrada em formato hash no arquivo /etc/shadow, o terceiro campo é o ID do usuário (UID), o quarto o grupo primário (GID), o quinto a descrição do usuário, o sexto o home do usuário e o sétimo e último o shell utilizado pelo usuário após login. #passwd #UID #GID"
 
 - id: "107-051"
   topic: "107.1"
@@ -553,7 +553,7 @@
     - "Valores abaixo de 100 são utilizados por contas do sistema com UIDs pré-definidos"
     - "Contas do sistema e aplicações instaladas normalmente utilizam os UIDs entre 100 e 999"
   answer: [2, 4, 5]
-  comment: "De maneira geral, podemos considerar sobre os UIDs no /etc/passwd que: UID 0 é reservado para o usuário root. UIDs entre 1 e 99 são reservados para contas do sistema pré-definidas, que usam sempre o mesmo UID. UIDs entre 100-999 são reservados para contas do sistema e de aplicações. UIDs a partir de 1000 são utilizados por usuários. Lembrando que essas definições podem ser alteradas pelo arquivo /etc/login.defs, principalmente pelas propriedades UID_MIN/UID_MAX e SYS_UID_MIN/SYS_UID_MAX. #UID #passwd #login.defs #usuarios"
+  comment: "De maneira geral, podemos considerar sobre os UIDs no /etc/passwd que: UID 0 é reservado para o usuário root. UIDs entre 1 e 99 são reservados para contas do sistema pré-definidas, que usam sempre o mesmo UID. UIDs entre 100-999 são reservados para contas do sistema e de aplicações. UIDs a partir de 1000 são utilizados por usuários. Lembrando que essas definições podem ser alteradas pelo arquivo /etc/login.defs, principalmente pelas propriedades UID_MIN/UID_MAX e SYS_UID_MIN/SYS_UID_MAX. #UID #passwd #login.defs"
 
 - id: "107-052"
   topic: "107.2"
@@ -564,14 +564,14 @@
     - "crontab -d -u suporte1"
     - "cron -r suporte1"
   answer: 1
-  comment: "O usuário root deverá utilizar o comando crontab juntamente com a opção -u para informar o nome do usuário e a opção -r para remover. #crontab #cron #scheduling #admin"
+  comment: "O usuário root deverá utilizar o comando crontab juntamente com a opção -u para informar o nome do usuário e a opção -r para remover. #crontab #cron"
 
 - id: "107-053"
   topic: "107.1"
   type: "discursive"
   question: "Qual o comando utilizado para definir ou alterar a senha de um usuário do sistema GNU/Linux? (Informe apenas o comando, sem o caminho ou argumentos)"
   answer: "passwd"
-  comment: "O comando passwd é usado para definir a senha de um usuário após sua criação, ou modificar a senha de um usuário. Cada usuário pode utilizar apenas \"passwd\" para alterar sua própria senha e o usuário administrador (root) pode utilizar \"passwd <usuario>\" para alterar a senha do usuário que desejar. #passwd #senha #usuarios #admin"
+  comment: "O comando passwd é usado para definir a senha de um usuário após sua criação, ou modificar a senha de um usuário. Cada usuário pode utilizar apenas \"passwd\" para alterar sua própria senha e o usuário administrador (root) pode utilizar \"passwd <usuario>\" para alterar a senha do usuário que desejar. #passwd"
 
 - id: "107-054"
   topic: "107.2"
@@ -582,7 +582,7 @@
     - "* 7 * * 1 /opt/sistema/relatorio.sh"
     - "0 7 * * 1 /opt/sistema/relatorio.sh"
   answer: 4
-  comment: "Os 5 campos de um agendamento de crontab são: minuto hora dia-do-mes mes dia-da-semana. O * indica todos os valores (em todos os minutos, em todas as horas, em todos os dias do mes). O último campo é referente ao dia da semana, 0 e 7 indicam o domingo, 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta e 6=sábado. #crontab #cron #scheduling #syntax"
+  comment: "Os 5 campos de um agendamento de crontab são: minuto hora dia-do-mes mes dia-da-semana. O * indica todos os valores (em todos os minutos, em todas as horas, em todos os dias do mes). O último campo é referente ao dia da semana, 0 e 7 indicam o domingo, 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta e 6=sábado. #crontab #cron"
 
 - id: "107-055"
   topic: "107.2"
@@ -594,14 +594,14 @@
     - "GID"
     - "Localização do Comando"
   answer: 2
-  comment: "O agendamento no arquivo /etc/crontab deve conter, além de todos os campos comuns a todos os usuários, o nome do usuário que irá executar a instrução. #crontab #cron #scheduling #etc"
+  comment: "O agendamento no arquivo /etc/crontab deve conter, além de todos os campos comuns a todos os usuários, o nome do usuário que irá executar a instrução. #crontab #cron"
 
 - id: "107-056"
   topic: "107.2"
   type: "discursive"
   question: "Qual arquivo deve ser configurado para definir que um usuário específico não está autorizado a submeter tarefas via at ou batch? (Informe o caminho completo do arquivo)"
   answer: "/etc/at.deny"
-  comment: "O arquivo /etc/at.allow indica quais usuários podem usar o at. Caso exista e esteja vazio, nenhum usuário está autorizado a utilizar o at. Caso o arquivo não exista, o arquivo /etc/at.deny será consultado e os usuários listados serão bloqueados. Se nenhum dos 2 arquivos existir, ou se ambos estiverem em branco, apenas o root poderá usar o at. #at.deny #at.allow #at #scheduling"
+  comment: "O arquivo /etc/at.allow indica quais usuários podem usar o at. Caso exista e esteja vazio, nenhum usuário está autorizado a utilizar o at. Caso o arquivo não exista, o arquivo /etc/at.deny será consultado e os usuários listados serão bloqueados. Se nenhum dos 2 arquivos existir, ou se ambos estiverem em branco, apenas o root poderá usar o at. #at.deny #at.allow #at"
 
 - id: "107-057"
   topic: "107.3"
@@ -612,7 +612,7 @@
     - "UTF-8"
     - "UTF-16"
   answer: 3
-  comment: "Sistemas Linux por padrão utilizam UTF-8. O ISO-8859-1 está normalmente associado a sistemas Windows. O comando iconv pode ser usado para converter de um formato para outro. #UTF-8 #encoding #i18n #locale"
+  comment: "Sistemas Linux por padrão utilizam UTF-8. O ISO-8859-1 está normalmente associado a sistemas Windows. O comando iconv pode ser usado para converter de um formato para outro. #UTF-8 #locale"
 
 - id: "107-058"
   topic: "107.3"
@@ -624,7 +624,7 @@
     - "Separador Numérico"
     - "Codificação"
   answer: 3
-  comment: "O fuso horário (timezone) não faz parte das definições do locale. Ele é definido pelo arquivo /etc/timezone e pelos arquivos contidos no /usr/share/zoneinfo. #locale #timezone #i18n #l10n"
+  comment: "O fuso horário (timezone) não faz parte das definições do locale. Ele é definido pelo arquivo /etc/timezone e pelos arquivos contidos no /usr/share/zoneinfo. #locale #timezone"
 
 - id: "107-059"
   topic: "107.3"
@@ -636,5 +636,5 @@
     - "LC_MESSAGES"
     - "LC_TEXT"
   answer: [1, 4]
-  comment: "As variáveis de localização que podem ser utilizadas são: LANG: lida com a linguagem geral de um sistema Linux. LC_MESSAGES: Responsável por imprimir mensagens em um determinado idioma, semelhante ao LANG. Uma vez que faz parte do conjunto de variáveis LC_xxx, ela substituirá a variável LANG. LC_ALL: É a variável de ambiente local mais forte, exceto LANGUAGE. Ela substitui todas as outras variáveis em prioridade e é a primeira a ser verificada pelo sistema quando uma configuração de local é necessária. Pode ser considerada a seguinte ordem de prioridade: LANGUAGE> LC_ALL> LC_ * > LANG #LANG #LC_MESSAGES #locale #i18n"
+  comment: "As variáveis de localização que podem ser utilizadas são: LANG: lida com a linguagem geral de um sistema Linux. LC_MESSAGES: Responsável por imprimir mensagens em um determinado idioma, semelhante ao LANG. Uma vez que faz parte do conjunto de variáveis LC_xxx, ela substituirá a variável LANG. LC_ALL: É a variável de ambiente local mais forte, exceto LANGUAGE. Ela substitui todas as outras variáveis em prioridade e é a primeira a ser verificada pelo sistema quando uma configuração de local é necessária. Pode ser considerada a seguinte ordem de prioridade: LANGUAGE> LC_ALL> LC_ * > LANG #LANG #LC_MESSAGES #locale"
 

@@ -7,7 +7,7 @@
     - "Interface e default gateway"
     - "Interface"
   answer: 1
-  comment: "Para a conectividade total em uma estação, o kernel precisa de três informações na tabela de roteamento: a rota da própria interface (para saber quem ele é), a rota da rede local (para falar com vizinhos na mesma sub-rede) e o gateway padrão (default gateway) para encaminhar pacotes para fora da rede local (Internet). #network #routing #gateway"
+  comment: "Para a conectividade total em uma estação, o kernel precisa de três informações na tabela de roteamento: a rota da própria interface (para saber quem ele é), a rota da rede local (para falar com vizinhos na mesma sub-rede) e o gateway padrão (default gateway) para encaminhar pacotes para fora da rede local (Internet). #routing #gateway"
 
 - id: "109-001"
   topic: "109.1"
@@ -19,7 +19,7 @@
     - "172.30.100.201"
     - "192.10.20.30"
   answer: 5
-  comment: "Os endereços privados (RFC 1918) são: Classe A (10.0.0.0/8), Classe B (172.16.0.0/12) e Classe C (192.168.0.0/16). O IP 192.10.20.30 pertence a um intervalo de IP público. #networking #IP #private #RFC1918"
+  comment: "Os endereços privados (RFC 1918) são: Classe A (10.0.0.0/8), Classe B (172.16.0.0/12) e Classe C (192.168.0.0/16). O IP 192.10.20.30 pertence a um intervalo de IP público. #IP #RFC1918"
 
 - id: "109-002"
   topic: "109.2"
@@ -31,7 +31,7 @@
     - "Pelo comando dig"
     - "No arquivo /etc/network/interfaces"
   answer: 3
-  comment: "O arquivo /etc/hosts é um banco de dados estático de nomes de hosts. O formato da linha é 'IP hostname aliases'. Exemplo: '192.168.56.253 acesso1'. #hosts #network #static-mapping #linux-admin"
+  comment: "O arquivo /etc/hosts é um banco de dados estático de nomes de hosts. O formato da linha é 'IP hostname aliases'. Exemplo: '192.168.56.253 acesso1'. #hosts"
 
 - id: "109-003"
   topic: "109.1"
@@ -43,7 +43,7 @@
     - "IMAP"
     - "NTP"
   answer: 2
-  comment: "O DNS (Domain Name System) utiliza a porta 53 tanto para consultas UDP (padrão) quanto TCP (quando o pacote ultrapassa 512 bytes ou em transferência de zona). #DNS #ports #network #RFC1035"
+  comment: "O DNS (Domain Name System) utiliza a porta 53 tanto para consultas UDP (padrão) quanto TCP (quando o pacote ultrapassa 512 bytes ou em transferência de zona). #DNS #RFC1035"
 
 - id: "109-004"
   topic: "109.4"
@@ -54,7 +54,7 @@
     - "ifconfig"
     - "route"
   answer: 1
-  comment: "O comando 'dig' (Domain Information Groper) é a ferramenta padrão para consultas DNS, fornecendo respostas detalhadas sobre registros A, AAAA, MX, NS, entre outros. O 'hostname' exibe o nome local, 'ifconfig' gerencia interfaces e 'route' exibe a tabela de roteamento. #dig #DNS #network-troubleshooting #lpi"
+  comment: "O comando 'dig' (Domain Information Groper) é a ferramenta padrão para consultas DNS, fornecendo respostas detalhadas sobre registros A, AAAA, MX, NS, entre outros. O 'hostname' exibe o nome local, 'ifconfig' gerencia interfaces e 'route' exibe a tabela de roteamento. #dig #DNS"
 
 - id: "109-005"
   topic: "109.1"
@@ -66,7 +66,7 @@
     - "128"
     - "62"
   answer: 3
-  comment: "Em uma sub-rede /25, restam 7 bits para hosts ($2^7 = 128$). Subtraindo o endereço de rede e o de broadcast, temos $128 - 2 = 126$ endereços utilizáveis para hosts. #subnetting #CIDR #IPv4 #networking"
+  comment: "Em uma sub-rede /25, restam 7 bits para hosts ($2^7 = 128$). Subtraindo o endereço de rede e o de broadcast, temos $128 - 2 = 126$ endereços utilizáveis para hosts. #subnetting #CIDR #IPv4"
 
 - id: "109-006"
   topic: "109.2"
@@ -78,7 +78,7 @@
     - "nmcli con eth1 down"
     - "nmcli device Intranet down"
   answer: 3
-  comment: "O comando 'nmcli connection down [nome]' desativa uma configuração de conexão específica. O NetworkManager gerencia conexões (perfis lógicos) e dispositivos (hardware físico) separadamente; o comando 'connection' foca no perfil, enquanto 'device' foca na interface. #nmcli #NetworkManager #networking #linux"
+  comment: "O comando 'nmcli connection down [nome]' desativa uma configuração de conexão específica. O NetworkManager gerencia conexões (perfis lógicos) e dispositivos (hardware físico) separadamente; o comando 'connection' foca no perfil, enquanto 'device' foca na interface. #nmcli #NetworkManager"
 
 - id: "109-007"
   topic: "109.3"
@@ -90,7 +90,7 @@
     - "tracepath"
     - "nslookup"
   answer: 1
-  comment: "O comando 'ss' (Socket Statistics) é o sucessor moderno e mais eficiente do 'netstat'. Ele consulta diretamente as informações do kernel para listar conexões TCP, UDP e sockets de domínio Unix. #ss #netstat #network-troubleshooting #socket"
+  comment: "O comando 'ss' (Socket Statistics) é o sucessor moderno e mais eficiente do 'netstat'. Ele consulta diretamente as informações do kernel para listar conexões TCP, UDP e sockets de domínio Unix. #ss #netstat #socket"
 
 - id: "109-008"
   topic: "109.1"
@@ -102,7 +102,7 @@
     - "TCP"
     - "SMTP"
   answer: 4
-  comment: "O TCP (Transmission Control Protocol) é um protocolo de transporte orientado a conexão que utiliza confirmações (ACKs) e numeração de sequência para garantir que todos os dados sejam entregues, íntegros e na ordem correta, realizando retransmissão automática de pacotes perdidos. #TCP #network #transport #reliability"
+  comment: "O TCP (Transmission Control Protocol) é um protocolo de transporte orientado a conexão que utiliza confirmações (ACKs) e numeração de sequência para garantir que todos os dados sejam entregues, íntegros e na ordem correta, realizando retransmissão automática de pacotes perdidos. #TCP"
 
 - id: "109-009"
   topic: "109.1"
@@ -114,7 +114,7 @@
     - "D"
     - "E"
   answer: 2
-  comment: "A classificação de IPs IPv4 baseia-se no primeiro octeto: Classe A (1-127), Classe B (128-191), Classe C (192-223), Classe D (224-239/Multicast) e Classe E (240-255/Experimental). Como 172 está entre 128 e 191, é Classe B. #IPv4 #NetworkClasses #Networking"
+  comment: "A classificação de IPs IPv4 baseia-se no primeiro octeto: Classe A (1-127), Classe B (128-191), Classe C (192-223), Classe D (224-239/Multicast) e Classe E (240-255/Experimental). Como 172 está entre 128 e 191, é Classe B. #IPv4"
 
 - id: "109-010"
   topic: "109.3"
@@ -126,7 +126,7 @@
     - "A máquina possui 2 interfaces configuradas"
     - "Arquivo /etc/nsswitch.conf mal configurado"
   answer: 2
-  comment: "Se o DNS funciona, a rede local está ativa, mas a Internet falha, o gargalo é quase sempre a rota de saída. O gateway padrão (default gateway) deve estar na mesma sub-rede que a interface do host. Se o IP do gateway estiver fora do range, o tráfego externo simplesmente não encontra a saída. #routing #gateway #troubleshooting #networking"
+  comment: "Se o DNS funciona, a rede local está ativa, mas a Internet falha, o gargalo é quase sempre a rota de saída. O gateway padrão (default gateway) deve estar na mesma sub-rede que a interface do host. Se o IP do gateway estiver fora do range, o tráfego externo simplesmente não encontra a saída. #routing #gateway"
 
 - id: "109-011"
   topic: "109.3"
@@ -137,7 +137,7 @@
     - "ICMP"
     - "SNMP"
   answer: 3
-  comment: "O comando 'ping' utiliza o protocolo ICMP (Internet Control Message Protocol), especificamente as mensagens 'Echo Request' (tipo 8) e 'Echo Reply' (tipo 0). Ele funciona na camada de rede, sendo essencial para diagnósticos de conectividade básica. #ping #ICMP #networking #troubleshooting"
+  comment: "O comando 'ping' utiliza o protocolo ICMP (Internet Control Message Protocol), especificamente as mensagens 'Echo Request' (tipo 8) e 'Echo Reply' (tipo 0). Ele funciona na camada de rede, sendo essencial para diagnósticos de conectividade básica. #ping #ICMP"
 
 - id: "109-012"
   topic: "109.4"
@@ -149,7 +149,7 @@
     - "/etc/dns.conf"
     - "/etc/resolv.conf"
   answer: 5
-  comment: "O arquivo '/etc/resolv.conf' é onde o cliente DNS do sistema busca os endereços dos servidores de nomes. A diretiva 'nameserver' seguida pelo IP (ex: 'nameserver 172.16.30.1') define o resolvedor a ser consultado. #resolv.conf #DNS #client-config #networking"
+  comment: "O arquivo '/etc/resolv.conf' é onde o cliente DNS do sistema busca os endereços dos servidores de nomes. A diretiva 'nameserver' seguida pelo IP (ex: 'nameserver 172.16.30.1') define o resolvedor a ser consultado. #resolv.conf #DNS"
 
 - id: "109-013"
   topic: "109.3"
@@ -161,7 +161,7 @@
     - "netcat 192.168.8.10 110"
     - "ping 192.168.8.10:110"
   answer: 2
-  comment: "O 'telnet' (ou 'nc') permite estabelecer um socket TCP direto. Ao conectar na porta 25 (padrão SMTP), você interage diretamente com o MTA. Se a conexão for estabelecida e exibir o banner do servidor, o serviço está funcional. #SMTP #telnet #MTA #troubleshooting"
+  comment: "O 'telnet' (ou 'nc') permite estabelecer um socket TCP direto. Ao conectar na porta 25 (padrão SMTP), você interage diretamente com o MTA. Se a conexão for estabelecida e exibir o banner do servidor, o serviço está funcional. #SMTP #telnet #MTA"
 
 - id: "109-014"
   topic: "109.1"
@@ -173,7 +173,7 @@
     - "30"
     - "62"
   answer: 2
-  comment: "Em uma sub-rede /28, restam 4 bits para hosts ($2^4 = 16$). Subtraindo o endereço de rede e o de broadcast, temos $16 - 2 = 14$ endereços utilizáveis para hosts. #subnetting #CIDR #IPv4 #networking"
+  comment: "Em uma sub-rede /28, restam 4 bits para hosts ($2^4 = 16$). Subtraindo o endereço de rede e o de broadcast, temos $16 - 2 = 14$ endereços utilizáveis para hosts. #subnetting #CIDR #IPv4"
 
 - id: "109-015"
   topic: "109.2"
@@ -185,7 +185,7 @@
     - "nmcli radio wifi on"
     - "nmcli radio show"
   answer: 3
-  comment: "O comando 'nmcli device wifi list' instrui o subsistema de rede (device) a escanear e listar os pontos de acesso (APs) detectados. Embora 'nmcli wifi list' funcione em versões mais recentes como atalho, o comando completo e estruturado pelo manual LPI é 'nmcli device wifi list'. #nmcli #WiFi #NetworkManager #scanning"
+  comment: "O comando 'nmcli device wifi list' instrui o subsistema de rede (device) a escanear e listar os pontos de acesso (APs) detectados. Embora 'nmcli wifi list' funcione em versões mais recentes como atalho, o comando completo e estruturado pelo manual LPI é 'nmcli device wifi list'. #nmcli #wifi #NetworkManager"
 
 - id: "109-016"
   topic: "109.3"
@@ -197,7 +197,7 @@
     - "ip address add eth1:0 192.168.10.10/255.255.255.192 via eth1"
     - "ip address add eth1:0 192.168.10.10/25 dev eth1"
   answer: 2
-  comment: "O comando 'ip addr add [IP/prefixo] dev [interface]' é o padrão moderno. A máscara 255.255.255.192 equivale a 26 bits (192 = 11000000 em binário), logo '/26'. #iproute2 #linux-networking #CIDR #subnetting"
+  comment: "O comando 'ip addr add [IP/prefixo] dev [interface]' é o padrão moderno. A máscara 255.255.255.192 equivale a 26 bits (192 = 11000000 em binário), logo '/26'. #iproute2 #CIDR #subnetting"
 
 - id: "109-017"
   topic: "109.4"
@@ -220,7 +220,7 @@
     - "O nameserver não pode indicar o IP local ou o endereço de loopback 127.0.0.1."
     - "O parâmetro \"domain\" pode ser usado para indicar o domínio local da máquina"
   answer: [1, 3, 5]
-  comment: "O arquivo /etc/resolv.conf permite a configuração de vários servidores DNS, e eles serão classificados como DNS primário, secundário e etc. No entanto apenas um será consultado e caso haja um retorno de erro ou ele estiver fora de serviço, o servidor seguinte será consultado. Além do nameserver, os parâmetros domain e search podem ser utilizados. #resolv.conf #DNS #nameserver #networking"
+  comment: "O arquivo /etc/resolv.conf permite a configuração de vários servidores DNS, e eles serão classificados como DNS primário, secundário e etc. No entanto apenas um será consultado e caso haja um retorno de erro ou ele estiver fora de serviço, o servidor seguinte será consultado. Além do nameserver, os parâmetros domain e search podem ser utilizados. #resolv.conf #DNS #nameserver"
 
 - id: "109-019"
   topic: "109.1"
@@ -231,7 +231,7 @@
     - "fe80:0db8:0000:5fca:fde3:103c"
     - "fe80::408:5fca:fde3:103c"
   answer: 4
-  comment: "Um endereço IPV6 é formado por 128 bits, separados em 8 conjuntos de 16 bits, normalmente representados em formato hexadecimal, e cada grupo separado por \":\". No entanto, quando há grupos em sequência com valores 0000, estes podem ser abreviados e omitidos, o que se vê pela indicação \"::\". #IPv6 #networking #protocolos #enderecamento"
+  comment: "Um endereço IPV6 é formado por 128 bits, separados em 8 conjuntos de 16 bits, normalmente representados em formato hexadecimal, e cada grupo separado por \":\". No entanto, quando há grupos em sequência com valores 0000, estes podem ser abreviados e omitidos, o que se vê pela indicação \"::\". #IPv6"
 
 - id: "109-020"
   topic: "109.1"
@@ -242,7 +242,7 @@
     - "192.168.8.127"
     - "192.168.8.128"
   answer: 4
-  comment: "A máscara 255.255.255.128, ou /25, divide uma rede em 2 sub-redes. Nesse caso, a sub-rede em que está incluído o IP 192.168.8.180 tem o endereço de sub-rede 192.168.8.128 e o endereço de broadcast 192.168.8.255. A outra sub-rede tem o endereço de rede igual a 192.168.8.0 e o endereço de broadcast igual a 192.168.8.127. #subnetting #CIDR #networking #IPv4"
+  comment: "A máscara 255.255.255.128, ou /25, divide uma rede em 2 sub-redes. Nesse caso, a sub-rede em que está incluído o IP 192.168.8.180 tem o endereço de sub-rede 192.168.8.128 e o endereço de broadcast 192.168.8.255. A outra sub-rede tem o endereço de rede igual a 192.168.8.0 e o endereço de broadcast igual a 192.168.8.127. #subnetting #CIDR #IPv4"
 
 - id: "109-021"
   topic: "109.1"
@@ -254,14 +254,14 @@
     - "FTP"
     - "HTTP"
   answer: 2
-  comment: "O protocolo TCP é orientado à conexão e o próprio protocolo garante que os pacotes só serão entregues se estiverem íntegros e na ordem correta. O protocolo UDP não faz esse controle. O protocolo ICMP é utilizado para controle de redes e máquinas e não transmite dados. O FTP é um protocolo de transferência de arquivos. #TCP #UDP #protocolos #networking"
+  comment: "O protocolo TCP é orientado à conexão e o próprio protocolo garante que os pacotes só serão entregues se estiverem íntegros e na ordem correta. O protocolo UDP não faz esse controle. O protocolo ICMP é utilizado para controle de redes e máquinas e não transmite dados. O FTP é um protocolo de transferência de arquivos. #TCP #UDP"
 
 - id: "109-022"
   topic: "109.1"
   type: "discursive"
   question: "Qual a porta utilizada pelo protocolo HTTPS? (Informe apenas o número da porta)"
   answer: "443"
-  comment: "O serviço de HTTP Seguro, ou HTTPS, é servido na porta TCP 443. #HTTPS #portas #TCP #protocolos"
+  comment: "O serviço de HTTP Seguro, ou HTTPS, é servido na porta TCP 443. #HTTPS #TCP"
 
 - id: "109-023"
   topic: "109.3"
@@ -273,7 +273,7 @@
     - "ss"
     - "ip"
   answer: 5
-  comment: "O comando ip é uma ferramenta completa de gerenciamento dos componentes de rede do sistema. Pela opção \"route\" gerencia as rotas, pela \"link\" as interfaces e por \"address\" os endereços das interfaces, além de vários outros recursos. #ip #iproute2 #routing #networking"
+  comment: "O comando ip é uma ferramenta completa de gerenciamento dos componentes de rede do sistema. Pela opção \"route\" gerencia as rotas, pela \"link\" as interfaces e por \"address\" os endereços das interfaces, além de vários outros recursos. #IP #iproute2 #routing"
 
 - id: "109-024"
   topic: "109.2"
@@ -284,7 +284,7 @@
     - "name"
     - "search"
   answer: 1
-  comment: "No arquivo /etc/nsswitch.conf, através do parâmetro hosts o administrador deve configurar a ordem de consulta de nomes principalmente através das opções \"files\", referente aos arquivos internos, e \"dns\" referente a servidores DNS. #nsswitch #hosts #DNS #networking"
+  comment: "No arquivo /etc/nsswitch.conf, através do parâmetro hosts o administrador deve configurar a ordem de consulta de nomes principalmente através das opções \"files\", referente aos arquivos internos, e \"dns\" referente a servidores DNS. #nsswitch #hosts #DNS"
 
 - id: "109-025"
   topic: "109.2"
@@ -295,7 +295,7 @@
     - "nmcli connection enable rede-interna"
     - "nmcli networking enable rede-interna"
   answer: 1
-  comment: "Na ferramenta nmcli, toda operação baseada em uma conexão, deve ser realizada com a opção \"connection\", ou \"con\" ou \"c\". Para habilitar ou desabilitar uma conexão são utilizados up ou down respectivamente. #nmcli #NetworkManager #networking #connection"
+  comment: "Na ferramenta nmcli, toda operação baseada em uma conexão, deve ser realizada com a opção \"connection\", ou \"con\" ou \"c\". Para habilitar ou desabilitar uma conexão são utilizados up ou down respectivamente. #nmcli #NetworkManager"
 
 - id: "109-026"
   topic: "109.2"
@@ -306,7 +306,7 @@
     - "192.168.8.1:roteador, gateway"
     - "127.0.0.1 192.168.8.10 linux-server"
   answer: 1
-  comment: "O primeiro campo deve ser o IP e em seguida os nomes equivalentes. Apenas 1 IP pode ser informado por linha, mas ele pode ser associado a vários nomes. #hosts #networking #DNS #resolucao"
+  comment: "O primeiro campo deve ser o IP e em seguida os nomes equivalentes. Apenas 1 IP pode ser informado por linha, mas ele pode ser associado a vários nomes. #hosts #DNS"
 
 - id: "109-027"
   topic: "109.3"
@@ -317,7 +317,7 @@
     - "ss -na"
     - "ss -ltn"
   answer: 4
-  comment: "Tanto no ss quanto no netstat, a opção \"l\" exibe apenas as conexões em modo \"listen\", a opção \"t\" restringe ao protocolo TCP e o \"n\" impede a resolução de nomes. A opção \"a\" exibe todos os tipos de estados de conexão. #ss #netstat #TCP #networking"
+  comment: "Tanto no ss quanto no netstat, a opção \"l\" exibe apenas as conexões em modo \"listen\", a opção \"t\" restringe ao protocolo TCP e o \"n\" impede a resolução de nomes. A opção \"a\" exibe todos os tipos de estados de conexão. #ss #netstat #TCP"
 
 - id: "109-028"
   topic: "109.3"
@@ -329,7 +329,7 @@
     - "netcat -n"
     - "netstat -r"
   answer: [2, 3, 5]
-  comment: "O comando route é dedicado à visualização e alteração das rotas da máquina, a opção -n desabilita a resolução de nomes. O comando tem várias funções, entre elas também visualizar e manipular a tabela de roteamento. O comando netstat tem como principal função analisar as conexões estabelecidas, no entanto a opção -r exibe as rotas da máquina de maneira bem similar ao route -n. #route #ip #netstat #routing"
+  comment: "O comando route é dedicado à visualização e alteração das rotas da máquina, a opção -n desabilita a resolução de nomes. O comando tem várias funções, entre elas também visualizar e manipular a tabela de roteamento. O comando netstat tem como principal função analisar as conexões estabelecidas, no entanto a opção -r exibe as rotas da máquina de maneira bem similar ao route -n. #route #IP #netstat #routing"
 
 - id: "109-029"
   topic: "109.3"
@@ -340,7 +340,7 @@
     - "-c"
     - "-t"
   answer: 3
-  comment: "Por padrão o ping enviará pacotes até que o comando seja cancelado, com um Ctrl C por exemplo. A opção -c permite especificar quantos pacotes serão enviados, por exemplo: ping -c4 destino. #ping #ICMP #networking #troubleshooting"
+  comment: "Por padrão o ping enviará pacotes até que o comando seja cancelado, com um Ctrl C por exemplo. A opção -c permite especificar quantos pacotes serão enviados, por exemplo: ping -c4 destino. #ping #ICMP"
 
 - id: "109-030"
   topic: "109.2"
@@ -351,7 +351,7 @@
     - "host"
     - "hostnamectl"
   answer: 4
-  comment: "O comando hostnamectl com a opção set-hostname alterará o conteúdo do arquivo /etc/hostname, que define o hostname da máquina. O comando hostname altera o nome da máquina no momento, mas o arquivo /etc/hostname não é alterado. #hostnamectl #hostname #systemd #networking"
+  comment: "O comando hostnamectl com a opção set-hostname alterará o conteúdo do arquivo /etc/hostname, que define o hostname da máquina. O comando hostname altera o nome da máquina no momento, mas o arquivo /etc/hostname não é alterado. #hostnamectl #hostname #systemd"
 
 - id: "109-031"
   topic: "109.2"
@@ -373,14 +373,14 @@
     192.168.8.50    web-server
     192.168.8.1     roteador
   answer: "/etc/hosts"
-  comment: "O arquivo /etc/hosts terá um mapeamento entre IPs e nomes que são normalmente utilizados internamente. #hosts #networking #DNS #resolucao"
+  comment: "O arquivo /etc/hosts terá um mapeamento entre IPs e nomes que são normalmente utilizados internamente. #hosts #DNS"
 
 - id: "109-033"
   topic: "109.4"
   type: "discursive"
   question: "Qual a entrada correta para definir o servidor DNS 8.8.8.8 no arquivo /etc/resolv.conf? (Informe a linha de configuração completa)"
   answer: "nameserver 8.8.8.8"
-  comment: "O parâmetro namserver é usado para indicar um ou mais servidores DNS. #resolv.conf #nameserver #DNS #networking"
+  comment: "O parâmetro namserver é usado para indicar um ou mais servidores DNS. #resolv.conf #nameserver #DNS"
 
 - id: "109-034"
   topic: "109.4"
@@ -392,7 +392,7 @@
     - "dig www.lpi-org --query 1.1.1.1"
     - "host www.lpi.org @1.1.1.1"
   answer: [2, 3]
-  comment: "No comando host, o IP do servidor DNS a ser utilizado deve ser informado após o endereço, conforme sintaxe da opção \"c\". No comando dig, deve ser utilizado o @ para se indicar o IP do servidor DNS, conforme sintaxe da opção \"b\". #dig #host #DNS #networking"
+  comment: "No comando host, o IP do servidor DNS a ser utilizado deve ser informado após o endereço, conforme sintaxe da opção \"c\". No comando dig, deve ser utilizado o @ para se indicar o IP do servidor DNS, conforme sintaxe da opção \"b\". #dig #host #DNS"
 
 - id: "109-035"
   topic: "109.1"
@@ -404,7 +404,7 @@
     - "62"
     - "64"
   answer: 1
-  comment: "O CIDR /28 é equivalente à máscara 255.255.255.240, que divide um rede em 16 sub-redes, cada uma com 14 hosts. Um exemplo é a sub-rede com endereço de rede 192.168.1.0 e broadcast 192.168.1.15, sendo o 0 e 15 não utilizáveis por hosts, sobra 14 endereços. Uma dica é que sempre será um número par. #subnetting #CIDR #IPv4 #networking"
+  comment: "O CIDR /28 é equivalente à máscara 255.255.255.240, que divide um rede em 16 sub-redes, cada uma com 14 hosts. Um exemplo é a sub-rede com endereço de rede 192.168.1.0 e broadcast 192.168.1.15, sendo o 0 e 15 não utilizáveis por hosts, sobra 14 endereços. Uma dica é que sempre será um número par. #subnetting #CIDR #IPv4"
 
 - id: "109-036"
   topic: "109.2"
@@ -415,7 +415,7 @@
     - "nmcli"
     - "ifdown"
   answer: 4
-  comment: "Os comandos ifup e ifdown podem ser utilizados para ativar ou desativar uma interface com base nas configurações do arquivo /etc/network/interfaces (Padrão Debian) ou /etc/sysconfig/network-scripts/ (Padrão RedHat). #ifdown #ifup #interfaces #networking"
+  comment: "Os comandos ifup e ifdown podem ser utilizados para ativar ou desativar uma interface com base nas configurações do arquivo /etc/network/interfaces (Padrão Debian) ou /etc/sysconfig/network-scripts/ (Padrão RedHat). #ifdown #ifup #interfaces"
 
 - id: "109-037"
   topic: "109.2"
@@ -427,7 +427,7 @@
     - "/etc/hostname"
     - "/etc/networks"
   answer: 3
-  comment: "No arquivo /etc/nsswitch.conf, através do parâmetro hosts o administrador deve configurar a ordem de consulta de nomes principalmente através das opções \"files\", referente aos arquivos internos, e \"dns\" referente a servidores DNS. #nsswitch #hosts #DNS #networking"
+  comment: "No arquivo /etc/nsswitch.conf, através do parâmetro hosts o administrador deve configurar a ordem de consulta de nomes principalmente através das opções \"files\", referente aos arquivos internos, e \"dns\" referente a servidores DNS. #nsswitch #hosts #DNS"
 
 - id: "109-038"
   topic: "109.1"
@@ -439,7 +439,7 @@
     - "110"
     - "443"
   answer: 3
-  comment: "A porta TCP 25 é utilizada pelo protocolo SMTP para a transferência de e-mails entre servidores MTA. As demais portas pertencem a outros serviços: 21 ao FTP (transferência de arquivos), 23 ao Telnet (acesso remoto sem criptografia), 110 ao POP3 (recebimento de e-mails pelo cliente) e 443 ao HTTPS (HTTP seguro). #SMTP #portas #MTA #email"
+  comment: "A porta TCP 25 é utilizada pelo protocolo SMTP para a transferência de e-mails entre servidores MTA. As demais portas pertencem a outros serviços: 21 ao FTP (transferência de arquivos), 23 ao Telnet (acesso remoto sem criptografia), 110 ao POP3 (recebimento de e-mails pelo cliente) e 443 ao HTTPS (HTTP seguro). #SMTP #MTA"
 
 - id: "109-039"
   topic: "109.3"
@@ -450,7 +450,7 @@
     - "ip route add gateway 192.168.1.1"
     - "ip route add gateway via 192.168.1.1"
   answer: 1
-  comment: "O gateway, ou também chamado de \"rota padrão\", é essencial para que o sistema possa ter uma acesso externo à sua rede, em geral a Internet. O comando \"ip route add default via IP\" adiciona essa rota, também é possível informar a interface ao final do comando como \"dev iface\". #ip #gateway #routing #networking"
+  comment: "O gateway, ou também chamado de \"rota padrão\", é essencial para que o sistema possa ter uma acesso externo à sua rede, em geral a Internet. O comando \"ip route add default via IP\" adiciona essa rota, também é possível informar a interface ao final do comando como \"dev iface\". #IP #gateway #routing"
 
 - id: "109-040"
   topic: "109.3"
@@ -461,7 +461,7 @@
     - "Todos visam substituir completamente os comandos tracepath, ping e traceroute."
     - "Todos são utilizados para endereços IPV6."
   answer: 4
-  comment: "Estas são versões específicas para testes de hosts com IPs no formato IPV6. O ping usa ICMP, traceroute pode usar ICMP ou UDP e tracepath utiliza UDP. #IPv6 #ping #traceroute #networking"
+  comment: "Estas são versões específicas para testes de hosts com IPs no formato IPV6. O ping usa ICMP, traceroute pode usar ICMP ou UDP e tracepath utiliza UDP. #IPv6 #ping #traceroute"
 
 - id: "109-041"
   topic: "109.3"
@@ -472,7 +472,7 @@
     - "netcat -l -p 2244"
     - "nc 127.0.0.1 2244"
   answer: 3
-  comment: "A opção -l no netcat (ou nc) faz com que ele entre em modo de escuta (Listen) e a opção -p indica a porta que será ativada. #netcat #nc #listen #networking"
+  comment: "A opção -l no netcat (ou nc) faz com que ele entre em modo de escuta (Listen) e a opção -p indica a porta que será ativada. #netcat #nc"
 
 - id: "109-042"
   topic: "109.3"
@@ -483,14 +483,14 @@
     - "netstat 172.16.12.1 1234"
     - "netcat -l 172.16.12.1 1234"
   answer: 2
-  comment: "Os comandos netcat ou nc (são o mesmo comando) podem realizar diversas atividades, entre elas conectar em um IP e Porta específicos. O comando telnet também pode fazer essa conexão, mas a sintaxe informada está incorreta, deveria ser: telnet 172.16.12.1 1234. #netcat #nc #telnet #networking"
+  comment: "Os comandos netcat ou nc (são o mesmo comando) podem realizar diversas atividades, entre elas conectar em um IP e Porta específicos. O comando telnet também pode fazer essa conexão, mas a sintaxe informada está incorreta, deveria ser: telnet 172.16.12.1 1234. #netcat #nc #telnet"
 
 - id: "109-043"
   topic: "109.1"
   type: "discursive"
   question: "Em qual arquivo do sistema o administrador pode encontrar as principais portas utilizadas e a qual serviço ou protocolo ela está associada? (Informe o caminho completo do arquivo)"
   answer: "/etc/services"
-  comment: "O arquivo /etc/services contém uma lista de todas as portas conhecidas e a qual serviço ou protocolo cada uma é associada. #services #portas #protocolos #networking"
+  comment: "O arquivo /etc/services contém uma lista de todas as portas conhecidas e a qual serviço ou protocolo cada uma é associada. #services"
 
 - id: "109-044"
   topic: "109.1"
@@ -501,7 +501,7 @@
     - "255.255.255.192"
     - "255.255.255.248"
   answer: 3
-  comment: "A máscara 255.255.255.192 é representada como /26 no formato CIDR e a representação binária é 11111111.11111111.11111111.11000000. A máscara 255.255.255.128 utiliza CIDR /25 e 255.255.255.248 é igual a /29. #CIDR #subnetting #mascara #IPv4"
+  comment: "A máscara 255.255.255.192 é representada como /26 no formato CIDR e a representação binária é 11111111.11111111.11111111.11000000. A máscara 255.255.255.128 utiliza CIDR /25 e 255.255.255.248 é igual a /29. #CIDR #subnetting #IPv4"
 
 - id: "109-045"
   topic: "109.1"
@@ -512,7 +512,7 @@
     - "191.12.40.50"
     - "192.168.192.30"
   answer: 3
-  comment: "O IP 191.12.40.50 é considerado um IP Público. As faixas reservadas a IPs Privados são: 10.0.0.0 – 10.255.255.255, 172.16.0.0 – 172.31.255.255, 192.168.0.0 – 192.168.255.255 e 169.254.0.0 – 169.254.255.255. #IP #private #RFC1918 #networking"
+  comment: "O IP 191.12.40.50 é considerado um IP Público. As faixas reservadas a IPs Privados são: 10.0.0.0 – 10.255.255.255, 172.16.0.0 – 172.31.255.255, 192.168.0.0 – 192.168.255.255 e 169.254.0.0 – 169.254.255.255. #IP #RFC1918"
 
 - id: "109-046"
   topic: "109.4"
@@ -524,7 +524,7 @@
     - "domain"
     - "search"
   answer: 2
-  comment: "A propriedade nameserver é utilizada para especificar os IPs dos servidores DNS utilizados para resolução de nomes. Mais de um pode ser utilizado para indicar os DNSs Primário, Secundário e etc. #resolv.conf #nameserver #DNS #networking"
+  comment: "A propriedade nameserver é utilizada para especificar os IPs dos servidores DNS utilizados para resolução de nomes. Mais de um pode ser utilizado para indicar os DNSs Primário, Secundário e etc. #resolv.conf #nameserver #DNS"
 
 - id: "109-047"
   topic: "109.1"
@@ -535,7 +535,7 @@
     - "128"
     - "256"
   answer: 2
-  comment: "Os endereços IPv6 possuem no total 128 bits, mas sua estrutura foi projetada para utilizar os 64 bits mais a esquerda para identificação da rede e os 64 bits mais a direita para identificação da interface. #IPv6 #networking #enderecamento #protocolos"
+  comment: "Os endereços IPv6 possuem no total 128 bits, mas sua estrutura foi projetada para utilizar os 64 bits mais a esquerda para identificação da rede e os 64 bits mais a direita para identificação da interface. #IPv6"
 
 - id: "109-048"
   topic: "109.4"
@@ -547,14 +547,14 @@
     - "dig"
     - "dnsquery"
   answer: 4
-  comment: "O \"dig\" é sempre a ferramenta mais completo de pesquisa DNS, possibilitando a análise de diversos detalhes sobre uma consulta. #dig #DNS #networking #troubleshooting"
+  comment: "O \"dig\" é sempre a ferramenta mais completo de pesquisa DNS, possibilitando a análise de diversos detalhes sobre uma consulta. #dig #DNS"
 
 - id: "109-049"
   topic: "109.1"
   type: "discursive"
   question: "Quantas endereços IP podem ser usados de maneria única nos hosts da subrede 192.168.1.0/29? (Informe apenas o número)"
   answer: "6"
-  comment: "O CIDR /29 é equivalente à máscara 255.255.255.248, que divide um rede em 32 sub-redes, cada uma com 6 hosts. Um exemplo é a sub-rede com endereço de rede 192.168.1.0 e broadcast 192.168.1.7, sendo o 0 e 7 não utilizáveis por hosts, sobrando então 6 endereços. Uma dica é que sempre será um número par. #subnetting #CIDR #IPv4 #networking"
+  comment: "O CIDR /29 é equivalente à máscara 255.255.255.248, que divide um rede em 32 sub-redes, cada uma com 6 hosts. Um exemplo é a sub-rede com endereço de rede 192.168.1.0 e broadcast 192.168.1.7, sendo o 0 e 7 não utilizáveis por hosts, sobrando então 6 endereços. Uma dica é que sempre será um número par. #subnetting #CIDR #IPv4"
 
 - id: "109-050"
   topic: "109.1"
@@ -566,7 +566,7 @@
     - "10.10.20.30"
     - "172.30.122.25"
   answer: [1, 4, 5]
-  comment: "As faixas reservadas a IPs Privados são: 10.0.0.0 – 10.255.255.255, 172.16.0.0 – 172.31.255.255, 192.168.0.0 – 192.168.255.255 e 169.254.0.0 – 169.254.255.255. #IP #private #RFC1918 #networking"
+  comment: "As faixas reservadas a IPs Privados são: 10.0.0.0 – 10.255.255.255, 172.16.0.0 – 172.31.255.255, 192.168.0.0 – 192.168.255.255 e 169.254.0.0 – 169.254.255.255. #IP #RFC1918"
 
 - id: "109-051"
   topic: "109.1"
@@ -577,7 +577,7 @@
     - "22"
     - "23"
   answer: 1
-  comment: "O protocolo FTP trabalha com 2 portas, a porta 20 é usada para transferência de arquivos e a porta 21 é usada para o envio de comandos e controle da conexão. 22 é porta usada pelo SSH e 23 pelo serviço Telnet. #FTP #portas #protocolos #networking"
+  comment: "O protocolo FTP trabalha com 2 portas, a porta 20 é usada para transferência de arquivos e a porta 21 é usada para o envio de comandos e controle da conexão. 22 é porta usada pelo SSH e 23 pelo serviço Telnet. #FTP"
 
 - id: "109-052"
   topic: "109.2"
@@ -589,7 +589,7 @@
     - "files"
     - "servers"
   answer: [2, 4]
-  comment: "No arquivo /etc/nsswitch.conf, através do parâmetro hosts o administrador deve configurar a ordem de consulta de nomes principalmente através das opções \"files\", referente aos arquivos internos, e \"dns\" referente a servidores DNS. #nsswitch #files #dns #networking"
+  comment: "No arquivo /etc/nsswitch.conf, através do parâmetro hosts o administrador deve configurar a ordem de consulta de nomes principalmente através das opções \"files\", referente aos arquivos internos, e \"dns\" referente a servidores DNS. #nsswitch #DNS"
 
 - id: "109-053"
   topic: "109.2"
@@ -601,21 +601,21 @@
     - "ip link set enp0s1 down"
     - "ifconfig enp0s1 down"
   answer: [1, 4, 5]
-  comment: "O comando ifdown e o ifup funcionam baseados nas arquivos de configuração /etc/network/intefaces ou /etc/sysconfig/network-scripts. No comando ip, a opção link é referente às interfaces e a opção set pode ser utilizada para habilitar (up) ou desabilitar (down) uma interface. #ifdown #ip #ifconfig #interfaces"
+  comment: "O comando ifdown e o ifup funcionam baseados nas arquivos de configuração /etc/network/intefaces ou /etc/sysconfig/network-scripts. No comando ip, a opção link é referente às interfaces e a opção set pode ser utilizada para habilitar (up) ou desabilitar (down) uma interface. #ifdown #IP #ifconfig #interfaces"
 
 - id: "109-054"
   topic: "109.3"
   type: "discursive"
   question: "Qual comando pode ser utilizado para exibir informações sobre as conexões abertas no sistema, a tabela de roteamento e as estatísticas das interfaces de rede? (Informe apenas o comando, sem o caminho ou argumentos)"
   answer: "netstat"
-  comment: "Por padrão o comando netstat exibe as conexões abertas no sistema, mas também pode ser usado para exibir as rotas com a opção -r, e estatísticas das interfaces, com a opção -i. O comando ss, apesar se ser muito semelhante ao netstat, não possui as opções -r e -i. #netstat #ss #routing #networking"
+  comment: "Por padrão o comando netstat exibe as conexões abertas no sistema, mas também pode ser usado para exibir as rotas com a opção -r, e estatísticas das interfaces, com a opção -i. O comando ss, apesar se ser muito semelhante ao netstat, não possui as opções -r e -i. #netstat #ss #routing"
 
 - id: "109-055"
   topic: "109.3"
   type: "discursive"
   question: "Qual comando irá mostrar toda a rota utilizada por um pacote para chegar até o endereço de destino? (Informe apenas o comando, sem o caminho ou argumentos)"
   answer: "traceroute"
-  comment: "Os comandos traceroute e tracepath traçam uma rota da máquina local até a máquina destino, informando todos os gateways/hops que foram utilizados no caminho. #traceroute #tracepath #routing #networking"
+  comment: "Os comandos traceroute e tracepath traçam uma rota da máquina local até a máquina destino, informando todos os gateways/hops que foram utilizados no caminho. #traceroute #tracepath #routing"
 
 - id: "109-056"
   topic: "109.2"
@@ -626,7 +626,7 @@
     - "nmcli dev show enp0s3"
     - "nmcli connection enp0s3"
   answer: 3
-  comment: "Na ferramenta nmcli, toda operação baseada nas interfaces deve ser realizada com a opção \"device\", ou \"dev\" ou \"d\". A opção show exibe os detalhes de todas as interfaces ou apenas da especificada. #nmcli #device #NetworkManager #networking"
+  comment: "Na ferramenta nmcli, toda operação baseada nas interfaces deve ser realizada com a opção \"device\", ou \"dev\" ou \"d\". A opção show exibe os detalhes de todas as interfaces ou apenas da especificada. #nmcli #NetworkManager"
 
 - id: "109-057"
   topic: "109.3"
@@ -637,14 +637,14 @@
     - "ip address add 10.0.0.50 netmask 255.255.255.0 dev eth1"
     - "ip addr add 10.0.0.50/24 dev eth1"
   answer: 4
-  comment: "Ao se utilizar \"ip address add\" o IP será adicionado na interface, mantendo os IPs anteriores caso eles existam. #ip #iproute2 #address #networking"
+  comment: "Ao se utilizar \"ip address add\" o IP será adicionado na interface, mantendo os IPs anteriores caso eles existam. #IP #iproute2"
 
 - id: "109-058"
   topic: "109.2"
   type: "discursive"
   question: "Qual arquivo é utilizado como base para configuração do nome da máquina local? (Informe o caminho completo do arquivo)"
   answer: "/etc/hostname"
-  comment: "O arquivo /etc/hostname contém simplesmente a informação do nome da máquina. A mesma informação é retornada pelo comando \"hostname\". #hostname #networking #etc #host"
+  comment: "O arquivo /etc/hostname contém simplesmente a informação do nome da máquina. A mesma informação é retornada pelo comando \"hostname\". #hostname #host"
 
 - id: "109-059"
   topic: "109.3"
@@ -655,7 +655,7 @@
     - "route -l"
     - "route list"
   answer: 2
-  comment: "Por padrão, o comando route irá procurar transformar os IPs em nomes conforme as configurações do arquivo /etc/hosts e do servidor DNS. A opção -n mantém os IPs, tornando inclusive a execução do comando mais rápida. #route #routing #networking #DNS"
+  comment: "Por padrão, o comando route irá procurar transformar os IPs em nomes conforme as configurações do arquivo /etc/hosts e do servidor DNS. A opção -n mantém os IPs, tornando inclusive a execução do comando mais rápida. #route #routing #DNS"
 
 - id: "109-060"
   topic: "109.2"
@@ -666,7 +666,7 @@
     - "/etc/sysconfig/network-scripts"
     - "/etc/nmcli/connections"
   answer: 1
-  comment: "No diretório /etc/NetworkManager/system-connections/ existe um arquivo para cada conexão já estabelecida no sistema, de modo que seja possível \"lembrar-se\" das propriedades e características já utilizadas naquela rede. #NetworkManager #connections #wifi #networking"
+  comment: "No diretório /etc/NetworkManager/system-connections/ existe um arquivo para cada conexão já estabelecida no sistema, de modo que seja possível \"lembrar-se\" das propriedades e características já utilizadas naquela rede. #NetworkManager #wifi"
 
 - id: "109-061"
   topic: "109.2"
@@ -677,7 +677,7 @@
     - "Exim"
     - "iproute2"
   answer: 2
-  comment: "O systemd-networkd é o serviço do systemd responsável pelo gerenciamento de redes. #systemd-networkd #NetworkManager #networking #systemd"
+  comment: "O systemd-networkd é o serviço do systemd responsável pelo gerenciamento de redes. #systemd-networkd #NetworkManager #systemd"
 
 - id: "109-062"
   topic: "109.4"
@@ -688,7 +688,7 @@
     - "As informações contidas no arquivo /etc/hosts terão prioridade às informações retornadas pelos servidores DNS"
     - "O servidor DNS será a fonte primária de dados na resolução de nomes"
   answer: 3
-  comment: "Essa configuração indica que as informações contidas no arquivo /etc/hosts serão consultadas antes da pesquisa ser enviada ao servidor DNS. #nsswitch #hosts #DNS #networking"
+  comment: "Essa configuração indica que as informações contidas no arquivo /etc/hosts serão consultadas antes da pesquisa ser enviada ao servidor DNS. #nsswitch #hosts #DNS"
 
 - id: "109-063"
   topic: "109.2"
@@ -700,7 +700,7 @@
     - "nmcli connection"
     - "nmcli address"
   answer: [1, 3, 4]
-  comment: "A opção device exibe o status de todos os dispositivos, o connection exibe o status de todas as conexões conhecidas e radio o status das interfaces wireless. #nmcli #NetworkManager #device #networking"
+  comment: "A opção device exibe o status de todos os dispositivos, o connection exibe o status de todas as conexões conhecidas e radio o status das interfaces wireless. #nmcli #NetworkManager"
 
 - id: "109-064"
   topic: "109.2"
@@ -712,7 +712,7 @@
     - "O arquivo é utilizado para configuração do serviço de DHCP."
     - "No caso do uso de autenticação via LDAP, o parâmetro \"passwd\" deve ser ajustado para consultar essa base de dados."
   answer: [1, 2, 5]
-  comment: "O parâmetro nameserver pertence ao arquivo /etc/resolv.conf, responsável pela configuração do cliente DNS. O nsswitch.conf não tem nenhuma relação com DHCP. #nsswitch #hosts #LDAP #networking"
+  comment: "O parâmetro nameserver pertence ao arquivo /etc/resolv.conf, responsável pela configuração do cliente DNS. O nsswitch.conf não tem nenhuma relação com DHCP. #nsswitch #hosts #LDAP"
 
 - id: "109-065"
   topic: "109.4"
@@ -724,7 +724,7 @@
     - "domain"
     - "server"
   answer: [1, 3, 4]
-  comment: "O parâmetro \"nameserver\" é usado para indicar os servidores DNS. O \"domain\" indica o domínio principal da máquina e o \"search\" possui a lista de domínios que o sistema pode consultar internamente. #resolv.conf #nameserver #DNS #networking"
+  comment: "O parâmetro \"nameserver\" é usado para indicar os servidores DNS. O \"domain\" indica o domínio principal da máquina e o \"search\" possui a lista de domínios que o sistema pode consultar internamente. #resolv.conf #nameserver #DNS"
 
 - id: "109-066"
   topic: "109.3"
@@ -741,7 +741,7 @@
     - "Pacotes com destino ao IP 192.168.100.10 serão enviados pela rota padrão"
     - "Pacotes com destino ao IP 192.168.1.200 serão enviados pelo roteador 192.168.1.1"
   answer: [1, 3, 4]
-  comment: "Os comandos \"ip route show\" e \"route\" exibem a tabela de roteamento do sistema. O roteamento será feito preferencialmente a uma rota específica para o destino do pacote, ou diretamente via interface caso a máquina esteja na mesma rede, por último é utilizada a rota padrão. #ip #routing #networking #gateway"
+  comment: "Os comandos \"ip route show\" e \"route\" exibem a tabela de roteamento do sistema. O roteamento será feito preferencialmente a uma rota específica para o destino do pacote, ou diretamente via interface caso a máquina esteja na mesma rede, por último é utilizada a rota padrão. #IP #routing #gateway"
 
 - id: "109-067"
   topic: "109.3"
@@ -752,7 +752,7 @@
     - "Há muita lentidão na resolução de nomes."
     - "Não há uma rota padrão configurada na máquina local."
   answer: 4
-  comment: "Quando não há uma rota padrão definida, pacotes enviados a IPs que não fazem parte da rede da máquina não sabem o caminho a seguir, dessa forma não será possível o acesso a Internet pelos nomes dos domínios ou pelos IPs diretos. #routing #gateway #troubleshooting #networking"
+  comment: "Quando não há uma rota padrão definida, pacotes enviados a IPs que não fazem parte da rede da máquina não sabem o caminho a seguir, dessa forma não será possível o acesso a Internet pelos nomes dos domínios ou pelos IPs diretos. #routing #gateway"
 
 - id: "109-068"
   topic: "109.1"
@@ -764,7 +764,7 @@
     - "443"
     - "465"
   answer: 3
-  comment: "O SNMP (Simple Network Management Protocol) utiliza a porta 161. 25 = SMTP, 123 = NTP, 443 = HTTPS e 465 = SMTPS. #SNMP #portas #protocolos #networking"
+  comment: "O SNMP (Simple Network Management Protocol) utiliza a porta 161. 25 = SMTP, 123 = NTP, 443 = HTTPS e 465 = SMTPS. #SNMP"
 
 - id: "109-069"
   topic: "109.3"
@@ -776,7 +776,7 @@
     - "Servidores DNS utilizados pelo sistema"
     - "Interfaces de Rede Ativas ou Inativas"
   answer: [1, 3, 5]
-  comment: "O comando ip é uma ferramenta completa de gerenciamento dos componentes de rede do sistema. Pela opção \"route\" gerencia as rotas, pela \"link\" as interfaces e por \"address\" os endereços das interfaces, além de vários outros recursos. #ip #iproute2 #routing #networking"
+  comment: "O comando ip é uma ferramenta completa de gerenciamento dos componentes de rede do sistema. Pela opção \"route\" gerencia as rotas, pela \"link\" as interfaces e por \"address\" os endereços das interfaces, além de vários outros recursos. #IP #iproute2 #routing"
 
 - id: "109-070"
   topic: "109.1"
@@ -787,7 +787,7 @@
     - "A máquina está aplicando uma série de atualizações obrigatórias do Windows."
     - "O usuário da máquina em questão está transferindo arquivos via uma conexão \"Secure Shell\"."
   answer: 2
-  comment: "A porta 110 é a porta usada pelo POP3, um protocolo utilizado para transferir mensagens de um servidor de e-mails para uma máquina local, através de um cliente de e-mails. #POP3 #portas #email #networking"
+  comment: "A porta 110 é a porta usada pelo POP3, um protocolo utilizado para transferir mensagens de um servidor de e-mails para uma máquina local, através de um cliente de e-mails. #POP3"
 
 - id: "109-071"
   topic: "109.1"
@@ -799,7 +799,7 @@
     - "Aplicações e serviços em que a ordem e a integridade dos pacotes enviados e recebidos são extremamente importantes, normalmente utilizam o protocolo TCP."
     - "O protocolo IP tem a função de realizar uma transmissão segura dos dados."
   answer: [1, 2, 4]
-  comment: "A principal diferença entre os protocolos TCP e UDP é que o TCP faz o controle da transmissão de dados, com isso, aplicações que usam UDP precisam realizar elas mesmas os devidos controles. Outra consequência é que transmissões que utilizam UDP tendem a ser mais rápidas pois não há processos de controle internos a serem seguidos. #TCP #UDP #ICMP #protocolos"
+  comment: "A principal diferença entre os protocolos TCP e UDP é que o TCP faz o controle da transmissão de dados, com isso, aplicações que usam UDP precisam realizar elas mesmas os devidos controles. Outra consequência é que transmissões que utilizam UDP tendem a ser mais rápidas pois não há processos de controle internos a serem seguidos. #TCP #UDP #ICMP"
 
 - id: "109-072"
   topic: "109.3"
@@ -811,7 +811,7 @@
     - "ip -r route gw"
     - "route del default"
   answer: [1, 5]
-  comment: "As rotas do sistema podem ser gerenciadas tanto pelo comando route quanto pelo comando ip, e removidas pelos comandos \"route del default\" e \"ip route del default\". #ip #route #routing #networking"
+  comment: "As rotas do sistema podem ser gerenciadas tanto pelo comando route quanto pelo comando ip, e removidas pelos comandos \"route del default\" e \"ip route del default\". #IP #route #routing"
 
 - id: "109-073"
   topic: "109.1"
@@ -823,5 +823,5 @@
     - "172.16.0.0/12"
     - "169.255.255.0/24"
   answer: [2, 3, 4]
-  comment: "As faixas reservadas a IPs Privados são: 10.0.0.0 – 10.255.255.255, 172.16.0.0 – 172.31.255.255, 192.168.0.0 – 192.168.255.255 e 169.254.0.0 – 169.254.255.255. #IP #private #RFC1918 #networking"
+  comment: "As faixas reservadas a IPs Privados são: 10.0.0.0 – 10.255.255.255, 172.16.0.0 – 172.31.255.255, 192.168.0.0 – 192.168.255.255 e 169.254.0.0 – 169.254.255.255. #IP #RFC1918"
 

@@ -497,7 +497,7 @@
     - "Postscript Level 1 e Level 2 capabilities"
     - "Link simbólico para um mouse"
   answer: 2
-  comment: "PS1 (Prompt String 1) define o prompt principal interativo do shell. PS2 define o prompt secundário, exibido quando um comando incompleto requer mais linhas de entrada. #bash #ps1"
+  comment: "PS1 (Prompt String 1) define o prompt principal interativo do shell. PS2 define o prompt secundário, exibido quando um comando incompleto requer mais linhas de entrada. #bash #PS1"
 
 - id: "103-043"
   topic: "103.1"
@@ -520,7 +520,7 @@
     - "echo PATH"
     - "echo $PATH"
   answer: 5
-  comment: "No Bash, variáveis são referenciadas com o prefixo '$'. O comando 'echo $PATH' imprime a lista de diretórios onde o shell busca executáveis, separados por dois-pontos (:). O formato %PATH% é exclusivo do Windows/DOS. #bash #path #env"
+  comment: "No Bash, variáveis são referenciadas com o prefixo '$'. O comando 'echo $PATH' imprime a lista de diretórios onde o shell busca executáveis, separados por dois-pontos (:). O formato %PATH% é exclusivo do Windows/DOS. #bash #PATH #env"
 
 - id: "103-045"
   topic: "103.1"
@@ -739,7 +739,7 @@
     - "$~"
     - "$#"
   answer: 3
-  comment: "Ao digitar $$ o usuário recebe o PID (Process ID) do shell atual. $! é o PID do último processo em background (job) executado. $? é o código de retorno (exit code) do último comando executado. $~ não existe. #bash #pid #shell"
+  comment: "Ao digitar $$ o usuário recebe o PID (Process ID) do shell atual. $! é o PID do último processo em background (job) executado. $? é o código de retorno (exit code) do último comando executado. $~ não existe. #bash #PID #shell"
 
 - id: "103-064"
   topic: "103.1"
@@ -1137,7 +1137,7 @@
     - "fgrep"
     - "pgrep"
   answer: 5
-  comment: "O pgrep busca processos por nome ou atributos (como usuário) e exibe seus PIDs. O pkill funciona de forma similar, mas em vez de exibir, envia sinais aos processos encontrados. O jobs lista jobs da sessão atual, o bg retoma processos em background e o fgrep é um filtro de texto. #pgrep #pkill #pid"
+  comment: "O pgrep busca processos por nome ou atributos (como usuário) e exibe seus PIDs. O pkill funciona de forma similar, mas em vez de exibir, envia sinais aos processos encontrados. O jobs lista jobs da sessão atual, o bg retoma processos em background e o fgrep é um filtro de texto. #pgrep #pkill #PID"
 
 - id: "103-099"
   topic: "103.6"
@@ -1231,7 +1231,7 @@
     - "exec relatorio.sh"
     - "source relatorio.sh"
   answer: [2, 3, 5]
-  comment: "Como o diretório não está no PATH, a forma 'relatorio.sh' não pode ser usada isoladamente. Deve ser utilizado ./relatorio.sh para referenciar o diretório atual. Outra forma é passar o script como argumento do shell bash (ou sh, ksh, etc). O comando source executa o script na sessão atual, assim como o equivalente '. relatorio.sh'. O exec substitui o processo atual pelo script, mas exige o caminho completo ou que esteja no PATH. #shell #path #source #bash"
+  comment: "Como o diretório não está no PATH, a forma 'relatorio.sh' não pode ser usada isoladamente. Deve ser utilizado ./relatorio.sh para referenciar o diretório atual. Outra forma é passar o script como argumento do shell bash (ou sh, ksh, etc). O comando source executa o script na sessão atual, assim como o equivalente '. relatorio.sh'. O exec substitui o processo atual pelo script, mas exige o caminho completo ou que esteja no PATH. #shell #PATH #source #bash"
 
 - id: "103-108"
   topic: "103.1"
@@ -1283,7 +1283,7 @@
     - "dd if=/dev/sda1 of=backup.img"
     - "od from=/dev/sda1 to=backup.img"
   answer: 3
-  comment: "O uso mais comum do comando dd é criar uma imagem a partir de uma partição, e vice-versa. A sintaxe utiliza if= para informar a origem (input file) e of= para informar o destino (output file). O cpio é usado para arquivamento, não para imagens de partição. O od é usado para exibir conteúdo de arquivos em formato octal/hexadecimal. #dd #partição"
+  comment: "O uso mais comum do comando dd é criar uma imagem a partir de uma partição, e vice-versa. A sintaxe utiliza if= para informar a origem (input file) e of= para informar o destino (output file). O cpio é usado para arquivamento, não para imagens de partição. O od é usado para exibir conteúdo de arquivos em formato octal/hexadecimal. #dd"
 
 - id: "103-113"
   topic: "103.3"
@@ -1317,7 +1317,7 @@
     - "ls -l /etc >> log.out"
     - "ls -l /etc | cat"
   answer: 3
-  comment: "O redirecionador >> faz com que a saída do comando, ao invés de ser enviada à tela, seja enviada para um arquivo. #redirecionamento #pipe #stdout"
+  comment: "O redirecionador >> faz com que a saída do comando, ao invés de ser enviada à tela, seja enviada para um arquivo. #pipe #stdout"
 
 - id: "103-116"
   topic: "103.4"
@@ -1329,7 +1329,7 @@
     - "1>&2>"
     - "|"
   answer: 3
-  comment: "O redirecionador <<, chamado \"Here Documents\", instrui o shell a ler as entradas de uma determinada fonte até que uma linha contendo a string informada como delimitador ocorra. #redirecionamento #shell #stdin"
+  comment: "O redirecionador <<, chamado \"Here Documents\", instrui o shell a ler as entradas de uma determinada fonte até que uma linha contendo a string informada como delimitador ocorra. #shell #stdin"
 
 - id: "103-117"
   topic: "103.3"
@@ -1352,7 +1352,7 @@
     - "10"
     - "15"
   answer: 1
-  comment: "O SIGHUP pode fazer com que um processo morra, que seja reiniciado ou que ele releia seus arquivos de configuração, sendo 1 seu código numérico. 9 é o código do SIGKILL, 10 do SIGUSR1 e 15 do SIGTERM. #sighup #sinais #processos #kill"
+  comment: "O SIGHUP pode fazer com que um processo morra, que seja reiniciado ou que ele releia seus arquivos de configuração, sendo 1 seu código numérico. 9 é o código do SIGKILL, 10 do SIGUSR1 e 15 do SIGTERM. #sighup #kill"
 
 - id: "103-119"
   topic: "103.4"
@@ -1364,7 +1364,7 @@
     - "date >> horario.txt"
     - "date << horario.txt"
   answer: 3
-  comment: "O redirecionador > envia a saída para o arquivo informado sobrescrevendo qualquer conteúdo anterior, por outro lado o >> faz um append no final do arquivo informado, mantendo o que estava escrito anteriormente. #redirecionamento #stdout #shell"
+  comment: "O redirecionador > envia a saída para o arquivo informado sobrescrevendo qualquer conteúdo anterior, por outro lado o >> faz um append no final do arquivo informado, mantendo o que estava escrito anteriormente. #stdout #shell"
 
 - id: "103-120"
   topic: "103.5"
@@ -1376,7 +1376,7 @@
     - "#"
     - "!"
   answer: 3
-  comment: "No shell, por padrão todo comando será iniciado em modo foreground, para forçar a inicialização como background, ou seja, desvinculado do shell, deve ser utilizado o símbolo & no final do comando. #background #foreground #shell #processos"
+  comment: "No shell, por padrão todo comando será iniciado em modo foreground, para forçar a inicialização como background, ou seja, desvinculado do shell, deve ser utilizado o símbolo & no final do comando. #background #foreground #shell"
 
 - id: "103-121"
   topic: "103.5"
@@ -1388,7 +1388,7 @@
     - "cat /proc/cpuinfo"
     - "dmesg"
   answer: [1, 2]
-  comment: "De maneira geral, o load average permite verificar como está a execução de processos em um sistema. Esse valor pode ser visualizado pelos comandos uptime e top. #uptime #top #load-average #processos"
+  comment: "De maneira geral, o load average permite verificar como está a execução de processos em um sistema. Esse valor pode ser visualizado pelos comandos uptime e top. #uptime #top #load-average"
 
 - id: "103-122"
   topic: "103.7"
@@ -1410,14 +1410,14 @@
     - "A prioridade do processo é definida em 8"
     - "A prioridade do processo é definida em -8"
   answer: 1
-  comment: "Os comandos nice e renice alteram o valor do NICE de um processo, e o NICE impacta a prioridade definida pelo sistema operacional para cada processo. A sintaxe do comando nice é: nice -Valor_Nice comando, sendo assim, se usado nice -8 comando, o valor de nice associado ao comando seria 8. Atenção pois no comando renice a sintaxe é um pouco diferente: renice Valor_Nice PID, dessa forma o -8 seria o valor de nice -8. #nice #renice #prioridade #processos"
+  comment: "Os comandos nice e renice alteram o valor do NICE de um processo, e o NICE impacta a prioridade definida pelo sistema operacional para cada processo. A sintaxe do comando nice é: nice -Valor_Nice comando, sendo assim, se usado nice -8 comando, o valor de nice associado ao comando seria 8. Atenção pois no comando renice a sintaxe é um pouco diferente: renice Valor_Nice PID, dessa forma o -8 seria o valor de nice -8. #nice #renice"
 
 - id: "103-124"
   topic: "103.5"
   type: "discursive"
   question: "O administrador do sistema deseja manter o comando que exibe o uso de memória e swap do sistema sempre em execução e exibição, com os resultados sendo atualizados a cada 5 segundos. Qual comando atenderá essa necessidade? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
   answer: "watch"
-  comment: "O comando watch pode ser utilizado com qualquer comando, para que o mesmo seja reexecutado constantemente, o tempo padrão é 2 segundos, porém a opção -n permite definir o tempo de atualização. A situação mencionada seria resolvida pela execução: watch -n5 free -m #watch #free #processos"
+  comment: "O comando watch pode ser utilizado com qualquer comando, para que o mesmo seja reexecutado constantemente, o tempo padrão é 2 segundos, porém a opção -n permite definir o tempo de atualização. A situação mencionada seria resolvida pela execução: watch -n5 free -m #watch #free"
 
 - id: "103-125"
   topic: "103.6"
@@ -1428,7 +1428,7 @@
     - "-19"
     - "-20"
   answer: 1
-  comment: "Os valores do nice variam do -20 ao 19, onde -20 dá a maior prioridade e 19 a menor prioridade. #nice #prioridade #processos"
+  comment: "Os valores do nice variam do -20 ao 19, onde -20 dá a maior prioridade e 19 a menor prioridade. #nice"
 
 - id: "103-126"
   topic: "103.8"
@@ -1480,7 +1480,7 @@
   type: "discursive"
   question: "Qual comando recebe uma entrada e a escreve na saída padrão e em um arquivo informado como parâmetro? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
   answer: "tee"
-  comment: "A função do comando tee é receber uma entrada, normalmente a saída de um outro comando com o uso do |, exibir essa entrada na tela e ao mesmo tempo escrevê-la em um arquivo. #tee #pipe #redirecionamento #stdout"
+  comment: "A função do comando tee é receber uma entrada, normalmente a saída de um outro comando com o uso do |, exibir essa entrada na tela e ao mesmo tempo escrevê-la em um arquivo. #tee #pipe #stdout"
 
 - id: "103-131"
   topic: "103.7"
@@ -1537,7 +1537,7 @@
     - "pgrep"
     - "jobs -p"
   answer: 2
-  comment: "O comando pstree exibe os processos de forma hierárquica, a opção -p exibe o PID de cada processo. No comando ps, a opção --forest tem resultado semelhante. #pid"
+  comment: "O comando pstree exibe os processos de forma hierárquica, a opção -p exibe o PID de cada processo. No comando ps, a opção --forest tem resultado semelhante. #PID"
 
 - id: "103-136"
   topic: "103.5"
@@ -1687,7 +1687,7 @@
     - "define $SISTEMA"
     - "var SISTEMA"
   answer: 3
-  comment: "O comando export faz com que uma variável torne-se global, e com isso todos os processos filho possam trabalhar com o conteúdo desta variável. #export #set #env #define #var"
+  comment: "O comando export faz com que uma variável torne-se global, e com isso todos os processos filho possam trabalhar com o conteúdo desta variável. #export #set #env #var"
 
 - id: "103-149"
   topic: "103.1"

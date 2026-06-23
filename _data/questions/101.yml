@@ -7,7 +7,7 @@
     - "O firmware da placa-mãe"
     - "rmmod"
   answer: 3
-  comment: "A BIOS/UEFI é o firmware gerenciador da placa mãe, em que podem ser realizados diversos ajustes sobre o funcionamento dos dispositivos de hardware. #bios"
+  comment: "A BIOS/UEFI é o firmware gerenciador da placa mãe, em que podem ser realizados diversos ajustes sobre o funcionamento dos dispositivos de hardware. #BIOS"
 
 - id: "101-002"
   topic: "101.1"
@@ -43,7 +43,7 @@
     - "Na MBR"
     - "No initramfs"
   answer: 4
-  comment: "A BIOS localiza e executa o MBR, o MBR carrega o Bootloader (GRUB), o Bootloader selecione e executa o kernel e o initrd, o kernel executa o processo do Init, e o Init inicia os serviços e programas de acordo com o runlevel/target configurado. #mbr"
+  comment: "A BIOS localiza e executa o MBR, o MBR carrega o Bootloader (GRUB), o Bootloader selecione e executa o kernel e o initrd, o kernel executa o processo do Init, e o Init inicia os serviços e programas de acordo com o runlevel/target configurado. #MBR"
 
 - id: "101-005"
   topic: "101.3"
@@ -162,7 +162,7 @@
     - "Inserir uma entrada \"alias keyboard off\" em /etc/modules.conf"
     - "Nada"
   answer: 3
-  comment: "O erro de teclado é disparado pelo BIOS/UEFI (hardware) antes do Linux iniciar. Alterar o \"Halt on\" no CMOS ignora essa checagem física, permitindo o boot de servidores headless. #bios"
+  comment: "O erro de teclado é disparado pelo BIOS/UEFI (hardware) antes do Linux iniciar. Alterar o \"Halt on\" no CMOS ignora essa checagem física, permitindo o boot de servidores headless. #BIOS"
 
 - id: "101-015"
   topic: "101.1"  
@@ -193,7 +193,7 @@
   type: "discursive"
   question: "/dev/____ é a primeira partição lógica do mestre no primeiro canal IDE."
   answer: "hda5"
-  comment: "No esquema de nomeação IDE legado, o primeiro disco (master no canal 1) é hda. As partições 1 a 4 são reservadas para partições primárias ou estendidas. As partições lógicas começam obrigatoriamente a partir do número 5, independentemente de quantas partições primárias existam. #ide"
+  comment: "No esquema de nomeação IDE legado, o primeiro disco (master no canal 1) é hda. As partições 1 a 4 são reservadas para partições primárias ou estendidas. As partições lógicas começam obrigatoriamente a partir do número 5, independentemente de quantas partições primárias existam. #IDE"
 
 - id: "101-018"
   topic: "101.1"
@@ -225,7 +225,7 @@
     - "Verdadeiro"
     - "Falso"
   answer: 1
-  comment: "O MBR ocupa o primeiro setor do disco (512 bytes), dividido estritamente em: 446 bytes para o bootloader (Estágio 1 do GRUB/LILO), 64 bytes para a tabela de partições e 2 bytes para a assinatura mágica de boot (0x55AA). #mbr #grub"
+  comment: "O MBR ocupa o primeiro setor do disco (512 bytes), dividido estritamente em: 446 bytes para o bootloader (Estágio 1 do GRUB/LILO), 64 bytes para a tabela de partições e 2 bytes para a assinatura mágica de boot (0x55AA). #MBR #grub"
 
 - id: "101-022"
   topic: "101.2"
@@ -236,7 +236,7 @@
     - "Master Boot Record (MBR)"
     - "Partição /root"
   answer: 3
-  comment: "Em arquiteturas BIOS tradicionais, o estágio 1 do GRUB (o código executável inicial) é gravado diretamente nos primeiros 446 bytes do MBR do disco rígido. Ele serve como um apontador para carregar os estágios posteriores que estão no sistema de arquivos (/boot). #grub #mbr"
+  comment: "Em arquiteturas BIOS tradicionais, o estágio 1 do GRUB (o código executável inicial) é gravado diretamente nos primeiros 446 bytes do MBR do disco rígido. Ele serve como um apontador para carregar os estágios posteriores que estão no sistema de arquivos (/boot). #grub #MBR"
 
 - id: "101-023"
   topic: "101.3"
@@ -314,7 +314,7 @@
     - "Dispositivos IDE"
     - "Disco Rígido do tipo SCSI"
   answer: [2, 4]
-  comment: "O padrão USB nasceu nativamente para hotplug. No escopo de servidores e data centers (o alvo histórico da LPI), discos SCSI com conectores SCA (Single Connector Attachment) são o padrão da indústria para troca a quente em gavetas RAID. Barramentos IDE convencionais queimam eletricamente se desconectados com o sistema ligado. #hotplug #usb"
+  comment: "O padrão USB nasceu nativamente para hotplug. No escopo de servidores e data centers (o alvo histórico da LPI), discos SCSI com conectores SCA (Single Connector Attachment) são o padrão da indústria para troca a quente em gavetas RAID. Barramentos IDE convencionais queimam eletricamente se desconectados com o sistema ligado. #hotplug #USB"
 
 - id: "101-030"
   topic: "101.2"
@@ -384,7 +384,7 @@
     - "kernel"
     - "bash"
   answer: 3
-  comment: "O processo com PID 1 é o primeiro processo de espaço de usuário executado pelo kernel logo após o boot. Historicamente é o daemon init (SysVinit). Em distribuições modernas, o systemd assume o PID 1, mas geralmente mantém um link simbólico chamado 'init' para retrocompatibilidade. Ele é o pai ou avô de todos os outros processos no sistema. #init #pid"
+  comment: "O processo com PID 1 é o primeiro processo de espaço de usuário executado pelo kernel logo após o boot. Historicamente é o daemon init (SysVinit). Em distribuições modernas, o systemd assume o PID 1, mas geralmente mantém um link simbólico chamado 'init' para retrocompatibilidade. Ele é o pai ou avô de todos os outros processos no sistema. #init #PID"
 
 
 - id: "101-038"
@@ -439,7 +439,7 @@
     - "XFS"
     - "ESP"
   answer: 1
-  comment: "O UEFI acessa o ESP (EFI System Partition) para obter o Bootloader a ser utilizado. O ESP é uma partição que deve ser do tipo FAT, e é normalmente montada no diretório /boot/efi, em seus sub-diretórios estão os bootloades que podem ser utilizados pelos sistema. #uefi #fat #esp"
+  comment: "O UEFI acessa o ESP (EFI System Partition) para obter o Bootloader a ser utilizado. O ESP é uma partição que deve ser do tipo FAT, e é normalmente montada no diretório /boot/efi, em seus sub-diretórios estão os bootloades que podem ser utilizados pelos sistema. #UEFI #fat #ESP"
 
 - id: "101-043"
   topic: "101.3"
@@ -481,7 +481,7 @@
   type: "discursive"
   question: "Em qual diretório podem ser inseridos arquivos com configurações e regras que impeçam que determinado módulo seja carregado pelo modprobe? (Informe o caminho completo do diretório)"
   answer: ["/etc/modprobe.d/”, “/etc/modprobe.d"]
-  comment: "O diretório /etc/modprobe.d/ pode conter arquivos de configuração com regras específicas para os módulos do kernel, entre elas a diretiva blacklist, que impede que um módulo seja carregado automaticamente pelo modprobe. #modprobe #blacklist #módulo #kernel"
+  comment: "O diretório /etc/modprobe.d/ pode conter arquivos de configuração com regras específicas para os módulos do kernel, entre elas a diretiva blacklist, que impede que um módulo seja carregado automaticamente pelo modprobe. #modprobe #blacklist #kernel"
 
 - id: "101-047"
   topic: "101.2"
@@ -493,7 +493,7 @@
     - "Executa o procedimento de POST no sistema"
     - "É responsável por iniciar o processo /sbin/init"
   answer: [1, 2, 3]
-  comment: "O MBR (Master Boot Record) fica no primeiro setor do disco bootável e contém o bootloader (responsável por carregar o GRUB) e a tabela de partições. O POST é realizado pela BIOS antes mesmo do MBR ser lido. O /sbin/init é iniciado pelo kernel, não pelo MBR. #mbr #grub"
+  comment: "O MBR (Master Boot Record) fica no primeiro setor do disco bootável e contém o bootloader (responsável por carregar o GRUB) e a tabela de partições. O POST é realizado pela BIOS antes mesmo do MBR ser lido. O /sbin/init é iniciado pelo kernel, não pelo MBR. #MBR #grub"
 
 - id: "101-048"
   topic: "101.3"
@@ -608,7 +608,7 @@
     - "Initrd"
     - "ESP"
   answer: 2
-  comment: "Na BIOS do sistema deve ser informado quais as possíveis localizações do bootloader e a ordem em que devem ser consultados, o 'Boot device order'. O GRUB é o próprio bootloader, o Initrd é o sistema de arquivos temporário carregado pelo kernel e o ESP (EFI System Partition) é usado em sistemas UEFI. #bios #boot #bootloader"
+  comment: "Na BIOS do sistema deve ser informado quais as possíveis localizações do bootloader e a ordem em que devem ser consultados, o 'Boot device order'. O GRUB é o próprio bootloader, o Initrd é o sistema de arquivos temporário carregado pelo kernel e o ESP (EFI System Partition) é usado em sistemas UEFI. #BIOS #boot #bootloader"
 
 - id: "101-058"
   topic: "101.3"
@@ -631,7 +631,7 @@
     - "/dev"
     - "/var"
   answer: [2, 3, 4]
-  comment: "/proc – Informações de processos ativos e recursos de hardware. /sys – Informações sobre os dispositivos de hardware. Filesystem do tipo sysfs. /dev – Referências aos dispositivos do sistema. Filesystem do tipo tmpfs. Gerenciado dinamicamente pelo udev. #proc #sys #dev #filesystem #inicialização"
+  comment: "/proc – Informações de processos ativos e recursos de hardware. /sys – Informações sobre os dispositivos de hardware. Filesystem do tipo sysfs. /dev – Referências aos dispositivos do sistema. Filesystem do tipo tmpfs. Gerenciado dinamicamente pelo udev. #proc #sys #dev #filesystem"
 
 - id: "101-060"
   topic: "101.2"
@@ -642,7 +642,7 @@
     - "INITRAMFS"
     - "GRUB"
   answer: 2
-  comment: "O POST (Power-On Self-Test) é um procedimento da BIOS que verifica se todos os dispositivos estão prontos para o uso. A MBR (Master Boot Record) é a área de disco que contém as informações utilizadas durante o processo de boot e o GRUB é um gerenciador de boot. #bios"
+  comment: "O POST (Power-On Self-Test) é um procedimento da BIOS que verifica se todos os dispositivos estão prontos para o uso. A MBR (Master Boot Record) é a área de disco que contém as informações utilizadas durante o processo de boot e o GRUB é um gerenciador de boot. #BIOS"
 
 - id: "101-061"
   topic: "101.1"
@@ -706,7 +706,7 @@
     - "UEFI > BootLoader > Kernel > Init System"
     - "UEFI > MBR > Kernel > Init System"
   answer: 3
-  comment: "O UEFI obtém as informações dos BootLoader diretamente da partição ESP (EFI System Partition), que é por padrão montada no diretório /boot/efi. Ele é utilizado no lugar da BIOS e não utiliza mais uma área de MBR. #uefi"
+  comment: "O UEFI obtém as informações dos BootLoader diretamente da partição ESP (EFI System Partition), que é por padrão montada no diretório /boot/efi. Ele é utilizado no lugar da BIOS e não utiliza mais uma área de MBR. #UEFI"
 
 - id: "101-067"
   topic: "101.2"

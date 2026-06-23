@@ -196,7 +196,11 @@ document.addEventListener('DOMContentLoaded', function(){
     // Se knowledge ainda não carregou, adia para __knowledgePromise.then()
     if(window.__knowledge){
       const wk = window.__knowledge.whatis;
-      const desc = wk[q] || (q.startsWith('$') ? wk[q.slice(1)] : null);
+      // Índice em minúsculas: resolve a hashtag em qualquer caixa (#DISPLAY e #display)
+      const wkLower = window.__knowledge._whatisLower ||
+        (window.__knowledge._whatisLower =
+          Object.fromEntries(Object.entries(wk).map(([k,v]) => [k.toLowerCase(), v])));
+      const desc = wkLower[q] || (q.startsWith('$') ? wkLower[q.slice(1)] : null);
       if(desc) animateWhatis(q, desc);
       else showPromptBlock();
     }

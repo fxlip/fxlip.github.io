@@ -82,7 +82,7 @@
   type: "discursive"
   question: "Qual diretório contém a maioria dos arquivos de configuração do sistema? Insira o caminho completo."
   answer: "/etc"
-  comment: "De acordo com o FHS (Filesystem Hierarchy Standard), o diretório /etc é o local centralizado para todos os arquivos de configuração estáticos do sistema. Ele não deve conter binários executáveis. #etc"
+  comment: "De acordo com o FHS (Filesystem Hierarchy Standard), o diretório /etc é o local centralizado para todos os arquivos de configuração estáticos do sistema. Ele não deve conter binários executáveis."
 
 - id: "104-009"
   topic: "104.2"
@@ -106,7 +106,7 @@
     - "/tmp"
     - "/var, /usr"
   answer: 1
-  comment: "De acordo com o FHS (Filesystem Hierarchy Standard), o diretório /usr contém dados estáticos do sistema compartilháveis e imutáveis durante a operação normal (como binários e bibliotecas). Portanto, pode ser montado como read-only (ro) na rede ou localmente por segurança. Já partições como /var (logs, spools) e /tmp (arquivos temporários) exigem gravação constante (rw). #fhs #mount"
+  comment: "De acordo com o FHS (Filesystem Hierarchy Standard), o diretório /usr contém dados estáticos do sistema compartilháveis e imutáveis durante a operação normal (como binários e bibliotecas). Portanto, pode ser montado como read-only (ro) na rede ou localmente por segurança. Já partições como /var (logs, spools) e /tmp (arquivos temporários) exigem gravação constante (rw). #FHS #mount"
 
 - id: "104-011"
   topic: "104.2"
@@ -156,7 +156,7 @@
     - "O sticky bit será aplicado a todos os arquivos dentro de /home/software."
     - "O bit SUID será habilitado para /home/software."
   answer: 1
-  comment: "Quando o bit SGID (Set Group ID) é aplicado a um diretório (g+s), todos os novos arquivos e subdiretórios criados dentro dele herdarão automaticamente o grupo proprietário do diretório pai, em vez do grupo primário do usuário que o criou. Isso é fundamental para diretórios de colaboração. #chmod #sgid"
+  comment: "Quando o bit SGID (Set Group ID) é aplicado a um diretório (g+s), todos os novos arquivos e subdiretórios criados dentro dele herdarão automaticamente o grupo proprietário do diretório pai, em vez do grupo primário do usuário que o criou. Isso é fundamental para diretórios de colaboração. #chmod #SGID"
 
 - id: "104-015"
   topic: "104.1"
@@ -335,7 +335,7 @@
     - "/sbin/fsck"
     - "/usr/local/sbin/fsck"
   answer: 4
-  comment: "O fsck é um comando crítico, utilizado para recuperar partições corrompidas, e somente pode ser utilizado pelo usuário root (sysadmin), por isso está presente do diretório /sbin. Você também pode utilizar o diretório /usr/sbin, visto que o /sbin é sempre um link para o /usr/sbin. #fhs #fsck"
+  comment: "O fsck é um comando crítico, utilizado para recuperar partições corrompidas, e somente pode ser utilizado pelo usuário root (sysadmin), por isso está presente do diretório /sbin. Você também pode utilizar o diretório /usr/sbin, visto que o /sbin é sempre um link para o /usr/sbin. #FHS #fsck"
 
 - id: "104-029"
   topic: "104.7"
@@ -727,7 +727,7 @@
     - "/opt/man"
     - "/var/share"
   answer: 1
-  comment: "Segundo o FHS (Filesystem Hierarchy Standard), o /usr/share contém dados independentes de arquitetura compartilhados entre usuários, incluindo /usr/share/man (páginas de manual) e /usr/share/doc (documentação dos pacotes). #fhs #man"
+  comment: "Segundo o FHS (Filesystem Hierarchy Standard), o /usr/share contém dados independentes de arquitetura compartilhados entre usuários, incluindo /usr/share/man (páginas de manual) e /usr/share/doc (documentação dos pacotes). #FHS #man"
 
 - id: "104-064"
   topic: "104.7"
@@ -811,7 +811,7 @@
     - "mkfs"
     - "tune2fs"
   answer: [1, 2, 3]
-  comment: "O fdisk e o parted podem criar partições do tipo MBR e GPT. O gdisk é específico para o tipo GPT. #gpt #fdisk #gdisk #parted #partição"
+  comment: "O fdisk e o parted podem criar partições do tipo MBR e GPT. O gdisk é específico para o tipo GPT. #GPT #fdisk #gdisk #parted"
 
 - id: "104-072"
   topic: "104.1"
@@ -846,7 +846,7 @@
     - "ro"
     - "users"
   answer: 2
-  comment: "A opção \"noauto\" diz que a partição deve sempre ser montada manualmente, o \"auto\" tem o efeito contrário. #fstab #mount #noauto #montagem"
+  comment: "A opção \"noauto\" diz que a partição deve sempre ser montada manualmente, o \"auto\" tem o efeito contrário. #fstab #mount #noauto"
 
 - id: "104-075"
   topic: "104.3"
@@ -858,7 +858,7 @@
     - "6"
     - "7"
   answer: 4
-  comment: "Cada linha do arquivo /etc/fstab deve conter 6 campos: <file system>, <mount point>, <type>, <options>, <dump>, <pass>. #fstab #filesystem #montagem"
+  comment: "Cada linha do arquivo /etc/fstab deve conter 6 campos: <file system>, <mount point>, <type>, <options>, <dump>, <pass>. #fstab #filesystem"
 
 - id: "104-076"
   topic: "104.5"

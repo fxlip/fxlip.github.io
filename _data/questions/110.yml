@@ -7,7 +7,7 @@
     - "ECDSA"
     - "ED25519"
   answer: 2
-  comment: "O OpenSSH desabilitou o suporte ao 'ssh-dss' (DSA) por padrão na versão 7.0 (2015), devido à sua vulnerabilidade e limitações de tamanho de chave (fixado em 1024 bits), o que o torna inadequado para os padrões atuais de segurança. #OpenSSH #DSA #cryptography #security #deprecation"
+  comment: "O OpenSSH desabilitou o suporte ao 'ssh-dss' (DSA) por padrão na versão 7.0 (2015), devido à sua vulnerabilidade e limitações de tamanho de chave (fixado em 1024 bits), o que o torna inadequado para os padrões atuais de segurança. #OpenSSH #DSA"
 
 - id: "110-001"
   topic: "110.1"
@@ -19,7 +19,7 @@
     - "fuser"
     - "ping"
   answer: 3
-  comment: "O 'nmap' (Network Mapper) é a ferramenta padrão para exploração de rede e auditoria de segurança. Ele permite identificar serviços, versões e o sistema operacional de hosts remotos através do escaneamento de portas. #nmap #security #auditing #reconnaissance"
+  comment: "O 'nmap' (Network Mapper) é a ferramenta padrão para exploração de rede e auditoria de segurança. Ele permite identificar serviços, versões e o sistema operacional de hosts remotos através do escaneamento de portas. #nmap"
 
 - id: "110-002"
   topic: "110.2"
@@ -31,7 +31,7 @@
     - "/etc/services"
     - "/etc/hosts"
   answer: 2
-  comment: "O arquivo '/etc/shadow' armazena os hashes das senhas dos usuários. Por ser o alvo principal de ataques de força bruta ou dicionário, suas permissões devem ser restritas (tipicamente 600 ou 400, pertencendo ao root). #security #shadow #permissions #root #linux"
+  comment: "O arquivo '/etc/shadow' armazena os hashes das senhas dos usuários. Por ser o alvo principal de ataques de força bruta ou dicionário, suas permissões devem ser restritas (tipicamente 600 ou 400, pertencendo ao root). #shadow #root"
 
 - id: "110-003"
   topic: "110.1"
@@ -43,7 +43,7 @@
     - "Limite máximo para uso do disco"
     - "Uso máximo da memória virtual"
   answer: 4
-  comment: "O comando 'ulimit' controla limites de recursos do shell e processos (como memória, processos simultâneos e arquivos abertos). O uso de disco (quota de armazenamento por usuário ou diretório) é gerenciado via 'quotas' do sistema de arquivos e não pelo 'ulimit'. #ulimit #resource-limits #quotas #system-administration"
+  comment: "O comando 'ulimit' controla limites de recursos do shell e processos (como memória, processos simultâneos e arquivos abertos). O uso de disco (quota de armazenamento por usuário ou diretório) é gerenciado via 'quotas' do sistema de arquivos e não pelo 'ulimit'. #ulimit #quotas"
 
 - id: "110-004"
   topic: "110.3"
@@ -54,7 +54,7 @@
     - "ssh –keygen"
     - "keygen-ssh"
   answer: 2
-  comment: "O comando 'ssh-keygen' gera pares de chaves criptográficas (RSA, Ed25519, etc.). A chave privada deve permanecer protegida no diretório '~/.ssh/', enquanto a pública (.pub) é copiada para o servidor alvo. #SSH #ssh-keygen #cryptography #security #linux-admin"
+  comment: "O comando 'ssh-keygen' gera pares de chaves criptográficas (RSA, Ed25519, etc.). A chave privada deve permanecer protegida no diretório '~/.ssh/', enquanto a pública (.pub) é copiada para o servidor alvo. #SSH #ssh-keygen"
 
 - id: "110-005"
   topic: "110.1"
@@ -66,7 +66,7 @@
     - "/etc/sysconfig/limits.conf"
     - "/etc/sudo.conf"
   answer: 2
-  comment: "O '/etc/sudoers' define quem tem permissão para executar comandos como root ou outro usuário. É vital editar este arquivo apenas via 'visudo', que verifica a sintaxe antes de salvar, evitando erros que poderiam bloquear permanentemente o acesso administrativo. #sudo #sudoers #linux-admin #security #root"
+  comment: "O '/etc/sudoers' define quem tem permissão para executar comandos como root ou outro usuário. É vital editar este arquivo apenas via 'visudo', que verifica a sintaxe antes de salvar, evitando erros que poderiam bloquear permanentemente o acesso administrativo. #sudo #sudoers #root"
 
 - id: "110-006"
   topic: "110.2"
@@ -77,7 +77,7 @@
     - "O hosts.allow libera, mas o hosts.deny nega logo em seguida"
     - "O hosts.allow é analisado primeiro e o acesso é liberado, sem consultar o hosts.deny"
   answer: 4
-  comment: "O TCP Wrapper segue uma lógica de 'primeira correspondência': se um endereço é encontrado no 'hosts.allow', a regra é aplicada imediatamente e o processamento é interrompido. O 'hosts.deny' só é consultado se não houver match anterior. #TCPWrappers #Security #hosts.allow #hosts.deny #linux"
+  comment: "O TCP Wrapper segue uma lógica de 'primeira correspondência': se um endereço é encontrado no 'hosts.allow', a regra é aplicada imediatamente e o processamento é interrompido. O 'hosts.deny' só é consultado se não houver match anterior. #TCPWrapper #hosts.allow #hosts.deny"
 
 - id: "110-007"
   topic: "110.1"
@@ -89,7 +89,7 @@
     - "w"
     - "lastb"
   answer: 4
-  comment: "O comando 'w' fornece um resumo rápido: uptime do sistema, média de carga (load average) e uma lista detalhada de usuários logados, incluindo tty, IP de origem, tempo de login, JCPU (tempo total usado por processos do usuário) e PCPU (tempo usado pelo processo atual). #linux #admin #w #system-monitoring"
+  comment: "O comando 'w' fornece um resumo rápido: uptime do sistema, média de carga (load average) e uma lista detalhada de usuários logados, incluindo tty, IP de origem, tempo de login, JCPU (tempo total usado por processos do usuário) e PCPU (tempo usado pelo processo atual). #w"
 
 - id: "110-008"
   topic: "110.3"
@@ -100,7 +100,7 @@
     - "scp /tmp/backup.tgz suporte@servidorX:~/"
     - "scp /tmp/backup.tgz -l suporte servidorX /home/suporte/"
   answer: 3
-  comment: "O comando 'scp' (Secure Copy) utiliza o protocolo SSH para transferência de arquivos. A sintaxe 'origem destino' é respeitada, onde o til ('~') representa o diretório home do usuário remoto. #scp #SSH #file-transfer #linux #admin"
+  comment: "O comando 'scp' (Secure Copy) utiliza o protocolo SSH para transferência de arquivos. A sintaxe 'origem destino' é respeitada, onde o til ('~') representa o diretório home do usuário remoto. #scp #SSH"
 
 - id: "110-009"
   topic: "110.3"
@@ -112,7 +112,7 @@
     - "gpg --receive-keys chave.pub"
     - "gpg --verify chave.pub"
   answer: 2
-  comment: "O comando 'gpg --import' lê o arquivo contendo a chave pública e a adiciona ao seu 'keyring' (chaveiro) local. Após importar, você deve verificar a 'impressão digital' (fingerprint) da chave com o proprietário para garantir sua autenticidade antes de confiar nela. #GPG #encryption #security #keys #linux"
+  comment: "O comando 'gpg --import' lê o arquivo contendo a chave pública e a adiciona ao seu 'keyring' (chaveiro) local. Após importar, você deve verificar a 'impressão digital' (fingerprint) da chave com o proprietário para garantir sua autenticidade antes de confiar nela. #GPG"
 
 - id: "110-010"
   topic: "110.1"
@@ -124,7 +124,7 @@
     - "O7H_Pae!"
     - "654321"
   answer: 4
-  comment: "A segurança de uma senha baseia-se na entropia (complexidade e comprimento). A senha 'O7H_Pae!' utiliza uma combinação de caracteres maiúsculos, minúsculos, números e símbolos especiais, o que aumenta exponencialmente o tempo necessário para um ataque de força bruta. #password-security #entropy #cybersecurity #best-practices"
+  comment: "A segurança de uma senha baseia-se na entropia (complexidade e comprimento). A senha 'O7H_Pae!' utiliza uma combinação de caracteres maiúsculos, minúsculos, números e símbolos especiais, o que aumenta exponencialmente o tempo necessário para um ataque de força bruta."
 
 - id: "110-011"
   topic: "110.1"
@@ -135,7 +135,7 @@
     - "passwd -l agenor"
     - "chage -L agenor"
   answer: 3
-  comment: "O comando 'passwd -l' (lock) bloqueia a conta do usuário adicionando um '!' (ou '*') antes da senha no arquivo '/etc/shadow', impedindo a autenticação. Para desbloquear, usa-se 'passwd -u' (unlock). #passwd #security #user-management #lock #linux-admin"
+  comment: "O comando 'passwd -l' (lock) bloqueia a conta do usuário adicionando um '!' (ou '*') antes da senha no arquivo '/etc/shadow', impedindo a autenticação. Para desbloquear, usa-se 'passwd -u' (unlock). #passwd"
 
 - id: "110-012"
   topic: "110.3"
@@ -147,14 +147,14 @@
     - "gpg-agent"
     - "ssh-agent"
   answer: 4
-  comment: "O 'gpg-agent' é um daemon que gerencia chaves secretas (privadas) independentemente do processo principal do GPG. Ele permite que as chaves sejam mantidas desbloqueadas na memória por um tempo determinado, evitando que o usuário precise digitar a senha (passphrase) repetidamente. #GPG #security #gpg-agent #linux #cryptography"
+  comment: "O 'gpg-agent' é um daemon que gerencia chaves secretas (privadas) independentemente do processo principal do GPG. Ele permite que as chaves sejam mantidas desbloqueadas na memória por um tempo determinado, evitando que o usuário precise digitar a senha (passphrase) repetidamente. #GPG #gpg-agent"
 
 - id: "110-013"
   topic: "110.1"
   type: "discursive"
   question: "O administrador deseja dar permissão para que um usuário comum do sistema possa adicionar novos usuários. Em qual arquivo ele pode realizar essa configuração? (Informe o caminho completo do arquivo)"
   answer: "/etc/sudoers"
-  comment: "A configuração mencionada deve ser feito pela ferramenta sudo, para isso deve ser configurado o arquivo /etc/sudoers pelo vi, ou simplesmente utilizar o comando \"visudo\". #sudoers #sudo #visudo #security"
+  comment: "A configuração mencionada deve ser feito pela ferramenta sudo, para isso deve ser configurado o arquivo /etc/sudoers pelo vi, ou simplesmente utilizar o comando \"visudo\". #sudoers #sudo #visudo"
 
 - id: "110-014"
   topic: "110.1"
@@ -165,7 +165,7 @@
     - "nmap 192.168.8.158"
     - "lsof -p 192.168.8.168"
   answer: 3
-  comment: "O comando nmap é utilizado para scanear uma máquina local ou remota em busca de Portas abertas, além de outras informações. Também pode ser utilizado para analisar todas as máquinas de uma rede lógica específica. #nmap #portscan #security #networking"
+  comment: "O comando nmap é utilizado para scanear uma máquina local ou remota em busca de Portas abertas, além de outras informações. Também pode ser utilizado para analisar todas as máquinas de uma rede lógica específica. #nmap"
 
 - id: "110-015"
   topic: "110.1"
@@ -177,7 +177,7 @@
     - "lsof"
     - "ps"
   answer: 4
-  comment: "O lsof é utilizado para listar os arquivos abertos por processos e com isso é possível obter a informação desejada. O comando netstat também pode ser utilizado para esse fim. #lsof #PID #TCP #security"
+  comment: "O lsof é utilizado para listar os arquivos abertos por processos e com isso é possível obter a informação desejada. O comando netstat também pode ser utilizado para esse fim. #lsof #PID #TCP"
 
 - id: "110-016"
   topic: "110.2"
@@ -188,7 +188,7 @@
     - "Accept"
     - "ListenStream"
   answer: 4
-  comment: "A opção ListenStream especifica um endereço para que se ouça um stream de dados, normalmente uma porta, mas o IP também pode ser especificado. #systemd #socket #ListenStream #networking"
+  comment: "A opção ListenStream especifica um endereço para que se ouça um stream de dados, normalmente uma porta, mas o IP também pode ser especificado. #systemd #socket #ListenStream"
 
 - id: "110-017"
   topic: "110.2"
@@ -201,7 +201,7 @@
     - "O usuário só pode trocar sua senha após 3 dias da troca anterior."
     - "O usuário passará a ser alertado 3 dias antes de sua senha expirar."
   answer: [2, 3, 5]
-  comment: "O caractere ! à frente da senha em hash do usuário indica que ele está bloqueado. A sequência de informações do arquivo é: login:hash da senha:número de dias da última alteração da senha:mínimo de dias para a troca da senha:máximo de dias em que a mesma senha pode ser mantida:dias em que o usuário será notificado antes da expiração da senha:caso a senha tenha expirado, desabilita a conta após n dias:dias para bloqueio da conta:reservado. #shadow #senha #aging #security"
+  comment: "O caractere ! à frente da senha em hash do usuário indica que ele está bloqueado. A sequência de informações do arquivo é: login:hash da senha:número de dias da última alteração da senha:mínimo de dias para a troca da senha:máximo de dias em que a mesma senha pode ser mantida:dias em que o usuário será notificado antes da expiração da senha:caso a senha tenha expirado, desabilita a conta após n dias:dias para bloqueio da conta:reservado. #shadow #aging"
 
 - id: "110-018"
   topic: "110.2"
@@ -212,7 +212,7 @@
     - "/usr/share/xinet.d/"
     - "/etc/security/"
   answer: 1
-  comment: "O serviço xinetd tem como principal arquivo de configuração o /etc/xinetd.conf mas a maioria das configurações referentes aos serviços são incluídas no diretório /etc/xinetd.d/ #xinetd #superserver #security #networking"
+  comment: "O serviço xinetd tem como principal arquivo de configuração o /etc/xinetd.conf mas a maioria das configurações referentes aos serviços são incluídas no diretório /etc/xinetd.d/ #xinetd #superserver"
 
 - id: "110-019"
   topic: "110.3"
@@ -224,7 +224,7 @@
     - "/etc/ssh/ssh_config"
     - "~/.ssh/known_hosts"
   answer: 1
-  comment: "A chave púbica compartilhada deverá ser incluída no arquivo authorized_keys do usuário. #SSH #authorized_keys #chaves #security"
+  comment: "A chave púbica compartilhada deverá ser incluída no arquivo authorized_keys do usuário. #SSH #authorized_keys"
 
 - id: "110-020"
   topic: "110.3"
@@ -235,7 +235,7 @@
     - "ssh-agent"
     - "gpg-keys"
   answer: 2
-  comment: "O gpg-agent é iniciado automaticamente pelos processos do gpg, na primeira execução o acesso às chaves privadas é solicitado, mas após isso as informações são mantidas em memória. #gpg-agent #GPG #chaves #cryptography"
+  comment: "O gpg-agent é iniciado automaticamente pelos processos do gpg, na primeira execução o acesso às chaves privadas é solicitado, mas após isso as informações são mantidas em memória. #gpg-agent #GPG"
 
 - id: "110-021"
   topic: "110.3"
@@ -247,7 +247,7 @@
     - "/etc/ssh/ssh_config"
     - "/etc/ssh/config"
   answer: 4
-  comment: "As configurações relacionadas ao cliente SSH devem ser feitas no arquivo /etc/ssh/ssh_config. Já as configurações do Servidor SSH, ou seja no sshd, devem ser feitas no arquivo /etc/ssh/sshd_config. #SSH #ssh_config #sshd_config #security"
+  comment: "As configurações relacionadas ao cliente SSH devem ser feitas no arquivo /etc/ssh/ssh_config. Já as configurações do Servidor SSH, ou seja no sshd, devem ser feitas no arquivo /etc/ssh/sshd_config. #SSH #ssh_config #sshd_config"
 
 - id: "110-022"
   topic: "110.3"
@@ -258,7 +258,7 @@
     - "X11Forwarding"
     - "Forwarding"
   answer: 3
-  comment: "A opção X11Forwarding habilita o servidor SSH a receber conexões que irão acessar aplicações no Sistema de Janelas X. #X11Forwarding #SSH #X11 #security"
+  comment: "A opção X11Forwarding habilita o servidor SSH a receber conexões que irão acessar aplicações no Sistema de Janelas X. #X11Forwarding #SSH #X11"
 
 - id: "110-023"
   topic: "110.1"
@@ -270,7 +270,7 @@
     - "find / -perm SUID"
     - "find / -perm -2000"
   answer: 2
-  comment: "O código de permissão 4000 é equivalente ao SUID e o 2000 ao SGID. No exame é comum questões sobre pesquisar os arquivos que não possuem nenhum usuário ou grupo associado, nesse caso deve ser utilizado o find da seguinte maneira: find / \\( -nouser -o -nogroup \\) #find #SUID #permissoes #security"
+  comment: "O código de permissão 4000 é equivalente ao SUID e o 2000 ao SGID. No exame é comum questões sobre pesquisar os arquivos que não possuem nenhum usuário ou grupo associado, nesse caso deve ser utilizado o find da seguinte maneira: find / \\( -nouser -o -nogroup \\) #find #SUID"
 
 - id: "110-024"
   topic: "110.1"
@@ -282,7 +282,7 @@
     - "ulimit"
     - "sudo"
   answer: 4
-  comment: "O comando ulimit define na sessão atual limites para utilização dos recursos da máquina como tamanho máximo de arquivos, arquivos abertos, uso de processos, utilização de CPU, memória e etc. #ulimit #limits #processos #security"
+  comment: "O comando ulimit define na sessão atual limites para utilização dos recursos da máquina como tamanho máximo de arquivos, arquivos abertos, uso de processos, utilização de CPU, memória e etc. #ulimit #limits"
 
 - id: "110-025"
   topic: "110.1"
@@ -293,7 +293,7 @@
     - "nmap localhost:80"
     - "netcat localhost:80"
   answer: 1
-  comment: "O lsof é utilizado para listar os arquivos abertos por processos e com isso é possível obter a informação desejada. O comando netstat também pode ser utilizado mas a sintaxe apresentada não está correta. #lsof #portas #processos #security"
+  comment: "O lsof é utilizado para listar os arquivos abertos por processos e com isso é possível obter a informação desejada. O comando netstat também pode ser utilizado mas a sintaxe apresentada não está correta. #lsof"
 
 - id: "110-026"
   topic: "110.2"
@@ -304,7 +304,7 @@
     - "wait = yes"
     - "enable no"
   answer: 2
-  comment: "Nas configurações de um serviço no arquivo xinetd.conf, ou nos aquivos do /etc/xinetd.d/, o parâmetro \"disable = yes\" fará com que o serviço não seja disponibilizado mesmo que esteja configurado. #xinetd #disable #superserver #security"
+  comment: "Nas configurações de um serviço no arquivo xinetd.conf, ou nos aquivos do /etc/xinetd.d/, o parâmetro \"disable = yes\" fará com que o serviço não seja disponibilizado mesmo que esteja configurado. #xinetd #disable #superserver"
 
 - id: "110-027"
   topic: "110.2"
@@ -315,7 +315,7 @@
     - "/etc/group"
     - "/etc/profile"
   answer: 2
-  comment: "Como o arquivo /etc/shadow possui informações referentes à senha dos usuários, o acesso de leitura é restrito apenas ao usuário root. #shadow #permissoes #senha #security"
+  comment: "Como o arquivo /etc/shadow possui informações referentes à senha dos usuários, o acesso de leitura é restrito apenas ao usuário root. #shadow"
 
 - id: "110-028"
   topic: "110.2"
@@ -327,7 +327,7 @@
     - "GnuPG"
     - "crontab"
   answer: 1
-  comment: "Processos podem utilizar a biblioteca do TCP Wrapper (libwrap.a) para realizar um filtro inicial nas conexões ao serviço. Por exemplo, o processo /usr/sbin/tcpd utiliza a biblioteca libwrap. Os arquivos /etc/hosts.allow e /etc/hosts.deny são utilizados para configurar os parâmetros de acesso aos serviços que utilizam essa biblioteca. #TCPWrapper #hosts.allow #hosts.deny #security"
+  comment: "Processos podem utilizar a biblioteca do TCP Wrapper (libwrap.a) para realizar um filtro inicial nas conexões ao serviço. Por exemplo, o processo /usr/sbin/tcpd utiliza a biblioteca libwrap. Os arquivos /etc/hosts.allow e /etc/hosts.deny são utilizados para configurar os parâmetros de acesso aos serviços que utilizam essa biblioteca. #TCPWrapper #hosts.allow #hosts.deny"
 
 - id: "110-029"
   topic: "110.3"
@@ -339,7 +339,7 @@
     - "O compartilhamento da chave pública pode comprometer a segurança do usuário."
     - "A chave privada é utilizada para descriptografar os dados recebidos."
   answer: [1, 2, 5]
-  comment: "A base da comunicação SSH via chave pública e privada é entender que a chave pública é compartilhada com outro usuário que irá utilizá-la para criptografar os dados antes de enviá-lo. A chave privada nunca deve ser compartilhada e ela será utilizada para descriptografar os dados que foram criptografados com a chave pública equivalente. #SSH #chaves #criptografia #security"
+  comment: "A base da comunicação SSH via chave pública e privada é entender que a chave pública é compartilhada com outro usuário que irá utilizá-la para criptografar os dados antes de enviá-lo. A chave privada nunca deve ser compartilhada e ela será utilizada para descriptografar os dados que foram criptografados com a chave pública equivalente. #SSH"
 
 - id: "110-030"
   topic: "110.3"
@@ -350,7 +350,7 @@
     - "~/.ssh/know_hosts"
     - "~/.ssh/id_rsa"
   answer: 4
-  comment: "As chaves ficam localizadas no diretório $HOME/.ssh/. No caso de uma chave que usa o algoritmo RSA, o arquivo id_rsa contém a chave privada e o arquivo id_rsa.pub a chave pública. Outros algoritmos (DSA, ECDSA e etc) seguirão o mesmo padrão de nomes. #SSH #id_rsa #RSA #chaves"
+  comment: "As chaves ficam localizadas no diretório $HOME/.ssh/. No caso de uma chave que usa o algoritmo RSA, o arquivo id_rsa contém a chave privada e o arquivo id_rsa.pub a chave pública. Outros algoritmos (DSA, ECDSA e etc) seguirão o mesmo padrão de nomes. #SSH #id_rsa #RSA"
 
 - id: "110-031"
   topic: "110.3"
@@ -361,7 +361,7 @@
     - "--gen-key"
     - "--view-keys"
   answer: 2
-  comment: "O comando \"gpg --list-keys\" mostra todas as chaves (públicas e privadas) configuradas no \"chaveiro\" do usuário. #gpg #list-keys #chaves #cryptography"
+  comment: "O comando \"gpg --list-keys\" mostra todas as chaves (públicas e privadas) configuradas no \"chaveiro\" do usuário. #GPG #list-keys"
 
 - id: "110-032"
   topic: "110.3"
@@ -383,14 +383,14 @@
     - "/etc/ssh/sshd_config"
     - "/etc/security/limits.conf"
   answer: 3
-  comment: "A configuração mencionada deve ser realizada no Servidor SSH, ou seja no sshd, por isso deve ser feita no arquivo /etc/ssh/sshd_config. Configurações relacionadas ao cliente SSH devem ser feitas no arquivo /etc/ssh/ssh_config. #SSH #sshd_config #PermitRootLogin #security"
+  comment: "A configuração mencionada deve ser realizada no Servidor SSH, ou seja no sshd, por isso deve ser feita no arquivo /etc/ssh/sshd_config. Configurações relacionadas ao cliente SSH devem ser feitas no arquivo /etc/ssh/ssh_config. #SSH #sshd_config #PermitRootLogin"
 
 - id: "110-034"
   topic: "110.3"
   type: "discursive"
   question: "Qual o comando utilizado para gerar as chaves pública e privada de um usuário para que seja realizada uma conexão SSH? (Informe apenas o comando, sem o caminho ou argumentos)"
   answer: "ssh-keygen"
-  comment: "O comando ssh-keygen tem a função de criar e gerenciar as chaves SSH públicas e privadas de um usuário. Estas chaves são armazenadas no diretório $HOME/.ssh/ #ssh-keygen #SSH #chaves #security"
+  comment: "O comando ssh-keygen tem a função de criar e gerenciar as chaves SSH públicas e privadas de um usuário. Estas chaves são armazenadas no diretório $HOME/.ssh/ #ssh-keygen #SSH"
 
 - id: "110-035"
   topic: "110.3"
@@ -402,7 +402,7 @@
     - "ssh -o Listen 2222 192.168.8.20"
     - "ssh 192.168.8.20:2222"
   answer: [1, 3]
-  comment: "Para conectar em uma porta diferente da porta padrão, pode-se usar a opção \"-p\" no cliente ssh, ou a opção \"-o Port\", o -o é usado para definir opções configuráveis no arquivo de configuração do cliente ssh. #SSH #porta #ssh_config #networking"
+  comment: "Para conectar em uma porta diferente da porta padrão, pode-se usar a opção \"-p\" no cliente ssh, ou a opção \"-o Port\", o -o é usado para definir opções configuráveis no arquivo de configuração do cliente ssh. #SSH #ssh_config"
 
 - id: "110-036"
   topic: "110.3"
@@ -413,7 +413,7 @@
     - "--check-signatures"
     - "--view"
   answer: 1
-  comment: "A opção --verify tem função de analisar a assinatura inserida em um arquivo, e verificar se a mesma é válida com base nas chaves que o sistema possui. #gpg #verify #assinatura #cryptography"
+  comment: "A opção --verify tem função de analisar a assinatura inserida em um arquivo, e verificar se a mesma é válida com base nas chaves que o sistema possui. #GPG #verify"
 
 - id: "110-037"
   topic: "110.1"
@@ -428,21 +428,21 @@
     - "A conta não será bloqueada após a expiração da senha."
     - "7 dias antes da expiração da senha o usuário passará a receber avisos do sistema."
   answer: [3, 4, 5]
-  comment: "As informações exibidas pelo comando \"passwd -S\" são: Estado da conta (P=Senha OK, NP=Sem Senha, L=Conta Bloqueada (Locked). Data da Última Alteração da Senha. Limite mínimo de dias para a senha. Limite máximo de dias para a senha. Dias de aviso antes da expiração da senha. Tempo após a expiração da senha até a desativação da conta, -1 significa desabilitado. #passwd #senha #aging #security"
+  comment: "As informações exibidas pelo comando \"passwd -S\" são: Estado da conta (P=Senha OK, NP=Sem Senha, L=Conta Bloqueada (Locked). Data da Última Alteração da Senha. Limite mínimo de dias para a senha. Limite máximo de dias para a senha. Dias de aviso antes da expiração da senha. Tempo após a expiração da senha até a desativação da conta, -1 significa desabilitado. #passwd #aging"
 
 - id: "110-038"
   topic: "110.1"
   type: "discursive"
   question: "Qual comando pode ser utilizado para definir, na sessão atual, o número máximo de processos que um usuário pode executar simultaneamente? (Informe apenas o nome do comando, sem o caminho ou argumentos)"
   answer: "ulimit"
-  comment: "O comando ulimit define na sessão atual limites para utilização dos recursos da máquina como tamanho máximo de arquivos, arquivos abertos, uso de processos, utilização de CPU, memória e etc. #ulimit #limits #processos #security"
+  comment: "O comando ulimit define na sessão atual limites para utilização dos recursos da máquina como tamanho máximo de arquivos, arquivos abertos, uso de processos, utilização de CPU, memória e etc. #ulimit #limits"
 
 - id: "110-039"
   topic: "110.2"
   type: "discursive"
   question: "Uma manutenção está sendo realizada no servidor Linux e o administrador deseja bloquear o login de todos os usuários, exceto root, exibindo a mensagem de \"Sistema em Manutenção\" quando o usuário tentar realizar o login. Qual arquivo deve ser criado com a mensagem desejada para que isso aconteça? (Informe o caminho completo do arquivo.)"
   answer: "/etc/nologin"
-  comment: "Quando o arquivo /etc/nologin existe, nenhum usuário, com exceção do root, consegue realizar login no sistema, ao realizar a tentativa a mensagem escrita no arquivo é retornada ao usuário. #nologin #login #security #manutencao"
+  comment: "Quando o arquivo /etc/nologin existe, nenhum usuário, com exceção do root, consegue realizar login no sistema, ao realizar a tentativa a mensagem escrita no arquivo é retornada ao usuário. #nologin #login"
 
 - id: "110-040"
   topic: "110.2"
@@ -453,7 +453,7 @@
     - "rw-r--r--"
     - "rw-r-----"
   answer: 4
-  comment: "Como o arquivo /etc/shadow possui informações referentes à senha dos usuários, o acesso de leitura deve ser restrito apenas ao usuário root. #shadow #permissoes #senha #security"
+  comment: "Como o arquivo /etc/shadow possui informações referentes à senha dos usuários, o acesso de leitura deve ser restrito apenas ao usuário root. #shadow"
 
 - id: "110-041"
   topic: "110.2"
@@ -464,7 +464,7 @@
     - "O acesso a partir do IP informado será liberado."
     - "Haverá um conflito e ninguém conseguirá utilizar o serviço."
   answer: 3
-  comment: "As configurações do arquivo /etc/hosts.allow são lidas primeiro, e se há uma liberação para o serviço, para um IP ou rede no hosts.allow, o hosts.deny não é nem mesmo consultado. #TCPWrapper #hosts.allow #hosts.deny #security"
+  comment: "As configurações do arquivo /etc/hosts.allow são lidas primeiro, e se há uma liberação para o serviço, para um IP ou rede no hosts.allow, o hosts.deny não é nem mesmo consultado. #TCPWrapper #hosts.allow #hosts.deny"
 
 - id: "110-042"
   topic: "110.1"
@@ -475,14 +475,14 @@
     - "last"
     - "lastb"
   answer: 3
-  comment: "O comando last mostra os últimos logins na máquina. O lastlog mostra apenas o último login de cada usuário do sistema. O who exibe os usuários logados no momento e o lastb as últimas ocorrências de falhas no login. #last #lastlog #login #security"
+  comment: "O comando last mostra os últimos logins na máquina. O lastlog mostra apenas o último login de cada usuário do sistema. O who exibe os usuários logados no momento e o lastb as últimas ocorrências de falhas no login. #last #lastlog #login"
 
 - id: "110-043"
   topic: "110.1"
   type: "discursive"
   question: "O administrador deseja limitar o número de arquivos que um usuário pode abrir simultaneamente. Em qual arquivo de configuração ele deve fazer essa definição? (Informe o caminho completo do arquivo)"
   answer: "/etc/security/limits.conf"
-  comment: "O comando ulimit é utilizado para definir esses limites em uma sessão, mas para configurá-las permanentemente para um usuário deve ser feito pelo arquivo /etc/security/limits.conf #limits.conf #ulimit #limits #security"
+  comment: "O comando ulimit é utilizado para definir esses limites em uma sessão, mas para configurá-las permanentemente para um usuário deve ser feito pelo arquivo /etc/security/limits.conf #limits.conf #ulimit #limits"
 
 - id: "110-044"
   topic: "110.1"
@@ -493,7 +493,7 @@
     - "passwd -e 12302021 usuario1"
     - "usermod -I 12/30/2021 usuario1"
   answer: 1
-  comment: "Nesse caso atenção para a diferença entre expiração de conta e da senha. O comando usermod -e define a data de expiração da conta. O chage -I define a inativação da conta e o passwd -e força a expiração da senha. #usermod #chage #expiracao #security"
+  comment: "Nesse caso atenção para a diferença entre expiração de conta e da senha. O comando usermod -e define a data de expiração da conta. O chage -I define a inativação da conta e o passwd -e força a expiração da senha. #usermod #chage"
 
 - id: "110-045"
   topic: "110.2"
@@ -504,7 +504,7 @@
     - "pam_conv"
     - "pwconv"
   answer: 4
-  comment: "O comando pwconv cria o arquivo /etc/shadow a partir do arquivo /etc/passwd, deixando as senhas no padrão shadow, que é o padrão atual do Linux. #pwconv #shadow #senha #security"
+  comment: "O comando pwconv cria o arquivo /etc/shadow a partir do arquivo /etc/passwd, deixando as senhas no padrão shadow, que é o padrão atual do Linux. #pwconv #shadow"
 
 - id: "110-046"
   topic: "110.1"
@@ -516,14 +516,14 @@
     - "passwd"
     - "fuser"
   answer: [2, 3, 4]
-  comment: "Os comandos chage, usermod e passwd podem ser utilizados para alterar os dados de acesso da conta dos usuários, alterando as propriedades no arquivo /etc/shadow. #chage #usermod #passwd #security"
+  comment: "Os comandos chage, usermod e passwd podem ser utilizados para alterar os dados de acesso da conta dos usuários, alterando as propriedades no arquivo /etc/shadow. #chage #usermod #passwd"
 
 - id: "110-047"
   topic: "110.2"
   type: "discursive"
   question: "Qual arquivo contém a informação sobre a data da última alteração de senha de um usuário do sistema? (Informe o caminho completo do arquivo)"
   answer: "/etc/shadow"
-  comment: "No arquivo /etc/shadow estão as informações: login:hash da senha:número de dias da última alteração da senha:mínimo de dias para a troca da senha:máximo de dias em que a mesma senha pode ser mantida:dias em que o usuário será notificado antes da expiração da senha:caso a senha tenha expirado, desabilita a conta após n dias:dias para bloqueio da conta:reservado. #shadow #senha #aging #security"
+  comment: "No arquivo /etc/shadow estão as informações: login:hash da senha:número de dias da última alteração da senha:mínimo de dias para a troca da senha:máximo de dias em que a mesma senha pode ser mantida:dias em que o usuário será notificado antes da expiração da senha:caso a senha tenha expirado, desabilita a conta após n dias:dias para bloqueio da conta:reservado. #shadow #aging"
 
 - id: "110-048"
   topic: "110.2"
@@ -534,7 +534,7 @@
     - "ALL: 172.16.10.0/24"
     - "sshd:172.16.10.0/24"
   answer: 4
-  comment: "No arquivo /etc/hosts.allow ou hosts.deny, o serviço virá no começo da linha ou é usado ALL para todos, após os : (dois pontos) são listados os IPs ou Redes que podem ou não usar o recurso. #hosts.allow #TCPWrapper #SSH #security"
+  comment: "No arquivo /etc/hosts.allow ou hosts.deny, o serviço virá no começo da linha ou é usado ALL para todos, após os : (dois pontos) são listados os IPs ou Redes que podem ou não usar o recurso. #hosts.allow #TCPWrapper #SSH"
 
 - id: "110-049"
   topic: "110.3"
@@ -545,7 +545,7 @@
     - "~/.ssh/id_rsa.pub"
     - "~/.ssh/public.gpg"
   answer: 1
-  comment: "As chaves utilizadas pelo gpg ficam localizadas no diretório $HOME/.gnupg/ e o arquivo pubring.gpg contém as chaves públicas já recebidas pelo usuário. #gpg #pubring #chaves #cryptography"
+  comment: "As chaves utilizadas pelo gpg ficam localizadas no diretório $HOME/.gnupg/ e o arquivo pubring.gpg contém as chaves públicas já recebidas pelo usuário. #GPG #pubring"
 
 - id: "110-050"
   topic: "110.3"
@@ -556,7 +556,7 @@
     - "ssh -L 888 -R 192.168.10.10:80"
     - "ssh -L 888:192.168.10.10:80"
   answer: 4
-  comment: "O SSH permite a criação de túneis pelo qual serão enviados os dados de qualquer tipo de serviço. A sintaxe para abrir um túnel é: ssh -L Porta_Local:Endereço_Destino:Porta_Destino #SSH #tunnel #port-forwarding #security"
+  comment: "O SSH permite a criação de túneis pelo qual serão enviados os dados de qualquer tipo de serviço. A sintaxe para abrir um túnel é: ssh -L Porta_Local:Endereço_Destino:Porta_Destino #SSH #tunnel #port-forwarding"
 
 - id: "110-051"
   topic: "110.3"
@@ -568,12 +568,12 @@
     - "sshd_config"
     - "ssh-pass"
   answer: 2
-  comment: "Com o ssh-agent em execução, na primeira tentativa de acesso ao host remoto, uma senha para acesso às chaves privadas é solicitada, mas após isso as informações são mantidas em memória. #ssh-agent #SSH #chaves #security"
+  comment: "Com o ssh-agent em execução, na primeira tentativa de acesso ao host remoto, uma senha para acesso às chaves privadas é solicitada, mas após isso as informações são mantidas em memória. #ssh-agent #SSH"
 
 - id: "110-052"
   topic: "110.3"
   type: "discursive"
   question: "Qual arquivo de configuração deve ser editado para se alterar as opções padrão do servidor OpenSSH? (Informe o caminho completo do arquivo)"
   answer: "/etc/ssh/sshd_config"
-  comment: "Configurações relacionadas ao servidor SSH devem ser feitas no arquivo /etc/ssh/sshd_config. Configurações relacionadas ao cliente SSH devem ser feitas no arquivo /etc/ssh/ssh_config. #sshd_config #SSH #OpenSSH #security"
+  comment: "Configurações relacionadas ao servidor SSH devem ser feitas no arquivo /etc/ssh/sshd_config. Configurações relacionadas ao cliente SSH devem ser feitas no arquivo /etc/ssh/ssh_config. #sshd_config #SSH #OpenSSH"
 
