@@ -27,12 +27,13 @@
   opacity: 0.5;
 }
 
-/* Hover: [>>] — só quando ainda não respondeu */
-.quiz-q:not(.quiz-answered) ol li:hover {
+/* Hover: [>>] — só quando ainda não respondeu e a alternativa não está
+   marcada (multi-select). Itens já marcados têm hover próprio mais abaixo. */
+.quiz-q:not(.quiz-answered) ol li:hover:not(.quiz-selected) {
   color: var(--text-color);
 }
 
-.quiz-q:not(.quiz-answered) ol li:hover::before {
+.quiz-q:not(.quiz-answered) ol li:hover:not(.quiz-selected)::before {
   content: "[>>]";
   color: var(--accent-cyan);
   opacity: 1;
@@ -90,6 +91,17 @@
   color: var(--accent-cyan);
   opacity: 1;
   text-shadow: 0 0 8px rgba(139, 233, 253, 0.4);
+}
+
+/* Hover sobre alternativa já marcada: mantém o [++] ciano (sem virar [>>])
+   e intensifica o brilho — sinaliza que clicar de novo desmarca. */
+.quiz-multi:not(.quiz-answered) ol li.quiz-selected:hover {
+  color: var(--accent-cyan);
+}
+.quiz-multi:not(.quiz-answered) ol li.quiz-selected:hover::before {
+  content: "[++]";
+  opacity: 1;
+  text-shadow: 0 0 12px rgba(139, 233, 253, 0.7);
 }
 
 /* Bloco de código embutido na questão */
