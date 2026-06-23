@@ -316,7 +316,7 @@
     - "env"
     - "set"
   answer: 2
-  comment: "O comando chsh perguntará ao usuário qual shell ele deseja utilizar por padrão e essa configuração será incluída no arquivo /etc/passwd, tendo efeito no próximo login do usuário. A opção -s permite a definição do shell usado diretamente no comando, por exemplo: \"chsh -s /bin/ksh ricardo\" #chsh #shell #passwd #login"
+  comment: "O comando chsh perguntará ao usuário qual shell ele deseja utilizar por padrão e essa configuração será incluída no arquivo /etc/passwd, tendo efeito no próximo login do usuário. A opção -s permite a definição do shell usado diretamente no comando, por exemplo: \"chsh -s /bin/ksh fxlip\" #chsh #shell #passwd #login"
 
 - id: "105-027"
   topic: "105.2"

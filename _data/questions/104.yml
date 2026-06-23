@@ -946,11 +946,11 @@
   code: |
     $ ls -il
     total 16
-    14026028 -rw-r----- 2 ricardo ricardo 20 Jun 15 15:43 arquivo1
-    14026030 -rw-r----- 1 ricardo ricardo 20 Jun 15 15:43 arquivo2
-    14026031 -rw-r----- 1 ricardo ricardo 20 Jun 15 15:43 arquivo3
-    14026032 lrwxrwxrwx 1 ricardo ricardo  8 Jun 15 15:44 arquivo4 -> arquivo2
-    14026028 -rw-r----- 2 ricardo ricardo 20 Jun 15 15:43 arquivo5
+    14026028 -rw-r----- 2 fxlip fsociety 20 Jun 15 15:43 arquivo1
+    14026030 -rw-r----- 1 fxlip fsociety 20 Jun 15 15:43 arquivo2
+    14026031 -rw-r----- 1 fxlip fsociety 20 Jun 15 15:43 arquivo3
+    14026032 lrwxrwxrwx 1 fxlip fsociety  8 Jun 15 15:44 arquivo4 -> arquivo2
+    14026028 -rw-r----- 2 fxlip fsociety 20 Jun 15 15:43 arquivo5
   options:
     - "Se a permissão do arquivo1 for alterada, o arquivo5 terá a mesma permissão"
     - "arquivo4 é um link simbólico para arquivo2"

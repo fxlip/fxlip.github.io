@@ -476,7 +476,7 @@
 
 - id: "103-041"
   topic: "103.1"
-  question: "Ricardo está trabalhando atualmente em um diretório que contém só um arquivo chamado faq.txt. O que é exibido logo depois que os comandos seguintes são executados no bash? Selecione a opção correta."
+  question: "Um usuário está trabalhando atualmente em um diretório que contém só um arquivo chamado faq.txt. O que é exibido logo depois que os comandos seguintes são executados no bash? Selecione a opção correta."
   code: "# MYVAR=ls# echo $MYVAR \"$MYVAR\" ’$MYVAR’ `$MYVAR`"
   options:
     - "ls faq.txt faq.txt faq.txt"
