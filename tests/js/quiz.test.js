@@ -1218,3 +1218,218 @@ describe('aggregateByExam', () => {
     expect(out['109']).toEqual({ correct: 3, total: 5 })
   })
 })
+
+// =============================================================================
+// baseId — id-base de questões (instâncias duplicadas têm sufixo "#dup")
+// Duplicada de assets/js/quiz.js para teste isolado.
+// =============================================================================
+
+function baseId(id) {
+  return id ? String(id).split('#')[0] : ''
+}
+
+describe('baseId', () => {
+  it('retorna o id sem o sufixo de duplicata', () => {
+    expect(baseId('q047#dup')).toBe('q047')
+  })
+  it('id sem sufixo permanece igual', () => {
+    expect(baseId('q047')).toBe('q047')
+  })
+  it('nulo/indefinido/vazio retorna string vazia', () => {
+    expect(baseId(null)).toBe('')
+    expect(baseId(undefined)).toBe('')
+    expect(baseId('')).toBe('')
+  })
+})
+
+// =============================================================================
+// updateMissHistory — histórico de erros por questão (streak)
+// Duplicada de assets/js/quiz.js para teste isolado.
+// =============================================================================
+
+function updateMissHistory(prev, wrongIds, answeredIds, level) {
+  const out = {}
+  for (const [id, e] of Object.entries(prev || {})) {
+    out[id] = {
+      streak:    e.streak    || 0,
+      misses:    e.misses    || 0,
+      hits:      e.hits      || 0,
+      lastLevel: e.lastLevel || 0,
+    }
+  }
+  const wrong = new Set((wrongIds || []).map(baseId))
+  for (const rawId of new Set((answeredIds || []).map(baseId))) {
+    if (!rawId) continue
+    if (!out[rawId]) out[rawId] = { streak: 0, misses: 0, hits: 0, lastLevel: 0 }
+    const e = out[rawId]
+    if (wrong.has(rawId)) { e.streak++; e.misses++ }
+    else                  { e.streak = 0; e.hits++ }
+    e.lastLevel = level
+  }
+  return out
+}
+
+describe('updateMissHistory', () => {
+  it('cria entrada nova ao errar (streak/misses = 1)', () => {
+    const out = updateMissHistory({}, ['q1'], ['q1'], 1)
+    expect(out.q1).toEqual({ streak: 1, misses: 1, hits: 0, lastLevel: 1 })
+  })
+
+  it('incrementa streak a cada erro consecutivo', () => {
+    let m = updateMissHistory({}, ['q1'], ['q1'], 1)
+    m = updateMissHistory(m, ['q1'], ['q1'], 2)
+    m = updateMissHistory(m, ['q1'], ['q1'], 3)
+    expect(m.q1.streak).toBe(3)
+    expect(m.q1.misses).toBe(3)
+    expect(m.q1.lastLevel).toBe(3)
+  })
+
+  it('acertar zera o streak (graduação) mas preserva o total de misses', () => {
+    let m = updateMissHistory({}, ['q1'], ['q1'], 1)
+    m = updateMissHistory(m, ['q1'], ['q1'], 2)
+    m = updateMissHistory(m, [], ['q1'], 3) // acertou
+    expect(m.q1.streak).toBe(0)
+    expect(m.q1.misses).toBe(2)
+    expect(m.q1.hits).toBe(1)
+  })
+
+  it('não muta o estado anterior (função pura)', () => {
+    const prev = { q1: { streak: 2, misses: 2, hits: 0, lastLevel: 1 } }
+    updateMissHistory(prev, ['q1'], ['q1'], 2)
+    expect(prev.q1.streak).toBe(2)
+  })
+
+  it('normaliza ids duplicados (#dup) para o id-base, contando uma vez', () => {
+    const out = updateMissHistory({}, ['q1#dup'], ['q1', 'q1#dup'], 4)
+    expect(out.q1.streak).toBe(1)
+    expect(out.q1.misses).toBe(1)
+  })
+
+  it('questões respondidas e não erradas contam como acerto', () => {
+    const out = updateMissHistory({}, ['q1'], ['q1', 'q2'], 1)
+    expect(out.q1.streak).toBe(1)
+    expect(out.q2).toEqual({ streak: 0, misses: 0, hits: 1, lastLevel: 1 })
+  })
+})
+
+// =============================================================================
+// buildMissTagFrequency — frequência de erro por hashtag (mapa de calor)
+// Duplicada de assets/js/quiz.js para teste isolado.
+// =============================================================================
+
+function buildMissTagFrequency(examMisses, qById) {
+  const freq = {}
+  for (const [id, e] of Object.entries(examMisses || {})) {
+    if (!e || !e.misses) continue
+    const q = qById[id]
+    if (!q) continue
+    for (const tag of extractTags(q.comment)) {
+      freq[tag] = (freq[tag] || 0) + e.misses
+    }
+  }
+  return freq
+}
+
+describe('buildMissTagFrequency', () => {
+  const qById = {
+    q1: { comment: 'use #grep e #find' },
+    q2: { comment: 'sinais #kill #signals' },
+    q3: { comment: 'mais #grep' },
+  }
+
+  it('soma os misses de cada questão nas suas tags', () => {
+    const freq = buildMissTagFrequency(
+      { q1: { misses: 2 }, q3: { misses: 1 } }, qById)
+    expect(freq).toEqual({ grep: 3, find: 2 })
+  })
+
+  it('ignora questões sem misses ou ausentes do banco', () => {
+    const freq = buildMissTagFrequency(
+      { q1: { misses: 0 }, q2: { misses: 1 }, qX: { misses: 5 } }, qById)
+    expect(freq).toEqual({ kill: 1, signals: 1 })
+  })
+
+  it('mapa vazio retorna objeto vazio', () => {
+    expect(buildMissTagFrequency({}, qById)).toEqual({})
+  })
+})
+
+// =============================================================================
+// heatLevel — bucket de calor (0–3) relativo ao máximo
+// Duplicada de assets/js/quiz.js para teste isolado.
+// =============================================================================
+
+function heatLevel(count, max) {
+  if (!count || count <= 0 || max <= 0) return 0
+  const r = count / max
+  if (r >= 0.66) return 3
+  if (r >= 0.33) return 2
+  return 1
+}
+
+describe('heatLevel', () => {
+  it('zero/negativo/sem máximo retorna 0', () => {
+    expect(heatLevel(0, 10)).toBe(0)
+    expect(heatLevel(-1, 10)).toBe(0)
+    expect(heatLevel(5, 0)).toBe(0)
+  })
+  it('classifica em três faixas relativas ao máximo', () => {
+    expect(heatLevel(10, 10)).toBe(3) // 100%
+    expect(heatLevel(5, 10)).toBe(2)  // 50%
+    expect(heatLevel(2, 10)).toBe(1)  // 20%
+  })
+  it('limiares: >= 0.66 -> 3, >= 0.33 -> 2', () => {
+    expect(heatLevel(66, 100)).toBe(3)
+    expect(heatLevel(33, 100)).toBe(2)
+    expect(heatLevel(32, 100)).toBe(1)
+  })
+})
+
+// =============================================================================
+// withNemesisDuplicates — duplica questões teimosas (Nível 4+)
+// Duplicada de assets/js/quiz.js para teste isolado.
+// =============================================================================
+
+function withNemesisDuplicates(questions, examMisses, level, maxDups) {
+  if (level < 4 || !examMisses) return questions
+  const cand = questions
+    .map(q => ({ q, streak: (examMisses[baseId(q.id)] || {}).streak || 0 }))
+    .filter(x => x.streak >= 2)
+    .sort((a, b) => b.streak - a.streak)
+  const dups = cand.slice(0, maxDups || 2)
+    .map(x => Object.assign({}, x.q, { id: baseId(x.q.id) + '#dup' }))
+  if (dups.length === 0) return questions
+  return shuffle(questions.concat(dups))
+}
+
+describe('withNemesisDuplicates', () => {
+  const qs = [{ id: 'q1' }, { id: 'q2' }, { id: 'q3' }]
+  const misses = { q1: { streak: 3 }, q2: { streak: 2 }, q3: { streak: 0 } }
+
+  it('abaixo do Nível 4 não duplica nada', () => {
+    expect(withNemesisDuplicates(qs, misses, 3, 2)).toBe(qs)
+  })
+
+  it('sem histórico não duplica', () => {
+    expect(withNemesisDuplicates(qs, null, 5, 2)).toBe(qs)
+  })
+
+  it('Nível 4+ duplica as questões com streak >= 2 (id "#dup")', () => {
+    const out = withNemesisDuplicates(qs, misses, 4, 2)
+    expect(out.length).toBe(5)
+    const dupIds = out.map(q => q.id).filter(id => id.endsWith('#dup')).sort()
+    expect(dupIds).toEqual(['q1#dup', 'q2#dup'])
+  })
+
+  it('respeita o limite maxDups (pega as de maior streak)', () => {
+    const out = withNemesisDuplicates(qs, misses, 4, 1)
+    expect(out.length).toBe(4)
+    const dupIds = out.map(q => q.id).filter(id => id.endsWith('#dup'))
+    expect(dupIds).toEqual(['q1#dup']) // maior streak
+  })
+
+  it('nenhuma questão teimosa -> retorna a lista original', () => {
+    const out = withNemesisDuplicates(qs, { q1: { streak: 1 } }, 4, 2)
+    expect(out).toBe(qs)
+  })
+})

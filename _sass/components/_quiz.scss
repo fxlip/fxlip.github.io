@@ -223,6 +223,26 @@
   opacity: 0.9;
 }
 
+/* Selo de nêmesis: questão reincidente (errada N× seguidas) — sutil */
+.quiz-nemesis-badge {
+  font-size: 0.78em;
+  font-weight: normal;
+  color: #ff5555;
+  opacity: 0.6;
+  margin-left: 0.4em;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+/* Mapa de calor das hashtags dos comentários: quanto mais você erra o
+   tópico, mais "quente" a tag aparece. Gradiente discreto sobre o link. */
+.quiz-q a.mention-link.quiz-tag-heat-1 { color: #d8b878; }
+.quiz-q a.mention-link.quiz-tag-heat-2 { color: #e8975a; }
+.quiz-q a.mention-link.quiz-tag-heat-3 {
+  color: #ff7043;
+  text-shadow: 0 0 6px rgba(255, 112, 67, 0.35);
+}
+
 /* ==========================================================================
    QUESTÃO DISCURSIVA
    ========================================================================== */

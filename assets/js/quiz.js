@@ -34,6 +34,12 @@
     return a;
   }
 
+  // Id-base da questão: instâncias duplicadas (níveis altos) recebem sufixo
+  // "#dup" para não colidirem no DOM, mas o histórico de erros é por id-base.
+  function baseId(id) {
+    return id ? String(id).split('#')[0] : '';
+  }
+
   function formatTime(s) {
     const m  = String(Math.floor(s / 60)).padStart(2, '0');
     const ss = String(s % 60).padStart(2, '0');
@@ -91,6 +97,84 @@
       }
       localStorage.setItem(SCORES_KEY, JSON.stringify(scores));
     } catch (_) {}
+  }
+
+  // --------------------------------------------------------------------------
+  // Histórico de erros por questão (streak) — fixação de questões teimosas
+  // --------------------------------------------------------------------------
+  // Mapa por exame: { examId: { id: { streak, misses, hits, lastLevel } } }.
+  // `streak` = erros seguidos sem acerto; zera ao acertar (a questão "graduou").
+  // É o `streak` que define uma questão reincidente (nêmesis).
+
+  const MISSES_KEY = 'fxlip_quiz_misses';
+
+  function loadMisses() {
+    try { return JSON.parse(localStorage.getItem(MISSES_KEY)) || {}; }
+    catch (_) { return {}; }
+  }
+
+  // Atualiza o mapa de erros de UM exame a partir das questões respondidas.
+  // Função pura: recebe o estado anterior, devolve um novo (não muta).
+  // `wrongIds`/`answeredIds` são ids-base; ids repetidos contam uma única vez.
+  function updateMissHistory(prev, wrongIds, answeredIds, level) {
+    const out = {};
+    for (const [id, e] of Object.entries(prev || {})) {
+      out[id] = {
+        streak:    e.streak    || 0,
+        misses:    e.misses    || 0,
+        hits:      e.hits      || 0,
+        lastLevel: e.lastLevel || 0,
+      };
+    }
+    const wrong = new Set((wrongIds || []).map(baseId));
+    for (const rawId of new Set((answeredIds || []).map(baseId))) {
+      if (!rawId) continue;
+      if (!out[rawId]) out[rawId] = { streak: 0, misses: 0, hits: 0, lastLevel: 0 };
+      const e = out[rawId];
+      if (wrong.has(rawId)) { e.streak++; e.misses++; }
+      else                  { e.streak = 0; e.hits++; }
+      e.lastLevel = level;
+    }
+    return out;
+  }
+
+  // Frequência de erro agregada por hashtag (mapa de calor): soma os `misses`
+  // de cada questão nas tags do seu comment. Requer o banco indexado por id.
+  function buildMissTagFrequency(examMisses, qById) {
+    const freq = {};
+    for (const [id, e] of Object.entries(examMisses || {})) {
+      if (!e || !e.misses) continue;
+      const q = qById[id];
+      if (!q) continue;
+      for (const tag of extractTags(q.comment)) {
+        freq[tag] = (freq[tag] || 0) + e.misses;
+      }
+    }
+    return freq;
+  }
+
+  // Mapeia uma contagem para um nível de calor (0–3) relativo ao máximo.
+  function heatLevel(count, max) {
+    if (!count || count <= 0 || max <= 0) return 0;
+    const r = count / max;
+    if (r >= 0.66) return 3;
+    if (r >= 0.33) return 2;
+    return 1;
+  }
+
+  // Duplica no mesmo simulado (a partir do Nível 4) as questões mais teimosas
+  // presentes na seleção — instâncias com id "#dup" (opções re-embaralhadas na
+  // renderização), para quebrar a memorização de posição e reforçar a fixação.
+  function withNemesisDuplicates(questions, examMisses, level, maxDups) {
+    if (level < 4 || !examMisses) return questions;
+    const cand = questions
+      .map(q => ({ q, streak: (examMisses[baseId(q.id)] || {}).streak || 0 }))
+      .filter(x => x.streak >= 2)
+      .sort((a, b) => b.streak - a.streak);
+    const dups = cand.slice(0, maxDups || 2)
+      .map(x => Object.assign({}, x.q, { id: baseId(x.q.id) + '#dup' }));
+    if (dups.length === 0) return questions;
+    return shuffle(questions.concat(dups));
   }
 
   // --------------------------------------------------------------------------
@@ -392,6 +476,44 @@
   }
 
   // --------------------------------------------------------------------------
+  // Selo de nêmesis e mapa de calor das hashtags (a partir do histórico)
+  // --------------------------------------------------------------------------
+
+  // Selo sutil "[errada N×]" na linha de questões reincidentes (streak >= 2).
+  function applyNemesisBadges(container, examMisses) {
+    if (!examMisses) return;
+    container.querySelectorAll('.quiz-q[data-id]').forEach(qEl => {
+      const e = examMisses[baseId(qEl.dataset.id)];
+      if (!e || e.streak < 2) return;
+      const p = qEl.querySelector('p');
+      if (!p || p.querySelector('.quiz-nemesis-badge')) return;
+      const badge = document.createElement('span');
+      badge.className   = 'quiz-nemesis-badge';
+      badge.title       = `você errou esta questão ${e.streak}× seguidas`;
+      badge.textContent = ` [errada ${e.streak}×]`;
+      p.appendChild(badge);
+    });
+  }
+
+  // Tinge as hashtags dos comentários conforme a frequência de erro do tópico:
+  // quanto mais você erra questões daquela tag, mais "quente" ela aparece.
+  function applyTagHeat(container, examMisses, qById) {
+    const freq = buildMissTagFrequency(examMisses, qById);
+    const vals = Object.values(freq);
+    if (vals.length === 0) return;
+    const max = Math.max.apply(null, vals);
+    if (max <= 0) return;
+    container.querySelectorAll('.quiz-q a.mention-link').forEach(a => {
+      const txt = (a.textContent || '').trim();
+      if (txt[0] !== '#') return;
+      const tag = txt.slice(1).replace(/[.-]+$/, '');
+      a.classList.remove('quiz-tag-heat-1', 'quiz-tag-heat-2', 'quiz-tag-heat-3');
+      const lvl = heatLevel(freq[tag] || 0, max);
+      if (lvl) a.classList.add('quiz-tag-heat-' + lvl);
+    });
+  }
+
+  // --------------------------------------------------------------------------
   // Inicialização principal
   // --------------------------------------------------------------------------
 
@@ -474,6 +596,15 @@
         questions = selectQuestions(bank, config);
       }
 
+      // Duplica questões teimosas no mesmo simulado (Nível 4+) para fixação.
+      const dupExamId  = (() => {
+        const q = questions.find(q => q.topic);
+        const t = q ? normalizeTopic(q.topic) : null;
+        return t ? t.split('.')[0] : null;
+      })();
+      const dupMisses  = dupExamId ? (loadMisses()[dupExamId] || {}) : null;
+      questions = withNemesisDuplicates(questions, dupMisses, currentLevel, 2);
+
       // Renderiza questões sorteadas
       container.innerHTML = questions.map(renderQuestion).join('');
 
@@ -494,6 +625,16 @@
     const topics   = {};
     const wrongIds = new Set();  // IDs das questões erradas (para Nível 2)
     const qById    = Object.fromEntries(bank.filter(q => q.id).map(q => [q.id, q]));
+
+    // Histórico de erros deste exame (selo de nêmesis + calor das hashtags).
+    const examIdM    = (() => {
+      const el = container.querySelector('.quiz-q[data-topic]');
+      const t  = el ? normalizeTopic(el.dataset.topic) : null;
+      return t ? t.split('.')[0] : null;
+    })();
+    const examMisses = examIdM ? (loadMisses()[examIdM] || {}) : {};
+    applyNemesisBadges(container, examMisses);
+    applyTagHeat(container, examMisses, qById);
 
     // Injeta placar no terminal-body do header
     const headerBody = document.querySelector('header .terminal-body');
@@ -621,7 +762,18 @@
 
         // Persiste os resultados para a página de revisão
         const examId = Object.keys(topics)[0]?.split('.')[0];
-        if (examId) saveExamScores(examId, topics);
+        if (examId) {
+          saveExamScores(examId, topics);
+
+          // Atualiza o histórico de erros por questão (streak) deste exame.
+          try {
+            const all = loadMisses();
+            const answeredIds = [...container.querySelectorAll('.quiz-q.quiz-answered[data-id]')]
+              .map(el => el.dataset.id);
+            all[examId] = updateMissHistory(all[examId], [...wrongIds], answeredIds, currentLevel);
+            localStorage.setItem(MISSES_KEY, JSON.stringify(all));
+          } catch (_) {}
+        }
 
         // Registra resultado no perfil do usuário (se logado)
         try {
@@ -772,7 +924,7 @@
           } else {
             li.classList.add('quiz-wrong');
             items[correctIdx]?.classList.add('quiz-reveal');
-            if (qEl.dataset.id) wrongIds.add(qEl.dataset.id);
+            if (qEl.dataset.id) wrongIds.add(baseId(qEl.dataset.id));
           }
 
           scrollToExplanation(qEl);
@@ -809,7 +961,7 @@
         answered++;
         qEl.querySelector('.quiz-explanation')?.classList.add('visible');
         if (allCorrect) { correctAll++; if (topic) topics[topic].correct++; }
-        else if (qEl.dataset.id) wrongIds.add(qEl.dataset.id);
+        else if (qEl.dataset.id) wrongIds.add(baseId(qEl.dataset.id));
         scrollToExplanation(qEl);
         updateScore();
       };
@@ -857,7 +1009,7 @@
         if (isCorrect) { correctAll++; if (topic) topics[topic].correct++; }
         modelAns.classList.add('visible', isCorrect ? 'quiz-disc-correct' : 'quiz-disc-wrong');
         if (explain && explain.textContent.trim()) explain.classList.add('visible');
-        if (!isCorrect && qEl.dataset.id) wrongIds.add(qEl.dataset.id);
+        if (!isCorrect && qEl.dataset.id) wrongIds.add(baseId(qEl.dataset.id));
         scrollToExplanation(qEl);
         answered++;
         updateScore();

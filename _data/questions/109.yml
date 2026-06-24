@@ -741,7 +741,7 @@
     - "Pacotes com destino ao IP 192.168.100.10 serão enviados pela rota padrão"
     - "Pacotes com destino ao IP 192.168.1.200 serão enviados pelo roteador 192.168.1.1"
   answer: [1, 3, 4]
-  comment: "Os comandos \"ip route show\" e \"route\" exibem a tabela de roteamento do sistema. O roteamento será feito preferencialmente a uma rota específica para o destino do pacote, ou diretamente via interface caso a máquina esteja na mesma rede, por último é utilizada a rota padrão. #IP #routing #gateway"
+  comment: "Para cada pacote o kernel escolhe a rota MAIS ESPECÍFICA que casa com o destino (prefixo mais longo); se nenhuma casar, usa a \"default\". Quando a rota tem \"via <IP>\" o pacote vai para um roteador; quando só tem \"dev <iface>\" (scope link) o destino está na mesma rede e a entrega é direta, sem roteador. Lendo a tabela: 172.30.20.0/24 via 172.16.20.200 → 172.30.20.15 cai aqui e vai pelo roteador 172.16.20.200 (correta). 172.16.0.0/16 dev enp0s8 (link) → 172.16.1.100 está nessa rede /16, entrega direta pela enp0s8 (correta). 192.168.100.10 e 192.168.8.100 NÃO casam com nenhuma rede listada → ambos saem pela default via 192.168.1.1 (logo a opção do 192.168.100.10 é correta, e a do 192.168.8.100 é falsa pois NÃO é direta). 192.168.1.200 está em 192.168.1.0/24 dev enp0s3 (link) → entrega direta, NÃO usa o roteador 192.168.1.1 (falsa). Dica: o gateway só entra em cena quando o destino está fora de todas as redes diretamente conectadas. #IP #routing #gateway"
 
 - id: "109-067"
   topic: "109.3"
