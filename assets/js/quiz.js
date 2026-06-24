@@ -431,7 +431,7 @@
       `<div class="quiz-corner">` +
         `<button type="button" class="quiz-kebab" aria-label="opções da questão" title="opções">⋮</button>` +
         `<div class="quiz-menu" hidden>` +
-          `<button type="button" class="quiz-report-btn">⚑ reportar p/ revisão</button>` +
+          `<button type="button" class="quiz-report-btn">⚑ reportar</button>` +
         `</div>` +
       `</div>`
     );
@@ -508,7 +508,7 @@
       const badge = document.createElement('span');
       badge.className   = 'quiz-nemesis-badge';
       badge.title       = `você errou esta questão ${e.streak}× seguidas`;
-      badge.textContent = `errada ${e.streak}×`;
+      badge.textContent = `${e.streak}×`;
       corner.insertBefore(badge, corner.firstChild);
     });
   }
@@ -693,24 +693,25 @@
     applyNemesisBadges(container, examMisses);
     applyTagHeat(container, examMisses, qById);
 
-    // Kebab (⋮) de cada questão: abre o menu de reportar / fecha os outros.
-    container.addEventListener('click', e => {
+    // Kebab (⋮) de cada questão: abre o menu de reportar. Listener no documento
+    // para que um clique em QUALQUER parte da tela feche o menu aberto.
+    document.addEventListener('click', e => {
       const kebab = e.target.closest('.quiz-kebab');
-      if (kebab) {
+      if (kebab && container.contains(kebab)) {
         e.preventDefault();
-        const menu   = kebab.parentElement.querySelector('.quiz-menu');
+        const menu    = kebab.parentElement.querySelector('.quiz-menu');
         const wasOpen = menu && !menu.hasAttribute('hidden');
         container.querySelectorAll('.quiz-menu').forEach(m => m.setAttribute('hidden', ''));
         if (menu && !wasOpen) menu.removeAttribute('hidden');
         return;
       }
       const reportBtn = e.target.closest('.quiz-report-btn');
-      if (reportBtn) {
+      if (reportBtn && container.contains(reportBtn)) {
         e.preventDefault();
         sendQuestionReport(reportBtn.closest('.quiz-q'), reportBtn);
         return;
       }
-      // Clique em qualquer outro lugar fecha menus abertos.
+      // Clique em qualquer outro lugar da tela fecha menus abertos.
       container.querySelectorAll('.quiz-menu:not([hidden])').forEach(m => m.setAttribute('hidden', ''));
     });
 
