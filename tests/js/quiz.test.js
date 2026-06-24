@@ -1433,3 +1433,43 @@ describe('withNemesisDuplicates', () => {
     expect(out).toBe(qs)
   })
 })
+
+// =============================================================================
+// reportPayloadFrom — payload do reporte de questão (kebab → /api/question-report)
+// Duplicada de assets/js/quiz.js para teste isolado.
+// =============================================================================
+
+function reportPayloadFrom(id, topic, path, fp) {
+  const t = normalizeTopic(topic)
+  return {
+    exam:        t ? t.split('.')[0] : '',
+    qid:         baseId(id),
+    path:        path || '',
+    fingerprint: fp || '',
+  }
+}
+
+describe('reportPayloadFrom', () => {
+  it('deriva o exame do prefixo do tópico (109.1 -> 109)', () => {
+    const p = reportPayloadFrom('q42', '109.1', '/linux/109/simulado', 'fp1')
+    expect(p).toEqual({ exam: '109', qid: 'q42', path: '/linux/109/simulado', fingerprint: 'fp1' })
+  })
+
+  it('normaliza id duplicado (#dup) para o id-base', () => {
+    expect(reportPayloadFrom('q42#dup', '109.1', '', '').qid).toBe('q42')
+  })
+
+  it('remove aspas do tópico antes de extrair o exame', () => {
+    expect(reportPayloadFrom('q1', '"105.2"', '', '').exam).toBe('105')
+  })
+
+  it('tópico ausente -> exame vazio', () => {
+    expect(reportPayloadFrom('q1', null, '', '').exam).toBe('')
+  })
+
+  it('path e fingerprint ausentes viram string vazia', () => {
+    const p = reportPayloadFrom('q1', '109.1')
+    expect(p.path).toBe('')
+    expect(p.fingerprint).toBe('')
+  })
+})

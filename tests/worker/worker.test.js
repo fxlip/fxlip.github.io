@@ -703,3 +703,55 @@ describe('POST /api/hello — daily gate via D1', () => {
     expect(row.visits_count).toBe(5) // não incrementou
   })
 })
+
+// =============================================================================
+// POST /api/question-report — reporte de questão
+// =============================================================================
+
+describe('POST /api/question-report — validação', () => {
+  let ipSeq = 0
+  // IP único por requisição: evita esbarrar no rate limit in-memory compartilhado.
+  const post = (body) => call('/api/question-report', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': `10.9.0.${++ipSeq}` },
+    body:    typeof body === 'string' ? body : JSON.stringify(body),
+  })
+
+  it('retorna 400 com JSON inválido', async () => {
+    const res = await post('{ não é json')
+    expect(res.status).toBe(400)
+  })
+
+  it('retorna 400 sem exam/qid', async () => {
+    const res = await post({ path: '/x' })
+    expect(res.status).toBe(400)
+  })
+
+  it('retorna 400 com exam fora do charset', async () => {
+    const res = await post({ exam: '109/../etc', qid: 'q1' })
+    expect(res.status).toBe(400)
+  })
+
+  it('retorna 400 com qid fora do charset', async () => {
+    const res = await post({ exam: '109', qid: 'q1 ; rm -rf' })
+    expect(res.status).toBe(400)
+  })
+
+  it('aceita payload válido sem GITHUB_TOKEN (queued:false, sem chamada externa)', async () => {
+    const res = await post({ exam: '109', qid: 'q42', path: '/linux/109/simulado', fingerprint: 'fp1' })
+    expect(res.status).toBe(200)
+    const json = await res.json()
+    expect(json.ok).toBe(true)
+    expect(json.queued).toBe(false)
+  })
+
+  it('aceita id duplicado (#dup) no qid', async () => {
+    const res = await post({ exam: '109', qid: 'q42#dup' })
+    expect(res.status).toBe(200)
+  })
+
+  it('retorna 404 para método errado (GET)', async () => {
+    const res = await call('/api/question-report', { method: 'GET', headers: { 'CF-Connecting-IP': `10.9.0.${++ipSeq}` } })
+    expect(res.status).toBe(404)
+  })
+})

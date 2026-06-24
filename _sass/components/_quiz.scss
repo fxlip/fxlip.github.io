@@ -223,13 +223,91 @@
   opacity: 0.9;
 }
 
+/* Canto de meta no topo-direito da questão: kebab + selo de nêmesis.
+   Overlay absoluto — não empurra o texto da questão para outra linha. */
+.quiz-q {
+  position: relative;
+}
+
+.quiz-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  z-index: 2;
+  line-height: 1;
+}
+
+/* Reserva uma faixa à direita para o texto não correr por baixo do kebab */
+.quiz-q > p {
+  padding-right: 1.8em;
+}
+
+.quiz-kebab {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted-color);
+  opacity: 0.4;
+  font-size: 1.15em;
+  line-height: 1;
+  padding: 2px 5px;
+  border-radius: 3px;
+  transition: opacity 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    opacity: 1;
+    color: var(--accent-cyan);
+  }
+}
+
+.quiz-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  background: var(--bg-color, #16161e);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.quiz-report-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+  font: inherit;
+  font-size: 0.85em;
+  padding: 7px 12px;
+  width: 100%;
+  text-align: left;
+  white-space: nowrap;
+
+  &:hover {
+    color: #ff7043;
+  }
+}
+
+/* Questão já reportada nesta sessão: kebab esmaecido */
+.quiz-q.quiz-reported .quiz-kebab {
+  color: #ff7043;
+  opacity: 0.55;
+}
+
 /* Selo de nêmesis: questão reincidente (errada N× seguidas) — sutil */
 .quiz-nemesis-badge {
-  font-size: 0.78em;
+  font-size: 0.74em;
   font-weight: normal;
   color: #ff5555;
   opacity: 0.6;
-  margin-left: 0.4em;
   white-space: nowrap;
   vertical-align: baseline;
 }

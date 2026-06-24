@@ -66,6 +66,9 @@ export default {
       if (url.pathname === '/api/exam-result' && request.method === 'POST') {
         return corsResponse(env, await handleExamResult(request, env));
       }
+      if (url.pathname === '/api/question-report' && request.method === 'POST') {
+        return corsResponse(env, await handleQuestionReport(request, env));
+      }
       if (url.pathname === '/api/exam-log' && request.method === 'GET') {
         return corsResponse(env, await handleExamLog(env));
       }
@@ -1048,6 +1051,78 @@ async function handleExamResult(request, env) {
   ).bind(fingerprint, 'exam_result', content, now).run();
 
   return jsonResponse({ ok: true });
+}
+
+// =======================================================================
+// POST /api/question-report
+// Reporte de questão para revisão → abre (ou atualiza) uma issue no GitHub.
+// Body: { exam, qid, path?, fingerprint? }
+// Dedup por KV (qreport:exam:qid): a 1ª vez cria a issue; reportes seguintes
+// viram um comentário "+1" na issue já aberta — sem inundar de duplicatas.
+// =======================================================================
+async function handleQuestionReport(request, env) {
+  let body;
+  try { body = await request.json(); } catch (_) { return jsonResponse({ error: 'Invalid JSON' }, 400); }
+
+  const exam = String((body && body.exam) || '').trim();
+  const qid  = String((body && body.qid)  || '').trim();
+  const path = String((body && body.path) || '').trim().substring(0, 200);
+  const fp   = String((body && body.fingerprint) || '').trim().substring(0, 64);
+
+  if (!exam || !qid) return jsonResponse({ error: 'Missing fields' }, 400);
+  if (!/^[a-zA-Z0-9.\-]{1,16}$/.test(exam))    return jsonResponse({ error: 'Invalid exam' }, 400);
+  if (!/^[a-zA-Z0-9.\-_#]{1,32}$/.test(qid))   return jsonResponse({ error: 'Invalid qid' }, 400);
+
+  // Sem token configurado: aceita sem quebrar o front (nada é enviado).
+  if (!env.GITHUB_TOKEN) return jsonResponse({ ok: true, queued: false });
+
+  const repo      = env.REPORT_REPO || 'fxlip/fxlip.github.io';
+  const ghHeaders = {
+    'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
+    'User-Agent':    'fxlip-visitor-api',
+    'Accept':        'application/vnd.github+json',
+    'Content-Type':  'application/json',
+  };
+  const dedupKey = `qreport:${exam}:${qid}`;
+
+  try {
+    const existing = await env.VISITORS.get(dedupKey);
+
+    if (existing) {
+      // Issue já aberta para esta questão → registra um "+1 reporte".
+      await fetch(`https://api.github.com/repos/${repo}/issues/${existing}/comments`, {
+        method:  'POST',
+        headers: ghHeaders,
+        body:    JSON.stringify({ body: `+1 reporte • fp \`${fp || 'anon'}\` • ${new Date().toISOString()}` }),
+      });
+      return jsonResponse({ ok: true, issue: Number(existing) });
+    }
+
+    const res = await fetch(`https://api.github.com/repos/${repo}/issues`, {
+      method:  'POST',
+      headers: ghHeaders,
+      body:    JSON.stringify({
+        title: `Revisão: ${exam} / ${qid}`,
+        body:
+          `Reporte de questão para revisão (enviado pelo simulado).\n\n` +
+          `- **exame:** \`${exam}\`\n` +
+          `- **questão:** \`${qid}\`\n` +
+          `- **arquivo:** \`_data/questions/${exam}.yml\`\n` +
+          `- **url:** ${path || '—'}\n` +
+          `- **reporter_fp:** \`${fp || 'anon'}\`\n`,
+        labels: ['revisão-questão'],
+      }),
+    });
+
+    if (!res.ok) return jsonResponse({ ok: false }, 502);
+    const issue = await res.json();
+    if (issue && issue.number) {
+      await env.VISITORS.put(dedupKey, String(issue.number), { expirationTtl: 60 * 60 * 24 * 30 });
+    }
+    return jsonResponse({ ok: true, issue: issue && issue.number });
+  } catch (_) {
+    return jsonResponse({ ok: false }, 502);
+  }
 }
 
 // =======================================================================

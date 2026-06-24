@@ -424,10 +424,24 @@
     return html;
   }
 
+  // Canto de meta no topo-direito da questão: kebab (⋮) → menu de reportar,
+  // e onde o selo de nêmesis é injetado. Overlay absoluto: não ocupa linha.
+  function buildCorner() {
+    return (
+      `<div class="quiz-corner">` +
+        `<button type="button" class="quiz-kebab" aria-label="opções da questão" title="opções">⋮</button>` +
+        `<div class="quiz-menu" hidden>` +
+          `<button type="button" class="quiz-report-btn">⚑ reportar p/ revisão</button>` +
+        `</div>` +
+      `</div>`
+    );
+  }
+
   function renderQuestion(q) {
     const questionHtml = escapeHtml(q.question).replace(/\n/g, '<br>');
     const commentHtml  = escapeHtml(q.comment || '').replace(/\n/g, '<br>');
     const codeHtml     = buildCodeBlock(q.code);
+    const cornerHtml   = buildCorner();
 
     if (q.type === 'discursive') {
       const answerHtml = Array.isArray(q.answer)
@@ -436,6 +450,7 @@
       const discAnswerAttr = escapeHtml(JSON.stringify(q.answer || ''));
       return (
         `<div class="quiz-q quiz-discursive" data-id="${escapeHtml(q.id || '')}" data-topic="${escapeHtml(q.topic)}" data-disc-answer="${discAnswerAttr}">` +
+          cornerHtml +
           `<p>${questionHtml}</p>` +
           codeHtml +
           `<ol>` +
@@ -453,6 +468,7 @@
       const optionsHtml = options.map(opt => `<li>${escapeHtml(opt)}</li>`).join('');
       return (
         `<div class="quiz-q quiz-multi" data-id="${escapeHtml(q.id || '')}" data-answers="${answers.join(',')}" data-topic="${escapeHtml(q.topic)}">` +
+          cornerHtml +
           `<p>${questionHtml}</p>` +
           codeHtml +
           `<ol>${optionsHtml}</ol>` +
@@ -466,6 +482,7 @@
     const optionsHtml = options.map(opt => `<li>${escapeHtml(opt)}</li>`).join('');
     return (
       `<div class="quiz-q" data-id="${escapeHtml(q.id || '')}" data-answer="${answer}" data-topic="${escapeHtml(q.topic)}">` +
+        cornerHtml +
         `<p>${questionHtml}</p>` +
         codeHtml +
         `<ol>${optionsHtml}</ol>` +
@@ -479,20 +496,60 @@
   // Selo de nêmesis e mapa de calor das hashtags (a partir do histórico)
   // --------------------------------------------------------------------------
 
-  // Selo sutil "[errada N×]" na linha de questões reincidentes (streak >= 2).
+  // Selo sutil "errada N×" no canto de questões reincidentes (streak >= 2),
+  // à esquerda do kebab (não empurra o texto da questão — canto é absoluto).
   function applyNemesisBadges(container, examMisses) {
     if (!examMisses) return;
     container.querySelectorAll('.quiz-q[data-id]').forEach(qEl => {
       const e = examMisses[baseId(qEl.dataset.id)];
       if (!e || e.streak < 2) return;
-      const p = qEl.querySelector('p');
-      if (!p || p.querySelector('.quiz-nemesis-badge')) return;
+      const corner = qEl.querySelector('.quiz-corner');
+      if (!corner || corner.querySelector('.quiz-nemesis-badge')) return;
       const badge = document.createElement('span');
       badge.className   = 'quiz-nemesis-badge';
       badge.title       = `você errou esta questão ${e.streak}× seguidas`;
-      badge.textContent = ` [errada ${e.streak}×]`;
-      p.appendChild(badge);
+      badge.textContent = `errada ${e.streak}×`;
+      corner.insertBefore(badge, corner.firstChild);
     });
+  }
+
+  // --------------------------------------------------------------------------
+  // Reporte de questão para revisão (kebab → menu → POST /api/question-report)
+  // --------------------------------------------------------------------------
+
+  // Monta o payload do reporte. Função pura — facilita teste.
+  function reportPayloadFrom(id, topic, path, fp) {
+    const t = normalizeTopic(topic);
+    return {
+      exam:        t ? t.split('.')[0] : '',
+      qid:         baseId(id),
+      path:        path || '',
+      fingerprint: fp || '',
+    };
+  }
+
+  // Envia o reporte da questão `qEl` e dá o feedback (alert). Idempotente por
+  // render via `btn.dataset.sent` — a deduplicação real é feita no worker.
+  function sendQuestionReport(qEl, btn) {
+    if (!qEl || !btn || btn.dataset.sent) return;
+    const menu = qEl.querySelector('.quiz-menu');
+    if (menu) menu.setAttribute('hidden', '');
+
+    let fp = '';
+    try { fp = localStorage.getItem('fxlip_fp') || ''; } catch (_) {}
+    const payload = reportPayloadFrom(qEl.dataset.id, qEl.dataset.topic, window.location.pathname, fp);
+    const wUrl    = document.body.dataset.workerUrl || '';
+
+    if (wUrl && payload.exam && payload.qid) {
+      btn.dataset.sent = '1';
+      qEl.classList.add('quiz-reported');
+      fetch(wUrl + '/api/question-report', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload),
+      }).catch(function () {});
+    }
+    window.alert('Esta questão foi marcada para revisão. Obrigado pelo retorno!');
   }
 
   // Tinge as hashtags dos comentários conforme a frequência de erro do tópico:
@@ -635,6 +692,27 @@
     const examMisses = examIdM ? (loadMisses()[examIdM] || {}) : {};
     applyNemesisBadges(container, examMisses);
     applyTagHeat(container, examMisses, qById);
+
+    // Kebab (⋮) de cada questão: abre o menu de reportar / fecha os outros.
+    container.addEventListener('click', e => {
+      const kebab = e.target.closest('.quiz-kebab');
+      if (kebab) {
+        e.preventDefault();
+        const menu   = kebab.parentElement.querySelector('.quiz-menu');
+        const wasOpen = menu && !menu.hasAttribute('hidden');
+        container.querySelectorAll('.quiz-menu').forEach(m => m.setAttribute('hidden', ''));
+        if (menu && !wasOpen) menu.removeAttribute('hidden');
+        return;
+      }
+      const reportBtn = e.target.closest('.quiz-report-btn');
+      if (reportBtn) {
+        e.preventDefault();
+        sendQuestionReport(reportBtn.closest('.quiz-q'), reportBtn);
+        return;
+      }
+      // Clique em qualquer outro lugar fecha menus abertos.
+      container.querySelectorAll('.quiz-menu:not([hidden])').forEach(m => m.setAttribute('hidden', ''));
+    });
 
     // Injeta placar no terminal-body do header
     const headerBody = document.querySelector('header .terminal-body');
